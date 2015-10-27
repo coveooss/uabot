@@ -7,7 +7,7 @@ type Query struct {
 	DQ              string            `json:"dq,omitempty"`
 	NumberOfResults int               `json:"numberOfResults,omitempty"`
 	FirstResult     int               `json:"firstResult,omitempty"`
-	GroupBy         []*GroupByRequest `json:"groupBy,omitempty"`
+	GroupByRequests []*GroupByRequest `json:"groupBy,omitempty"`
 }
 
 type GroupByRequest struct {
