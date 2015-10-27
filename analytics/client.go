@@ -45,8 +45,8 @@ type SearchEvent struct {
 	Contextual      bool   `json:"contextual"`
 	ResponseTime    int    `json:"responseTime"`
 	Results         []struct {
-		documentUri     string `json:"documentUri"`
-		documentUriHash string `json:"documentUriHash"`
+		DocumentUri     string `json:"documentUri"`
+		DocumentUriHash string `json:"documentUriHash"`
 	} `json:"results"`
 	UserGroups          []string               `json:"userGroups"`
 	DocumentURI         string                 `json:"documentUri"`
