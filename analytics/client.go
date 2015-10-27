@@ -1,9 +1,6 @@
 package analytics
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -126,6 +123,7 @@ type CustomEvent struct {
 	Language            string                 `json:"language"`
 }
 
+type StatusResponse struct{}
 type SearchEventResponse struct{}
 type SearchEventsResponse struct{}
 type ClickEventResponse struct{}
@@ -149,4 +147,7 @@ func (c *client) GetVisit() (*VisitResponse, error) {
 }
 func (c *client) DeleteVisit() (bool, error) {
 	return false, nil
+}
+func (c *client) GetStatus() (*StatusResponse, error) {
+	return nil, nil
 }
