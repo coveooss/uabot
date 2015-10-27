@@ -38,9 +38,94 @@ type client struct {
 	useragent  string
 }
 
-type SearchEvent struct{}
-type ClickEvent struct{}
-type CustomEvent struct{}
+type SearchEvent struct {
+	QueryText       string `json:"queryText"`
+	AdvancedQuery   string `json:"advancedQuery"`
+	NumberOfResults int    `json:"numberOfResults"`
+	Contextual      bool   `json:"contextual"`
+	ResponseTime    int    `json:"responseTime"`
+	Results         []struct {
+		documentUri     string `json:"documentUri"`
+		documentUriHash string `json:"documentUriHash"`
+	} `json:"results"`
+	UserGroups          []string               `json:"userGroups"`
+	DocumentURI         string                 `json:"documentUri"`
+	DocumentURIHash     string                 `json:"DocumentUriHash"`
+	SearchQueryUID      string                 `json:"searchQueryUid"`
+	CollectionName      string                 `json:"collectionName"`
+	SourceName          string                 `json:"sourceName"`
+	DocumentPosition    string                 `json:"documentPosition"`
+	ActionCause         string                 `json:"actionCause"`
+	DocumentTitle       string                 `json:"documentTitle"`
+	DocumentURL         string                 `json:"documentUrl"`
+	QueryPipeline       string                 `json:"queryPipeline"`
+	RankingModifier     string                 `json:"rankingModifier"`
+	EventValue          string                 `json:"eventValue"`
+	EventType           string                 `json:"eventType"`
+	LastSearchQueryUid  string                 `json:"lastSearchQueryUid"`
+	UserDisplayName     string                 `json:"userDisplayName"`
+	UserAgent           string                 `json:"userAgent"`
+	Anonymous           bool                   `json:"anonymous"`
+	CustomData          map[string]interface{} `json:"customData,omitempty"`
+	Device              string                 `json:"device"`
+	Mobile              bool                   `json:"mobile"`
+	SplitTestRunName    string                 `json:"splitTestRunName"`
+	SplitTestRunVersion string                 `json:"splitTestRunVersion"`
+	OriginLevel1        string                 `json:"originLevel1"`
+	OriginLevel2        string                 `json:"originLevel2"`
+	OriginLevel3        string                 `json:"originLevel3"`
+	Username            string                 `json:"username"`
+	Language            string                 `json:"language"`
+}
+type ClickEvent struct {
+	DocumentURI         string                 `json:"documentUri"`
+	DocumentURIHash     string                 `json:"DocumentUriHash"`
+	SearchQueryUID      string                 `json:"searchQueryUid"`
+	CollectionName      string                 `json:"collectionName"`
+	SourceName          string                 `json:"sourceName"`
+	DocumentPosition    string                 `json:"documentPosition"`
+	ActionCause         string                 `json:"actionCause"`
+	DocumentTitle       string                 `json:"documentTitle"`
+	DocumentURL         string                 `json:"documentUrl"`
+	QueryPipeline       string                 `json:"queryPipeline"`
+	RankingModifier     string                 `json:"rankingModifier"`
+	EventValue          string                 `json:"eventValue"`
+	EventType           string                 `json:"eventType"`
+	LastSearchQueryUid  string                 `json:"lastSearchQueryUid"`
+	UserDisplayName     string                 `json:"userDisplayName"`
+	UserAgent           string                 `json:"userAgent"`
+	Anonymous           bool                   `json:"anonymous"`
+	CustomData          map[string]interface{} `json:"customData,omitempty"`
+	Device              string                 `json:"device"`
+	Mobile              bool                   `json:"mobile"`
+	SplitTestRunName    string                 `json:"splitTestRunName"`
+	SplitTestRunVersion string                 `json:"splitTestRunVersion"`
+	OriginLevel1        string                 `json:"originLevel1"`
+	OriginLevel2        string                 `json:"originLevel2"`
+	OriginLevel3        string                 `json:"originLevel3"`
+	Username            string                 `json:"username"`
+	Language            string                 `json:"language"`
+}
+
+type CustomEvent struct {
+	EventValue          string                 `json:"eventValue"`
+	EventType           string                 `json:"eventType"`
+	LastSearchQueryUid  string                 `json:"lastSearchQueryUid"`
+	UserDisplayName     string                 `json:"userDisplayName"`
+	UserAgent           string                 `json:"userAgent"`
+	Anonymous           bool                   `json:"anonymous"`
+	CustomData          map[string]interface{} `json:"customData,omitempty"`
+	Device              string                 `json:"device"`
+	Mobile              bool                   `json:"mobile"`
+	SplitTestRunName    string                 `json:"splitTestRunName"`
+	SplitTestRunVersion string                 `json:"splitTestRunVersion"`
+	OriginLevel1        string                 `json:"originLevel1"`
+	OriginLevel2        string                 `json:"originLevel2"`
+	OriginLevel3        string                 `json:"originLevel3"`
+	Username            string                 `json:"username"`
+	Language            string                 `json:"language"`
+}
+
 type SearchEventResponse struct{}
 type SearchEventsResponse struct{}
 type ClickEventResponse struct{}
