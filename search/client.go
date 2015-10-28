@@ -3,7 +3,6 @@ package search
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
