@@ -55,11 +55,6 @@ func (c *client) Query(q Query) (*Response, error) {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
-		err := fmt.Errorf("Some error with the request")
-		return nil, err
-	}
-
 	queryResponse := &Response{}
 	err = json.NewDecoder(resp.Body).Decode(queryResponse)
 	return queryResponse, err
