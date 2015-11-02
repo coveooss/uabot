@@ -7,6 +7,7 @@ type Response struct {
 	IndexDuration      int              `json:"indexDuration"`
 	RequestDuration    int              `json:"requestDuration"`
 	SearchUID          string           `json:"searchUid"`
+	Pipeline           string           `json:"pipeline"`
 	GroupByResults     []*GroupByResult `json:"groupByResults,omitempty"`
 	Results            []*Result        `json:"results,omitempty"`
 }
