@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+// Client is the basic element of the usage analytics service, it wraps a http
+// client. with the appropriate calls to the usage analytics service.
 type Client interface {
 	// SendSearchEvent sends a searchEvent to the analytics service, as the
 	// response is not important it only returns an error
@@ -21,11 +23,16 @@ type Client interface {
 	DeleteVisit() (bool, error)
 }
 
+// Config is the configuration of the usageanalytics client
 type Config struct {
-	Token     string
+	// Token is the token used to log into the service remotly
+	Token string
+	// User agent is the http user agent sent to the service
 	UserAgent string
 }
 
+// NewClient return a capable Coveo Usage Analytics service client. It currently
+// uses V14 of the API.
 func NewClient(c Config) (Client, error) {
 	return &client{
 		token:      c.Token,
