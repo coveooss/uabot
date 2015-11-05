@@ -36,20 +36,21 @@ type client struct {
 	token      string
 	endpoint   string
 	useragent  string
+	cookies    []*http.Cookie
 }
 
 func NewInterfaceLoad() (*SearchEvent, error) {
 	return &SearchEvent{
 		ActionEvent: &ActionEvent{
-			Language: "en",
-			Device: "Bot",
+			Language:     "en",
+			Device:       "Bot",
 			OriginLevel1: "default",
 			OriginLevel2: "All",
-			},
+		},
 		SearchQueryUid: "",
-		QueryText: "",
-		ActionCause: "interfaceLoad",
-		Contextual: false,
+		QueryText:      "",
+		ActionCause:    "interfaceLoad",
+		Contextual:     false,
 	}, nil
 }
 
@@ -59,16 +60,16 @@ type ClickEventResponse struct{}
 type CustomEventResponse struct{}
 type VisitResponse struct{}
 
-func (c *client) SendSearchEvent(event *SearchEvent, cookie *http.Cookie) (string, []*http.Cookie, error) {
-	marshalledEvent, err := json.Marshal(event)
+func (c *client) sendEventRequest(path string, buf io.Reader) error {
+	req, err := http.NewRequest("POST", c.endpoint+path, buf)
 	if err != nil {
-		return "", nil, err
+		return err
 	}
-	buf := bytes.NewReader(marshalledEvent)
 
-	req, err := http.NewRequest("POST", c.endpoint+"search/", buf)
-	if err != nil {
-		return "", nil, err
+	if c.cookie != nil {
+		for _, cookie := range c.cookies {
+			req.AddCookie(cookie)
+		}
 	}
 
 	req.Header.Add("Authorization", "Bearer "+c.token)
@@ -76,21 +77,31 @@ func (c *client) SendSearchEvent(event *SearchEvent, cookie *http.Cookie) (strin
 	req.Header.Add("Accepts", "application/json")
 	req.Header.Set("User-Agent", c.useragent)
 
-	if cookie != nil {
-		req.AddCookie(cookie)
-	}
-
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", nil, err
+		return err
 	}
 	defer resp.Body.Close()
 
 	cookies := resp.Cookies()
+	c.cookies = cookies
 
-	contents, err := ioutil.ReadAll(resp.Body)
+	return nil
+}
 
-	return string(contents), cookies, err
+func (c *client) SendSearchEvent(event *SearchEvent) error {
+	marshalledEvent, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+	buf := bytes.NewReader(marshalledEvent)
+
+	err = c.sendEventRequest("search/", buf)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c *client) SendSearchesEvent(event []SearchEvent) (*SearchEventsResponse, error) {
