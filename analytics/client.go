@@ -3,15 +3,14 @@ package analytics
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 )
 
 type Client interface {
 	SendSearchEvent(*SearchEvent) error
-	SendSearchesEvent([]SearchEvent) (*SearchEventsResponse, error)
-	SendClickEvent(ClickEvent) (*ClickEventResponse, error)
-	SendCustomEvent(CustomEvent) (*CustomEventResponse, error)
+	SendSearchesEvent([]SearchEvent) error
+	SendClickEvent(ClickEvent) error
+	SendCustomEvent(CustomEvent) error
 	GetVisit() (*VisitResponse, error)
 	GetStatus() (*StatusResponse, error)
 	DeleteVisit() (bool, error)
@@ -60,13 +59,51 @@ type ClickEventResponse struct{}
 type CustomEventResponse struct{}
 type VisitResponse struct{}
 
-func (c *client) sendEventRequest(path string, buf io.Reader) error {
+func (c *client) SendSearchEvent(event *SearchEvent) error {
+	err := c.sendEventRequest("search/", event)
+	return err
+}
+
+func (c *client) SendSearchesEvent(event []SearchEvent) error {
+	return nil
+}
+
+func (c *client) SendClickEvent(event ClickEvent) error {
+	return nil
+}
+
+func (c *client) SendCustomEvent(event CustomEvent) error {
+	return nil
+}
+
+func (c *client) GetVisit() (*VisitResponse, error) {
+	return nil, nil
+}
+
+// DeleteVisit forgets the cookie to usageanalytics, the call to the server
+// currently does the same thing. This will probably change in the future
+func (c *client) DeleteVisit() (bool, error) {
+	c.cookies = nil
+	return true, nil
+}
+
+func (c *client) GetStatus() (*StatusResponse, error) {
+	return nil, nil
+}
+
+func (c *client) sendEventRequest(path string, event interface{}) error {
+	var buf *bytes.Buffer
+	err := json.NewEncoder(buf).Encode(event)
+	if err != nil {
+		return err
+	}
+
 	req, err := http.NewRequest("POST", c.endpoint+path, buf)
 	if err != nil {
 		return err
 	}
 
-	if c.cookie != nil {
+	if c.cookies != nil {
 		for _, cookie := range c.cookies {
 			req.AddCookie(cookie)
 		}
@@ -86,39 +123,4 @@ func (c *client) sendEventRequest(path string, buf io.Reader) error {
 	c.cookies = cookies
 
 	return nil
-}
-
-func (c *client) SendSearchEvent(event *SearchEvent) error {
-	json.NewEncoder(
-	marshalledEvent, err := json.Marshal(event)
-	if err != nil {
-		return err
-	}
-	buf := bytes.NewReader(marshalledEvent)
-
-	err = c.sendEventRequest("search/", buf)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (c *client) SendSearchesEvent(event []SearchEvent) (*SearchEventsResponse, error) {
-	return nil, nil
-}
-func (c *client) SendClickEvent(event ClickEvent) (*ClickEventResponse, error) {
-	return nil, nil
-}
-func (c *client) SendCustomEvent(event CustomEvent) (*CustomEventResponse, error) {
-	return nil, nil
-}
-func (c *client) GetVisit() (*VisitResponse, error) {
-	return nil, nil
-}
-func (c *client) DeleteVisit() (bool, error) {
-	return false, nil
-}
-func (c *client) GetStatus() (*StatusResponse, error) {
-	return nil, nil
 }
