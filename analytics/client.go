@@ -7,7 +7,12 @@ import (
 )
 
 type Client interface {
+	// SendSearchEvent sends a searchEvent to the analytics service, as the
+	// response is not important it only returns an error
 	SendSearchEvent(*SearchEvent) error
+	// SendSearchesEvent sends multiple searchEvent to the analytics service,
+	// using the batch call, as the response is not important it only
+	// returns an error
 	SendSearchesEvent([]SearchEvent) error
 	SendClickEvent(ClickEvent) error
 	SendCustomEvent(CustomEvent) error
