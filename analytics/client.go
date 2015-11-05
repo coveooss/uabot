@@ -8,7 +8,7 @@ import (
 )
 
 type Client interface {
-	SendSearchEvent(*SearchEvent, *http.Cookie) (string, []*http.Cookie, error)
+	SendSearchEvent(*SearchEvent) error
 	SendSearchesEvent([]SearchEvent) (*SearchEventsResponse, error)
 	SendClickEvent(ClickEvent) (*ClickEventResponse, error)
 	SendCustomEvent(CustomEvent) (*CustomEventResponse, error)
@@ -71,7 +71,6 @@ func (c *client) sendEventRequest(path string, buf io.Reader) error {
 			req.AddCookie(cookie)
 		}
 	}
-
 	req.Header.Add("Authorization", "Bearer "+c.token)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accepts", "application/json")
@@ -90,6 +89,7 @@ func (c *client) sendEventRequest(path string, buf io.Reader) error {
 }
 
 func (c *client) SendSearchEvent(event *SearchEvent) error {
+	json.NewEncoder(
 	marshalledEvent, err := json.Marshal(event)
 	if err != nil {
 		return err
