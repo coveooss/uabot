@@ -3,6 +3,8 @@ package analytics
 type ActionEvent struct {
 	Language            string                 `json:"language"`
 	Device              string                 `json:"device"`
+	OriginLevel1        string                 `json:"originLevel1"`
+	OriginLevel2        string                 `json:"originLevel2"`
 	UserAgent           string                 `json:"userAgent",omitempty`
 	CustomData          map[string]interface{} `json:"customData,omitempty"`
 	Anonymous           bool                   `json:"anonymous",omitempty`
@@ -11,8 +13,6 @@ type ActionEvent struct {
 	Mobile              bool                   `json:"mobile",omitempty`
 	SplitTestRunName    string                 `json:"splitTestRunName",omitempty`
 	SplitTestRunVersion string                 `json:"splitTestRunVersion",omitempty`
-	OriginLevel1        string                 `json:"originLevel1"`
-	OriginLevel2        string                 `json:"originLevel2"`
 	OriginLevel3        string                 `json:"originLevel3",omitempty`
 }
 

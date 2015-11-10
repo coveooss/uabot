@@ -8,8 +8,8 @@ type Response struct {
 	RequestDuration    int              `json:"requestDuration"`
 	SearchUID          string           `json:"searchUid"`
 	Pipeline           string           `json:"pipeline"`
-	GroupByResults     []*GroupByResult `json:"groupByResults,omitempty"`
-	Results            []*Result        `json:"results,omitempty"`
+	GroupByResults     []GroupByResult  `json:"groupByResults,omitempty"`
+	Results            []Result         `json:"results,omitempty"`
 }
 
 type Result struct {
@@ -19,6 +19,7 @@ type Result struct {
 	FirstSentences string                 `json:"firstSentences"`
 	Score          int                    `json:"score"`
 	PercentScore   float32                `json:"percentScore"`
+	ClickUri       string                 `json:"clickUri"`
 	Raw            map[string]interface{} `json:"raw"`
 }
 
