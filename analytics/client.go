@@ -18,7 +18,9 @@ type Client interface {
 	// using the batch call, as the response is not important it only
 	// returns an error
 	SendSearchesEvent([]SearchEvent) error
-	SendClickEvent(ClickEvent) error
+	// SendClickEvent sends a click to the analytics service, as the
+	// response is not important it only returns an error
+	SendClickEvent(*ClickEvent) error
 	SendCustomEvent(CustomEvent) error
 	GetVisit() (*VisitResponse, error)
 	GetStatus() (*StatusResponse, error)
@@ -67,6 +69,24 @@ func NewInterfaceLoad() (*SearchEvent, error) {
 	}, nil
 }
 
+func NewClickEvent() (*ClickEvent, error) {
+	return &ClickEvent{
+		ActionEvent: &ActionEvent{
+			Language:     "en",
+			Device:       "Bot",
+			OriginLevel1: "default",
+			OriginLevel2: "All",
+		},
+		DocumentUri: "",
+		DocumentUriHash: "",
+		SearchQueryUid: "",
+		CollectionName: "",
+		SourceName: "",
+		DocumentPosition: 0,
+		ActionCause: "documentOpen",
+	}, nil
+}
+
 type StatusResponse struct{}
 type SearchEventsResponse struct{}
 type ClickEventResponse struct{}
@@ -82,8 +102,9 @@ func (c *client) SendSearchesEvent(event []SearchEvent) error {
 	return nil
 }
 
-func (c *client) SendClickEvent(event ClickEvent) error {
-	return nil
+func (c *client) SendClickEvent(event *ClickEvent) error {
+	err := c.sendEventRequest("click/", event)
+	return err
 }
 
 func (c *client) SendCustomEvent(event CustomEvent) error {
@@ -106,13 +127,13 @@ func (c *client) GetStatus() (*StatusResponse, error) {
 }
 
 func (c *client) sendEventRequest(path string, event interface{}) error {
-	var buf *bytes.Buffer
-	err := json.NewEncoder(buf).Encode(event)
+	var buf bytes.Buffer
+	err := json.NewEncoder(&buf).Encode(event)
 	if err != nil {
 		return err
 	}
 
-	req, err := http.NewRequest("POST", c.endpoint+path, buf)
+	req, err := http.NewRequest("POST", c.endpoint+path, &buf)
 	if err != nil {
 		return err
 	}
