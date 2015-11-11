@@ -25,6 +25,7 @@ type Client interface {
 	GetVisit() (*VisitResponse, error)
 	GetStatus() (*StatusResponse, error)
 	DeleteVisit() (bool, error)
+	GetCookies() ([]*http.Cookie, error)
 }
 
 // Config is the configuration of the usageanalytics client
@@ -54,7 +55,7 @@ type client struct {
 	cookies    []*http.Cookie
 }
 
-func NewInterfaceLoad() (*SearchEvent, error) {
+func NewSearchEvent() (*SearchEvent, error) {
 	return &SearchEvent{
 		ActionEvent: &ActionEvent{
 			Language:     "en",
@@ -92,6 +93,10 @@ type SearchEventsResponse struct{}
 type ClickEventResponse struct{}
 type CustomEventResponse struct{}
 type VisitResponse struct{}
+
+func (c *client) GetCookies() ([]*http.Cookie, error) {
+	return c.cookies, nil
+}
 
 func (c *client) SendSearchEvent(event *SearchEvent) error {
 	err := c.sendEventRequest("search/", event)
@@ -154,8 +159,10 @@ func (c *client) sendEventRequest(path string, event interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	cookies := resp.Cookies()
-	c.cookies = cookies
+	if c.cookies == nil {
+		cookies := resp.Cookies()
+		c.cookies = cookies
+	}
 
 	return nil
 }

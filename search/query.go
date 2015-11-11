@@ -8,6 +8,7 @@ type Query struct {
 	NumberOfResults int               `json:"numberOfResults,omitempty"`
 	FirstResult     int               `json:"firstResult,omitempty"`
 	GroupByRequests []*GroupByRequest `json:"groupBy,omitempty"`
+	Tab             string            `json:"tab",omitempty"`
 }
 
 type GroupByRequest struct {
