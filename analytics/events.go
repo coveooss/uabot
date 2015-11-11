@@ -30,7 +30,7 @@ type SearchEvent struct {
 	Results         []struct {
 		DocumentUri     string `json:"documentUri"`
 		DocumentUriHash string `json:"documentUriHash"`
-	} `json:"results"`
+	} `json:"results",omitempty`
 }
 
 type ClickEvent struct {
