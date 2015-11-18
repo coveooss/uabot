@@ -20,7 +20,7 @@ const (
 	JSUIVERSION        string = "0.0.0.0;0.0.0.0"
 	USERAGENT          string = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
 	//USERAGENT          string = "IPTest"
-	NUMBEROFCASES      int    = 100
+	//NUMBEROFCASES      int    = 100
 	TIMEBETWEENVISITS  int    = 30 // Between 0 and X Seconds
 	TIMEBETWEENACTIONS int    = 10 // Between 0 and X Seconds
 )
@@ -460,7 +460,8 @@ func main() {
 	scenarioMap, err := ParseScenariosFile()
 	if err != nil { pp.Fatal(err) }
 
-	for i := 0; i < NUMBEROFCASES; i++ {
+	//for i := 0; i < NUMBEROFCASES; i++ {
+	for { // Run forever
 
 		// New Visit
 		useCase, err := InitUseCase(*debug)
