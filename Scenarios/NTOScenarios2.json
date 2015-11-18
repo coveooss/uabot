@@ -1,7 +1,5 @@
 {
 	"orgName"     : "NTO",
-	"searchToken" : "5b55191c-be5b-4023-ad5b-1c198aaa3f81",
-	"uaToken"     : "5b55191c-be5b-4023-ad5b-1c198aaa3f81",
 	"scenarios"   : [
 	{
 		"name"   : "GQ -> C(50%) -> C(35%)", 

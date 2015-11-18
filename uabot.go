@@ -71,8 +71,6 @@ type UseCase struct {
 
 type Scenarios struct {
 	OrgName     string      `json:"orgName"`
-	SearchToken string      `json:"searchToken"`
-	UAToken     string      `json:"uaToken"`
 	Scenarios   []*Scenario `json:"scenarios"`
 }
 
@@ -428,8 +426,12 @@ func ParseScenariosFile() (map[int]*Scenario, error) {
 	err = json.NewDecoder(scenariosFile).Decode(&scenarios)
 	if err != nil { return nil, err }
 
-	SearchToken = scenarios.SearchToken
-	UAToken = scenarios.UAToken
+	sToken := os.Getenv("SEARCHTOKEN")
+	uaToken := os.Getenv("UATOKEN")
+	if sToken == "" || uaToken == "" { return errors.New("No search token or UA token") }
+
+	SearchToken = sToken
+	UAToken = uaToken
 
 	var scenarioMap map[int]*Scenario = map[int]*Scenario{}
 	//var test map[int]string = map[int]string{}
