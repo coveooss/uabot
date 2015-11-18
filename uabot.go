@@ -117,6 +117,7 @@ func sendSearchEvent(useCase *UseCase) error {
 	SEvent.ActionCause = "searchboxSubmit"
 	SEvent.OriginLevel1 = useCase.OriginLevel1
 	SEvent.OriginLevel2 = useCase.OriginLevel2
+	SEvent.NumberOfResults = useCase.LastResponse.TotalCount
 	SEvent.CustomData = map[string]interface{}{
 		"JSUIVersion" : JSUIVERSION,
 	}
@@ -138,6 +139,7 @@ func sendInterfaceChangeEvent(useCase *UseCase) error {
 	ICEvent.ActionCause = "interfaceChange"
 	ICEvent.OriginLevel1 = useCase.OriginLevel1
 	ICEvent.OriginLevel2 = useCase.OriginLevel2
+	ICEvent.NumberOfResults = useCase.LastResponse.TotalCount
 	ICEvent.CustomData = map[string]interface{}{
 		"interfaceChangeTo" : useCase.OriginLevel2,
 		"JSUIVersion"       : JSUIVERSION,
