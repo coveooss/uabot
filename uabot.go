@@ -428,7 +428,7 @@ func ParseScenariosFile() (map[int]*Scenario, error) {
 
 	sToken := os.Getenv("SEARCHTOKEN")
 	uaToken := os.Getenv("UATOKEN")
-	if sToken == "" || uaToken == "" { return errors.New("No search token or UA token") }
+	if sToken == "" || uaToken == "" { return nil, errors.New("No search token or UA token") }
 
 	SearchToken = sToken
 	UAToken = uaToken
