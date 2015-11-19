@@ -13,7 +13,7 @@ import (
 	"flag"
 	"encoding/json"
 	"net/http"
-	//"os"
+	"os"
 )
 
 const (
@@ -56,6 +56,14 @@ var RDBADQUERIES []string = []string {
 	"travel tip",
 }
 
+// Random IPs from http://services.ce3c.be/ciprg/
+var RANDOMIPS []string = []string{
+	"66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", // Canada
+	"198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25", // Canada
+	"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", // US
+	"72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8", // US
+}
+
 var SearchToken string = ""
 var UAToken     string = ""
 
@@ -95,7 +103,7 @@ func newUseCase() (*UseCase, error) {
 	}
 
 	// Create the UA client.
-	conf_ua := ua.Config{Token: UAToken, UserAgent: USERAGENT}
+	conf_ua := ua.Config{Token: UAToken, UserAgent: USERAGENT, IP: RANDOMIPS[rand.Intn(len(RANDOMIPS)-1)], }
 	cua, err := ua.NewClient(conf_ua)
 	if err != nil {
 		return nil, err
@@ -473,17 +481,14 @@ func main() {
 
 	rand.Seed(int64(time.Now().Unix()))
 
-	//sToken := os.Getenv("SEARCHTOKEN")
-	//uaToken := os.Getenv("UATOKEN")
-	sToken := "5b55191c-be5b-4023-ad5b-1c198aaa3f81"
-	uaToken := "5b55191c-be5b-4023-ad5b-1c198aaa3f81"
+	sToken := os.Getenv("SEARCHTOKEN")
+	uaToken := os.Getenv("UATOKEN")
 	if sToken == "" || uaToken == "" { pp.Fatal("No search token or UA token") }
 
 	SearchToken = sToken
 	UAToken = uaToken
 
-	//scenarioUrl := os.Getenv("SCENARIOSURL")
-	scenarioUrl := "https://s3.amazonaws.com/static.coveodemo.com/uabot-scenarios/NTO/NTOScenarios2.json"
+	scenarioUrl := os.Getenv("SCENARIOSURL")
 
 	scenarioMap, err := ParseScenariosFile(scenarioUrl)
 	if err != nil { pp.Fatal(err) }
