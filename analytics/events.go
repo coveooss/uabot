@@ -18,19 +18,21 @@ type ActionEvent struct {
 
 type SearchEvent struct {
 	*ActionEvent
-	SearchQueryUid  string   `json:"searchQueryUid"`
-	QueryText       string   `json:"queryText"`
-	ActionCause     string   `json:"actionCause"`
-	AdvancedQuery   string   `json:"advancedQuery",omitempty`
-	NumberOfResults int      `json:"numberOfResults",omitempty`
-	Contextual      bool     `json:"contextual"`
-	ResponseTime    int      `json:"responseTime",omitempty`
-	QueryPipeline   string   `json:"queryPipeline",omitempty`
-	UserGroups      []string `json:"userGroups,omitempty"`
-	Results         []struct {
-		DocumentUri     string `json:"documentUri"`
-		DocumentUriHash string `json:"documentUriHash"`
-	} `json:"results",omitempty`
+	SearchQueryUid  string       `json:"searchQueryUid"`
+	QueryText       string       `json:"queryText"`
+	ActionCause     string       `json:"actionCause"`
+	AdvancedQuery   string       `json:"advancedQuery",omitempty`
+	NumberOfResults int          `json:"numberOfResults",omitempty`
+	Contextual      bool         `json:"contextual"`
+	ResponseTime    int          `json:"responseTime",omitempty`
+	QueryPipeline   string       `json:"queryPipeline",omitempty`
+	UserGroups      []string     `json:"userGroups,omitempty"`
+	Results         []ResultHash `json:"results",omitempty`
+}
+
+type ResultHash struct {
+	DocumentUri     string `json:"documentUri"`
+	DocumentUriHash string `json:"documentUriHash"`
 }
 
 type ClickEvent struct {
