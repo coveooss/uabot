@@ -4,16 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
-	"math/rand"
 )
 
-// Random IPs from http://services.ce3c.be/ciprg/
-var RANDOMIPS []string = []string{
-	"66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", // Canada
-	"198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25", // Canada
-	"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", // US
-	"72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8", // US
-}
 
 // Client is the basic element of the usage analytics service, it wraps a http
 // client. with the appropriate calls to the usage analytics service.
@@ -43,6 +35,8 @@ type Config struct {
 	Token string
 	// User agent is the http user agent sent to the service
 	UserAgent string
+	// IP is used if you want to specify an origin IP to the client
+	IP string
 }
 
 // NewClient return a capable Coveo Usage Analytics service client. It currently
@@ -53,6 +47,7 @@ func NewClient(c Config) (Client, error) {
 		endpoint:   "https://usageanalytics.coveo.com/rest/v14/analytics/",
 		httpClient: http.DefaultClient,
 		useragent:  c.UserAgent,
+		ip:         c.IP,
 	}, nil
 }
 
@@ -61,6 +56,7 @@ type client struct {
 	token      string
 	endpoint   string
 	useragent  string
+	ip         string
 	cookies    []*http.Cookie
 }
 
@@ -161,7 +157,9 @@ func (c *client) sendEventRequest(path string, event interface{}) error {
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accepts", "application/json")
 	req.Header.Set("User-Agent", c.useragent)
-	req.Header.Add("X-Forwarded-For", RANDOMIPS[rand.Intn(len(RANDOMIPS)-1)])
+	if c.ip != "" {
+		req.Header.Add("X-Forwarded-For", c.ip)
+	}
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
