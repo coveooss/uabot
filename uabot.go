@@ -11,8 +11,9 @@ import (
 	"time"
 	"strings"
 	"flag"
-	"os"
 	"encoding/json"
+	"net/http"
+	//"os"
 )
 
 const (
@@ -118,8 +119,17 @@ func sendSearchEvent(useCase *UseCase) error {
 	SEvent.OriginLevel1 = useCase.OriginLevel1
 	SEvent.OriginLevel2 = useCase.OriginLevel2
 	SEvent.NumberOfResults = useCase.LastResponse.TotalCount
+	SEvent.ResponseTime = useCase.LastResponse.Duration
 	SEvent.CustomData = map[string]interface{}{
 		"JSUIVersion" : JSUIVERSION,
+	}
+
+	if useCase.LastResponse.TotalCount > 0 {
+		if urihash, ok := useCase.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
+			SEvent.Results = []ua.ResultHash{
+				ua.ResultHash{DocumentUri:useCase.LastResponse.Results[0].URI, DocumentUriHash: urihash},
+			}
+		} else { return errors.New("Cannot convert sysurihash to string") }
 	}
 
 	error := useCase.Cua.SendSearchEvent(SEvent)
@@ -140,9 +150,18 @@ func sendInterfaceChangeEvent(useCase *UseCase) error {
 	ICEvent.OriginLevel1 = useCase.OriginLevel1
 	ICEvent.OriginLevel2 = useCase.OriginLevel2
 	ICEvent.NumberOfResults = useCase.LastResponse.TotalCount
+	ICEvent.ResponseTime = useCase.LastResponse.Duration
 	ICEvent.CustomData = map[string]interface{}{
 		"interfaceChangeTo" : useCase.OriginLevel2,
 		"JSUIVersion"       : JSUIVERSION,
+	}
+
+	if useCase.LastResponse.TotalCount > 0 {
+		if urihash, ok := useCase.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
+			ICEvent.Results = []ua.ResultHash{
+				ua.ResultHash{DocumentUri:useCase.LastResponse.Results[0].URI, DocumentUriHash: urihash},
+			}
+		} else { return errors.New("Cannot convert sysurihash to string") }
 	}
 
 	error := useCase.Cua.SendSearchEvent(ICEvent)
@@ -419,21 +438,16 @@ func InitUseCase(debug int) (*UseCase, error) {
 	return useCase, nil
 }
 
-func ParseScenariosFile() (map[int]*Scenario, error) {
+func ParseScenariosFile(url string) (map[int]*Scenario, error) {
 
-	scenariosFile, err := os.Open("Scenarios/NTOScenarios2.json")
+	//scenariosFile, err := os.Open("Scenarios/NTOScenarios2.json")
+	resp, err := http.Get(url)
 	if err != nil { return nil, err }
+	defer resp.Body.Close()
 
 	scenarios := &Scenarios{}
-	err = json.NewDecoder(scenariosFile).Decode(&scenarios)
+	err = json.NewDecoder(resp.Body).Decode(&scenarios)
 	if err != nil { return nil, err }
-
-	sToken := os.Getenv("SEARCHTOKEN")
-	uaToken := os.Getenv("UATOKEN")
-	if sToken == "" || uaToken == "" { return nil, errors.New("No search token or UA token") }
-
-	SearchToken = sToken
-	UAToken = uaToken
 
 	var scenarioMap map[int]*Scenario = map[int]*Scenario{}
 	//var test map[int]string = map[int]string{}
@@ -459,7 +473,19 @@ func main() {
 
 	rand.Seed(int64(time.Now().Unix()))
 
-	scenarioMap, err := ParseScenariosFile()
+	//sToken := os.Getenv("SEARCHTOKEN")
+	//uaToken := os.Getenv("UATOKEN")
+	sToken := "5b55191c-be5b-4023-ad5b-1c198aaa3f81"
+	uaToken := "5b55191c-be5b-4023-ad5b-1c198aaa3f81"
+	if sToken == "" || uaToken == "" { pp.Fatal("No search token or UA token") }
+
+	SearchToken = sToken
+	UAToken = uaToken
+
+	//scenarioUrl := os.Getenv("SCENARIOSURL")
+	scenarioUrl := "https://s3.amazonaws.com/static.coveodemo.com/uabot-scenarios/NTO/NTOScenarios2.json"
+
+	scenarioMap, err := ParseScenariosFile(scenarioUrl)
 	if err != nil { pp.Fatal(err) }
 
 	//for i := 0; i < NUMBEROFCASES; i++ {
