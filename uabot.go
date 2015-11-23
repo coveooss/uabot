@@ -20,13 +20,12 @@ const (
 	DEBUG              int    = 0
 	JSUIVERSION        string = "0.0.0.0;0.0.0.0"
 	USERAGENT          string = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
-	//USERAGENT          string = "IPTest"
 	//NUMBEROFCASES      int    = 100
 	TIMEBETWEENVISITS  int    = 30 // Between 0 and X Seconds
 	TIMEBETWEENACTIONS int    = 10 // Between 0 and X Seconds
 )
 
-var RANDOMEMAILS []string = []string{
+/*var RANDOMEMAILS []string = []string{
 	"@gmail.com", "@hotmail.com", "@apple.com", "@yahoo.com", "@facebook.com", "@hexzone.com", "@strongit.com", "@mec.com",
 	"@geoflex.com",
 }
@@ -56,16 +55,17 @@ var RDBADQUERIES []string = []string {
 	"travel tip",
 }
 
-// Random IPs from http://services.ce3c.be/ciprg/
 var RANDOMIPS []string = []string{
 	"66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", // Canada
 	"198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25", // Canada
 	"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", // US
 	"72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8", // US
-}
+}*/
 
 var SearchToken string = ""
 var UAToken     string = ""
+
+var ScenariosDef ScenariosDefinition = ScenariosDefinition{}
 
 type UseCase struct {
 	Cs           search.Client
@@ -78,8 +78,14 @@ type UseCase struct {
 	Debug        int
 }
 
-type Scenarios struct {
+type ScenariosDefinition struct {
 	OrgName     string      `json:"orgName"`
+	Emails      []string    `json:"emailSuffixes"`
+	FirstNames  []string    `json:"firstNames"`
+	LastNames   []string    `json:"lastNames"`
+	GoodQueries []string    `json:"randomGoodQueries"`
+	BadQueries  []string    `json:"randomBadQueries"`
+	RandomIPs   []string    `json:"randomIPs"`
 	Scenarios   []*Scenario `json:"scenarios"`
 }
 
@@ -103,7 +109,7 @@ func newUseCase() (*UseCase, error) {
 	}
 
 	// Create the UA client.
-	conf_ua := ua.Config{Token: UAToken, UserAgent: USERAGENT, IP: RANDOMIPS[rand.Intn(len(RANDOMIPS)-1)], }
+	conf_ua := ua.Config{Token: UAToken, UserAgent: USERAGENT, IP: ScenariosDef.RandomIPs[rand.Intn(len(ScenariosDef.RandomIPs)-1)], }
 	cua, err := ua.NewClient(conf_ua)
 	if err != nil {
 		return nil, err
@@ -257,8 +263,8 @@ func ntoSetupFirstQuery(useCase *UseCase) error {
 func NewSearchUseCase(useCase *UseCase, queryText string, goodQuery bool) error {
 
 	if queryText == "" {
-		if goodQuery { queryText = RDQUERIES[Min(int(math.Abs(rand.NormFloat64() * 5)), len(RDBADQUERIES)-1)] 
-		} else { queryText = RDBADQUERIES[rand.Intn(len(RDBADQUERIES)-1)] }
+		if goodQuery { queryText = ScenariosDef.GoodQueries[Min(int(math.Abs(rand.NormFloat64() * 8)), len(ScenariosDef.GoodQueries)-1)] 
+		} else { queryText = ScenariosDef.BadQueries[rand.Intn(len(ScenariosDef.BadQueries)-1)] }
 	}
 
 	useCase.LastQuery.Q = queryText
@@ -432,7 +438,7 @@ func InitUseCase(debug int) (*UseCase, error) {
 	useCase.Debug = debug
 
 	// Randomize a username
-	useCase.Username = fmt.Sprint(RANDOMFIRSTNAMES[rand.Intn(len(RANDOMFIRSTNAMES)-1)], ".", RANDOMLASTNAMES[rand.Intn(len(RANDOMLASTNAMES)-1)], RANDOMEMAILS[rand.Intn(len(RANDOMEMAILS)-1)])
+	useCase.Username = fmt.Sprint(ScenariosDef.FirstNames[rand.Intn(len(ScenariosDef.FirstNames)-1)], ".", ScenariosDef.LastNames[rand.Intn(len(ScenariosDef.LastNames)-1)], ScenariosDef.Emails[rand.Intn(len(ScenariosDef.Emails)-1)])
 
 	if useCase.Debug == 1 {
 		pp.Printf("\n===============================================")
@@ -453,20 +459,21 @@ func ParseScenariosFile(url string) (map[int]*Scenario, error) {
 	if err != nil { return nil, err }
 	defer resp.Body.Close()
 
-	scenarios := &Scenarios{}
-	err = json.NewDecoder(resp.Body).Decode(&scenarios)
+	scenariosDef := &ScenariosDefinition{}
+	err = json.NewDecoder(resp.Body).Decode(&scenariosDef)
 	if err != nil { return nil, err }
 
+	ScenariosDef = *scenariosDef
+
 	var scenarioMap map[int]*Scenario = map[int]*Scenario{}
-	//var test map[int]string = map[int]string{}
 
 	totalWeight := 0
 	iter := 0
-	for i := 0; i < len(scenarios.Scenarios); i++ {
-		weight := scenarios.Scenarios[i].Weight
+	for i := 0; i < len(scenariosDef.Scenarios); i++ {
+		weight := scenariosDef.Scenarios[i].Weight
 		totalWeight += weight
 		for j := 0; j < weight; j++ {
-			scenarioMap[iter] = scenarios.Scenarios[i]
+			scenarioMap[iter] = scenariosDef.Scenarios[i]
 			iter++
 		}
 	}
