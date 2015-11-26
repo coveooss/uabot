@@ -454,7 +454,6 @@ func InitUseCase(debug int) (*UseCase, error) {
 
 func ParseScenariosFile(url string) (map[int]*Scenario, error) {
 
-	//scenariosFile, err := os.Open("Scenarios/NTOScenarios2.json")
 	resp, err := http.Get(url)
 	if err != nil { return nil, err }
 	defer resp.Body.Close()
@@ -490,7 +489,7 @@ func main() {
 
 	sToken := os.Getenv("SEARCHTOKEN")
 	uaToken := os.Getenv("UATOKEN")
-	if sToken == "" || uaToken == "" { pp.Fatal("No search token or UA token") }
+	//if sToken == "" || uaToken == "" { pp.Fatal("No search token or UA token") }
 
 	SearchToken = sToken
 	UAToken = uaToken
@@ -506,9 +505,11 @@ func main() {
 		// New Visit
 		useCase, err := InitUseCase(*debug)
 		if err != nil { pp.Fatal(err) }
-
+			
+		randScen := 0
 		// Random Scenario
-		randScen := rand.Intn(len(scenarioMap)-1)
+		if len(scenarioMap) > 1  { randScen = rand.Intn(len(scenarioMap)-1) }
+
 		err = ExecuteScenario(scenarioMap[randScen], useCase)
 		if err != nil { pp.Fatal(err) }
 
