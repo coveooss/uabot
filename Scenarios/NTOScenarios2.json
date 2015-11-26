@@ -97,7 +97,7 @@
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "Tent Repair Basics", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.35 } } ]
 	}, {
 		"name"   : "QC(ripped cover, I just noticed ..., 50%) -> TC(YOUTUBE) -> QC(tear tent, How to repair a tear in your tent, 40%)",
-		"weight" : 30,
+		"weight" : 3,
 		"events" : [
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.5 } }, 
 			{ "type"      : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },

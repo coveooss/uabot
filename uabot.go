@@ -21,7 +21,7 @@ const (
 	JSUIVERSION        string = "0.0.0.0;0.0.0.0"
 	USERAGENT          string = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
 	//NUMBEROFCASES      int    = 100
-	TIMEBETWEENVISITS  int    = 30 // Between 0 and X Seconds
+	TIMEBETWEENVISITS  int    = 120 // Between 0 and X Seconds
 	TIMEBETWEENACTIONS int    = 10 // Between 0 and X Seconds
 )
 
@@ -355,7 +355,7 @@ func NewSearchAndClickUseCase(useCase *UseCase, queryText string, docClickTitle 
 			pp.Printf("!! Could not find document titled >>> %v in the results of the query\n", docClickTitle)
 		}
 	} else if useCase.Debug == 1 {
-		pp.Println(">> Click event removed because of probability")
+		pp.Println(">> User chose not to click")
 	}
 
 	return nil
@@ -489,18 +489,27 @@ func main() {
 
 	sToken := os.Getenv("SEARCHTOKEN")
 	uaToken := os.Getenv("UATOKEN")
-	//if sToken == "" || uaToken == "" { pp.Fatal("No search token or UA token") }
+	if sToken == "" || uaToken == "" { pp.Fatal("No search token or UA token") }
 
 	SearchToken = sToken
 	UAToken = uaToken
 
 	scenarioUrl := os.Getenv("SCENARIOSURL")
 
+	timeNow := time.Now()
+
 	scenarioMap, err := ParseScenariosFile(scenarioUrl)
 	if err != nil { pp.Fatal(err) }
 
 	//for i := 0; i < NUMBEROFCASES; i++ {
 	for { // Run forever
+
+		if time.Since(timeNow).Hours() > 5 {
+			pp.Println("Updating Scenario file")
+			scenarioMap, err = ParseScenariosFile(scenarioUrl)
+			if err != nil { pp.Fatal(err) }
+			timeNow = time.Now()
+		}
 
 		// New Visit
 		useCase, err := InitUseCase(*debug)
