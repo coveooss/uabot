@@ -506,8 +506,9 @@ func main() {
 
 		if time.Since(timeNow).Hours() > 5 {
 			pp.Println("Updating Scenario file")
-			scenarioMap, err = ParseScenariosFile(scenarioUrl)
-			if err != nil { pp.Fatal(err) }
+			scenarioMap2, err := ParseScenariosFile(scenarioUrl)
+			if err != nil { pp.Println("!! Cannot fetch new scenario file, keeping the old one.") 
+			} else { scenarioMap = scenarioMap2 }
 			timeNow = time.Now()
 		}
 
