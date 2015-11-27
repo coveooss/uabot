@@ -90,11 +90,11 @@
 		"events" : [
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.4 } } ]
 	}, {
-		"name"   : "QC(ripped cover, I just noticed ..., 50%) -> QC(Tent Repair Basics, How to repair a tear in your tent, 35%)",
+		"name"   : "QC(ripped cover, I just noticed ..., 50%) -> QC(Tent Repair Basics, NTO Tent Repair Basics booklet, 35%)",
 		"weight" : 1,
 		"events" : [
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.5 } }, 
-			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "Tent Repair Basics", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.35 } } ]
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "Tent Repair Basics", "docClickTitle" : "NTO Tent Repair Basics booklet", "probability" : 0.35 } } ]
 	}, {
 		"name"   : "QC(ripped cover, I just noticed ..., 50%) -> TC(YOUTUBE) -> QC(tear tent, How to repair a tear in your tent, 40%)",
 		"weight" : 3,

@@ -109,7 +109,7 @@ func newUseCase() (*UseCase, error) {
 	}
 
 	// Create the UA client.
-	conf_ua := ua.Config{Token: UAToken, UserAgent: USERAGENT, IP: ScenariosDef.RandomIPs[rand.Intn(len(ScenariosDef.RandomIPs)-1)], }
+	conf_ua := ua.Config{Token: UAToken, UserAgent: USERAGENT, IP: ScenariosDef.RandomIPs[rand.Intn(len(ScenariosDef.RandomIPs))], }
 	cua, err := ua.NewClient(conf_ua)
 	if err != nil {
 		return nil, err
@@ -263,8 +263,8 @@ func ntoSetupFirstQuery(useCase *UseCase) error {
 func NewSearchUseCase(useCase *UseCase, queryText string, goodQuery bool) error {
 
 	if queryText == "" {
-		if goodQuery { queryText = ScenariosDef.GoodQueries[Min(int(math.Abs(rand.NormFloat64() * 8)), len(ScenariosDef.GoodQueries)-1)] 
-		} else { queryText = ScenariosDef.BadQueries[rand.Intn(len(ScenariosDef.BadQueries)-1)] }
+		if goodQuery { queryText = ScenariosDef.GoodQueries[Min(int(math.Abs(rand.NormFloat64() * 8)), len(ScenariosDef.GoodQueries))] 
+		} else { queryText = ScenariosDef.BadQueries[rand.Intn(len(ScenariosDef.BadQueries))] }
 	}
 
 	useCase.LastQuery.Q = queryText
@@ -353,6 +353,7 @@ func NewSearchAndClickUseCase(useCase *UseCase, queryText string, docClickTitle 
 		} else {
 			//TO-DO Better error handling
 			pp.Printf("!! Could not find document titled >>> %v in the results of the query\n", docClickTitle)
+			pp.Printf("!! Query >> %v\n", useCase.LastQuery.Q)
 		}
 	} else if useCase.Debug == 1 {
 		pp.Println(">> User chose not to click")
@@ -438,7 +439,7 @@ func InitUseCase(debug int) (*UseCase, error) {
 	useCase.Debug = debug
 
 	// Randomize a username
-	useCase.Username = fmt.Sprint(ScenariosDef.FirstNames[rand.Intn(len(ScenariosDef.FirstNames)-1)], ".", ScenariosDef.LastNames[rand.Intn(len(ScenariosDef.LastNames)-1)], ScenariosDef.Emails[rand.Intn(len(ScenariosDef.Emails)-1)])
+	useCase.Username = fmt.Sprint(ScenariosDef.FirstNames[rand.Intn(len(ScenariosDef.FirstNames))], ".", ScenariosDef.LastNames[rand.Intn(len(ScenariosDef.LastNames))], ScenariosDef.Emails[rand.Intn(len(ScenariosDef.Emails))])
 
 	if useCase.Debug == 1 {
 		pp.Printf("\n===============================================")
@@ -482,7 +483,7 @@ func ParseScenariosFile(url string) (map[int]*Scenario, error) {
 
 func main() {
 
-	debug := flag.Int("debug", 1, "DEBUG MODE")
+	debug := flag.Int("debug", 0, "DEBUG MODE")
 	flag.Parse()
 
 	rand.Seed(int64(time.Now().Unix()))
@@ -501,6 +502,7 @@ func main() {
 	scenarioMap, err := ParseScenariosFile(scenarioUrl)
 	if err != nil { pp.Fatal(err) }
 
+	i:=0
 	//for i := 0; i < NUMBEROFCASES; i++ {
 	for { // Run forever
 
@@ -518,7 +520,7 @@ func main() {
 			
 		randScen := 0
 		// Random Scenario
-		if len(scenarioMap) > 1  { randScen = rand.Intn(len(scenarioMap)-1) }
+		if len(scenarioMap) > 1  { randScen = rand.Intn(len(scenarioMap)) }
 
 		err = ExecuteScenario(scenarioMap[randScen], useCase)
 		if err != nil { pp.Fatal(err) }
@@ -526,6 +528,9 @@ func main() {
 		// End visit
 		useCase.Cua.DeleteVisit()
 		time.Sleep(time.Duration(rand.Intn(TIMEBETWEENVISITS)) * time.Second)
+
+		i++
+		fmt.Printf("\r%d scenarios executed...", i)
 	}
 	pp.Println("DONE")
 }
