@@ -10,11 +10,10 @@ import (
 	"math"
 	"time"
 	"strings"
-	"flag"
 	"encoding/json"
 	"net/http"
 	"os"
-    "log"
+    "strconv"
 )
 
 const (
@@ -26,7 +25,6 @@ const (
 	TIMEBETWEENACTIONS int    = 10 // Between 0 and X Seconds
 )
 
-var Trace *log.Logger
 
 var SearchToken string = ""
 var UAToken     string = ""
@@ -355,8 +353,7 @@ func NewTabChangeUseCase(useCase *UseCase, tabName string, tabCQ string) error {
 }
 
 func ExecuteScenario(scenario *Scenario, useCase *UseCase) error {
-	if useCase.Debug == 1 { pp.Printf("\n>> Executing Scenario >>> %v\n", scenario.Name) }
-	Trace.Printf("\n>> Executing Scenario >>> %v\n", scenario.Name)
+	pp.Printf("\n>> Executing Scenario >>> %v\n", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		event := scenario.Events[i]
 
@@ -452,23 +449,23 @@ func ParseScenariosFile(url string) (map[int]*Scenario, error) {
 }
 
 func main() {
-	file, err := os.OpenFile("log.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil { pp.Fatal(err) }
-	Trace = log.New(file, "TRACE : ", log.Ldate|log.Ltime|log.Lshortfile)
-
-	debug := flag.Int("debug", 0, "DEBUG MODE")
-	flag.Parse()
-
 	rand.Seed(int64(time.Now().Unix()))
 
+	debugEnv := os.Getenv("DEBUG")
 	sToken := os.Getenv("SEARCHTOKEN")
 	uaToken := os.Getenv("UATOKEN")
 	if sToken == "" || uaToken == "" { pp.Fatal("No search token or UA token") }
+
+	debug := 0
+	if debugEnv!=""  {
+		debug,_ = strconv.Atoi(debugEnv)
+	}
 
 	SearchToken = sToken
 	UAToken = uaToken
 
 	scenarioUrl := os.Getenv("SCENARIOSURL")
+	if scenarioUrl == "" {pp.Fatal("No SCENARIOSURL file path provided")}
 
 	timeNow := time.Now()
 
@@ -488,7 +485,7 @@ func main() {
 		}
 
 		// New Visit
-		useCase, err := InitUseCase(*debug)
+		useCase, err := InitUseCase(debug)
 		if err != nil { pp.Fatal(err) }
 			
 		randScen := 0
