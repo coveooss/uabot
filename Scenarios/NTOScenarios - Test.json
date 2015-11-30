@@ -20,9 +20,9 @@
 		"events" : [
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.5 } }, 
 			{ "type"      : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
-			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "tear tent", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.4 } } ]
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "tear tent", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.6 } } ]
 	}, {
-		"name"   : "BQ(rivendale 801) -> QC(rivendale 800, 35%)",
+		"name"   : "RIVENDALE",
 		"weight" : 1,
 		"events" : [
 			{ "type"      : "Search", "arguments" : { "queryText" : "rivendale 801", "goodQuery" : false } }, 

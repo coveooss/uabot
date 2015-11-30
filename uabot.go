@@ -14,6 +14,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+    "log"
 )
 
 const (
@@ -25,42 +26,7 @@ const (
 	TIMEBETWEENACTIONS int    = 10 // Between 0 and X Seconds
 )
 
-/*var RANDOMEMAILS []string = []string{
-	"@gmail.com", "@hotmail.com", "@apple.com", "@yahoo.com", "@facebook.com", "@hexzone.com", "@strongit.com", "@mec.com",
-	"@geoflex.com",
-}
-
-var RANDOMFIRSTNAMES []string = []string{
-	"erin", "paul", "beverley", "pedro", "clayton", "lydia", "regina", "sue", "marjorie", "april", "victoria", "vera",
-	"shannon", "minnie", "reginald", "brandie",	"christian", "wallace", "avery", "dawn",
-}
-
-var RANDOMLASTNAMES []string = []string{
-	"lawson", "torres", "grant", "ray", "young", "caldwell", "morris", "craig",	"lewis", "brown", "rhodes", "james",
-	"wagner", "richards", "allen", "berry",	"boyd", "price", "price", "rivera",
-}
-
-var RDQUERIES []string = []string{
-	"tent", "bike helmet", "hiking", "race of hope", "hiking equipment", "backpack", "flat tires",
-	"runner pack", "hiking boots", "user manual", "bag", "camping gear", "trails outfitter",
-	"how to repair my tent", "rivendale 800", "kampa tent", "mec tent", "hiking tips",
-	"climbing shoe", "camping shelter", "darkstar", "running equipment", "tire pressure", "repair flat tire",
-	"tent assembly", "tour backpack", "best family tents", "yeti tundra", "portable usb charger",
-	"waterproof jacket", "saddles", "airbeam tent", "checkout",
-}
-
-var RDBADQUERIES []string = []string {
-	"rivendale 801", "kampa explorer 8", "stuck zip", "my zipper is broken", "tents", "camping", "travel", "bike",
-	"hike", "northern trail", "northern trail outfitters", "northern trails", "travel tips", "hiking and tent",
-	"travel tip",
-}
-
-var RANDOMIPS []string = []string{
-	"66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", // Canada
-	"198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25", // Canada
-	"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", // US
-	"72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8", // US
-}*/
+var Trace *log.Logger
 
 var SearchToken string = ""
 var UAToken     string = ""
@@ -76,6 +42,7 @@ type UseCase struct {
 	OriginLevel1 string
 	OriginLevel2 string
 	Debug        int
+	LastTab      string
 }
 
 type ScenariosDefinition struct {
@@ -233,10 +200,11 @@ func ntoSetupFirstQuery(useCase *UseCase) error {
 	// ==================================================
 	// Setup the first query to init the search interface
 	// ==================================================
-	gb1 := search.GroupByRequest{Field: "@syssource", MaximumNumberOfValues: 6, SortCriteria: "occurences", InjectionDepth: 1000}
-	gb2 := search.GroupByRequest{Field: "@coveochatterfeedtopics", MaximumNumberOfValues: 6, SortCriteria: "occurences", InjectionDepth: 1000}
-	gb3 := search.GroupByRequest{Field: "@sysyear", MaximumNumberOfValues: 6, SortCriteria: "occurences", InjectionDepth: 1000}
-	gbs := []*search.GroupByRequest{&gb1, &gb2, &gb3}
+	//gb1 := search.GroupByRequest{Field: "@syssource", MaximumNumberOfValues: 6, SortCriteria: "occurences", InjectionDepth: 1000}
+	//gb2 := search.GroupByRequest{Field: "@coveochatterfeedtopics", MaximumNumberOfValues: 6, SortCriteria: "occurences", InjectionDepth: 1000}
+	//gb3 := search.GroupByRequest{Field: "@sysyear", MaximumNumberOfValues: 6, SortCriteria: "occurences", InjectionDepth: 1000}
+	//gbs := []*search.GroupByRequest{&gb1, &gb2, &gb3}
+	gbs := []*search.GroupByRequest{}
 
 	q := search.Query{
 		Q:               "",
@@ -371,6 +339,7 @@ func NewTabChangeUseCase(useCase *UseCase, tabName string, tabCQ string) error {
 
 	useCase.LastQuery.CQ = tabCQ
 	useCase.OriginLevel2 = tabName
+	useCase.LastQuery.Tab = tabName
 
 	qResponse, err := useCase.Cs.Query(useCase.LastQuery)
 	if err != nil { return err }
@@ -387,6 +356,7 @@ func NewTabChangeUseCase(useCase *UseCase, tabName string, tabCQ string) error {
 
 func ExecuteScenario(scenario *Scenario, useCase *UseCase) error {
 	if useCase.Debug == 1 { pp.Printf("\n>> Executing Scenario >>> %v\n", scenario.Name) }
+	Trace.Printf("\n>> Executing Scenario >>> %v\n", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		event := scenario.Events[i]
 
@@ -482,6 +452,9 @@ func ParseScenariosFile(url string) (map[int]*Scenario, error) {
 }
 
 func main() {
+	file, err := os.OpenFile("log.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil { pp.Fatal(err) }
+	Trace = log.New(file, "TRACE : ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	debug := flag.Int("debug", 0, "DEBUG MODE")
 	flag.Parse()

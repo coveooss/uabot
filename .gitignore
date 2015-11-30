@@ -1,2 +1,3 @@
 # Ignore the built go programs
 *.exe
+log.txt
