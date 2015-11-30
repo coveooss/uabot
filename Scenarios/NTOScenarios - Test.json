@@ -15,14 +15,14 @@
 		"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", "72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8" ],
 	"scenarios"   : [
 	{
-		"name"   : "QC(ripped cover, I just noticed ..., 50%) -> TC(YOUTUBE) -> QC(tear tent, How to repair a tear in your tent, 40%)",
-		"weight" : 3,
+		"name"   : "YOUTUBE TAB CHANGE",
+		"weight" : 1,
 		"events" : [
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.5 } }, 
 			{ "type"      : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "tear tent", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.4 } } ]
 	}, {
-		"name"   : "BQ(rivendale 801) -> QC(rivenda 800, 35%)",
+		"name"   : "BQ(rivendale 801) -> QC(rivendale 800, 35%)",
 		"weight" : 1,
 		"events" : [
 			{ "type"      : "Search", "arguments" : { "queryText" : "rivendale 801", "goodQuery" : false } }, 
