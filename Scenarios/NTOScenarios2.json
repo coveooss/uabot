@@ -9,7 +9,7 @@
 		"bag", "camping gear", "trails outfitter", "how to repair my tent", "rivendale 800", "kampa tent", "mec tent", "hiking tips", "climbing shoe", "camping shelter", 
 		"darkstar", "running equipment", "tire pressure", "repair flat tire", "tent assembly", "tour backpack", "best family tents", "yeti tundra", "portable usb charger",
 		"waterproof jacket", "saddles", "airbeam tent", "checkout"],
-	"randomBadQueries" : ["rivendale 801", "kampa explorer 8", "stuck zip", "my zipper is broken", "tents", "camping", "travel", "bike", "hike", "northern trail", 
+	"randomBadQueries" : ["kampa explorer 8", "stuck zip", "my zipper is broken", "tents", "camping", "travel", "bike", "hike", "northern trail", 
 		"northern trail outfitters", "northern trails", "travel tips", "hiking and tent", "travel tip"],
 	"randomIPs" : ["66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", "198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25",
 		"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", "72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8" ],
