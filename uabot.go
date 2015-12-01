@@ -476,7 +476,7 @@ func main() {
 	//for i := 0; i < NUMBEROFCASES; i++ {
 	for { // Run forever
 
-		if time.Since(timeNow).Hours() > 5 {
+		if time.Since(timeNow).Hours() > 1 {
 			pp.Println("Updating Scenario file")
 			scenarioMap2, err := ParseScenariosFile(scenarioUrl)
 			if err != nil { pp.Println("!! Cannot fetch new scenario file, keeping the old one.") 
