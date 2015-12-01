@@ -176,7 +176,7 @@ func sendClickDocument(useCase *UseCase, docNo int) error {
 		CEvent.SourceName = source
 	} else { return errors.New("Cannot convert syssource to string") }
 
-	CEvent.DocumentPosition = docNo
+	CEvent.DocumentPosition = docNo+1
 	CEvent.ActionCause = "documentOpen"
 	CEvent.DocumentTitle = resp.Results[docNo].Title
 	CEvent.QueryPipeline = resp.Pipeline

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"fmt"
 )
 
 
@@ -160,12 +161,13 @@ func (c *client) sendEventRequest(path string, event interface{}) error {
 	if c.ip != "" {
 		req.Header.Add("X-Forwarded-For", c.ip)
 	}
-
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return err
 	}
 	defer resp.Body.Close()
+
+	fmt.Println(resp.StatusCode)
 
 	if c.cookies == nil {
 		cookies := resp.Cookies()
