@@ -1,6 +1,6 @@
 {
 	"orgName"     : "NTO",
-	"emailSuffixes" : ["@gmail.com", "@hotmail.com", "@apple.com", "@yahoo.com", "@facebook.com", "@hexzone.com", "@strongit.com", "@mec.com", "@geoflex.com"],
+	"emailSuffixes" : ["@coveo.com"],
 	"firstNames" : ["erin", "paul", "beverley", "pedro", "clayton", "lydia", "regina", "sue", "marjorie", "april", "victoria", "vera", "shannon", "minnie", "reginald", 
 		"brandie",	"christian", "wallace", "avery", "dawn"],
 	"lastNames" : ["lawson", "torres", "grant", "ray", "young", "caldwell", "morris", "craig",	"lewis", "brown", "rhodes", "james", "wagner", "richards", "allen", "berry",
