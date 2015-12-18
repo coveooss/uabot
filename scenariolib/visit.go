@@ -394,3 +394,22 @@ func (v *Visit) SetupNTO() {
 	v.OriginLevel1 = "communityCoveo"
 	v.OriginLevel2 = "ALL"
 }
+
+// SetupGeneral Function to instanciate with non-specific values
+func (v *Visit) SetupGeneral() {
+	gbs := []*search.GroupByRequest{}
+	q := &search.Query{
+		Q:               "",
+		CQ:              "",
+		AQ:              "",
+		NumberOfResults: 20,
+		FirstResult:     0,
+		Tab:             "All",
+		GroupByRequests: gbs,
+	}
+
+	v.LastQuery = q
+
+	v.OriginLevel1 = "ALL"
+	v.OriginLevel2 = "ALL"
+}
