@@ -80,5 +80,10 @@
 		"events" : [
 			{ "type"      : "Search", "arguments" : { "queryText" : "rivendale 801", "goodQuery" : false } }, 
 			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "rivendale 800", "docClickTitle" : "Vango Rivendale 800", "probability" : 0.55 } } ] 
+	}, {
+		"name"   : "QC(How to repair a tear in your tent, How to repair a tear in your tent, 45%)",
+		"weight" : 3,
+		"events" : [
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "How to repair a tear in your tent", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.45 } } ]
 	} ]
 }
