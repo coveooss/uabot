@@ -3,10 +3,9 @@ package analytics
 import (
 	"bytes"
 	"encoding/json"
-	"net/http"
 	"fmt"
+	"net/http"
 )
-
 
 // Client is the basic element of the usage analytics service, it wraps a http
 // client. with the appropriate calls to the usage analytics service.
@@ -29,6 +28,8 @@ type Client interface {
 	DeleteVisit() (bool, error)
 	GetCookies() ([]*http.Cookie, error)
 }
+
+var _ Client = &client{}
 
 // Config is the configuration of the usageanalytics client
 type Config struct {
@@ -84,13 +85,13 @@ func NewClickEvent() (*ClickEvent, error) {
 			OriginLevel1: "default",
 			OriginLevel2: "All",
 		},
-		DocumentUri: "",
-		DocumentUriHash: "",
-		SearchQueryUid: "",
-		CollectionName: "",
-		SourceName: "",
+		DocumentUri:      "",
+		DocumentUriHash:  "",
+		SearchQueryUid:   "",
+		CollectionName:   "",
+		SourceName:       "",
 		DocumentPosition: 0,
-		ActionCause: "documentOpen",
+		ActionCause:      "documentOpen",
 	}, nil
 }
 
