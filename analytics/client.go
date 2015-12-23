@@ -7,8 +7,11 @@ import (
 )
 
 const (
-	EndpointProduction  = "https://usageanalytics.coveo.com/rest/v14/analytics/"
-	EndpointStaging     = "https://usageanalyticsstaging.coveo.com/rest/v14/analytics/"
+	// EndpointProduction is the Analytics production endpoint
+	EndpointProduction = "https://usageanalytics.coveo.com/rest/v14/analytics/"
+	// EndpointStaging is the Analytics staging endpoint
+	EndpointStaging = "https://usageanalyticsstaging.coveo.com/rest/v14/analytics/"
+	// EndpointDevelopment is the Analytics development endpoint
 	EndpointDevelopment = "https://usageanalyticsdev.coveo.com/rest/v14/analytics/"
 )
 
@@ -70,6 +73,7 @@ type client struct {
 	cookies    []*http.Cookie
 }
 
+// NewSearchEvent creates a new SearchEvent which can then be altered
 func NewSearchEvent() (*SearchEvent, error) {
 	return &SearchEvent{
 		ActionEvent: &ActionEvent{
@@ -85,6 +89,7 @@ func NewSearchEvent() (*SearchEvent, error) {
 	}, nil
 }
 
+// NewClickEvent creates a new ClickEvent which can then be altered
 func NewClickEvent() (*ClickEvent, error) {
 	return &ClickEvent{
 		ActionEvent: &ActionEvent{
@@ -103,10 +108,19 @@ func NewClickEvent() (*ClickEvent, error) {
 	}, nil
 }
 
+// StatusResponse is the response to a Status service call
 type StatusResponse struct{}
+
+// SearchEventsResponse is the response to a SearchEvent call
 type SearchEventsResponse struct{}
+
+// ClickEventResponse is the response to a ClickEvent call
 type ClickEventResponse struct{}
+
+// CustomEventResponse is the response to a CustomEvent call
 type CustomEventResponse struct{}
+
+// VisitResponse is the response to a Visit call
 type VisitResponse struct{}
 
 func (c *client) GetCookies() ([]*http.Cookie, error) {
