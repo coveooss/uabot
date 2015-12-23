@@ -6,6 +6,11 @@ import (
 	"net/http"
 )
 
+const (
+	EndpointProduction  = "https://usageanalytics.coveo.com/rest/v14/analytics/"
+	EndpointStaging     = "https://usageanalyticsstaging.coveo.com/rest/v14/analytics/"
+	EndpointDevelopment = "https://usageanalyticsdev.coveo.com/rest/v14/analytics/"
+)
 
 // Client is the basic element of the usage analytics service, it wraps a http
 // client. with the appropriate calls to the usage analytics service.
@@ -37,14 +42,19 @@ type Config struct {
 	UserAgent string
 	// IP is used if you want to specify an origin IP to the client
 	IP string
+	// Endpoint is used if you want to use custom endpoints (dev,staging,testing)
+	Endpoint string
 }
 
 // NewClient return a capable Coveo Usage Analytics service client. It currently
 // uses V14 of the API.
 func NewClient(c Config) (Client, error) {
+	if len(c.Endpoint) == 0 {
+		c.Endpoint = EndpointProduction
+	}
 	return &client{
 		token:      c.Token,
-		endpoint:   "https://usageanalytics.coveo.com/rest/v14/analytics/",
+		endpoint:   c.Endpoint,
 		httpClient: http.DefaultClient,
 		useragent:  c.UserAgent,
 		ip:         c.IP,
@@ -83,13 +93,13 @@ func NewClickEvent() (*ClickEvent, error) {
 			OriginLevel1: "default",
 			OriginLevel2: "All",
 		},
-		DocumentUri: "",
-		DocumentUriHash: "",
-		SearchQueryUid: "",
-		CollectionName: "",
-		SourceName: "",
+		DocumentUri:      "",
+		DocumentUriHash:  "",
+		SearchQueryUid:   "",
+		CollectionName:   "",
+		SourceName:       "",
 		DocumentPosition: 0,
-		ActionCause: "documentOpen",
+		ActionCause:      "documentOpen",
 	}, nil
 }
 
