@@ -50,7 +50,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 	pp.Printf("\n\nLOG >>> New visit from %v", v.Username)
 
 	// Create the http searchClient
-	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent}
+	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
 	searchClient, err := search.NewClient(searchConfig)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 	v.SearchClient = searchClient
 
 	// Create the http UAClient
-	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: c.RandomIPs[rand.Intn(len(c.RandomIPs))]}
+	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: c.RandomIPs[rand.Intn(len(c.RandomIPs))], Endpoint: c.AnalyticsEndpoint}
 	uaClient, err := ua.NewClient(uaConfig)
 	if err != nil {
 		return nil, err

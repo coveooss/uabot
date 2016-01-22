@@ -43,6 +43,8 @@ func main() {
 	count := 0
 	for { // Run forever
 
+		// Refresh the scenario files every 5 hours automatically.
+		// This way, no need to stop the bot to update the possible scenarios.
 		if time.Since(timeNow).Hours() > 5 {
 			pp.Println("LOG >>> Updating Scenario file")
 			// Init from path instead of URL, for testing purposes

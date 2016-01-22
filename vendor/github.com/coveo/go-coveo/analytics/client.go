@@ -3,9 +3,11 @@ package analytics
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
+
+// DEFAULTENDPOINT The default endpoint to use for the queries
+const DEFAULTENDPOINT string = "https://usageanalytics.coveo.com/rest/v14/analytics/"
 
 // Client is the basic element of the usage analytics service, it wraps a http
 // client. with the appropriate calls to the usage analytics service.
@@ -39,14 +41,20 @@ type Config struct {
 	UserAgent string
 	// IP is used if you want to specify an origin IP to the client
 	IP string
+	// Enpoint to use for the queries
+	Endpoint string
 }
 
 // NewClient return a capable Coveo Usage Analytics service client. It currently
 // uses V14 of the API.
 func NewClient(c Config) (Client, error) {
+	endpoint := DEFAULTENDPOINT
+	if c.Endpoint != "" {
+		endpoint = c.Endpoint
+	}
 	return &client{
 		token:      c.Token,
-		endpoint:   "https://usageanalytics.coveo.com/rest/v14/analytics/",
+		endpoint:   endpoint,
 		httpClient: http.DefaultClient,
 		useragent:  c.UserAgent,
 		ip:         c.IP,
@@ -62,6 +70,7 @@ type client struct {
 	cookies    []*http.Cookie
 }
 
+// NewSearchEvent Generate a search event.
 func NewSearchEvent() (*SearchEvent, error) {
 	return &SearchEvent{
 		ActionEvent: &ActionEvent{
@@ -77,6 +86,7 @@ func NewSearchEvent() (*SearchEvent, error) {
 	}, nil
 }
 
+// NewClickEvent Generate a click event.
 func NewClickEvent() (*ClickEvent, error) {
 	return &ClickEvent{
 		ActionEvent: &ActionEvent{
@@ -167,8 +177,6 @@ func (c *client) sendEventRequest(path string, event interface{}) error {
 		return err
 	}
 	defer resp.Body.Close()
-
-	fmt.Println(resp.StatusCode)
 
 	if c.cookies == nil {
 		cookies := resp.Cookies()

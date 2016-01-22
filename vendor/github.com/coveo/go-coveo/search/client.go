@@ -6,6 +6,9 @@ import (
 	"net/http"
 )
 
+// DEFAULTENDPOINT The default endpoint to use for the queries
+const DEFAULTENDPOINT string = "https://cloudplatform.coveo.com/rest/search/"
+
 type Client interface {
 	Query(q Query) (*Response, error)
 }
@@ -13,12 +16,18 @@ type Client interface {
 type Config struct {
 	Token     string
 	UserAgent string
+	// Enpoint to use for the queries
+	Endpoint string
 }
 
 func NewClient(c Config) (Client, error) {
+	endpoint := DEFAULTENDPOINT
+	if c.Endpoint != "" {
+		endpoint = c.Endpoint
+	}
 	return &client{
 		token:      c.Token,
-		endpoint:   "https://cloudplatform.coveo.com/rest/search/",
+		endpoint:   endpoint,
 		httpClient: http.DefaultClient,
 		useragent:  c.UserAgent,
 	}, nil

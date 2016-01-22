@@ -23,15 +23,17 @@ var _scenariosMap = map[int]*Scenario{}
 // Scenarios   An array of scenarios that can happen.
 // ScenarioMap A map that will be built with the scenarios and their respective weights.
 type Config struct {
-	OrgName     string      `json:"orgName"`
-	Emails      []string    `json:"emailSuffixes"`
-	FirstNames  []string    `json:"firstNames"`
-	LastNames   []string    `json:"lastNames"`
-	GoodQueries []string    `json:"randomGoodQueries"`
-	BadQueries  []string    `json:"randomBadQueries"`
-	RandomIPs   []string    `json:"randomIPs"`
-	Scenarios   []*Scenario `json:"scenarios"`
-	ScenarioMap map[int]*Scenario
+	SearchEndpoint    string      `json:"searchendpoint"`
+	AnalyticsEndpoint string      `json:"analyticsendpoint"`
+	OrgName           string      `json:"orgName"`
+	Emails            []string    `json:"emailSuffixes"`
+	FirstNames        []string    `json:"firstNames"`
+	LastNames         []string    `json:"lastNames"`
+	GoodQueries       []string    `json:"randomGoodQueries"`
+	BadQueries        []string    `json:"randomBadQueries"`
+	RandomIPs         []string    `json:"randomIPs"`
+	Scenarios         []*Scenario `json:"scenarios"`
+	ScenarioMap       map[int]*Scenario
 }
 
 // RandomScenario Returns a random scenario from the list of possible scenarios.
