@@ -10,7 +10,7 @@ UATOKEN      => API key to send events to UA
 SCENARIOSURL => Url to the scenario JSON file to randomize
 
 GO15VENDOREXPERIMENT=1
-# To use the vendor folder for the lib for analytics/search api
+To use the vendor folder for the lib for analytics/search api
 
 ## On windows
 ```sh
