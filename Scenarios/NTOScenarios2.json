@@ -1,4 +1,6 @@
 {
+	"searchendpoint" : "https://cloudplatform.coveo.com/rest/search/",
+	"analyticsendpoint" : "https://usageanalytics.coveo.com/rest/v14/analytics/",
 	"orgName"     : "NTO",
 	"emailSuffixes" : ["@gmail.com", "@hotmail.com", "@apple.com", "@yahoo.com", "@facebook.com", "@hexzone.com", "@strongit.com", "@mec.com", "@geoflex.com"],
 	"firstNames" : ["erin", "paul", "beverley", "pedro", "clayton", "lydia", "regina", "sue", "marjorie", "april", "victoria", "vera", "shannon", "minnie", "reginald", 
