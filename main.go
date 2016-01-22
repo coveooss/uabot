@@ -13,7 +13,7 @@ const (
 	// USERAGENT This is the user agent the bot appears to be using.
 	USERAGENT string = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
 	// TIMEBETWEENVISITS The time for the bot to wait between visits, between 0 and X Seconds
-	TIMEBETWEENVISITS int = 1
+	TIMEBETWEENVISITS int = 120
 )
 
 func main() {
