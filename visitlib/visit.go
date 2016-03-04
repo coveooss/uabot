@@ -1,15 +1,15 @@
-package scenariolib
+package visitlib
 
 import (
 	"errors"
 	"fmt"
-	"math"
 	"math/rand"
 	"strings"
 	"time"
 
 	ua "github.com/coveo/go-coveo/analytics"
 	"github.com/coveo/go-coveo/search"
+	"github.com/erocheleau/uabot/scenariolib"
 	"github.com/k0kubun/pp"
 )
 
@@ -78,164 +78,176 @@ func (v *Visit) ExecuteRandomScenario(c *Config) error {
 
 	pp.Printf("\nLOG >>> Executing scenario named : %v", scenario.Name)
 
+	var event Event
 	for i := 0; i < len(scenario.Events); i++ {
-		event := scenario.Events[i]
-		switch event.Type {
+		jsonEvent := scenario.Events[i]
 
-		case "Search":
-			qText, ok1 := event.Arguments["queryText"].(string)
-			goodQuery, ok2 := event.Arguments["goodQuery"].(bool)
-			if !ok1 || !ok2 {
-				return errors.New("ERR >>> Invalid parse of arguments on Search Event")
-			}
-
-			if qText == "" {
-				qText, err = c.RandomQuery(goodQuery)
-				if err != nil {
-					return err
-				}
-			}
-
-			err := v.executeSearch(qText)
-			if err != nil {
-				return err
-			}
-
-		case "Click":
-			offset, ok1 := event.Arguments["offset"].(float64)
-			prob, ok2 := event.Arguments["probability"].(float64)
-			rank, ok3 := event.Arguments["docNo"].(float64)
-			if !ok1 || !ok2 || !ok3 {
-				return errors.New("ERR >>> Invalid parse of arguments on Click Event")
-			}
-			err := v.executeClick(int(rank), int(offset), prob)
-			if err != nil {
-				return err
-			}
-
-		case "SearchAndClick":
-			q, ok1 := event.Arguments["queryText"].(string)
-			docTitle, ok2 := event.Arguments["docClickTitle"].(string)
-			prob, ok3 := event.Arguments["probability"].(float64)
-			if !ok1 || !ok2 || !ok3 {
-				return errors.New("ERR >>> Invalid parse of arguments on SearchAndClick Event")
-			}
-
-			err := v.executeSearch(q)
-			if err != nil {
-				return err
-			}
-
-			if v.LastResponse.TotalCount < 1 {
-				return errors.New("ERR >>> Last query returned no results")
-			}
-
-			waitBetweenActions()
-
-			if rand.Float64() <= prob {
-				rank := v.findDocumentRankByTitle(docTitle)
-				if rank >= 0 {
-					pp.Printf("\nLOG >>> Sending Click Event => Found Document Rank: %v", rank+1)
-					err := v.executeClick(rank, 0, 1)
-					if err != nil {
-						return err
-					}
-				} else {
-					return errors.New("ERR >>> Could not find the specific document you are looking for")
-				}
-			} else {
-				pp.Printf("\nLOG >>> User chose not to click with a probability of %v %%", int(prob*100))
-			}
-
-		case "TabChange":
-			name, ok1 := event.Arguments["tabName"].(string)
-			cq, ok2 := event.Arguments["tabCQ"].(string)
-			if !ok1 || !ok2 {
-				return errors.New("ERR >>> Invalid parse of arguments on TabChange Event")
-			}
-			err := v.executeTabChange(name, cq)
-			if err != nil {
-				return err
-			}
+		event, err := scenariolib.ParseEvent(&jsonEvent, c)
+		if err != nil {
+			return err
 		}
+
+		err = event.Execute(v)
+		if err != nil {
+			return err
+		}
+
 		waitBetweenActions()
 	}
 	return nil
 }
 
+// parseSearchEvent parse a search event to execute a single search
+// func (v *Visit) parseSearchEvent(event *Event, c *Config) error {
+// 	var err error
+// 	query, ok1 := event.Arguments["queryText"].(string)
+// 	goodQuery, ok2 := event.Arguments["goodQuery"].(bool)
+// 	if !ok1 || !ok2 {
+// 		return errors.New("ERR >>> Invalid parse of arguments on Search Event")
+// 	}
+//
+// 	if query == "" {
+// 		query, err = c.RandomQuery(goodQuery)
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+//
+// 	err = v.executeSearch(query)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
 func (v *Visit) executeSearch(q string) error {
-	pp.Printf("\nLOG >>> Searching for : %v", q)
-	v.LastQuery.Q = q
+	// pp.Printf("\nLOG >>> Searching for : %v", q)
+	// v.LastQuery.Q = q
+	//
+	// // Execute a search and save the response
+	// resp, err := v.SearchClient.Query(*v.LastQuery)
+	// if err != nil {
+	// 	return err
+	// }
+	// v.LastResponse = resp
+	//
+	// err = v.sendSearchEvent(q)
+	// if err != nil {
+	// 	return err
+	// }
+	return nil
+}
 
-	// Execute a search and save the response
-	resp, err := v.SearchClient.Query(*v.LastQuery)
-	if err != nil {
-		return err
-	}
-	v.LastResponse = resp
-
-	err = v.sendSearchEvent(q)
-	if err != nil {
-		return err
-	}
+// parseClickEvent parse a click event to execute a single click
+func (v *Visit) parseClickEvent(event *Event, c *Config) error {
+	// 	offset, ok1 := event.Arguments["offset"].(float64)
+	// 	prob, ok2 := event.Arguments["probability"].(float64)
+	// 	rank, ok3 := event.Arguments["docNo"].(float64)
+	// 	if !ok1 || !ok2 || !ok3 {
+	// 		return errors.New("ERR >>> Invalid parse of arguments on Click Event")
+	// 	}
+	// 	err := v.executeClick(int(rank), int(offset), prob)
+	// 	if err != nil {
+	// 		return err
+	// 	}
 	return nil
 }
 
 func (v *Visit) executeClick(rank int, offset int, prob float64) error {
-	if v.LastResponse.TotalCount < 1 {
-		pp.Printf("WARN >>> Last query : %v returned no results, cannot click", v.LastQuery.Q)
-		return nil
-	}
+	// 	if v.LastResponse.TotalCount < 1 {
+	// 		pp.Printf("WARN >>> Last query : %v returned no results, cannot click", v.LastQuery.Q)
+	// 		return nil
+	// 	}
+	//
+	// 	if prob < 0 || prob > 1 {
+	// 		return errors.New("ERR >>> Probability is out of bounds [0..1]")
+	// 	}
+	//
+	// 	if rank == -1 {
+	// 		rank = 0
+	// 		if v.LastResponse.TotalCount > 1 {
+	// 			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
+	// 			rndRank := int(math.Abs(rand.NormFloat64()*2)) + offset
+	// 			rank = Min(rndRank, topL-1)
+	// 		}
+	// 	}
+	//
+	// 	if rand.Float64() <= prob {
+	// 		if rank > v.LastResponse.TotalCount {
+	// 			return fmt.Errorf("\nERR >>> Click Rank out of bounds : %v > %v", rank, v.LastResponse.TotalCount)
+	// 		}
+	//
+	// 		pp.Printf("\nLOG >>> Sending Click Event : Rank -> %v", rank+1)
+	//
+	// 		err := v.sendClickEvent(rank)
+	// 		if err != nil {
+	// 			return err
+	// 		}
+	// 		return nil
+	// 	}
+	//
+	// 	pp.Printf("\nLOG >>> User chose not to click with a probability of : %v %%", int(prob*100))
+	return nil
+}
 
-	if prob < 0 || prob > 1 {
-		return errors.New("ERR >>> Probability is out of bounds [0..1]")
-	}
+// parseSearchAndClickEvent parse a searchAndClick event to execute a search
+// followed by a click on a specific document
+func (v *Visit) parseSearchAndClickEvent(event *Event, c *Config) error {
+	var err error
+	// query, ok1 := event.Arguments["queryText"].(string)
+	// docTitle, ok2 := event.Arguments["docClickTitle"].(string)
+	// prob, ok3 := event.Arguments["probability"].(float64)
+	// if !ok1 || !ok2 || !ok3 {
+	// 	return errors.New("ERR >>> Invalid parse of arguments on SearchAndClick Event")
+	// }
+	//
+	// err = v.executeSearch(query)
+	// if err != nil {
+	// 	return err
+	// }
 
-	if rank == -1 {
-		rank = 0
-		if v.LastResponse.TotalCount > 1 {
-			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
-			rndRank := int(math.Abs(rand.NormFloat64()*2)) + offset
-			rank = Min(rndRank, topL-1)
-		}
-	}
+	// if v.LastResponse.TotalCount < 1 {
+	// 	return errors.New("ERR >>> Last query returned no results")
+	// }
+	//
+	// // Wait a random span of time before clicking on anything to simulate a user reading
+	// waitBetweenActions()
 
 	if rand.Float64() <= prob {
-		if rank > v.LastResponse.TotalCount {
-			return fmt.Errorf("\nERR >>> Click Rank out of bounds : %v > %v", rank, v.LastResponse.TotalCount)
+		rank := v.findDocumentRankByTitle(docTitle)
+		if rank >= 0 {
+			pp.Printf("\nLOG >>> Sending Click Event => Found Document Rank: %v", rank+1)
+			err := v.executeClick(rank, 0, 1)
+			if err != nil {
+				return err
+			}
+		} else {
+			return errors.New("ERR >>> Could not find the specific document you are looking for")
 		}
-
-		pp.Printf("\nLOG >>> Sending Click Event : Rank -> %v", rank+1)
-
-		err := v.sendClickEvent(rank)
-		if err != nil {
-			return err
-		}
-		return nil
+	} else {
+		pp.Printf("\nLOG >>> User chose not to click with a probability of %v %%", int(prob*100))
 	}
-
-	pp.Printf("\nLOG >>> User chose not to click with a probability of : %v %%", int(prob*100))
 	return nil
 }
 
 func (v *Visit) executeTabChange(name string, cq string) error {
-	pp.Printf("\nLOG >>> Changing tab to %v with CQ : %v", name, cq)
-
-	v.LastQuery.CQ = cq
-	v.OriginLevel2 = name
-	v.LastQuery.Tab = name
-
-	resp, err := v.SearchClient.Query(*v.LastQuery)
-	if err != nil {
-		return err
-	}
-	v.LastResponse = resp
-
-	pp.Printf("\nLOG >>> Sending Tab Change Event : %v", name)
-	err = v.sendInterfaceChangeEvent()
-	if err != nil {
-		return err
-	}
+	// pp.Printf("\nLOG >>> Changing tab to %v with CQ : %v", name, cq)
+	//
+	// v.LastQuery.CQ = cq
+	// v.OriginLevel2 = name
+	// v.LastQuery.Tab = name
+	//
+	// resp, err := v.SearchClient.Query(*v.LastQuery)
+	// if err != nil {
+	// 	return err
+	// }
+	// v.LastResponse = resp
+	//
+	// pp.Printf("\nLOG >>> Sending Tab Change Event : %v", name)
+	// err = v.sendInterfaceChangeEvent()
+	// if err != nil {
+	// 	return err
+	// }
 	return nil
 }
 
@@ -353,7 +365,9 @@ func (v *Visit) sendInterfaceChangeEvent() error {
 	return nil
 }
 
-func (v *Visit) findDocumentRankByTitle(toFind string) int {
+// FindDocumentRankByTitle Looks through the last response to a query to find a document
+// rank by his title
+func (v *Visit) FindDocumentRankByTitle(toFind string) int {
 	for i := 0; i < len(v.LastResponse.Results); i++ {
 		if strings.Contains(strings.ToLower(v.LastResponse.Results[i].Title), strings.ToLower(toFind)) {
 			return i
@@ -362,8 +376,8 @@ func (v *Visit) findDocumentRankByTitle(toFind string) int {
 	return -1
 }
 
-// Wait a random number of seconds between user actions
-func waitBetweenActions() {
+// WaitBetweenActions Wait a random number of seconds between user actions
+func WaitBetweenActions() {
 	time.Sleep(time.Duration(rand.Intn(TIMEBETWEENACTIONS)+3) * time.Second)
 }
 
