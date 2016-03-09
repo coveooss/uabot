@@ -67,6 +67,8 @@ func main() {
 
 		// Setup specific stuff for NTO
 		visit.SetupNTO()
+		// Use this line instead outside of NTO
+		//visit.SetupGeneral()
 
 		err = visit.ExecuteRandomScenario(conf)
 		if err != nil {

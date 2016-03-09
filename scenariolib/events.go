@@ -1,3 +1,5 @@
+// Package scenariolib handles everything need to execute a scenario and send all
+// information to the usage analytics endpoint
 package scenariolib
 
 import (
