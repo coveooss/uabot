@@ -103,7 +103,7 @@ func (v *Visit) sendSearchEvent(q string) error {
 	}
 
 	se.Username = v.Username
-	se.SearchQueryUid = v.LastResponse.SearchUID
+	se.SearchQueryUID = v.LastResponse.SearchUID
 	se.QueryText = q
 	se.AdvancedQuery = v.LastQuery.AQ
 	se.ActionCause = "searchboxSubmit"
@@ -118,7 +118,7 @@ func (v *Visit) sendSearchEvent(q string) error {
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
 			se.Results = []ua.ResultHash{
-				ua.ResultHash{DocumentUri: v.LastResponse.Results[0].URI, DocumentUriHash: urihash},
+				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
 			return errors.New("ERR >>> Cannot convert sysurihash to string in search event")
@@ -139,18 +139,18 @@ func (v *Visit) sendClickEvent(rank int) error {
 		return err
 	}
 
-	event.DocumentUri = v.LastResponse.Results[rank].URI
-	event.SearchQueryUid = v.LastResponse.SearchUID
+	event.DocumentURI = v.LastResponse.Results[rank].URI
+	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.DocumentPosition = rank + 1
 	event.ActionCause = "documentOpen"
 	event.DocumentTitle = v.LastResponse.Results[rank].Title
 	event.QueryPipeline = v.LastResponse.Pipeline
-	event.DocumentUrl = v.LastResponse.Results[rank].ClickUri
+	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
 	event.Username = v.Username
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
 	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
-		event.DocumentUriHash = urihash
+		event.DocumentURIHash = urihash
 	} else {
 		return errors.New("ERR >>> Cannot convert sysurihash to string")
 	}
@@ -179,7 +179,7 @@ func (v *Visit) sendInterfaceChangeEvent() error {
 	}
 
 	ice.Username = v.Username
-	ice.SearchQueryUid = v.LastResponse.SearchUID
+	ice.SearchQueryUID = v.LastResponse.SearchUID
 	ice.QueryText = v.LastQuery.Q
 	ice.AdvancedQuery = v.LastQuery.AQ
 	ice.ActionCause = "interfaceChange"
@@ -195,7 +195,7 @@ func (v *Visit) sendInterfaceChangeEvent() error {
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
 			ice.Results = []ua.ResultHash{
-				ua.ResultHash{DocumentUri: v.LastResponse.Results[0].URI, DocumentUriHash: urihash},
+				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
 			return errors.New("ERR >>> Cannot convert sysurihash to string in interfaceChange event")
