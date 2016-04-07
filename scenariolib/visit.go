@@ -133,6 +133,28 @@ func (v *Visit) sendSearchEvent(q string) error {
 	return nil
 }
 
+func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
+	pp.Printf("\nLOG >>> Sending Custom Event type=%v && value=%v", eventType, eventValue)
+	ce, err := ua.NewCustomEvent()
+	if err != nil {
+		return err
+	}
+
+	ce.Username = v.Username
+	//ce.LastSearchQueryUID = v.LastResponse.SearchUID
+	//ce.EventType = eventType
+	//ce.EventValue = eventValue
+	ce.OriginLevel1 = v.OriginLevel1
+	ce.OriginLevel2 = v.OriginLevel2
+	ce.CustomData = map[string]interface{}{
+		"JSUIVersion": JSUIVERSION,
+	}
+
+	// Send a UA search event
+	err = v.UAClient.SendCustomEvent(ce)
+	return err
+}
+
 func (v *Visit) sendClickEvent(rank int) error {
 	event, err := ua.NewClickEvent()
 	if err != nil {

@@ -30,7 +30,7 @@ type Client interface {
 	// SendClickEvent sends a click to the analytics service, as the
 	// response is not important it only returns an error
 	SendClickEvent(*ClickEvent) error
-	SendCustomEvent(CustomEvent) error
+	SendCustomEvent(*CustomEvent) error
 	GetVisit() (*VisitResponse, error)
 	GetStatus() (*StatusResponse, error)
 	DeleteVisit() (bool, error)
@@ -157,7 +157,7 @@ func (c *client) SendClickEvent(event *ClickEvent) error {
 }
 
 // SendCustomEvent Send a request to usage analytics to create a new custom event.
-func (c *client) SendCustomEvent(event CustomEvent) error {
+func (c *client) SendCustomEvent(event *CustomEvent) error {
 	err := c.sendEventRequest("custom/", event)
 	return err
 }
