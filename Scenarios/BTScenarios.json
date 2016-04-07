@@ -1,0 +1,77 @@
+{
+	"searchendpoint" : "https://cloudplatform.coveo.com/rest/search/",
+	"analyticsendpoint" : "https://usageanalytics.coveo.com/rest/v14/analytics/",
+	"orgName"     : "Besttech",
+	"emailSuffixes" : ["@gmail.com", "@hotmail.com", "@apple.com", "@yahoo.com", "@facebook.com", "@hexzone.com", "@strongit.com"],
+	"firstNames" : ["erin", "paul", "beverley", "pedro", "clayton", "lydia", "regina", "sue", "marjorie", "april", "victoria", "vera", "shannon", "minnie", "reginald", "brandie",	"christian", "wallace", "avery", "dawn"],
+	"lastNames" : ["lawson", "torres", "grant", "ray", "young", "caldwell", "morris", "craig",	"lewis", "brown", "rhodes", "james", "wagner", "richards", "allen", "berry", "boyd", "price", "price", "rivera"],
+	"randomIPs" : ["66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", "198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25", "52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", "72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8" ],
+	"randomGoodQueries" : ["hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access", "picture quality", "tv is not working", 
+							"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV", 
+							"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual", 
+							"usb to hdmi", "ipad hdmi", "dvi hdmi cable", "primus hdtv", "tv audio hts", "coaxial to hdmi cable", "hdmi splitter", "sound bar", "connect laptop to hdtv", 
+							"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter", 
+							"playstation 4", "HDMI port on Lenovo LAPTOP", "how to hook up a laptop to a tv without hdmi", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", 
+							"sound and picture out of sync"],
+	"randomBadQueries" : ["hmdi", "no picture on BX620 tv", "neftlix", "blank BX620", "no pickture", "BX620 user guide"],
+	"scenarios" : [ 
+	{ "name"   : "GQ -> C(40%)",
+		"weight" : 5,
+		"events" : [
+			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } } 
+		] }, 
+	{ "name"   : "GQ -> C(20%) -> GQ -> C(40%)",
+		"weight" : 4,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } } 
+		] }, 
+	{ "name"   : "GQ -> C(20%) -> GQ -> C(30%) -> GQ -> C(40%)",
+		"weight" : 3,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.2 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.3 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+		] }, 
+	{ "name"   : "GQ -> C(20%) -> GQ -> C(30%) -> GQ -> C(40%) -> GQ -> C(50%)",
+		"weight" : 2,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 3,  "probability" : 0.3 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+		] }, 
+	{ "name"   : "GQ -> C(40%) -> GQ -> C(30%) -> GQ -> C(20%) -> GQ -> C(50%) -> GQ -> C(50%)",
+		"weight" : 1,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.3 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
+		] } 
+	{ "name"   : "BQ -> C(+10,20%) -> GQ -> C(40%)",
+		"weight" : 4,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 10,  "probability" : 0.4 } } 
+		] }
+	]
+}
