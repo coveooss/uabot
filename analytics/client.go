@@ -108,6 +108,21 @@ func NewClickEvent() (*ClickEvent, error) {
 	}, nil
 }
 
+// NewCustomEvent creates a new SearchEvent which can then be altered
+func NewCustomEvent() (*CustomEvent, error) {
+	return &CustomEvent{
+		ActionEvent: &ActionEvent{
+			Language:     "en",
+			Device:       "Bot",
+			OriginLevel1: "default",
+			OriginLevel2: "All",
+		},
+		EventType:          "",
+		EventValue:         "",
+		LastSearchQueryUID: "",
+	}, nil
+}
+
 // StatusResponse is the response to a Status service call
 type StatusResponse struct{}
 
@@ -141,8 +156,10 @@ func (c *client) SendClickEvent(event *ClickEvent) error {
 	return err
 }
 
+// SendCustomEvent Send a request to usage analytics to create a new custom event.
 func (c *client) SendCustomEvent(event CustomEvent) error {
-	return nil
+	err := c.sendEventRequest("custom/", event)
+	return err
 }
 
 func (c *client) GetVisit() (*VisitResponse, error) {
