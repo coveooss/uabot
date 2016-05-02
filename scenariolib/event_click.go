@@ -1,4 +1,4 @@
-// Package scenariolib handles everything need to execute a scenario and send all
+// Package scenariolib handles everything needed to execute a scenario and send all
 // information to the usage analytics endpoint
 package scenariolib
 

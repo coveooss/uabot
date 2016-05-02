@@ -18,8 +18,8 @@
 	{ "name"   : "GQ -> C(40%)",
 		"weight" : 5,
 		"events" : [
-			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } } 
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
 		] }, 
 	{ "name"   : "GQ -> C(20%) -> GQ -> C(40%)",
 		"weight" : 4,
@@ -27,7 +27,7 @@
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } } 
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } }
 		] }, 
 	{ "name"   : "GQ -> C(20%) -> GQ -> C(30%) -> GQ -> C(40%)",
 		"weight" : 3,
@@ -71,7 +71,7 @@
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
 			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 10,  "probability" : 0.4 } } 
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 10,  "probability" : 0.4 } }
 		] }
 	]
 }
