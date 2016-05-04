@@ -20,6 +20,14 @@ set SCENARIOSURL = value
 set GO15VENDOREXPERIMENT=1
 go run main.go
 ```
+## On MAC 
+```sh
+export SEARCHTOKEN = value
+export UATOKEN = value
+export SCENARIOSURL = value
+export GO15VENDOREXPERIMENT=1
+main
+```
 
 ## To trigger a Docker rebuild, push with `latest`tag
 ```sh
