@@ -1,6 +1,6 @@
 {
   "searchendpoint" : "https://cloudplatform.coveo.com/rest/search/",
-	"analyticsendpoint" : "https://usageanalytics.coveo.com/rest/v15/analytics/",
+	"analyticsendpoint" : "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
 	"orgName"     : "SEARCH.COVEO.COM",
 	"emailSuffixes" : ["@coveo.com"],
 	"firstNames" : ["erin"],
