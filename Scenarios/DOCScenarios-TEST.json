@@ -1,0 +1,19 @@
+{
+	"orgName"     : "SEARCH.COVEO.COM",
+	"emailSuffixes" : ["@coveo.com"],
+	"firstNames" : ["erin", "paul", "beverley", "pedro", "clayton", "lydia", "regina", "sue", "marjorie", "april", "victoria", "vera", "shannon", "minnie", "reginald",
+		"brandie",	"christian", "wallace", "avery", "dawn"],
+	"lastNames" : ["lawson", "torres", "grant", "ray", "young", "caldwell", "morris", "craig",	"lewis", "brown", "rhodes", "james", "wagner", "richards", "allen", "berry",
+		"boyd", "price", "price", "rivera"],
+	"randomGoodQueries": ["events"],
+	"randomBadQueries" : ["hierarchical facets"],
+	"randomIPs" : ["66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", "198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25",
+		"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", "72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8" ],
+	"scenarios"   : [
+	{
+		"name"   : "PAGEVIEW",
+		"weight" : 1,
+		"events" : [
+			{ "type"      : "View", "arguments" : { "pageuri" : "https://s3.amazonaws.com/static.coveodemo.com/nto-productmanuals/Coleman+10+Tent+User+Manual.pdf", "pagereferrer" : "https://ntodemo-developer-edition.na22.force.com/s/search/All/Home/tent", "pagetitle" : "Coleman 10 Tent User Manual" } }]
+	}]
+}
