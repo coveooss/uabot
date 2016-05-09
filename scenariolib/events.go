@@ -36,6 +36,13 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 			return nil, err
 		}
 		return event, nil
+
+	case "View":
+		event, err := newViewEvent(e)
+		if err != nil {
+			return nil, err
+		}
+		return event, nil
 	}
 	return nil, errors.New("ERR >>> Event type not supported")
 }

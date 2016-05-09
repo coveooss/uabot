@@ -3,16 +3,18 @@ package analytics
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
 const (
 	// EndpointProduction is the Analytics production endpoint
-	EndpointProduction = "https://usageanalytics.coveo.com/rest/v14/analytics/"
+	EndpointProduction = "https://usageanalytics.coveo.com/rest/v15/analytics/"
 	// EndpointStaging is the Analytics staging endpoint
-	EndpointStaging = "https://usageanalyticsstaging.coveo.com/rest/v14/analytics/"
+	EndpointStaging = "https://usageanalyticsstaging.coveo.com/rest/v15/analytics/"
 	// EndpointDevelopment is the Analytics development endpoint
-	EndpointDevelopment = "https://usageanalyticsdev.coveo.com/rest/v14/analytics/"
+	EndpointDevelopment = "https://usageanalyticsdev.coveo.com/rest/v15/analytics/"
 )
 
 // Client is the basic element of the usage analytics service, it wraps a http
@@ -31,6 +33,7 @@ type Client interface {
 	// response is not important it only returns an error
 	SendClickEvent(*ClickEvent) error
 	SendCustomEvent(*CustomEvent) error
+	SendViewEvent(*ViewEvent) error
 	GetVisit() (*VisitResponse, error)
 	GetStatus() (*StatusResponse, error)
 	DeleteVisit() (bool, error)
@@ -123,6 +126,20 @@ func NewCustomEvent() (*CustomEvent, error) {
 	}, nil
 }
 
+func NewViewEvent() *ViewEvent {
+	return &ViewEvent{
+		ActionEvent: &ActionEvent{
+			Language:     "en",
+			Device:       "Bot",
+			OriginLevel1: "default",
+			OriginLevel2: "All",
+		},
+		PageURI:      "",
+		PageReferrer: "",
+		PageTitle:    "",
+	}
+}
+
 // StatusResponse is the response to a Status service call
 type StatusResponse struct{}
 
@@ -159,6 +176,11 @@ func (c *client) SendClickEvent(event *ClickEvent) error {
 // SendCustomEvent Send a request to usage analytics to create a new custom event.
 func (c *client) SendCustomEvent(event *CustomEvent) error {
 	err := c.sendEventRequest("custom/", event)
+	return err
+}
+
+func (c *client) SendViewEvent(event *ViewEvent) error {
+	err := c.sendEventRequest("view/", event)
 	return err
 }
 
@@ -207,6 +229,12 @@ func (c *client) sendEventRequest(path string, event interface{}) error {
 		return err
 	}
 	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("\nRequest response error (%d): %s\n", resp.StatusCode, string(body))
+	}
 
 	if c.cookies == nil {
 		cookies := resp.Cookies()

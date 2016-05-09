@@ -5,6 +5,7 @@ type ActionEvent struct {
 	Device              string                 `json:"device"`
 	OriginLevel1        string                 `json:"originLevel1"`
 	OriginLevel2        string                 `json:"originLevel2"`
+	OriginLevel3        string                 `json:"originLevel3,omitempty"`
 	UserAgent           string                 `json:"userAgent,omitempty"`
 	CustomData          map[string]interface{} `json:"customData,omitempty"`
 	Anonymous           bool                   `json:"anonymous,omitempty"`
@@ -13,7 +14,6 @@ type ActionEvent struct {
 	Mobile              bool                   `json:"mobile,omitempty"`
 	SplitTestRunName    string                 `json:"splitTestRunName,omitempty"`
 	SplitTestRunVersion string                 `json:"splitTestRunVersion,omitempty"`
-	OriginLevel3        string                 `json:"originLevel3,omitempty"`
 }
 
 type SearchEvent struct {
@@ -55,4 +55,11 @@ type CustomEvent struct {
 	EventType          string `json:"eventType"`
 	EventValue         string `json:"eventValue"`
 	LastSearchQueryUID string `json:"lastSearchQueryUid,omitempty"`
+}
+
+type ViewEvent struct {
+	*ActionEvent
+	PageURI      string `json:"location"`
+	PageReferrer string `json:"referrer"`
+	PageTitle    string `json:"title"`
 }
