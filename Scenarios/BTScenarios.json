@@ -5,21 +5,26 @@
 	"emailSuffixes" : ["@gmail.com", "@hotmail.com", "@apple.com", "@yahoo.com", "@facebook.com", "@hexzone.com", "@strongit.com"],
 	"firstNames" : ["erin", "paul", "beverley", "pedro", "clayton", "lydia", "regina", "sue", "marjorie", "april", "victoria", "vera", "shannon", "minnie", "reginald", "brandie",	"christian", "wallace", "avery", "dawn"],
 	"lastNames" : ["lawson", "torres", "grant", "ray", "young", "caldwell", "morris", "craig",	"lewis", "brown", "rhodes", "james", "wagner", "richards", "allen", "berry", "boyd", "price", "price", "rivera"],
-	"randomIPs" : ["66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", "198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25", "52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", "72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8" ],
-	"randomGoodQueries" : ["hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access", "picture quality", "tv is not working", 
+	"randomIPs" : ["66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", "198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25", "52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", "72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8", "91.150.94.114", "184.135.114.57", "115.84.192.169", "94.83.225.54", "235.9.93.223", "127.136.171.154", "192.153.154.96", "82.204.109.172", "100.203.32.29", "83.146.86.198", "230.24.113.69", "106.83.123.87"],
+	"RandomsUsers" : ["Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36", "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3; rv:11.0) like Gecko", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/601.5.17 (KHTML, like Gecko) Version/9.1 Safari/601.5.17",
+						"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.3; WOW64; Trident/7.0; Microsoft Outlook 15.0.4805; Microsoft Outlook 15.0.4805)", "Mozilla/5.0 (iPhone; CPU iPhone OS 8_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12F70 Safari/600.1.4", "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13E233 Safari/601.1", "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13E238", "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13E238 Safari/601.1", 
+						"Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1", "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36", "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13E238 Safari/601.1",  "Mozilla/5.0 (iPhone; CPU iPhone OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4"],
+	"randomGoodQueries" : ["hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access",	"picture quality", "tv is not working", 
 							"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV", 
 							"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual", 
 							"usb to hdmi", "ipad hdmi", "dvi hdmi cable", "primus hdtv", "tv audio hts", "coaxial to hdmi cable", "hdmi splitter", "sound bar", "connect laptop to hdtv", 
 							"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter", 
-							"playstation 4", "HDMI port on Lenovo LAPTOP", "how to hook up a laptop to a tv without hdmi", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", 
-							"sound and picture out of sync"],
-	"randomBadQueries" : ["hmdi", "no picture on BX620 tv", "neftlix", "blank BX620", "no pickture", "BX620 user guide"],
+							"what is 4k", "whats 4k", "tv 4k",
+							"playstation 4", "HDMI port on Lenovo LAPTOP", "how to hook up a laptop to a tv without hdmi", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", "wifi bravia", "wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync", "convert coaxial cable to hdmi"],
+	"randomBadQueries" : ["no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM"],
+	"randomTabname" : ["articles", "sharepoint", "lithium", "knowledge", "confluence", "youtube"],
+	"randomDevice" : ["chrome", "IE", "Firefox", "Safari", "Other"],
 	"scenarios" : [ 
 	{ "name"   : "GQ -> C(40%)",
 		"weight" : 5,
 		"events" : [
-			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } } 
 		] }, 
 	{ "name"   : "GQ -> C(20%) -> GQ -> C(40%)",
 		"weight" : 4,
@@ -27,7 +32,7 @@
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } }
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } } 
 		] }, 
 	{ "name"   : "GQ -> C(20%) -> GQ -> C(30%) -> GQ -> C(40%)",
 		"weight" : 3,
@@ -39,6 +44,17 @@
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
 		] }, 
+	{ "name"   : "Mobile GQ -> C(20%) -> GQ -> C(30%) -> GQ -> C(40%)",
+		"weight" : 3,
+		"useragent" : "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.2 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.3 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+		] },	
 	{ "name"   : "GQ -> C(20%) -> GQ -> C(30%) -> GQ -> C(40%) -> GQ -> C(50%)",
 		"weight" : 2,
 		"events" : [
@@ -64,14 +80,117 @@
 			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
-		] } 
-	{ "name"   : "BQ -> C(+10,20%) -> GQ -> C(40%)",
+		] },
+
+	{ "name"   : "Mobile GQ -> C(40%) -> GQ -> C(30%) -> GQ -> C(20%) -> GQ -> C(50%) -> GQ -> C(50%)",
+		"weight" : 2,
+		"useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.3 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
+		] }, 	
+	{ "name"   : "BQ -> C(20%) -> GQ -> C(40%)",
 		"weight" : 4,
 		"events" : [
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
 			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } },
 			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 10,  "probability" : 0.4 } }
-		] }
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 10,  "probability" : 0.4 } } 
+		] },
+	{ "name"   : "Reveal scenario",
+		"weight" : 3,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "install hdmi-QAM", "goodQuery" : false } },
+			{ "type" : "SearchAndClick", "arguments" : { "queryText" : "convert coaxial cable to hdmi", "docClickTitle" : "How to Convert Coaxial Cable to HDMI", "goodQuery" : false } }
+		] },	
+	{ "name"   : "GQ with tabchange to youtube-> GQ -> C(40%)",
+		"weight" : 2,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },			
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.3 } } 
+		] },
+	{ "name"   : "Mobile GQ with tabchange to youtube-> GQ -> C(40%)",
+		"weight" : 3,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },			
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.3 } } 
+		] },
+	{ "name"   : "GQ with tabchange to lithium> GQ -> C(40%)",
+		"weight" : 2,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "TabChange", "arguments" : { "tabName" : "lithium", "tabCQ" : "@sysfiletype==\"lithiummessage\"" } },			
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.2 } }
+		] },
+	{ "name"   : "GQ with tabchange to SharePoint> GQ -> C(40%)",
+		"weight" : 2,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "TabChange", "arguments" : { "tabName" : "SharePoint", "tabCQ" : "@sysfiletype==\"SharePoint\"" } },			
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.2 } }
+		] },
+	{ "name"   : "GQ with tabchange to Article> GQ -> C(40%)",
+		"weight" : 2,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "TabChange", "arguments" : { "tabName" : "KB", "tabCQ" : "@sysfiletype==\"@sfkbid\"" } },			
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.2 } }
+		] },
+	{ "name"   : "GQ with tabchange to Knowledge> GQ -> C(40%)",
+		"weight" : 2,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "TabChange", "arguments" : { "tabName" : "Knowledge", "tabCQ" : "@sysfiletype==\"Oracle Knowledge\"" } },			
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.2 } }
+		] },
+	{ "name"   : "GQ with facetchange to Type (message)> GQ -> C(40%)",
+		"weight" : 1,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "FacetSelect", "arguments" : { "facetId" : "objecttype", "facetValue": "Message", "facetTitle": "Type", "facetField": "@objecttype", "facetAQ" : "@syssource==(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\" \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\"" } },					
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.1 } }
+		] },
+	{ "name"   : "GQ with facetchange to Repository (Youtube)> GQ -> C(40%)",
+		"weight" : 3,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "FacetSelect", "arguments" : { "facetId" : "@beautifulrepositorytype", "facetValue": "Youtube", "facetTitle": "Repository", "facetField": "@objecttype", "facetAQ" : "@syssource==\"YouTube - Bestbuy\", \"YouTube - Sony\"" } },					
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.35 } }
+		] },
+	{ "name"   : "GQ with facetchange to Repository (Sharepoint)> GQ -> C(40%)",
+		"weight" : 1,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "FacetSelect", "arguments" : { "facetId" : "@beautifulrepositorytype", "facetValue": "Sharepoint", "facetTitle": "Repository", "facetField": "@objecttype", "facetAQ" : "@syssource==\"SharePoint Online - Bombardier\"" } },					
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } }
+		] },
+	{ "name"   : "GQ with facetchange to Year (2016)> GQ -> C(40%)",
+		"weight" : 1,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+			{ "type" : "FacetSelect", "arguments" : { "facetId" : "@sysyear", "facetValue": "2016", "facetTitle": "Year", "facetField": "@objecttype", "facetAQ" : "@syssource==(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\" \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\"" } },					
+			{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.2 } }
+		] }				
 	]
 }
+
+
+
+
+
+
+
+
+
+
+
