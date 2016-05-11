@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+
+	"github.com/erocheleau/uabot/defaults"
 )
 
 var _scenariosMap = map[int]*Scenario{}
@@ -23,17 +25,19 @@ var _scenariosMap = map[int]*Scenario{}
 // Scenarios   An array of scenarios that can happen.
 // ScenarioMap A map that will be built with the scenarios and their respective weights.
 type Config struct {
-	SearchEndpoint    string      `json:"searchendpoint"`
-	AnalyticsEndpoint string      `json:"analyticsendpoint"`
+	ScenarioMap       map[int]*Scenario
 	OrgName           string      `json:"orgName"`
-	Emails            []string    `json:"emailSuffixes"`
-	FirstNames        []string    `json:"firstNames"`
-	LastNames         []string    `json:"lastNames"`
 	GoodQueries       []string    `json:"randomGoodQueries"`
 	BadQueries        []string    `json:"randomBadQueries"`
-	RandomIPs         []string    `json:"randomIPs"`
 	Scenarios         []*Scenario `json:"scenarios"`
-	ScenarioMap       map[int]*Scenario
+	SearchEndpoint    string      `json:"searchendpoint,omitempty"`
+	AnalyticsEndpoint string      `json:"analyticsendpoint,omitempty"`
+	Emails            []string    `json:"emailSuffixes,omitempty"`
+	FirstNames        []string    `json:"firstNames,omitempty"`
+	LastNames         []string    `json:"lastNames,omitempty"`
+	RandomIPs         []string    `json:"randomIPs,omitempty"`
+	UserAgents        []string    `json:"useragents,omitempty"`
+	MobileUserAgents  []string    `json:"mobileuseragents, omitempty"`
 }
 
 // RandomScenario Returns a random scenario from the list of possible scenarios.
@@ -60,6 +64,26 @@ func (c *Config) RandomQuery(good bool) (string, error) {
 	return c.BadQueries[rand.Intn(len(c.BadQueries))], nil
 }
 
+// RandomUserAgent returns a random user agent string to send with an event
+func (c *Config) RandomUserAgent(mobile bool) (string, error) {
+	if mobile && (len(c.MobileUserAgents) > 0) {
+		return c.MobileUserAgents[rand.Intn(len(c.MobileUserAgents))], nil
+	} else if len(c.UserAgents) > 0 || len(c.MobileUserAgents) > 0 {
+		agents := append(c.UserAgents, c.MobileUserAgents...)
+		return agents[rand.Intn(len(agents))], nil
+	}
+	return "", errors.New("Cannot find any user agents")
+}
+
+// RandomIP returns a random IP to send with an event
+func (c *Config) RandomIP() (string, error) {
+	if len(c.RandomIPs) < 1 {
+		return "", errors.New("Cannot find any random IP")
+	}
+
+	return c.RandomIPs[rand.Intn(len(c.RandomIPs))], nil
+}
+
 // NewConfigFromPath Create a new config from a JSON config file path
 //
 // jsonPath The path to the JSON file.
@@ -69,11 +93,15 @@ func NewConfigFromPath(jsonPath string) (*Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Error reading JSON file : %v", err)
 	}
+
 	c := &Config{}
 	err = json.Unmarshal(file, c)
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing JSON : %v", err)
 	}
+
+	fillDefaults(c)
+
 	err = c.makeScenarioMap()
 	if err != nil {
 		return nil, fmt.Errorf("Error making scenario map : %v", err)
@@ -91,16 +119,20 @@ func NewConfigFromURL(jsonURL string) (*Config, error) {
 		return nil, errors.New("Cannot read JSON config file")
 	}
 	defer resp.Body.Close()
-	c := Config{}
-	err = json.NewDecoder(resp.Body).Decode(&c)
+
+	c := &Config{}
+	err = json.NewDecoder(resp.Body).Decode(c)
 	if err != nil {
 		return nil, errors.New("Cannot decode JSON file")
 	}
+
+	fillDefaults(c)
+
 	err = c.makeScenarioMap()
 	if err != nil {
 		return nil, errors.New("Cannot make the scenario map")
 	}
-	return &c, nil
+	return c, nil
 }
 
 // makeScenarioMap Private function to create the map of scenarios
@@ -119,4 +151,38 @@ func (c *Config) makeScenarioMap() error {
 	}
 	c.ScenarioMap = scenarioMap
 	return nil
+}
+
+func fillDefaults(c *Config) {
+	if len(c.FirstNames) == 0 {
+		c.FirstNames = defaults.FIRSTNAMES
+	}
+
+	if len(c.LastNames) == 0 {
+		c.LastNames = defaults.LASTNAMES
+	}
+
+	if len(c.Emails) == 0 {
+		c.Emails = defaults.EMAILS
+	}
+
+	if len(c.RandomIPs) == 0 {
+		c.RandomIPs = defaults.IPS
+	}
+
+	if len(c.UserAgents) == 0 {
+		c.UserAgents = defaults.USERAGENTS
+	}
+
+	if len(c.MobileUserAgents) == 0 {
+		c.MobileUserAgents = defaults.MOBILEUSERAGENTS
+	}
+
+	if c.SearchEndpoint == "" {
+		c.SearchEndpoint = defaults.SEARCHENDPOINT_PROD
+	}
+
+	if c.AnalyticsEndpoint == "" {
+		c.AnalyticsEndpoint = defaults.ANALYTICSENDPOINT_PROD
+	}
 }

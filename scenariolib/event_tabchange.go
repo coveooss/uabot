@@ -46,22 +46,9 @@ func (tc *TabChangeEvent) Execute(v *Visit) error {
 	v.LastResponse = resp
 
 	pp.Printf("\nLOG >>> Sending Tab Change Event : %v", tc.name)
-	err = v.sendInterfaceChangeEvent()
+	err = v.sendInterfaceChangeEvent("interfaceChange", "", map[string]interface{}{"interfaceChangeTo": v.OriginLevel2})
 	if err != nil {
 		return err
 	}
-	return nil
-}
-
-func (tc *TabChangeEvent) parseTabChangeEvent(e *JSONEvent) error {
-	name, ok1 := e.Arguments["tabName"].(string)
-	cq, ok2 := e.Arguments["tabCQ"].(string)
-	if !ok1 || !ok2 {
-		return errors.New("ERR >>> Invalid parse of arguments on TabChange Event")
-	}
-
-	tc.name = name
-	tc.cq = cq
-
 	return nil
 }

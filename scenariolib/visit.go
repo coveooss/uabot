@@ -45,8 +45,9 @@ const (
 // _useragent   The user agent the analytics events will see
 func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config) (*Visit, error) {
 	v := Visit{}
-	v.Username = fmt.Sprint(c.FirstNames[rand.Intn(len(c.FirstNames))], ".", c.LastNames[rand.Intn(len(c.LastNames))], c.Emails[rand.Intn(len(c.Emails))])
-	pp.Printf("\n\nLOG >>> New visit from %v", v.Username)
+	v.Username = buildUserEmail(c)
+	pp.Printf("\n\nLOG >>> New visit from %v\n", v.Username)
+	pp.Printf("LOG >>> On device %v\n", _useragent)
 
 	// Create the http searchClient
 	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
@@ -67,19 +68,16 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 	return &v, nil
 }
 
-// ExecuteRandomScenario Method to select randomly a scenario from the possible scenarios and execute it.
-// c *Config 	Need the config to have access to the possible random queries and available scenarios
-func (v *Visit) ExecuteRandomScenario(c *Config) error {
-	scenario, err := c.RandomScenario()
-	if err != nil {
-		return err
-	}
+func buildUserEmail(c *Config) string {
+	return fmt.Sprint(c.FirstNames[rand.Intn(len(c.FirstNames))], ".", c.LastNames[rand.Intn(len(c.LastNames))], c.Emails[rand.Intn(len(c.Emails))])
+}
 
+// ExecuteScenario Execute a specific scenario, send the config for all the
+// potential random we need to do.
+func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	pp.Printf("\nLOG >>> Executing scenario named : %v", scenario.Name)
-
 	for i := 0; i < len(scenario.Events); i++ {
 		jsonEvent := scenario.Events[i]
-
 		event, err := ParseEvent(&jsonEvent, c)
 		if err != nil {
 			return err
@@ -133,6 +131,27 @@ func (v *Visit) sendSearchEvent(q string) error {
 	return nil
 }
 
+func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
+	pp.Printf("\nLOG >>> Sending PageView Event on URI: %v\n", pageURI)
+
+	ve := ua.NewViewEvent()
+
+	ve.Username = v.Username
+	ve.OriginLevel1 = v.OriginLevel1
+	ve.OriginLevel2 = v.OriginLevel2
+	ve.Anonymous = false
+	ve.PageReferrer = pageReferrer
+	ve.PageTitle = pageTitle
+	ve.PageURI = pageURI
+	ve.CustomData = map[string]interface{}{
+		"JSUIVersion": JSUIVERSION,
+	}
+
+	// Send a UA search event
+	err := v.UAClient.SendViewEvent(ve)
+	return err
+}
+
 func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
 	pp.Printf("\nLOG >>> Sending Custom Event type=%v && value=%v", eventType, eventValue)
 	ce, err := ua.NewCustomEvent()
@@ -155,7 +174,7 @@ func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
 	return err
 }
 
-func (v *Visit) sendClickEvent(rank int) error {
+func (v *Visit) SendClickEvent(rank int, quickview bool) error {
 	event, err := ua.NewClickEvent()
 	if err != nil {
 		return err
@@ -164,7 +183,13 @@ func (v *Visit) sendClickEvent(rank int) error {
 	event.DocumentURI = v.LastResponse.Results[rank].URI
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.DocumentPosition = rank + 1
-	event.ActionCause = "documentOpen"
+	if quickview {
+		event.ActionCause = "documentQuickview"
+		event.ViewMethod = "documentQuickview"
+	} else {
+		event.ActionCause = "documentOpen"
+	}
+
 	event.DocumentTitle = v.LastResponse.Results[rank].Title
 	event.QueryPipeline = v.LastResponse.Pipeline
 	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
@@ -194,7 +219,7 @@ func (v *Visit) sendClickEvent(rank int) error {
 	return nil
 }
 
-func (v *Visit) sendInterfaceChangeEvent() error {
+func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customData map[string]interface{}) error {
 	ice, err := ua.NewSearchEvent()
 	if err != nil {
 		return err
@@ -204,15 +229,18 @@ func (v *Visit) sendInterfaceChangeEvent() error {
 	ice.SearchQueryUID = v.LastResponse.SearchUID
 	ice.QueryText = v.LastQuery.Q
 	ice.AdvancedQuery = v.LastQuery.AQ
-	ice.ActionCause = "interfaceChange"
+	//ice.ActionCause = "interfaceChange"
+	ice.ActionCause = actionCause
+	ice.ActionType = actionType
 	ice.OriginLevel1 = v.OriginLevel1
 	ice.OriginLevel2 = v.OriginLevel2
 	ice.NumberOfResults = v.LastResponse.TotalCount
 	ice.ResponseTime = v.LastResponse.Duration
-	ice.CustomData = map[string]interface{}{
+	ice.CustomData = customData
+	/*ice.CustomData = map[string]interface{}{
 		"interfaceChangeTo": v.OriginLevel2,
 		"JSUIVersion":       JSUIVERSION,
-	}
+	}*/
 
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
