@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
+
 # uabot
 Bot to generate data to UA
 
