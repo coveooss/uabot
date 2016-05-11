@@ -15,23 +15,32 @@ import (
 // SearchAndClickEvent represents a search event followed by a click on a specific
 // document found by the title
 type SearchAndClickEvent struct {
-	query    string
-	docTitle string
-	prob     float64
+	query     string
+	docTitle  string
+	prob      float64
+	quickview bool
 }
 
 func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
+	var quickview, ok4 bool
 	query, ok1 := e.Arguments["queryText"].(string)
 	docTitle, ok2 := e.Arguments["docClickTitle"].(string)
 	prob, ok3 := e.Arguments["probability"].(float64)
-	if !ok1 || !ok2 || !ok3 {
+	if e.Arguments["quickview"] == nil {
+		quickview = false
+		ok4 = true
+	} else {
+		quickview, ok4 = e.Arguments["quickview"].(bool)
+	}
+	if !ok1 || !ok2 || !ok3 || !ok4 {
 		return nil, errors.New("ERR >>> Invalid parse of arguments on SearchAndClick Event")
 	}
 
 	return &SearchAndClickEvent{
-		query:    query,
-		docTitle: docTitle,
-		prob:     prob,
+		query:     query,
+		docTitle:  docTitle,
+		prob:      prob,
+		quickview: quickview,
 	}, nil
 }
 
@@ -60,6 +69,8 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 			ce.clickRank = rank
 			ce.offset = 0
 			ce.probability = 1
+
+			ce.quickview = sc.quickview
 
 			ce.Execute(v)
 			if err != nil {

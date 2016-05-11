@@ -64,6 +64,7 @@ func (c *Config) RandomQuery(good bool) (string, error) {
 	return c.BadQueries[rand.Intn(len(c.BadQueries))], nil
 }
 
+// RandomUserAgent returns a random user agent string to send with an event
 func (c *Config) RandomUserAgent(mobile bool) (string, error) {
 	if mobile && (len(c.MobileUserAgents) > 0) {
 		return c.MobileUserAgents[rand.Intn(len(c.MobileUserAgents))], nil
@@ -74,6 +75,7 @@ func (c *Config) RandomUserAgent(mobile bool) (string, error) {
 	return "", errors.New("Cannot find any user agents")
 }
 
+// RandomIP returns a random IP to send with an event
 func (c *Config) RandomIP() (string, error) {
 	if len(c.RandomIPs) < 1 {
 		return "", errors.New("Cannot find any random IP")

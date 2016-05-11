@@ -19,13 +19,22 @@ type ClickEvent struct {
 	clickRank   int
 	offset      int
 	probability float64
+	quickview   bool
 }
 
 func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
+	var ok4, quickview bool
 	offset, ok1 := e.Arguments["offset"].(float64)
 	prob, ok2 := e.Arguments["probability"].(float64)
 	rank, ok3 := e.Arguments["docNo"].(float64)
-	if !ok1 || !ok2 || !ok3 {
+	if e.Arguments["quickview"] == nil {
+		quickview = false
+		ok4 = true
+	} else {
+		quickview, ok4 = e.Arguments["quickview"].(bool)
+	}
+
+	if !ok1 || !ok2 || !ok3 || !ok4 {
 		return nil, errors.New("ERR >>> Invalid parse of arguments on Click Event")
 	}
 
@@ -37,6 +46,7 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 		clickRank:   int(rank),
 		offset:      int(offset),
 		probability: prob,
+		quickview:   quickview,
 	}, nil
 }
 
@@ -62,9 +72,9 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 			return errors.New("ERR >>> Click index out of bounds")
 		}
 
-		pp.Printf("\nLOG >>> Sending Click Event : Rank -> %v", ce.clickRank+1)
+		pp.Printf("\nLOG >>> Sending Click Event : Rank -> %v (quickview: %v)", ce.clickRank+1, ce.quickview)
 
-		err := v.sendClickEvent(ce.clickRank)
+		err := v.SendClickEvent(ce.clickRank, ce.quickview)
 		if err != nil {
 			return err
 		}

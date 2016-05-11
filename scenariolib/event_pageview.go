@@ -5,7 +5,7 @@ import "errors"
 // ============== VIEW EVENT ======================
 // ==================================================
 
-// SearchEvent a struct representing a search, is defined by a query to execute
+// ViewEvent a struct representing a search, is defined by a query to execute
 type ViewEvent struct {
 	pageURI      string
 	pageReferrer string

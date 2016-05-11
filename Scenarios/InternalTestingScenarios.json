@@ -3,12 +3,9 @@
   "randomGoodQueries": ["events"],
   "randomBadQueries" : ["hierarchical facets"],
   "scenarios"   : [
-    { "name"   : "GQ -> C(40%)",
+    { "name"   : "Facet",
 		"weight" : 5,
 		"events" : [
-			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 1 , "quickview": true} },
-			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 1 } } 
-		] }
+			{ "type"      : "FacetChange", "arguments" : { "title" : "Coveo Sites", "value" : "Confluence - Developers", "field": "@syssource" } }	] }
   ]
 }
