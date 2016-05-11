@@ -35,7 +35,7 @@ func newTabChangeEvent(e *JSONEvent) (*TabChangeEvent, error) {
 func (tc *TabChangeEvent) Execute(v *Visit) error {
 	pp.Printf("\nLOG >>> Changing tab to %v with CQ : %v", tc.name, tc.cq)
 
-	v.LastQuery.CQ = tc.cq
+	v.LastQuery.CQ = v.LastQuery.CQ + " " + tc.cq
 	v.OriginLevel2 = tc.name
 	v.LastQuery.Tab = tc.name
 

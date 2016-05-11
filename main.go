@@ -111,6 +111,7 @@ func main() {
 		//visit.SetupNTO()
 		// Use this line instead outside of NTO
 		visit.SetupGeneral()
+		visit.LastQuery.CQ = conf.GlobalFilter
 
 		err = visit.ExecuteScenario(*scenario, conf)
 		if err != nil {
