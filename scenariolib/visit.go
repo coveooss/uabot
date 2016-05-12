@@ -30,6 +30,7 @@ type Visit struct {
 	OriginLevel1 string
 	OriginLevel2 string
 	LastTab      string
+	Config       *Config
 }
 
 const (
@@ -64,6 +65,8 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 		return nil, err
 	}
 	v.UAClient = uaClient
+
+	v.Config = c
 
 	return &v, nil
 }
@@ -297,6 +300,12 @@ func (v *Visit) SetupNTO() {
 		GroupByRequests: gbs,
 	}
 
+	if v.Config.PartialMatch {
+		q.PartialMatch = v.Config.PartialMatch
+		q.PartialMatchKeywords = v.Config.PartialMatchKeywords
+		q.PartialMatchThreshold = v.Config.PartialMatchThreshold
+	}
+
 	v.LastQuery = q
 
 	v.OriginLevel1 = "communityCoveo"
@@ -314,6 +323,12 @@ func (v *Visit) SetupGeneral() {
 		FirstResult:     0,
 		Tab:             "All",
 		GroupByRequests: gbs,
+	}
+
+	if v.Config.PartialMatch {
+		q.PartialMatch = v.Config.PartialMatch
+		q.PartialMatchKeywords = v.Config.PartialMatchKeywords
+		q.PartialMatchThreshold = v.Config.PartialMatchThreshold
 	}
 
 	v.LastQuery = q
