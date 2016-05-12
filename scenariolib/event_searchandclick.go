@@ -33,7 +33,7 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 		quickview, ok4 = e.Arguments["quickview"].(bool)
 	}
 	if !ok1 || !ok2 || !ok3 || !ok4 {
-		return nil, errors.New("ERR >>> Invalid parse of arguments on SearchAndClick Event")
+		return nil, errors.New("Invalid parse of arguments on SearchAndClick Event")
 	}
 
 	return &SearchAndClickEvent{
@@ -55,7 +55,7 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	}
 
 	if v.LastResponse.TotalCount < 1 {
-		return errors.New("ERR >>> Last query returned no results")
+		return errors.New("Last query returned no results")
 	}
 
 	WaitBetweenActions()
@@ -77,7 +77,7 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 				return err
 			}
 		} else {
-			return errors.New("ERR >>> Could not find the specific document you are looking for")
+			return errors.New("Could not find the specific document you are looking for")
 		}
 	} else {
 		pp.Printf("\nLOG >>> User chose not to click with a probability of : %v %%", int(sc.prob*100))

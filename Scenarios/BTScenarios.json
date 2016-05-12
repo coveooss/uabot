@@ -8,8 +8,8 @@
 		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual",
 		"usb to hdmi", "ipad hdmi", "dvi hdmi cable", "primus hdtv", "tv audio hts", "coaxial to hdmi cable", "hdmi splitter", "sound bar", "connect laptop to hdtv",
 		"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter",
-		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "how to hook up a laptop to a tv without hdmi", "receiver without HDMI",
-		"vapor barrier for cables", "vga 2 hdmi", "wifi bravia", "wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync", "convert coaxial cable to hdmi"],
+		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", "wifi bravia",
+		"wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync", "convert coaxial cable to hdmi"],
 		"randomBadQueries" : ["no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM"],
 		"scenarios" : [
 			{
@@ -117,7 +117,7 @@
 				"weight" : 3,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "install hdmi-QAM", "goodQuery" : false } },
-					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "convert coaxial cable to hdmi", "docClickTitle" : "How to Convert Coaxial Cable to HDMI", "goodQuery" : false } }
+					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "convert coaxial cable to hdmi", "docClickTitle" : "How to Convert Coaxial Cable to HDMI", "probability" : 0.75 } }
 				]
 			},
 			{
