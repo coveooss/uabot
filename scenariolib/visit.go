@@ -306,6 +306,10 @@ func (v *Visit) SetupNTO() {
 		q.PartialMatchThreshold = v.Config.PartialMatchThreshold
 	}
 
+	if v.Config.Pipeline != "" {
+		q.Pipeline = v.Config.Pipeline
+	}
+
 	v.LastQuery = q
 
 	v.OriginLevel1 = "communityCoveo"

@@ -18,11 +18,11 @@ type FacetEvent struct {
 }
 
 func newFacetEvent(e *JSONEvent) (*FacetEvent, error) {
-	Title, ok1 := e.Arguments["title"].(string)
-	Value, ok2 := e.Arguments["value"].(string)
-	Field, ok3 := e.Arguments["field"].(string)
+	Title, ok1 := e.Arguments["facetTitle"].(string)
+	Value, ok2 := e.Arguments["facetValue"].(string)
+	Field, ok3 := e.Arguments["facetField"].(string)
 	if !ok1 || !ok2 || !ok3 {
-		return nil, errors.New("ERR >>> Invalid parse of arguments on Facet Event")
+		return nil, errors.New("Invalid parse of arguments on Facet Event")
 	}
 
 	return &FacetEvent{

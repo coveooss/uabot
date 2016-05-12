@@ -42,6 +42,7 @@ type Config struct {
 	PartialMatch          bool        `json:"partialMatch,omitempty"`
 	PartialMatchKeywords  int         `json:"partialMatchKeywords,omitempty"`
 	PartialMatchThreshold string      `json:"partialMatchThreshold,omitempty"`
+	Pipeline              string      `json:"pipeline,omitempty"`
 }
 
 // RandomScenario Returns a random scenario from the list of possible scenarios.

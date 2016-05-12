@@ -5,6 +5,7 @@
 	"partialMatchKeywords" : 2,
 	"partialMatchTreshold" : "50%",
 	"orgName"     : "Besttech",
+	"pipeline" : "besttechCommunity",
 	"globalfilter" : "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
 	"randomGoodQueries" : ["hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access",	"picture quality", "tv is not working",
 		"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV",

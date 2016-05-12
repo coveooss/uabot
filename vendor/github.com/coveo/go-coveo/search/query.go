@@ -12,6 +12,7 @@ type Query struct {
 	PartialMatch          bool              `json:"partialMatch,omitempty"`
 	PartialMatchKeywords  int               `json:"partialMatchKeywords,omitempty"`
 	PartialMatchThreshold string            `json:"partialMatchTreshold"`
+	Pipeline              string            `json:"pipeline,omitempty"`
 }
 
 type GroupByRequest struct {
