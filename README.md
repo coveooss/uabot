@@ -12,13 +12,17 @@ UATOKEN      => API key to send events to UA
 SCENARIOSURL => Url to the scenario JSON file to randomize
 
 GO15VENDOREXPERIMENT=1
-To use the vendor folder for the lib for analytics/search api
+
+(Only if running golang < 1.6) To use the vendor folder for the lib for analytics/search api
 
 ## On windows
 ```sh
-set SEARCHTOKEN = value
-set UATOKEN = value
-set SCENARIOSURL = value
+set SEARCHTOKEN=value
+set UATOKEN=value
+set SCENARIOSURL=value
+# To use a local scenario json file
+set LOCAL=true
+# Only if running golang < v1.6
 set GO15VENDOREXPERIMENT=1
 go run main.go
 ```
@@ -27,6 +31,9 @@ go run main.go
 export SEARCHTOKEN = value
 export UATOKEN = value
 export SCENARIOSURL = value
+# To use a local scenario json file
+export LOCAL=true
+# Only if running golang < v1.6
 export GO15VENDOREXPERIMENT=1
 go build
 go run main.go

@@ -29,21 +29,13 @@ const (
 
 func Init(traceHandle io.Writer, infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
 
-	Trace = log.New(traceHandle,
-		"TRACE: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+	Trace = log.New(traceHandle, "TRACE: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	Info = log.New(infoHandle,
-		"INFO: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+	Info = log.New(infoHandle, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	Warning = log.New(warningHandle,
-		"WARNING: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+	Warning = log.New(warningHandle, "WARNING: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	Error = log.New(errorHandle,
-		"ERROR: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+	Error = log.New(errorHandle, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
 func main() {
@@ -64,11 +56,22 @@ func main() {
 		Error.Println("SCENARIOSURL env variable needs to define a file path")
 	}
 
+	local := os.Getenv("LOCAL")
+	if local == "true" {
+		Info.Println("STARTING IN LOCAL MODE, MAKE SURE THE SCENARIOSURL IS A LOCAL PATH")
+	}
+
 	timeNow := time.Now()
 
+	var conf *scenariolib.Config
+	var err error
 	// Init from path instead of URL, for testing purposes
-	conf, err := scenariolib.NewConfigFromPath(scenarioURL)
-	//conf, err := scenariolib.NewConfigFromURL(scenarioURL)
+	if local == "true" {
+		conf, err = scenariolib.NewConfigFromPath(scenarioURL)
+	} else {
+		conf, err = scenariolib.NewConfigFromURL(scenarioURL)
+	}
+	//
 	if err != nil {
 		Error.Println(err)
 		return
@@ -81,7 +84,11 @@ func main() {
 		// This way, no need to stop the bot to update the possible scenarios.
 		if time.Since(timeNow).Hours() > 5 {
 			// false for local filepath, true for web hosted file
-			conf2 := refreshScenarios(scenarioURL, false)
+			var isURL = true
+			if local == "true" {
+				isURL = false
+			}
+			conf2 := refreshScenarios(scenarioURL, isURL)
 			if conf2 != nil {
 				conf = conf2
 			}
