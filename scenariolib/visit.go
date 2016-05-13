@@ -121,7 +121,7 @@ func (v *Visit) sendSearchEvent(q string) error {
 	se.ResponseTime = v.LastResponse.Duration
 	se.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
-		"IPAdress":    v.IP,
+		"ipadress":    v.IP,
 	}
 
 	if v.LastResponse.TotalCount > 0 {
@@ -156,7 +156,7 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 	ve.PageURI = pageURI
 	ve.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
-		"IPAdress":    v.IP,
+		"ipadress":    v.IP,
 	}
 
 	// Send a UA search event
@@ -179,7 +179,7 @@ func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
 	ce.OriginLevel2 = v.OriginLevel2
 	ce.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
-		"IPAdress":    v.IP,
+		"ipadress":    v.IP,
 	}
 
 	// Send a UA search event
@@ -228,7 +228,7 @@ func (v *Visit) SendClickEvent(rank int, quickview bool) error {
 
 	event.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
-		"IPAdress":    v.IP,
+		"ipadress":    v.IP,
 	}
 
 	err = v.UAClient.SendClickEvent(event)
@@ -268,7 +268,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 
 	ice.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
-		"IPAdress":    v.IP,
+		"ipadress":    v.IP,
 	}
 
 	err = v.UAClient.SendSearchEvent(ice)
