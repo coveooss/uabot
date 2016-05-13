@@ -113,7 +113,7 @@
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.1 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 10,  "probability" : 0.4 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
 				]
 			},
 			{

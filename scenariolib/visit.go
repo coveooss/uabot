@@ -32,6 +32,7 @@ type Visit struct {
 	OriginLevel2 string
 	LastTab      string
 	Config       *Config
+	IP           string
 }
 
 const (
@@ -63,7 +64,9 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 	v.SearchClient = searchClient
 
 	// Create the http UAClient
-	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: c.RandomIPs[rand.Intn(len(c.RandomIPs))], Endpoint: c.AnalyticsEndpoint}
+	ip := c.RandomIPs[rand.Intn(len(c.RandomIPs))]
+	v.IP = ip
+	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: ip, Endpoint: c.AnalyticsEndpoint}
 	uaClient, err := ua.NewClient(uaConfig)
 	if err != nil {
 		return nil, err
@@ -118,6 +121,7 @@ func (v *Visit) sendSearchEvent(q string) error {
 	se.ResponseTime = v.LastResponse.Duration
 	se.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
+		"IPAdress":    v.IP,
 	}
 
 	if v.LastResponse.TotalCount > 0 {
@@ -152,6 +156,7 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 	ve.PageURI = pageURI
 	ve.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
+		"IPAdress":    v.IP,
 	}
 
 	// Send a UA search event
@@ -174,6 +179,7 @@ func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
 	ce.OriginLevel2 = v.OriginLevel2
 	ce.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
+		"IPAdress":    v.IP,
 	}
 
 	// Send a UA search event
@@ -220,6 +226,11 @@ func (v *Visit) SendClickEvent(rank int, quickview bool) error {
 		return errors.New("Cannot convert syssource to string")
 	}
 
+	event.CustomData = map[string]interface{}{
+		"JSUIVersion": JSUIVERSION,
+		"IPAdress":    v.IP,
+	}
+
 	err = v.UAClient.SendClickEvent(event)
 	if err != nil {
 		return err
@@ -253,6 +264,11 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		} else {
 			return errors.New("Cannot convert sysurihash to string in interfaceChange event")
 		}
+	}
+
+	ice.CustomData = map[string]interface{}{
+		"JSUIVersion": JSUIVERSION,
+		"IPAdress":    v.IP,
 	}
 
 	err = v.UAClient.SendSearchEvent(ice)
