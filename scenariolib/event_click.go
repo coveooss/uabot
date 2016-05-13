@@ -1,13 +1,9 @@
-// Package scenariolib handles everything needed to execute a scenario and send all
-// information to the usage analytics endpoint
 package scenariolib
 
 import (
 	"errors"
 	"math"
 	"math/rand"
-
-	"github.com/k0kubun/pp"
 )
 
 // ============== CLICK EVENT ======================
@@ -35,11 +31,11 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 	}
 
 	if !ok1 || !ok2 || !ok3 || !ok4 {
-		return nil, errors.New("ERR >>> Invalid parse of arguments on Click Event")
+		return nil, errors.New("Invalid parse of arguments on Click Event")
 	}
 
 	if prob < 0 || prob > 1 {
-		return nil, errors.New("ERR >>> Probability is out of bounds [0..1]")
+		return nil, errors.New("Probability is out of bounds [0..1]")
 	}
 
 	return &ClickEvent{
@@ -53,7 +49,7 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 // Execute Execute the click event, sending a click event to the usage analytics
 func (ce *ClickEvent) Execute(v *Visit) error {
 	if v.LastResponse.TotalCount < 1 {
-		pp.Printf("WARN >>> Last query : %v returned no results, cannot click", v.LastQuery.Q)
+		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
 		return nil
 	}
 
@@ -69,10 +65,8 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 
 	if rand.Float64() <= ce.probability { // Probability to click
 		if ce.clickRank > v.LastResponse.TotalCount {
-			return errors.New("ERR >>> Click index out of bounds")
+			return errors.New("Click index out of bounds")
 		}
-
-		pp.Printf("\nLOG >>> Sending Click Event : Rank -> %v (quickview: %v)", ce.clickRank+1, ce.quickview)
 
 		err := v.SendClickEvent(ce.clickRank, ce.quickview)
 		if err != nil {
@@ -80,7 +74,6 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		}
 		return nil
 	}
-
-	pp.Printf("\nLOG >>> User chose not to click with a probability of : %v %%", int(ce.probability*100))
+	Info.Printf("User chose not to click (probability %v%%)", int(ce.probability*100))
 	return nil
 }

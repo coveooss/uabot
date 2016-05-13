@@ -3,8 +3,6 @@ package scenariolib
 import (
 	"errors"
 	"fmt"
-
-	"github.com/k0kubun/pp"
 )
 
 // ============== FACET CHANGE EVENT ======================
@@ -35,7 +33,7 @@ func newFacetEvent(e *JSONEvent) (*FacetEvent, error) {
 // Execute Sends the tabchange event to the analytics and modify the CQ for the
 // following queries in the visit
 func (e *FacetEvent) Execute(v *Visit) error {
-	pp.Printf("\nLOG >>> Clicking on facet %v with value : %v", e.Title, e.Value)
+	Info.Printf("Clicking on facet title=%s value=%s", e.Title, e.Value)
 
 	v.LastQuery.AQ = fmt.Sprintf("%s==\"%s\"", e.Field, e.Value)
 
@@ -45,7 +43,7 @@ func (e *FacetEvent) Execute(v *Visit) error {
 	}
 	v.LastResponse = resp
 
-	pp.Printf("\nLOG >>> Sending Facet Change Event : %v => %v", e.Title, e.Value)
+	Info.Printf("Sending FacetChange Event title=%s value=%s", e.Title, e.Value)
 	customData := make(map[string]interface{})
 	customData["facetValue"] = e.Value
 	customData["facetTitle"] = e.Title

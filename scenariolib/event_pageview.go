@@ -17,7 +17,7 @@ func newViewEvent(e *JSONEvent) (*ViewEvent, error) {
 	pageReferrer, ok2 := e.Arguments["pagereferrer"].(string)
 	pageTitle, ok3 := e.Arguments["pagetitle"].(string)
 	if !ok1 || !ok2 || !ok3 {
-		return nil, errors.New("ERR >>> Invalid parse of arguments on View Event")
+		return nil, errors.New("Invalid parse of arguments on View Event")
 	}
 
 	if pageURI == "" {

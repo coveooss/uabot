@@ -24,14 +24,14 @@ const (
 	//USERAGENT string = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
 
 	// TIMEBETWEENVISITS The time for the bot to wait between visits, between 0 and X Seconds
-	TIMEBETWEENVISITS int = 120
+	TIMEBETWEENVISITS int = 1
 )
 
 func Init(traceHandle io.Writer, infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
 
 	Trace = log.New(traceHandle, "TRACE: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	Info = log.New(infoHandle, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Info = log.New(infoHandle, "INFO: ", log.Ldate|log.Ltime)
 
 	Warning = log.New(warningHandle, "WARNING: ", log.Ldate|log.Ltime|log.Lshortfile)
 
@@ -129,7 +129,8 @@ func main() {
 		time.Sleep(time.Duration(rand.Intn(TIMEBETWEENVISITS)) * time.Second)
 
 		count++
-		pp.Printf("\n%v scenarios executed\n", count)
+		Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
+
 	}
 	pp.Println("LOG >>> DONE")
 }

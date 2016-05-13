@@ -3,13 +3,14 @@ package scenariolib
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
 	ua "github.com/coveo/go-coveo/analytics"
 	"github.com/coveo/go-coveo/search"
-	"github.com/k0kubun/pp"
 )
 
 // Visit        The struct visit is used to store one visit to the site.
@@ -45,10 +46,13 @@ const (
 // _uatoken     The token used to send usage analytics events
 // _useragent   The user agent the analytics events will see
 func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config) (*Visit, error) {
+
+	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
+
 	v := Visit{}
 	v.Username = buildUserEmail(c)
-	pp.Printf("\n\nLOG >>> New visit from %v\n", v.Username)
-	pp.Printf("LOG >>> On device %v\n", _useragent)
+	Info.Printf("New visit from %s", v.Username)
+	Info.Printf("On device %s", _useragent)
 
 	// Create the http searchClient
 	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
@@ -78,7 +82,7 @@ func buildUserEmail(c *Config) string {
 // ExecuteScenario Execute a specific scenario, send the config for all the
 // potential random we need to do.
 func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
-	pp.Printf("\nLOG >>> Executing scenario named : %v", scenario.Name)
+	Info.Printf("Executing scenario named : %s", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		jsonEvent := scenario.Events[i]
 		event, err := ParseEvent(&jsonEvent, c)
@@ -97,7 +101,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 }
 
 func (v *Visit) sendSearchEvent(q string) error {
-	pp.Printf("\nLOG >>> Sending Search Event : %v results", v.LastResponse.TotalCount)
+	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
 	se, err := ua.NewSearchEvent()
 	if err != nil {
 		return err
@@ -122,7 +126,7 @@ func (v *Visit) sendSearchEvent(q string) error {
 				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
-			return errors.New("ERR >>> Cannot convert sysurihash to string in search event")
+			return errors.New("Cannot convert sysurihash to string in search event")
 		}
 	}
 
@@ -135,7 +139,7 @@ func (v *Visit) sendSearchEvent(q string) error {
 }
 
 func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
-	pp.Printf("\nLOG >>> Sending PageView Event on URI: %v\n", pageURI)
+	Info.Printf("Sending PageView Event on URI: %s", pageURI)
 
 	ve := ua.NewViewEvent()
 
@@ -156,7 +160,7 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 }
 
 func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
-	pp.Printf("\nLOG >>> Sending Custom Event type=%v && value=%v", eventType, eventValue)
+	Info.Printf("Sending Custom Event of type : %s ||| Value : %v", eventType, eventValue)
 	ce, err := ua.NewCustomEvent()
 	if err != nil {
 		return err
@@ -178,6 +182,7 @@ func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
 }
 
 func (v *Visit) SendClickEvent(rank int, quickview bool) error {
+	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
 		return err
@@ -202,17 +207,17 @@ func (v *Visit) SendClickEvent(rank int, quickview bool) error {
 	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
 		event.DocumentURIHash = urihash
 	} else {
-		return errors.New("ERR >>> Cannot convert sysurihash to string")
+		return errors.New("Cannot convert sysurihash to string")
 	}
 	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
 		event.CollectionName = collection
 	} else {
-		return errors.New("ERR >>> Cannot convert syscollection to string")
+		return errors.New("Cannot convert syscollection to string")
 	}
 	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
 		event.SourceName = source
 	} else {
-		return errors.New("ERR >>> Cannot convert syssource to string")
+		return errors.New("Cannot convert syssource to string")
 	}
 
 	err = v.UAClient.SendClickEvent(event)
@@ -232,7 +237,6 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	ice.SearchQueryUID = v.LastResponse.SearchUID
 	ice.QueryText = v.LastQuery.Q
 	ice.AdvancedQuery = v.LastQuery.AQ
-	//ice.ActionCause = "interfaceChange"
 	ice.ActionCause = actionCause
 	ice.ActionType = actionType
 	ice.OriginLevel1 = v.OriginLevel1
@@ -240,10 +244,6 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	ice.NumberOfResults = v.LastResponse.TotalCount
 	ice.ResponseTime = v.LastResponse.Duration
 	ice.CustomData = customData
-	/*ice.CustomData = map[string]interface{}{
-		"interfaceChangeTo": v.OriginLevel2,
-		"JSUIVersion":       JSUIVERSION,
-	}*/
 
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
@@ -251,7 +251,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
-			return errors.New("ERR >>> Cannot convert sysurihash to string in interfaceChange event")
+			return errors.New("Cannot convert sysurihash to string in interfaceChange event")
 		}
 	}
 

@@ -2,11 +2,7 @@
 // information to the usage analytics endpoint
 package scenariolib
 
-import (
-	"errors"
-
-	"github.com/k0kubun/pp"
-)
+import "errors"
 
 // ============== SEARCH EVENT ======================
 // ==================================================
@@ -21,7 +17,7 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	query, ok1 := e.Arguments["queryText"].(string)
 	goodQuery, ok2 := e.Arguments["goodQuery"].(bool)
 	if !ok1 || !ok2 {
-		return nil, errors.New("ERR >>> Invalid parse of arguments on Search Event")
+		return nil, errors.New("Invalid parse of arguments on Search Event")
 	}
 
 	if query == "" {
@@ -39,7 +35,7 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 // Execute Execute the search event, runs the query and sends a search event to
 // the analytics.
 func (se *SearchEvent) Execute(v *Visit) error {
-	pp.Printf("\nLOG >>> Searching for : %v", se.query)
+	Info.Printf("Searching for : %s", se.query)
 	v.LastQuery.Q = se.query
 
 	// Execute a search and save the response

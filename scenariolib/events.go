@@ -51,7 +51,7 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 		}
 		return event, nil
 	}
-	return nil, errors.New("ERR >>> Event type not supported")
+	return nil, errors.New("Event type not supported")
 }
 
 // Event Generic interface for abstract type Event. All specific event types must
