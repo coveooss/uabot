@@ -47,3 +47,5 @@ go run main.go
 # Push changes to branch + push changes to tag, you will need to supply credentials twice.
 3. git push && git push -f --tags
 ```
+
+[![forthebadge](http://forthebadge.com/images/badges/made-with-crayons.svg)](http://forthebadge.com)
