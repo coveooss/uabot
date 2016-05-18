@@ -17,37 +17,37 @@
 		"randomBadQueries" : ["no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM"],
 		"scenarios" : [
 			{
-				"name"   : "GQ -> C(40%)",
+				"name"   : "GQ -> C(60%)",
 				"weight" : 5,
 				"events" : [
 					{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+					{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
 				]
 			},
 			{
-				"name"   : "GQ -> C(35%) -> GQ -> C(40%)",
+				"name"   : "GQ -> C(45%) -> GQ -> C(50%)",
 				"weight" : 4,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.35 } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
 				]
 			},
 			{
-				"name"   : "GQ -> C(35%) -> GQ -> C(35%) -> GQ -> C(40%)",
+				"name"   : "GQ -> C(55%) -> GQ -> C(55%) -> GQ -> C(60%)",
 				"weight" : 3,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.35 } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.45 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.35 } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
 				]
 			},
 			{
-				"name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%)",
+				"name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
 				"weight" : 3,
 				"useragent" : "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
 				"events" : [
@@ -56,17 +56,17 @@
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
 				]
 			},
 			{
-				"name"   : "GQ -> C(40%) -> GQ -> C(30%) -> GQ -> C(40%) -> GQ -> C(50%)",
+				"name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%)",
 				"weight" : 2,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 3,  "probability" : 0.3 } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 3,  "probability" : 0.5 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
@@ -74,13 +74,13 @@
 				]
 			},
 			{
-				"name"   : "GQ -> C(40%) -> GQ -> C(30%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(50%)",
+				"name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(50%)",
 				"weight" : 1,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.3 } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.5 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
@@ -90,20 +90,20 @@
 				]
 			},
 			{
-				"name"   : "Mobile GQ -> C(40%) -> GQ -> C(30%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(50%)",
+				"name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
 				"weight" : 2,
 				"useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.3 } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.6 } }
 				]
 			},
 			{
@@ -134,22 +134,22 @@
 				]
 			},
 			{
-				"name"   : "Mobile GQ with tabchange to youtube-> GQ -> C(30%)",
+				"name"   : "Mobile GQ with tabchange to youtube-> GQ -> C(50%)",
 				"weight" : 3,
 				"useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.3, "quickview": true } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5, "quickview": true } }
 				]
 			},
 			{
-				"name"   : "GQ with tabchange to lithium> GQ -> C(40%)",
+				"name"   : "GQ with tabchange to lithium> GQ -> C(50%)",
 				"weight" : 2,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "TabChange", "arguments" : { "tabName" : "lithium", "tabCQ" : "@objecttype==(Post,Message)" } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } }
 				]
 			},
 			{
@@ -171,30 +171,30 @@
 				]
 			},
 			{
-				"name"   : "GQ with tabchange to Knowledge> GQ -> C(40%)",
+				"name"   : "GQ with tabchange to Knowledge> GQ -> C(60%)",
 				"weight" : 2,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "TabChange", "arguments" : { "tabName" : "Knowledge", "tabCQ" : "@beautifulrepositorytype==\"Oracle Knowledge\" AND NOT @title=(Document ID:)" } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.2 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
 				]
 			},
 			{
-				"name"   : "GQ with facetchange to Type (message)> GQ -> C(30%)",
+				"name"   : "GQ with facetchange to Type (message)> GQ -> C(45%)",
 				"weight" : 1,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "FacetChange", "arguments" : { "facetTitle": "Type", "facetValue": "Message", "facetField": "@objecttype" } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.3 } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } }
 				]
 			},
 			{
-				"name"   : "GQ with facetchange to Repository (Youtube)> GQ -> C(35%)",
+				"name"   : "GQ with facetchange to Repository (Youtube)> GQ -> C(55%)",
 				"weight" : 3,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "FacetChange", "arguments" : { "facetTitle": "Repository", "facetField": "@beautifulrepositorytype", "facetValue": "Youtube" } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.35, "quickview": true } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
 				]
 			},
 			{
@@ -207,12 +207,12 @@
 				]
 			},
 			{
-				"name"   : "GQ with facetchange to Year (2016)> GQ -> C(40%)",
+				"name"   : "GQ with facetchange to Year (2016)> GQ -> C(55%)",
 				"weight" : 1,
 				"events" : [
 					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 					{ "type" : "FacetChange", "arguments" : { "facetTitle": "Year", "facetField": "@sysyear", "facetValue": "2016" } },
-					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } }
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
 				]
 			},
 			{
