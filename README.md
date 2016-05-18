@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
-
-# uabot
+# uabot [![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
 Bot to generate data to UA
 
 Needs 3 environment variables to function :
@@ -47,3 +45,5 @@ go run main.go
 # Push changes to branch + push changes to tag, you will need to supply credentials twice.
 3. git push && git push -f --tags
 ```
+
+[![forthebadge](http://forthebadge.com/images/badges/made-with-crayons.svg)](http://forthebadge.com)
