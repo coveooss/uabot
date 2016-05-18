@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
-
-# uabot
+# uabot [![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
 Bot to generate data to UA
 
 Needs 3 environment variables to function :
