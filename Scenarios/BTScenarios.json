@@ -124,6 +124,18 @@
 					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "convert coaxial cable to hdmi", "docClickTitle" : "How to Convert Coaxial Cable to HDMI", "probability" : 0.75 } }
 				]
 			},
+			{ "name"   : "Reveal scenario hx720-478",
+				"weight" : 3,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "hx720-478", "goodQuery" : false } },
+					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "hx720-478 stand", "docClickTitle" : "HX720 Internet TV Stand is unstable", "goodQuery" : false } }
+			] },
+			{ "name"   : "Reveal Net flix vs netflix",
+				"weight" : 3,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "Net flix not connected", "goodQuery" : false } },
+					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "netflix not connect", "docClickTitle" : "Netflix setup on some televisions", "goodQuery" : false } }
+		] },
 			{
 				"name"   : "GQ with tabchange to youtube-> GQ -> C(40%)",
 				"weight" : 2,
