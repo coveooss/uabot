@@ -14,7 +14,7 @@
 		"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter",
 		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", "wifi bravia",
 		"wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync"],
-		"randomBadQueries" : ["no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM", "piks", "connektion"],
+		"randomBadQueries" : ["no picture on BX620 tv", "tv34c5x", "playstation 3467-543", "headset for tv89bb4", "youtube for bravia56bb", "tv 4563dc-55", "blanking tv 5634-544dc", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM", "xbr-84x920", "piks", "connektion"],
 		"scenarios" : [
 			{
 				"name"   : "GQ -> C(60%)",
