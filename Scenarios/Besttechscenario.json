@@ -1,0 +1,245 @@
+{
+	"searchendpoint" : "https://cloudplatform.coveo.com/rest/search/",
+	"analyticsendpoint" : "https://usageanalytics.coveo.com/rest/v15/analytics/",
+	"partialMatch" : true,
+	"partialMatchKeywords" : 4,
+	"partialMatchTreshold" : "50%",
+	"orgName"     : "Besttech",
+	"pipeline" : "besttechCommunity",
+	"globalfilter" : "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
+	"randomGoodQueries" : ["hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access",	"picture quality", "tv is not working",
+		"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV",
+		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual",
+		"usb to hdmi", "ipad hdmi", "dvi hdmi cable", "primus hdtv", "tv audio hts", "coaxial to hdmi cable", "hdmi splitter", "sound bar", "connect laptop to hdtv",
+		"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter",
+		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", "wifi bravia",
+		"wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync"],
+		"randomBadQueries" : ["no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM", "piks", "connektion"],
+		"scenarios" : [
+			{
+				"name"   : "GQ -> C(60%)",
+				"weight" : 5,
+				"events" : [
+					{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+				]
+			},
+			{
+				"name"   : "GQ -> C(45%) -> GQ -> C(50%)",
+				"weight" : 4,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+				]
+			},
+			{
+				"name"   : "GQ -> C(55%) -> GQ -> C(55%) -> GQ -> C(60%)",
+				"weight" : 3,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.45 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+				]
+			},
+			{
+				"name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
+				"weight" : 3,
+				"useragent" : "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.4 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+				]
+			},
+			{
+				"name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 3,  "probability" : 0.5 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+				]
+			},
+			{
+				"name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(50%)",
+				"weight" : 1,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.5 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
+				]
+			},
+			{
+				"name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
+				"weight" : 2,
+				"useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.6 } }
+				]
+			},
+			{
+				"name"   : "BQ -> C(20%) -> GQ -> C(40%)",
+				"weight" : 4,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.1 } },
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+				]
+			},
+			{
+				"name"   : "Reveal scenario",
+				"weight" : 3,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "install hdmi-QAM", "goodQuery" : false } },
+					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "convert coaxial cable to hdmi", "docClickTitle" : "How to Convert Coaxial Cable to HDMI", "probability" : 0.75 } }
+				]
+			},
+			{ "name"   : "Reveal scenario hx720-478",
+		"weight" : 3,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "hx720-478", "goodQuery" : false } },
+			{ "type" : "SearchAndClick", "arguments" : { "queryText" : "hx720-478 stand", "docClickTitle" : "HX720 Internet TV Stand is unstable", "goodQuery" : false } }
+		] },
+	{ "name"   : "Reveal Net flix vs netflix",
+		"weight" : 3,
+		"events" : [
+			{ "type" : "Search", "arguments" : { "queryText" : "Net flix not connected", "goodQuery" : false } },
+			{ "type" : "SearchAndClick", "arguments" : { "queryText" : "netflix not connect", "docClickTitle" : "Netflix setup on some televisions", "goodQuery" : false } }
+		] },
+			{
+				"name"   : "GQ with tabchange to youtube-> GQ -> C(40%)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } }
+				]
+			},
+			{
+				"name"   : "Mobile GQ with tabchange to youtube-> GQ -> C(50%)",
+				"weight" : 3,
+				"useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5, "quickview": true } }
+				]
+			},
+			{
+				"name"   : "GQ with tabchange to lithium> GQ -> C(50%)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "TabChange", "arguments" : { "tabName" : "lithium", "tabCQ" : "@objecttype==(Post,Message)" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } }
+				]
+			},
+			{
+				"name"   : "GQ with tabchange to SharePoint> GQ -> C(40%)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "TabChange", "arguments" : { "tabName" : "SharePoint", "tabCQ" : "@sysconnectortype==(\"Sharepoint\") NOT @sysfiletype=(SPUserProfile,SPSite) NOT @documenttype==(\"List\") NOT @syssource==(\"SharePoint Online - Bombardier\")" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+				]
+			},
+			{
+				"name"   : "GQ with tabchange to Article> GQ -> C(40%)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "TabChange", "arguments" : { "tabName" : "KB", "tabCQ" : "@sfkbid" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } }
+				]
+			},
+			{
+				"name"   : "GQ with tabchange to Knowledge> GQ -> C(60%)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "TabChange", "arguments" : { "tabName" : "Knowledge", "tabCQ" : "@beautifulrepositorytype==\"Oracle Knowledge\" AND NOT @title=(Document ID:)" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+				]
+			},
+			{
+				"name"   : "GQ with facetchange to Type (message)> GQ -> C(45%)",
+				"weight" : 1,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "FacetChange", "arguments" : { "facetTitle": "Type", "facetValue": "Message", "facetField": "@objecttype" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } }
+				]
+			},
+			{
+				"name"   : "GQ with facetchange to Repository (Youtube)> GQ -> C(55%)",
+				"weight" : 3,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "FacetChange", "arguments" : { "facetTitle": "Repository", "facetField": "@beautifulrepositorytype", "facetValue": "Youtube" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
+				]
+			},
+			{
+				"name"   : "GQ with facetchange to Repository (Sharepoint)> GQ -> C(50%)",
+				"weight" : 1,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "FacetChange", "arguments" : { "facetTitle": "Repository", "facetField": "@beautifulrepositorytype", "facetValue": "Sharepoint" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } }
+				]
+			},
+			{
+				"name"   : "GQ with facetchange to Year (2016)> GQ -> C(55%)",
+				"weight" : 1,
+				"events" : [
+					{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+					{ "type" : "FacetChange", "arguments" : { "facetTitle": "Year", "facetField": "@sysyear", "facetValue": "2016" } },
+					{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
+				]
+			},
+			{
+				"name"   : "QC(netflix connection, How To Resolve Netflix Android Connection Error on..., 75%, Quickview)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "netflix connection", "docClickTitle" : "How To Resolve Netflix Android Connection Error on XB, XBR, and XBR6 Smart TV", "probability" : 0.75, "quickview": true } }
+				]
+			},
+			{
+				"name"   : "QC(quick start guide, Best Tech Netbook Troubleshooting, 60%, Quickview)",
+				"weight" : 2,
+				"events" : [
+					{ "type" : "SearchAndClick", "arguments" : { "queryText" : "quick start guide", "docClickTitle" : "Best Tech Netbook Troubleshooting", "probability": 0.6, "quickview": true } }
+				]
+			}
+		]
+	}
