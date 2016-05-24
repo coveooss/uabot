@@ -54,6 +54,8 @@ type ClickEvent struct {
 
 type CustomEvent struct {
 	*ActionEvent
+	ActionCause        string `json:"actionCause"`
+	ActionType         string `json:"actionType"`
 	EventType          string `json:"eventType"`
 	EventValue         string `json:"eventValue"`
 	LastSearchQueryUID string `json:"lastSearchQueryUid,omitempty"`
