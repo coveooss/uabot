@@ -1,4 +1,4 @@
-{
+
 	"searchendpoint" : "https://cloudplatform.coveo.com/rest/search/",
 	"analyticsendpoint" : "https://usageanalytics.coveo.com/rest/v15/analytics/",
 	"partialMatch" : true,
@@ -355,21 +355,3 @@
 		}
 		]
 	}
-
-
-
-
-	{
-	"name"   : "Scenarios deflected (Tv don't open)",
-	"weight" : 2,
-	"events" : [
-	{"type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true,
-	"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-	Page unload
-	 {
-	"name"   : "Scenarios deflected (Connection Netflix Description)",
-	"weight" : 2,
-	"events" : [
-		{"type" : "Search", "arguments" : { "queryText" : "Connection Netflix Description", "goodQuery" : true, "caseSearch" : true,
-	"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-	Page unload
