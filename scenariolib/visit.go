@@ -40,6 +40,8 @@ const (
 	JSUIVERSION string = "0.0.0.0;0.0.0.0"
 	// TIMEBETWEENACTIONS The time in seconds to wait between the different actions inside a visit
 	TIMEBETWEENACTIONS int = 5
+	// ORIGINALL The origin level of All
+	ORIGINALL string = "ALL"
 )
 
 // NewVisit     Creates a new visit to the search page
@@ -103,7 +105,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	return nil
 }
 
-func (v *Visit) sendSearchEvent(q string) error {
+func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData map[string]interface{}) error {
 	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
 	se, err := ua.NewSearchEvent()
 	if err != nil {
@@ -114,14 +116,21 @@ func (v *Visit) sendSearchEvent(q string) error {
 	se.SearchQueryUID = v.LastResponse.SearchUID
 	se.QueryText = q
 	se.AdvancedQuery = v.LastQuery.AQ
-	se.ActionCause = "searchboxSubmit"
+	se.ActionCause = actionCause
+	se.ActionType = actionType
 	se.OriginLevel1 = v.OriginLevel1
 	se.OriginLevel2 = v.OriginLevel2
 	se.NumberOfResults = v.LastResponse.TotalCount
 	se.ResponseTime = v.LastResponse.Duration
-	se.CustomData = map[string]interface{}{
-		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.IP,
+	if customData != nil {
+		se.CustomData = customData
+		se.CustomData["JSUIVersion"] = JSUIVERSION
+		se.CustomData["ipadress"] = v.IP
+	} else {
+		se.CustomData = map[string]interface{}{
+			"JSUIVersion": JSUIVERSION,
+			"ipadress":    v.IP,
+		}
 	}
 
 	if v.LastResponse.TotalCount > 0 {
@@ -164,30 +173,30 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 	return err
 }
 
-func (v *Visit) sendCustomEvent(eventType string, eventValue string) error {
-	Info.Printf("Sending Custom Event of type : %s ||| Value : %v", eventType, eventValue)
+func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
+	Info.Printf("CustomEvent cause: %s ||| type: %s ||| customData: %v", actionCause, actionType, customData)
 	ce, err := ua.NewCustomEvent()
 	if err != nil {
 		return err
 	}
 
 	ce.Username = v.Username
-	//ce.LastSearchQueryUID = v.LastResponse.SearchUID
-	//ce.EventType = eventType
-	//ce.EventValue = eventValue
+	ce.ActionCause = actionCause
+	ce.ActionType = actionType
+	ce.EventType = actionType
+	ce.EventValue = actionCause
+	ce.CustomData = customData
 	ce.OriginLevel1 = v.OriginLevel1
 	ce.OriginLevel2 = v.OriginLevel2
-	ce.CustomData = map[string]interface{}{
-		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.IP,
-	}
+	ce.CustomData["JSUIVersion"] = JSUIVERSION
+	ce.CustomData["ipadress"] = v.IP
 
 	// Send a UA search event
 	err = v.UAClient.SendCustomEvent(ce)
 	return err
 }
 
-func (v *Visit) SendClickEvent(rank int, quickview bool) error {
+func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
@@ -328,8 +337,8 @@ func (v *Visit) SetupNTO() {
 
 	v.LastQuery = q
 
-	v.OriginLevel1 = "communityCoveo"
-	v.OriginLevel2 = "ALL"
+	v.OriginLevel1 = "Community"
+	v.OriginLevel2 = ORIGINALL
 }
 
 // SetupGeneral Function to instanciate with non-specific values
@@ -353,6 +362,6 @@ func (v *Visit) SetupGeneral() {
 
 	v.LastQuery = q
 
-	v.OriginLevel1 = "ALL"
-	v.OriginLevel2 = "ALL"
+	v.OriginLevel1 = ORIGINALL
+	v.OriginLevel2 = ORIGINALL
 }

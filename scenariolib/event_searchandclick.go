@@ -1,9 +1,8 @@
-// Package scenariolib handles everything need to execute a scenario and send all
-// information to the usage analytics endpoint
 package scenariolib
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 )
 
@@ -13,32 +12,57 @@ import (
 // SearchAndClickEvent represents a search event followed by a click on a specific
 // document found by the title
 type SearchAndClickEvent struct {
-	query     string
-	docTitle  string
-	prob      float64
-	quickview bool
+	query      string
+	docTitle   string
+	prob       float64
+	quickview  bool
+	caseSearch bool
+	inputTitle string
 }
 
 func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
-	var quickview, ok4 bool
-	query, ok1 := e.Arguments["queryText"].(string)
-	docTitle, ok2 := e.Arguments["docClickTitle"].(string)
-	prob, ok3 := e.Arguments["probability"].(float64)
+	var query, docClickTitle, inputTitle string
+	var prob float64
+	var quickview, caseSearch, validCast bool
+
+	if query, validCast = e.Arguments["queryText"].(string); !validCast {
+		return nil, errors.New("Parameter queryText must be of type string in SearchAndClickEvent")
+	}
+
+	if docClickTitle, validCast = e.Arguments["docClickTitle"].(string); !validCast {
+		return nil, errors.New("Parameter docClickTitle must be of type string in SearchAndClickEvent")
+	}
+
+	if prob, validCast = e.Arguments["probability"].(float64); !validCast {
+		return nil, errors.New("Parameter probability must be of type float64 in SearchAndClickEvent")
+	}
+
 	if e.Arguments["quickview"] == nil {
 		quickview = false
-		ok4 = true
 	} else {
-		quickview, ok4 = e.Arguments["quickview"].(bool)
+		if quickview, validCast = e.Arguments["quickview"].(bool); !validCast {
+			return nil, errors.New("Parameter quickview must be of type boolean in SearchAndClickEvent")
+		}
 	}
-	if !ok1 || !ok2 || !ok3 || !ok4 {
-		return nil, errors.New("Invalid parse of arguments on SearchAndClick Event")
+
+	if e.Arguments["caseSearch"] != nil {
+		if caseSearch, validCast = e.Arguments["caseSearch"].(bool); !validCast {
+			return nil, errors.New("Parameter caseSearch must be of type boolean in SearchAndClickEvent")
+		}
+		if caseSearch {
+			if inputTitle, validCast = e.Arguments["inputTitle"].(string); !validCast {
+				return nil, errors.New("Parameter inputTitle is mandatory on a caseSearch and must be of type string in SearchAndClickEvent")
+			}
+		}
 	}
 
 	return &SearchAndClickEvent{
-		query:     query,
-		docTitle:  docTitle,
-		prob:      prob,
-		quickview: quickview,
+		query:      query,
+		docTitle:   docClickTitle,
+		prob:       prob,
+		quickview:  quickview,
+		caseSearch: caseSearch,
+		inputTitle: inputTitle,
 	}, nil
 }
 
@@ -48,6 +72,17 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	// Execute the search event
 	se := new(SearchEvent)
 	se.query = sc.query
+	if sc.caseSearch {
+		se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($qre(expression: undefined=%s, modifier: 50))", se.query, se.query)
+		se.actionCause = "inputChange"
+		se.actionType = "caseCreation"
+		se.customData = map[string]interface{}{
+			"inputTitle": sc.inputTitle,
+		}
+	} else {
+		se.actionCause = "searchboxSubmit"
+		se.actionType = "search box"
+	}
 	err := se.Execute(v)
 	if err != nil {
 		return err
