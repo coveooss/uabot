@@ -6,12 +6,20 @@ import (
 )
 
 var (
-	Trace   *log.Logger
-	Info    *log.Logger
+	// Trace Trace logging level
+	Trace *log.Logger
+
+	// Info Info logging level
+	Info *log.Logger
+
+	// Warning Warning logging level
 	Warning *log.Logger
-	Error   *log.Logger
+
+	// Error Error logging level
+	Error *log.Logger
 )
 
+// InitLogger Initialize the logger with different io.Writer for the the different logging levels
 func InitLogger(traceHandle io.Writer, infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
 
 	Trace = log.New(traceHandle, "TRACE >>> ", log.Ldate|log.Ltime|log.Lshortfile)
