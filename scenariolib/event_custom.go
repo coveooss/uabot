@@ -9,28 +9,41 @@ import "errors"
 
 // CustomEvent a struct representing a search, is defined by a query to execute
 type CustomEvent struct {
-	eventType  string
-	eventValue string
+	actionCause string
+	actionType  string
+	customData  map[string]interface{}
 }
 
-func newCustomEvent(e *JSONEvent, c *Config) (*CustomEvent, error) {
-	eventType, ok1 := e.Arguments["eventType"].(string)
-	eventValue, ok2 := e.Arguments["eventValue"].(string)
-	if !ok1 || !ok2 {
-		return nil, errors.New("Invalid parse of arguments on Custom Event")
+func newCustomEvent(e *JSONEvent) (*CustomEvent, error) {
+	var actionType, actionCause string
+	var customData map[string]interface{}
+	var validCast bool
+	if actionType, validCast = e.Arguments["actionType"].(string); !validCast {
+		return nil, errors.New("Parameter actionType is required and must be of type string in a custom event.")
+	}
+	if actionCause, validCast = e.Arguments["actionCause"].(string); !validCast {
+		return nil, errors.New("Parameter actionCause is required and must be of type string in a custom event.")
+	}
+	if e.Arguments["customData"] != nil {
+		if customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
+			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a custom event.")
+		}
 	}
 
 	return &CustomEvent{
-		eventType:  eventType,
-		eventValue: eventValue,
+		actionType:  actionType,
+		actionCause: actionCause,
+		customData:  customData,
 	}, nil
 }
 
 // Execute Execute the search event, runs the query and sends a search event to
 // the analytics.
 func (ce *CustomEvent) Execute(v *Visit) error {
-	Info.Printf("CustomEvent type: %s ||| value: %s", ce.eventType, ce.eventValue)
+	Info.Printf("CustomEvent cause: %s ||| type: %s ||| customData: %v", ce.actionCause, ce.actionType, ce.customData)
 
-	err := v.sendCustomEvent(ce.eventType, ce.eventValue)
-	return err
+	if err := v.sendCustomEvent(ce.actionCause, ce.actionType, ce.customData); err != nil {
+		return err
+	}
+	return nil
 }
