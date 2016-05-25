@@ -1,39 +1,42 @@
 # uabot [![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
 Bot to generate data to UA
 
+## Supports
+- [x] Search events
+- [x] Click events
+- [x] Custom events
+- [x] Facet events
+- [x] View events
+- [x] TabChange events
+
+## Environment variables
 Needs 3 environment variables to function :
 
-SEARCHTOKEN  => API key to search
+Variable | Usage
+------------ | -------------
+SEARCHTOKEN | API key to search
+UATOKEN | API key to send events to UA
+SCENARIOSURL | Url to the scenario JSON file to randomize
+LOCAL | `true` for local (otherwise don't use)
+GO15VENDOREXPERIMENT | Use this for go version < 1.6
 
-UATOKEN      => API key to send events to UA
 
-SCENARIOSURL => Url to the scenario JSON file to randomize
-
-GO15VENDOREXPERIMENT=1
-
-(Only if running golang < 1.6) To use the vendor folder for the lib for analytics/search api
-
-## On windows
+#### On windows
 ```sh
 set SEARCHTOKEN=value
 set UATOKEN=value
 set SCENARIOSURL=value
-# To use a local scenario json file
-set LOCAL=true
-# Only if running golang < v1.6
-set GO15VENDOREXPERIMENT=1
+set LOCAL=true #if scenariosurl is a local path
+set GO15VENDOREXPERIMENT=1 #if golang version < 1.6
 go run main.go
 ```
-## On MAC
+#### On MAC
 ```sh
 export SEARCHTOKEN = value
 export UATOKEN = value
 export SCENARIOSURL = value
-# To use a local scenario json file
-export LOCAL=true
-# Only if running golang < v1.6
-export GO15VENDOREXPERIMENT=1
-go build
+export LOCAL=true #if scenariosurl is a local path
+export GO15VENDOREXPERIMENT=1 #if golang version < 1.6
 go run main.go
 ```
 
