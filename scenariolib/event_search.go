@@ -51,7 +51,7 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 			se.actionCause = "inputChange"
 			se.actionType = "caseCreation"
 			keyword := se.query
-			se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($qre(expression: undefined=%s, modifier: 50))", keyword, keyword)
+			se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", keyword)
 			if inputTitle, validCast = e.Arguments["inputTitle"].(string); !validCast {
 				return nil, errors.New("Parameter inputTitle is required in a caseSearch and must be a string")
 			}

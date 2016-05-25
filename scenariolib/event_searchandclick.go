@@ -74,7 +74,6 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	se.query = sc.query
 	if sc.caseSearch {
 		se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", se.query)
-		//se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($qre(expression: undefined=%s, modifier: 50))", se.query, se.query)
 		se.actionCause = "inputChange"
 		se.actionType = "caseCreation"
 		se.customData = map[string]interface{}{
