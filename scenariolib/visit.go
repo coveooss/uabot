@@ -174,7 +174,7 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 }
 
 func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
-	Info.Printf("CustomEvent cause: %s ||| type: %s ||| customData: %v", actionCause, actionType, customData)
+	Info.Printf("CustomEvent cause: %s ||| type: %s", actionCause, actionType)
 	ce, err := ua.NewCustomEvent()
 	if err != nil {
 		return err
@@ -188,8 +188,16 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	ce.CustomData = customData
 	ce.OriginLevel1 = v.OriginLevel1
 	ce.OriginLevel2 = v.OriginLevel2
-	ce.CustomData["JSUIVersion"] = JSUIVERSION
-	ce.CustomData["ipadress"] = v.IP
+	if customData != nil {
+		ce.CustomData = customData
+		ce.CustomData["JSUIVersion"] = JSUIVERSION
+		ce.CustomData["ipadress"] = v.IP
+	} else {
+		ce.CustomData = map[string]interface{}{
+			"JSUIVersion": JSUIVERSION,
+			"ipadress":    v.IP,
+		}
+	}
 
 	// Send a UA search event
 	err = v.UAClient.SendCustomEvent(ce)
@@ -358,6 +366,10 @@ func (v *Visit) SetupGeneral() {
 		q.PartialMatch = v.Config.PartialMatch
 		q.PartialMatchKeywords = v.Config.PartialMatchKeywords
 		q.PartialMatchThreshold = v.Config.PartialMatchThreshold
+	}
+
+	if v.Config.Pipeline != "" {
+		q.Pipeline = v.Config.Pipeline
 	}
 
 	v.LastQuery = q
