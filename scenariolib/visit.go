@@ -174,7 +174,7 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 }
 
 func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
-	Info.Printf("CustomEvent cause: %s ||| type: %s", actionCause, actionType)
+	Info.Printf("Sending CustomEvent cause: %s ||| type: %s", actionCause, actionType)
 	ce, err := ua.NewCustomEvent()
 	if err != nil {
 		return err
