@@ -5,9 +5,10 @@ package scenariolib
 // Weight A Weight for randomizing scenarios
 // Events An array of actions the user will take
 type Scenario struct {
-	Name   string      `json:"name"`
-	Weight int         `json:"weight"`
-	Events []JSONEvent `json:"events"`
+	Name      string      `json:"name"`
+	Weight    int         `json:"weight"`
+	UserAgent string      `json:"useragent,omitempty"`
+	Events    []JSONEvent `json:"events"`
 }
 
 // JSONEvent An action taken by the user such as a search, a click, a SearchAndClick, etc.

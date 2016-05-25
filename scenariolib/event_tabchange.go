@@ -2,11 +2,7 @@
 // information to the usage analytics endpoint
 package scenariolib
 
-import (
-	"errors"
-
-	"github.com/k0kubun/pp"
-)
+import "errors"
 
 // ============== TAB CHANGE EVENT ======================
 // ======================================================
@@ -21,7 +17,7 @@ func newTabChangeEvent(e *JSONEvent) (*TabChangeEvent, error) {
 	name, ok1 := e.Arguments["tabName"].(string)
 	cq, ok2 := e.Arguments["tabCQ"].(string)
 	if !ok1 || !ok2 {
-		return nil, errors.New("ERR >>> Invalid parse of arguments on TabChange Event")
+		return nil, errors.New("Invalid parse of arguments on TabChange Event")
 	}
 
 	return &TabChangeEvent{
@@ -33,9 +29,9 @@ func newTabChangeEvent(e *JSONEvent) (*TabChangeEvent, error) {
 // Execute Sends the tabchange event to the analytics and modify the CQ for the
 // following queries in the visit
 func (tc *TabChangeEvent) Execute(v *Visit) error {
-	pp.Printf("\nLOG >>> Changing tab to %v with CQ : %v", tc.name, tc.cq)
+	Info.Printf("Changing tab to %s with CQ : %s", tc.name, tc.cq)
 
-	v.LastQuery.CQ = tc.cq
+	v.LastQuery.CQ = v.LastQuery.CQ + " " + tc.cq
 	v.OriginLevel2 = tc.name
 	v.LastQuery.Tab = tc.name
 
@@ -45,23 +41,10 @@ func (tc *TabChangeEvent) Execute(v *Visit) error {
 	}
 	v.LastResponse = resp
 
-	pp.Printf("\nLOG >>> Sending Tab Change Event : %v", tc.name)
-	err = v.sendInterfaceChangeEvent()
+	Info.Printf("Sending TabChange Event : %s", tc.name)
+	err = v.sendInterfaceChangeEvent("interfaceChange", "", map[string]interface{}{"interfaceChangeTo": v.OriginLevel2})
 	if err != nil {
 		return err
 	}
-	return nil
-}
-
-func (tc *TabChangeEvent) parseTabChangeEvent(e *JSONEvent) error {
-	name, ok1 := e.Arguments["tabName"].(string)
-	cq, ok2 := e.Arguments["tabCQ"].(string)
-	if !ok1 || !ok2 {
-		return errors.New("ERR >>> Invalid parse of arguments on TabChange Event")
-	}
-
-	tc.name = name
-	tc.cq = cq
-
 	return nil
 }

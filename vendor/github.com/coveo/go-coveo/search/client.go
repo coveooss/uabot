@@ -3,6 +3,8 @@ package search
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -71,6 +73,11 @@ func (c *client) Query(q Query) (*Response, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := ioutil.ReadAll(resp.Body)
+		fmt.Printf("\nRequest response error (%d): %s\n", resp.StatusCode, string(body))
+	}
 
 	queryResponse := &Response{}
 	err = json.NewDecoder(resp.Body).Decode(queryResponse)
