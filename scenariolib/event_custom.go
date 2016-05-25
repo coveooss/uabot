@@ -40,8 +40,6 @@ func newCustomEvent(e *JSONEvent) (*CustomEvent, error) {
 // Execute Execute the search event, runs the query and sends a search event to
 // the analytics.
 func (ce *CustomEvent) Execute(v *Visit) error {
-	Info.Printf("CustomEvent cause: %s ||| type: %s ||| customData: %v", ce.actionCause, ce.actionType, ce.customData)
-
 	if err := v.sendCustomEvent(ce.actionCause, ce.actionType, ce.customData); err != nil {
 		return err
 	}
