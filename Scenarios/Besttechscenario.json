@@ -242,69 +242,63 @@
 				},
 					{
 				"name"   : "Scenarios deflected (Reset)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
-					{"type" : "Search", "arguments" : { "queryText" : "Reset", "goodQuery" : true, "caseSearch" : true,
-				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-				  {"type" : "SearchAndClick", "arguments" : { "queryText" : "Reset", "docClickTitle" : "How Do I Perform a Factory Reset?", "goodQuery" : false } },
+				  {"type" : "SearchAndClick", "arguments" : { "queryText" : "Reset", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "How Do I Perform a Factory Reset?", "goodQuery" : false } },
 					{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : {"hasClicks": true}}}]
 				},
 					{
 				"name"   : "Scenarios deflected (Tv Blank)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
-					{"type" : "Search", "arguments" : { "queryText" : "Tv Blank", "goodQuery" : true, "caseSearch" : true,
-				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-				  {"type" : "SearchAndClick", "arguments" : { "queryText" : "Tv Blank", "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
+				  {"type" : "SearchAndClick", "arguments" : { "queryText" : "Tv Blank", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
 					{"type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : {"hasClicks": true}}}]
 					},
 					{
 				"name"   : "Scenarios deflected (No connection)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
-					{"type" : "Search", "arguments" : { "queryText" : "No connection", "goodQuery" : true, "caseSearch" : true,
-				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-				  {"type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "docClickTitle" : "*Unable to Connect to the Internet*", "goodQuery" : false } },
-					{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : {"hasClicks": true}}}]
+				  {"type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "*Unable to Connect to the Internet*", "goodQuery" : false } },
+					{"type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : {"hasClicks": true}}}]
 					},
 					{
 				"name"   : "Scenarios deflected (Netflix)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
 					{"type" : "Search", "arguments" : { "queryText" : "Netflix", "goodQuery" : true, "caseSearch" : true,
 				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } }]
 				},
 					{
 				"name"   : "Scenarios deflected (Download software Update)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
 					{"type" : "Search", "arguments" : { "queryText" : "Download software Update", "goodQuery" : true, "caseSearch" : true,
 				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } }]
 				},
 					{
 				"name"   : "Scenarios deflected (Gear VR)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
 					{"type" : "Search", "arguments" : { "queryText" : "Gear VR", "goodQuery" : true, "caseSearch" : true,
 				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } }]
 				},
 					{
 				"name"   : "Scenarios deflected (Bravia)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
 					{"type" : "Search", "arguments" : { "queryText" : "Bravia", "goodQuery" : true, "caseSearch" : true,
 				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } }]
 				},
 					{
 				"name"   : "Scenarios deflected (Hdmi Not Working)",
-				"weight" : 2,
+				"weight" : 3,
 				"events" : [
 					{"type" : "Search", "arguments" : { "queryText" : "Hdmi Not Working", "goodQuery" : true, "caseSearch" : true,
 				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } }]
 				},
 					{
 				"name"   : "Scenarios not deflected (bx6r6)",
-				"weight" : 2,
+				"weight" : 7,
 				"events" : [
 					{"type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true,
 				"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
@@ -312,7 +306,7 @@
 					},
 					{
 				"name"   : "Scenarios not deflected (No Netflix)",
-			 "weight" : 2,
+			 "weight" : 7,
 			 "events" : [
 				 {"type" : "Search", "arguments" : { "queryText" : "No Netflix", "goodQuery" : true, "caseSearch" : true,
 			 "actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
@@ -320,7 +314,7 @@
 				 },
 				{
 			 "name"   : "Scenarios not deflected (Not Sync)",
-		  "weight" : 2,
+		  "weight" : 7,
 			"events" : [
 			  {"type" : "Search", "arguments" : { "queryText" : "Not Sync", "goodQuery" : true, "caseSearch" : true,
 		  "actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
@@ -328,48 +322,44 @@
 				},
 				{
 		  "name"   : "Scenarios not deflected (No HD)",
-		  "weight" : 2,
+		  "weight" : 7,
 	   	"events" : [
-		 	 {"type" : "Search", "arguments" : { "queryText" : "No HD", "goodQuery" : true, "caseSearch" : true,
-		  "actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-		   {"type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false }},
+		 	 {"type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false }},
 			 {"type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation" }}]
 			 },
 				{
 		  "name"   : "Scenarios not deflected (Blank Tv)",
-		  "weight" : 2,
+		  "weight" : 7,
 		  "events" : [
-		   {"type" : "Search", "arguments" : { "queryText" : "Blank Tv", "goodQuery" : true, "caseSearch" : true,
-		  "actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-		   {"type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
+		   {"type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
 			 {"type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation" }}]
 			 },
 				{
 		  "name"   : "Scenarios not deflected (TV bluescreen)",
-		  "weight" : 2,
+		  "weight" : 7,
 		  "events" : [
-		   {"type" : "Search", "arguments" : { "queryText" : "TV bluescreen", "goodQuery" : true, "caseSearch" : true,
-		  "actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-			{"type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false }},
+			{"type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false }},
 			{"type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation" }}]
-		}
+			},
+			{
+			"name"   : "Scenarios deflected (Tv don't open)",
+			"weight" : 2,
+			"events" : [
+			{"type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true,
+			"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
+			{"type" : "Custom", "arguments" : {"actionCause":"unloadPage","actionType":"caseCreation"}}
+		]
+		},
+			 {
+			"name"   : "Scenarios deflected (Connection Netflix Description)",
+			"weight" : 2,
+			"events" : [
+				{"type" : "Search", "arguments" : { "queryText" : "Connection Netflix Description", "goodQuery" : true, "caseSearch" : true,
+			"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
+			{"type" : "Custom", "arguments" : {"actionCause":"unloadPage","actionType":"caseCreation"}}
 		]
 	}
-
-
-
-
-	{
-	"name"   : "Scenarios deflected (Tv don't open)",
-	"weight" : 2,
-	"events" : [
-	{"type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true,
-	"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-	Page unload
-	 {
-	"name"   : "Scenarios deflected (Connection Netflix Description)",
-	"weight" : 2,
-	"events" : [
-		{"type" : "Search", "arguments" : { "queryText" : "Connection Netflix Description", "goodQuery" : true, "caseSearch" : true,
-	"actionCause" : "inputChange", "actionType" : "caseCreation", "inputTitle" : "Subject" } },
-	Page unload
+]
+}
+]
+}
