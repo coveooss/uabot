@@ -11,7 +11,7 @@ type Query struct {
 	Tab                   string            `json:"tab,omitempty"`
 	PartialMatch          bool              `json:"partialMatch,omitempty"`
 	PartialMatchKeywords  int               `json:"partialMatchKeywords,omitempty"`
-	PartialMatchThreshold string            `json:"partialMatchTreshold"`
+	PartialMatchThreshold string            `json:"partialMatchTreshold,omitempty"`
 	Pipeline              string            `json:"pipeline,omitempty"`
 }
 
