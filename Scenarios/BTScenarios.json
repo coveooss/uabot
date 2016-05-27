@@ -308,8 +308,7 @@
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Bravia", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
 				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
-			]
-		},
+		]},
 		{
 			"name"   : "Scenarios deflected (Hdmi Not Working)",
 			"weight" : 3,
