@@ -308,11 +308,7 @@
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Bravia", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
 				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
-<<<<<<< HEAD
-		},
-=======
-		]},
->>>>>>> 5739464159abd23ede23b7bf4b125e06d551f46b
+				]},
 		{
 			"name"   : "Scenarios deflected (Hdmi Not Working)",
 			"weight" : 3,
@@ -328,7 +324,8 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true }} }				]
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true }} }
+			]
 		},
 		{
 			"name"   : "Scenarios not deflected (No Netflix)",
