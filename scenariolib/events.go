@@ -56,6 +56,13 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 			return nil, err
 		}
 		return event, nil
+
+	case "SetOrigin":
+		event, err := newSetOriginEvent(e)
+		if err != nil {
+			return nil, err
+		}
+		return event, nil
 	}
 	return nil, errors.New("Event type not supported")
 }

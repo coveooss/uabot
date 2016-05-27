@@ -30,6 +30,7 @@ type Visit struct {
 	Username     string
 	OriginLevel1 string
 	OriginLevel2 string
+	OriginLevel3 string
 	LastTab      string
 	Config       *Config
 	IP           string
