@@ -30,7 +30,7 @@ type Config struct {
 	GoodQueries           []string    `json:"randomGoodQueries"`
 	BadQueries            []string    `json:"randomBadQueries"`
 	Scenarios             []*Scenario `json:"scenarios"`
-	DefaultOriginLevel1   string      `json:"defaultOriginLevel1"`
+	DefaultOriginLevel1   string      `json:"defaultOriginLevel1,omitempty"`
 	GlobalFilter          string      `json:"globalfilter,omitempty"`
 	SearchEndpoint        string      `json:"searchendpoint,omitempty"`
 	AnalyticsEndpoint     string      `json:"analyticsendpoint,omitempty"`
@@ -44,6 +44,7 @@ type Config struct {
 	PartialMatchKeywords  int         `json:"partialMatchKeywords,omitempty"`
 	PartialMatchThreshold string      `json:"partialMatchThreshold,omitempty"`
 	Pipeline              string      `json:"pipeline,omitempty"`
+	TimeBetweenVisits     int         `json:"timeBetweenVisits,omitempty"`
 }
 
 // RandomScenario Returns a random scenario from the list of possible scenarios.
