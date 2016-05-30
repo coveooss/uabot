@@ -19,22 +19,15 @@ var (
 	Error   *log.Logger
 )
 
-const (
-	// USERAGENT This is the user agent the bot appears to be using.
-	//USERAGENT string = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+// DEFAULTTIMEBETWEENVISITS The time for the bot to wait between visits, between 0 and X Seconds
+const DEFAULTTIMEBETWEENVISITS int = 120
 
-	// TIMEBETWEENVISITS The time for the bot to wait between visits, between 0 and X Seconds
-	TIMEBETWEENVISITS int = 120
-)
+var timeVisits int
 
 func Init(traceHandle io.Writer, infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
-
 	Trace = log.New(traceHandle, "TRACE | ", log.Ldate|log.Ltime|log.Lshortfile)
-
 	Info = log.New(infoHandle, "INFO | ", log.Ldate|log.Ltime)
-
 	Warning = log.New(warningHandle, "WARNING | ", log.Ldate|log.Ltime|log.Lshortfile)
-
 	Error = log.New(errorHandle, "ERROR | ", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
@@ -95,6 +88,12 @@ func main() {
 			timeNow = time.Now()
 		}
 
+		if conf.TimeBetweenVisits > 0 {
+			timeVisits = conf.TimeBetweenVisits
+		} else {
+			timeVisits = DEFAULTTIMEBETWEENVISITS
+		}
+
 		scenario, err := conf.RandomScenario()
 		if err != nil {
 			Error.Println(err)
@@ -126,7 +125,7 @@ func main() {
 		}
 
 		visit.UAClient.DeleteVisit()
-		time.Sleep(time.Duration(rand.Intn(TIMEBETWEENVISITS)) * time.Second)
+		time.Sleep(time.Duration(rand.Intn(timeVisits)) * time.Second)
 
 		count++
 		Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
