@@ -1,7 +1,7 @@
 {
 	"searchendpoint" 		: "https://cloudplatform.coveo.com/rest/search/",
 	"analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
-	"defaultOriginLevel1" 	: "Search",
+	"defaultOriginLevel1" 	: "CommunitySearch",
 	"timeBetweenVisits"		: 1,
 	"timeBetweenActions"	: 1,
 	"allowAnonymousVisits"	: true,
