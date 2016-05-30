@@ -46,6 +46,24 @@
 			]
 		},
 		{
+			"name"   : "Scenarios deflected (kdl-60ex700)",
+			"weight" : 3,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "kdl-60ex700", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "Re: KDL-60EX700 software update", "goodQuery" : false } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+			]
+		},
+		{
+			"name"   : "Scenarios deflected (xbr6 user guide)",
+			"weight" : 3,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "BestTech V515W LCD TV Setup Guide", "goodQuery" : false } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+			]
+		},
+		{
 			"name"   : "Scenarios deflected (Netflix)",
 			"weight" : 3,
 			"events" : [
@@ -140,6 +158,24 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false }},
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (no picture on BX620 tv)",
+			"weight" : 7,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false }},
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (tv is not working)",
+			"weight" : 7,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "BesttechCommunityCaseCreation"}},
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "tv is not working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "Help to setup my BestTech TV and next generation", "goodQuery" : false }},
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
 			]
 		},
