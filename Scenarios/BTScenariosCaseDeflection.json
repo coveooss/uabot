@@ -1,9 +1,7 @@
 {
 	"searchendpoint" : "https://cloudplatform.coveo.com/rest/search/",
 	"analyticsendpoint" : "https://usageanalytics.coveo.com/rest/v15/analytics/",
-	"partialMatch" : true,
-	"partialMatchKeywords" : 4,
-	"partialMatchTreshold" : "50%",
+	"defaultOriginLevel1" : "BesttechCommunitySearch",
 	"orgName"     : "Besttech",
 	"pipeline" : "besttechCommunity",
 	"globalfilter" : "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",

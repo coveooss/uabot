@@ -30,6 +30,7 @@ type Config struct {
 	GoodQueries           []string    `json:"randomGoodQueries"`
 	BadQueries            []string    `json:"randomBadQueries"`
 	Scenarios             []*Scenario `json:"scenarios"`
+	DefaultOriginLevel1   string      `json:"defaultOriginLevel1"`
 	GlobalFilter          string      `json:"globalfilter,omitempty"`
 	SearchEndpoint        string      `json:"searchendpoint,omitempty"`
 	AnalyticsEndpoint     string      `json:"analyticsendpoint,omitempty"`

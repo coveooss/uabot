@@ -375,6 +375,10 @@ func (v *Visit) SetupGeneral() {
 
 	v.LastQuery = q
 
-	v.OriginLevel1 = ORIGINALL
+	if v.Config.DefaultOriginLevel1 != "" {
+		v.OriginLevel1 = v.Config.DefaultOriginLevel1
+	} else {
+		v.OriginLevel1 = ORIGINALL
+	}
 	v.OriginLevel2 = ORIGINALL
 }
