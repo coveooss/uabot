@@ -11,8 +11,6 @@ import (
 	"github.com/erocheleau/uabot/defaults"
 )
 
-var _scenariosMap = map[int]*Scenario{}
-
 // Config This is the struct that holds all the info on the current bot session.
 //
 // OrgName     The name of the Org where you run the bot.
@@ -45,7 +43,13 @@ type Config struct {
 	PartialMatchThreshold string      `json:"partialMatchThreshold,omitempty"`
 	Pipeline              string      `json:"pipeline,omitempty"`
 	TimeBetweenVisits     int         `json:"timeBetweenVisits,omitempty"`
+	TimeBetweenActions    int         `json:"timeBetweenActions,omitempty"`
+	AllowAnonymous        bool        `json:"allowAnonymousVisits,omitempty"`
+	AnonymousTreshold     float64     `json:"anonymousTreshold,omitempty"`
 }
+
+// DEFAULTANONYMOUSTRESHOLD The default portion of users who are anonymous
+const DEFAULTANONYMOUSTRESHOLD float64 = 0.5
 
 // RandomScenario Returns a random scenario from the list of possible scenarios.
 // returns an error if there are no scenarios

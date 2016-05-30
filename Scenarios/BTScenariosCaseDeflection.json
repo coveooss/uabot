@@ -3,10 +3,13 @@
 	"analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
 	"defaultOriginLevel1" 	: "BesttechCommunitySearch",
 	"timeBetweenVisits"		: 1,
-	"orgName"     	: "Besttech",
-	"pipeline" 		: "besttechCommunity",
-	"globalfilter" 	: "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
-	"randomGoodQueries" : [
+	"timeBetweenActions"	: 1,
+	"allowAnonymousVisits"	: true,
+	"anonymousTreshold" 	: 0.5,
+	"orgName"     			: "Besttech",
+	"pipeline" 				: "besttechCommunity",
+	"globalfilter" 			: "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
+	"randomGoodQueries" 	: [
 		"hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access", "picture quality", "tv is not working",
 		"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV",
 		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual",
@@ -17,6 +20,14 @@
 	],
 	"randomBadQueries" : [ "no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM", "piks", "connektion" ],
 	"scenarios" : [
+		{
+			"name"   : "GQ -> C(60%)",
+			"weight" : 20,
+			"events" : [
+				{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+			]
+		},
 		{
 			"name"   : "Scenarios deflected (Reset)",
 			"weight" : 3,

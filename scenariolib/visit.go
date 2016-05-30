@@ -34,13 +34,14 @@ type Visit struct {
 	LastTab      string
 	Config       *Config
 	IP           string
+	Anonymous    bool
 }
 
 const (
 	// JSUIVERSION Change this to the version of JSUI you want to appear to be using.
 	JSUIVERSION string = "0.0.0.0;0.0.0.0"
-	// TIMEBETWEENACTIONS The time in seconds to wait between the different actions inside a visit
-	TIMEBETWEENACTIONS int = 5
+	// DEFAULTTIMEBETWEENACTIONS The time in seconds to wait between the different actions inside a visit
+	DEFAULTTIMEBETWEENACTIONS int = 5
 	// ORIGINALL The origin level of All
 	ORIGINALL string = "ALL"
 )
@@ -54,8 +55,25 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
 	v := Visit{}
-	v.Username = buildUserEmail(c)
-	Info.Printf("New visit from %s", v.Username)
+	v.Config = c
+
+	v.Anonymous = false
+	if c.AllowAnonymous {
+		var treshold float64
+		if c.AnonymousTreshold > 0 {
+			treshold = c.AnonymousTreshold
+		} else {
+			treshold = DEFAULTANONYMOUSTRESHOLD
+		}
+		if rand.Float64() <= treshold {
+			v.Anonymous = true
+			Info.Printf("Anonymous visit")
+		}
+	}
+	if !v.Anonymous {
+		v.Username = buildUserEmail(c)
+		Info.Printf("New visit from %s", v.Username)
+	}
 	Info.Printf("On device %s", _useragent)
 
 	// Create the http searchClient
@@ -75,8 +93,6 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 		return nil, err
 	}
 	v.UAClient = uaClient
-
-	v.Config = c
 
 	return &v, nil
 }
@@ -100,8 +116,13 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 		if err != nil {
 			return err
 		}
-
-		WaitBetweenActions()
+		var timeToWait int
+		if c.TimeBetweenActions > 0 {
+			timeToWait = c.TimeBetweenActions
+		} else {
+			timeToWait = DEFAULTTIMEBETWEENACTIONS
+		}
+		WaitBetweenActions(timeToWait)
 	}
 	return nil
 }
@@ -114,6 +135,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	}
 
 	se.Username = v.Username
+	se.Anonymous = v.Anonymous
 	se.SearchQueryUID = v.LastResponse.SearchUID
 	se.QueryText = q
 	se.AdvancedQuery = v.LastQuery.AQ
@@ -158,9 +180,10 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 	ve := ua.NewViewEvent()
 
 	ve.Username = v.Username
+	ve.Anonymous = v.Anonymous
 	ve.OriginLevel1 = v.OriginLevel1
 	ve.OriginLevel2 = v.OriginLevel2
-	ve.Anonymous = false
+	ve.Anonymous = v.Anonymous
 	ve.PageReferrer = pageReferrer
 	ve.PageTitle = pageTitle
 	ve.PageURI = pageURI
@@ -182,6 +205,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	}
 
 	ce.Username = v.Username
+	ce.Anonymous = v.Anonymous
 	ce.ActionCause = actionCause
 	ce.ActionType = actionType
 	ce.EventType = actionType
@@ -226,6 +250,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 	event.QueryPipeline = v.LastResponse.Pipeline
 	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
 	event.Username = v.Username
+	event.Anonymous = v.Anonymous
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
 	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
@@ -263,6 +288,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	}
 
 	ice.Username = v.Username
+	ice.Anonymous = v.Anonymous
 	ice.SearchQueryUID = v.LastResponse.SearchUID
 	ice.QueryText = v.LastQuery.Q
 	ice.AdvancedQuery = v.LastQuery.AQ
@@ -308,8 +334,8 @@ func (v *Visit) FindDocumentRankByTitle(toFind string) int {
 }
 
 // WaitBetweenActions Wait a random number of seconds between user actions
-func WaitBetweenActions() {
-	time.Sleep(time.Duration(rand.Intn(TIMEBETWEENACTIONS)+3) * time.Second)
+func WaitBetweenActions(timeToWait int) {
+	time.Sleep(time.Duration(rand.Intn(timeToWait)) * time.Second)
 }
 
 // Min Function to return the minimal value between two integers, because Go "forgot"

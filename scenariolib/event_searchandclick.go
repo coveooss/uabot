@@ -92,7 +92,13 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 		return errors.New("Last query returned no results")
 	}
 
-	WaitBetweenActions()
+	var timeToWait int
+	if v.Config.TimeBetweenActions > 0 {
+		timeToWait = v.Config.TimeBetweenActions
+	} else {
+		timeToWait = DEFAULTTIMEBETWEENACTIONS
+	}
+	WaitBetweenActions(timeToWait)
 
 	if rand.Float64() <= sc.prob {
 		rank := v.FindDocumentRankByTitle(sc.docTitle)
