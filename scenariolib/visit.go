@@ -129,36 +129,48 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 
 func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData map[string]interface{}) error {
 	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
-	se, err := ua.NewSearchEvent()
+	event, err := ua.NewSearchEvent()
 	if err != nil {
 		return err
 	}
 
-	se.Username = v.Username
-	se.Anonymous = v.Anonymous
-	se.SearchQueryUID = v.LastResponse.SearchUID
-	se.QueryText = q
-	se.AdvancedQuery = v.LastQuery.AQ
-	se.ActionCause = actionCause
-	se.ActionType = actionType
-	se.OriginLevel1 = v.OriginLevel1
-	se.OriginLevel2 = v.OriginLevel2
-	se.NumberOfResults = v.LastResponse.TotalCount
-	se.ResponseTime = v.LastResponse.Duration
+	event.Username = v.Username
+	event.Anonymous = v.Anonymous
+	event.SearchQueryUID = v.LastResponse.SearchUID
+	event.QueryText = q
+	event.AdvancedQuery = v.LastQuery.AQ
+	event.ActionCause = actionCause
+	event.ActionType = actionType
+	event.OriginLevel1 = v.OriginLevel1
+	event.OriginLevel2 = v.OriginLevel2
+	event.NumberOfResults = v.LastResponse.TotalCount
+	event.ResponseTime = v.LastResponse.Duration
 	if customData != nil {
-		se.CustomData = customData
-		se.CustomData["JSUIVersion"] = JSUIVERSION
-		se.CustomData["ipadress"] = v.IP
+		event.CustomData = customData
+		event.CustomData["JSUIVersion"] = JSUIVERSION
+		event.CustomData["ipadress"] = v.IP
 	} else {
-		se.CustomData = map[string]interface{}{
+		event.CustomData = map[string]interface{}{
 			"JSUIVersion": JSUIVERSION,
 			"ipadress":    v.IP,
 		}
 	}
 
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+		if !v.Anonymous {
+			if rand.Float64() <= 0.1 {
+				event.CustomData["entitlement"] = "Premier"
+			} else {
+				event.CustomData["entitlement"] = "Basic"
+			}
+		} else {
+			event.CustomData["entitlement"] = "Anonymous"
+		}
+	}
+
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
-			se.Results = []ua.ResultHash{
+			event.Results = []ua.ResultHash{
 				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
@@ -167,7 +179,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	}
 
 	// Send a UA search event
-	error := v.UAClient.SendSearchEvent(se)
+	error := v.UAClient.SendSearchEvent(event)
 	if error != nil {
 		return err
 	}
@@ -199,33 +211,45 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 
 func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
 	Info.Printf("Sending CustomEvent cause: %s ||| type: %s", actionCause, actionType)
-	ce, err := ua.NewCustomEvent()
+	event, err := ua.NewCustomEvent()
 	if err != nil {
 		return err
 	}
 
-	ce.Username = v.Username
-	ce.Anonymous = v.Anonymous
-	ce.ActionCause = actionCause
-	ce.ActionType = actionType
-	ce.EventType = actionType
-	ce.EventValue = actionCause
-	ce.CustomData = customData
-	ce.OriginLevel1 = v.OriginLevel1
-	ce.OriginLevel2 = v.OriginLevel2
+	event.Username = v.Username
+	event.Anonymous = v.Anonymous
+	event.ActionCause = actionCause
+	event.ActionType = actionType
+	event.EventType = actionType
+	event.EventValue = actionCause
+	event.CustomData = customData
+	event.OriginLevel1 = v.OriginLevel1
+	event.OriginLevel2 = v.OriginLevel2
 	if customData != nil {
-		ce.CustomData = customData
-		ce.CustomData["JSUIVersion"] = JSUIVERSION
-		ce.CustomData["ipadress"] = v.IP
+		event.CustomData = customData
+		event.CustomData["JSUIVersion"] = JSUIVERSION
+		event.CustomData["ipadress"] = v.IP
 	} else {
-		ce.CustomData = map[string]interface{}{
+		event.CustomData = map[string]interface{}{
 			"JSUIVersion": JSUIVERSION,
 			"ipadress":    v.IP,
 		}
 	}
 
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+		if !v.Anonymous {
+			if rand.Float64() <= 0.1 {
+				event.CustomData["entitlement"] = "Premier"
+			} else {
+				event.CustomData["entitlement"] = "Basic"
+			}
+		} else {
+			event.CustomData["entitlement"] = "Anonymous"
+		}
+	}
+
 	// Send a UA search event
-	err = v.UAClient.SendCustomEvent(ce)
+	err = v.UAClient.SendCustomEvent(event)
 	return err
 }
 
@@ -274,6 +298,18 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 		"ipadress":    v.IP,
 	}
 
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+		if !v.Anonymous {
+			if rand.Float64() <= 0.1 {
+				event.CustomData["entitlement"] = "Premier"
+			} else {
+				event.CustomData["entitlement"] = "Basic"
+			}
+		} else {
+			event.CustomData["entitlement"] = "Anonymous"
+		}
+	}
+
 	err = v.UAClient.SendClickEvent(event)
 	if err != nil {
 		return err
@@ -282,27 +318,27 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 }
 
 func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customData map[string]interface{}) error {
-	ice, err := ua.NewSearchEvent()
+	event, err := ua.NewSearchEvent()
 	if err != nil {
 		return err
 	}
 
-	ice.Username = v.Username
-	ice.Anonymous = v.Anonymous
-	ice.SearchQueryUID = v.LastResponse.SearchUID
-	ice.QueryText = v.LastQuery.Q
-	ice.AdvancedQuery = v.LastQuery.AQ
-	ice.ActionCause = actionCause
-	ice.ActionType = actionType
-	ice.OriginLevel1 = v.OriginLevel1
-	ice.OriginLevel2 = v.OriginLevel2
-	ice.NumberOfResults = v.LastResponse.TotalCount
-	ice.ResponseTime = v.LastResponse.Duration
-	ice.CustomData = customData
+	event.Username = v.Username
+	event.Anonymous = v.Anonymous
+	event.SearchQueryUID = v.LastResponse.SearchUID
+	event.QueryText = v.LastQuery.Q
+	event.AdvancedQuery = v.LastQuery.AQ
+	event.ActionCause = actionCause
+	event.ActionType = actionType
+	event.OriginLevel1 = v.OriginLevel1
+	event.OriginLevel2 = v.OriginLevel2
+	event.NumberOfResults = v.LastResponse.TotalCount
+	event.ResponseTime = v.LastResponse.Duration
+	event.CustomData = customData
 
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
-			ice.Results = []ua.ResultHash{
+			event.Results = []ua.ResultHash{
 				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
@@ -310,12 +346,24 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		}
 	}
 
-	ice.CustomData = map[string]interface{}{
+	event.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
 		"ipadress":    v.IP,
 	}
 
-	err = v.UAClient.SendSearchEvent(ice)
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+		if !v.Anonymous {
+			if rand.Float64() <= 0.1 {
+				event.CustomData["entitlement"] = "Premier"
+			} else {
+				event.CustomData["entitlement"] = "Basic"
+			}
+		} else {
+			event.CustomData["entitlement"] = "Anonymous"
+		}
+	}
+
+	err = v.UAClient.SendSearchEvent(event)
 	if err != nil {
 		return err
 	}

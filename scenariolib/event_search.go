@@ -12,7 +12,9 @@ import (
 
 // SearchEvent a struct representing a search, is defined by a query to execute
 type SearchEvent struct {
-	query       string
+	query string
+	// keyword exists because the query sent to the index may be diffrent than the keyword(s) used to search
+	keyword     string
 	actionCause string
 	actionType  string
 	customData  map[string]interface{}
@@ -38,7 +40,7 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 			return nil, err
 		}
 	}
-
+	se.keyword = se.query
 	se.actionCause = "searchboxSubmit"
 	se.actionType = "search box"
 
@@ -50,8 +52,7 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 		if caseSearch {
 			se.actionCause = "inputChange"
 			se.actionType = "caseCreation"
-			keyword := se.query
-			se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", keyword)
+			se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", se.keyword)
 			if inputTitle, validCast = e.Arguments["inputTitle"].(string); !validCast {
 				return nil, errors.New("Parameter inputTitle is required in a caseSearch and must be a string")
 			}
@@ -77,7 +78,7 @@ func (se *SearchEvent) Execute(v *Visit) error {
 	}
 	v.LastResponse = resp
 
-	err = v.sendSearchEvent(se.query, se.actionCause, se.actionType, se.customData)
+	err = v.sendSearchEvent(se.keyword, se.actionCause, se.actionType, se.customData)
 	if err != nil {
 		return err
 	}

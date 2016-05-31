@@ -72,6 +72,7 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	// Execute the search event
 	se := new(SearchEvent)
 	se.query = sc.query
+	se.keyword = sc.query
 	if sc.caseSearch {
 		se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", se.query)
 		se.actionCause = "inputChange"

@@ -46,6 +46,7 @@ type Config struct {
 	TimeBetweenActions    int         `json:"timeBetweenActions,omitempty"`
 	AllowAnonymous        bool        `json:"allowAnonymousVisits,omitempty"`
 	AnonymousTreshold     float64     `json:"anonymousTreshold,omitempty"`
+	AllowEntitlements     bool        `json:"allowEntitlements,omitempty"`
 }
 
 // DEFAULTANONYMOUSTRESHOLD The default portion of users who are anonymous
