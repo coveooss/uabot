@@ -27,7 +27,7 @@
 	"scenarios" : [
 		{
 			"name"   : "GQ -> C(60%)",
-			"weight" : 5,
+			"weight" : 60,
 			"events" : [
 				{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 				{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
@@ -35,7 +35,7 @@
 		},
 		{
 			"name"   : "GQ -> C(45%) -> GQ -> C(50%)",
-			"weight" : 4,
+			"weight" : 20,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
@@ -45,7 +45,7 @@
 		},
 		{
 			"name"   : "GQ -> C(55%) -> GQ -> C(55%) -> GQ -> C(60%)",
-			"weight" : 3,
+			"weight" : 10,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.45 } },
