@@ -2,8 +2,8 @@
 	"searchendpoint" 		: "https://cloudplatform.coveo.com/rest/search/",
 	"analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
 	"defaultOriginLevel1" 	: "CommunitySearch",
-	"timeBetweenVisits"		: 1,
-	"timeBetweenActions"	: 1,
+	"timeBetweenVisits"		: 10,
+	"timeBetweenActions"	: 2,
 	"allowAnonymousVisits"	: true,
 	"anonymousTreshold" 	: 0.5,
 	"orgName"     			: "Besttech",
@@ -22,7 +22,7 @@
 	"scenarios" : [
 		{
 			"name"   : "GQ -> C(60%)",
-			"weight" : 20,
+			"weight" : 50,
 			"events" : [
 				{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
 				{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
@@ -33,7 +33,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Reset", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "How Do I Perform a Factory Reset?", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Reset", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "How Do I Perform a Factory Reset?", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
 			]
 		},
@@ -42,7 +42,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Tv Blank", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Tv Blank", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
 			]
 		},
@@ -51,7 +51,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "*Unable to Connect to the Internet*", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "*Unable to Connect to the Internet*", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
 			]
 		},
@@ -60,7 +60,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "kdl-60ex700", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "Re: KDL-60EX700 software update", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "kdl-60ex700", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "Re: KDL-60EX700 software update", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
 			]
 		},
@@ -69,13 +69,13 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "BestTech V515W LCD TV Setup Guide", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "BestTech V515W LCD TV Setup Guide", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
 			]
 		},
 		{
 			"name"   : "Scenarios deflected (Netflix)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -84,7 +84,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Download software Update)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Download software Update", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -93,7 +93,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Gear VR)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Gear VR", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -102,7 +102,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Bravia)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Bravia", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -110,7 +110,7 @@
 				]},
 		{
 			"name"   : "Scenarios deflected (Hdmi Not Working)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Hdmi Not Working", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
