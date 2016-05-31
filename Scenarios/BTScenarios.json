@@ -300,7 +300,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Netflix)",
-			"weight" : 1,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -309,7 +309,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Download software Update)",
-			"weight" : 1,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Download software Update", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -318,7 +318,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Gear VR)",
-			"weight" : 1,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Gear VR", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -327,7 +327,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Bravia)",
-			"weight" : 1,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Bravia", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -335,8 +335,10 @@
 				]},
 		{
 			"name"   : "Scenarios deflected (Hdmi Not Working)",
-			"weight" : 1,
+			"weight" : 3,
 			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "Hdmi Not Working", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Hdmi Not Working", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
 				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
@@ -355,6 +357,8 @@
 			"name"   : "Scenarios not deflected (No Netflix)",
 			"weight" : 7,
 			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "Netflix problem", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "No Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true }} }
@@ -382,6 +386,8 @@
 			"name"   : "Scenarios not deflected (Blank Tv)",
 			"weight" : 7,
 			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "Tv blank", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
@@ -416,7 +422,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Tv don't open)",
-			"weight" : 2,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -425,8 +431,10 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Connection Netflix Description)",
-			"weight" : 2,
+			"weight" : 3,
 			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "Connection Netflix", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Connection Netflix Description", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
 				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
