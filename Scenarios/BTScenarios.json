@@ -256,7 +256,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Reset)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Reset", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "How Do I Perform a Factory Reset?", "goodQuery" : false } },
@@ -265,7 +265,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Tv Blank)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Tv Blank", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
@@ -274,7 +274,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (No connection)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "*Unable to Connect to the Internet*", "goodQuery" : false } },
@@ -283,7 +283,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (kdl-60ex700)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "kdl-60ex700", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "Re: KDL-60EX700 software update", "goodQuery" : false } },
@@ -292,7 +292,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (xbr6 user guide)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "BestTech V515W LCD TV Setup Guide", "goodQuery" : false } },
@@ -301,7 +301,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Netflix)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -310,7 +310,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Download software Update)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Download software Update", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -320,7 +320,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Gear VR)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Gear VR", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -330,7 +330,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (Bravia)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Bravia screen broken", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -339,7 +339,7 @@
 			},
 		{
 			"name"   : "Scenarios deflected (Hdmi Not Working)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Hdmi Not Working", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
@@ -351,7 +351,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (bx6r6)",
-			"weight" : 7,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -360,7 +360,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (No Netflix)",
-			"weight" : 12,
+			"weight" : 5,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Netflix problem", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
@@ -371,7 +371,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (Not Sync)",
-			"weight" : 7,
+			"weight" : 2,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Account cannot Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -380,7 +380,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (No HD)",
-			"weight" : 7,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false } },
@@ -389,7 +389,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (Blank Tv)",
-			"weight" : 12,
+			"weight" : 4,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Tv blank", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
@@ -400,7 +400,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (TV bluescreen)",
-			"weight" : 7,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false }},
@@ -409,7 +409,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (no picture on BX620 tv)",
-			"weight" : 7,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false }},
@@ -418,7 +418,7 @@
 		},
 		{
 			"name"   : "Scenarios not deflected (tv is not working)",
-			"weight" : 7,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "tv is not working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Help to setup my BestTech TV and next generation", "goodQuery" : false }},
@@ -427,7 +427,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Tv don't open)",
-			"weight" : 3,
+			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
@@ -437,7 +437,7 @@
 		},
 		{
 			"name"   : "Scenarios deflected (Connection Netflix Description)",
-			"weight" : 7,
+			"weight" : 3,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Connection Netflix", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
