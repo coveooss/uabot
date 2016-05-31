@@ -5,13 +5,14 @@
 	"partialMatchKeywords" 	: 4,
 	"partialMatchTreshold" 	: "50%",
 	"defaultOriginLevel1" 	: "CommunitySearch",
-	"timeBetweenVisits"		: 60,
-	"timeBetweenActions"	: 5,
+	"timeBetweenVisits"		: 1,
+	"timeBetweenActions"	: 1,
 	"allowAnonymousVisits"	: true,
 	"anonymousTreshold" 	: 0.5,
 	"orgName"     			: "Besttech",
 	"pipeline" 				: "besttechCommunity",
 	"allowEntitlements"		: true,
+	"languages" 			: ["en", "en", "en", "en", "en", "fr"],
 	"globalfilter" : "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
 	"randomGoodQueries" : [
 		"hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access", "picture quality", "tv is not working",
@@ -259,7 +260,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Reset", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "How Do I Perform a Factory Reset?", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -268,7 +269,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Tv Blank", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -277,7 +278,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "*Unable to Connect to the Internet*", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -286,7 +287,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "kdl-60ex700", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "Re: KDL-60EX700 software update", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -295,7 +296,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "BestTech V515W LCD TV Setup Guide", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -304,7 +305,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
+				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": false }} }
 			]
 		},
 		{
@@ -313,7 +314,8 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Download software Update", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.8, "quickview": true } },
+				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -322,17 +324,19 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Gear VR", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.8, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Bravia)",
+			"name"   : "Scenarios not deflected (Bravia)",
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Bravia", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
-				]},
+				{ "type" : "Search", "arguments" : { "queryText" : "Bravia screen broken", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false } } }
+				]
+			},
 		{
 			"name"   : "Scenarios deflected (Hdmi Not Working)",
 			"weight" : 3,
@@ -341,7 +345,8 @@
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Hdmi Not Working", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.8, "quickview": true } },
+				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -350,18 +355,18 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true }} }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false } } }
 			]
 		},
 		{
 			"name"   : "Scenarios not deflected (No Netflix)",
-			"weight" : 7,
+			"weight" : 12,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Netflix problem", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "No Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true }} }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true }} }
 			]
 		},
 		{
@@ -369,8 +374,8 @@
 			"weight" : 7,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Not Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "Search", "arguments" : { "queryText" : "Account cannot Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false } } }
 			]
 		},
 		{
@@ -378,19 +383,19 @@
 			"weight" : 7,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
 			"name"   : "Scenarios not deflected (Blank Tv)",
-			"weight" : 7,
+			"weight" : 12,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Tv blank", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -398,8 +403,8 @@
 			"weight" : 7,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false }},
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false }},
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -407,8 +412,8 @@
 			"weight" : 7,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false }},
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false }},
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -416,8 +421,8 @@
 			"weight" : 7,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "tv is not working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "Help to setup my BestTech TV and next generation", "goodQuery" : false }},
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "tv is not working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Help to setup my BestTech TV and next generation", "goodQuery" : false }},
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
@@ -426,18 +431,20 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
 		{
 			"name"   : "Scenarios deflected (Connection Netflix Description)",
-			"weight" : 3,
+			"weight" : 7,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Connection Netflix", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Connection Netflix Description", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		}
 	]

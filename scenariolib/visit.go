@@ -35,6 +35,7 @@ type Visit struct {
 	Config       *Config
 	IP           string
 	Anonymous    bool
+	Language     string
 }
 
 const (
@@ -74,8 +75,12 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 		v.Username = buildUserEmail(c)
 		Info.Printf("New visit from %s", v.Username)
 	}
-	Info.Printf("On device %s", _useragent)
-
+	//Info.Printf("On device %s", _useragent)
+	if len(v.Config.Languages) > 0 {
+		v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+	} else {
+		v.Language = "en"
+	}
 	// Create the http searchClient
 	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
 	searchClient, err := search.NewClient(searchConfig)
@@ -136,6 +141,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 
 	event.Username = v.Username
 	event.Anonymous = v.Anonymous
+	event.Language = v.Language
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.QueryText = q
 	event.AdvancedQuery = v.LastQuery.AQ
@@ -189,23 +195,24 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 	Info.Printf("Sending PageView Event on URI: %s", pageURI)
 
-	ve := ua.NewViewEvent()
+	event := ua.NewViewEvent()
 
-	ve.Username = v.Username
-	ve.Anonymous = v.Anonymous
-	ve.OriginLevel1 = v.OriginLevel1
-	ve.OriginLevel2 = v.OriginLevel2
-	ve.Anonymous = v.Anonymous
-	ve.PageReferrer = pageReferrer
-	ve.PageTitle = pageTitle
-	ve.PageURI = pageURI
-	ve.CustomData = map[string]interface{}{
+	event.Username = v.Username
+	event.Anonymous = v.Anonymous
+	event.Language = v.Language
+	event.OriginLevel1 = v.OriginLevel1
+	event.OriginLevel2 = v.OriginLevel2
+	event.Anonymous = v.Anonymous
+	event.PageReferrer = pageReferrer
+	event.PageTitle = pageTitle
+	event.PageURI = pageURI
+	event.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
 		"ipadress":    v.IP,
 	}
 
 	// Send a UA search event
-	err := v.UAClient.SendViewEvent(ve)
+	err := v.UAClient.SendViewEvent(event)
 	return err
 }
 
@@ -218,6 +225,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 
 	event.Username = v.Username
 	event.Anonymous = v.Anonymous
+	event.Language = v.Language
 	event.ActionCause = actionCause
 	event.ActionType = actionType
 	event.EventType = actionType
@@ -275,6 +283,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
 	event.Username = v.Username
 	event.Anonymous = v.Anonymous
+	event.Language = v.Language
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
 	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
@@ -325,6 +334,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 
 	event.Username = v.Username
 	event.Anonymous = v.Anonymous
+	event.Language = v.Language
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.QueryText = v.LastQuery.Q
 	event.AdvancedQuery = v.LastQuery.AQ

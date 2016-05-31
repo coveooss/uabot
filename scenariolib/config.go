@@ -37,6 +37,7 @@ type Config struct {
 	LastNames             []string    `json:"lastNames,omitempty"`
 	RandomIPs             []string    `json:"randomIPs,omitempty"`
 	UserAgents            []string    `json:"useragents,omitempty"`
+	Languages             []string    `json:"languages,omitempty"`
 	MobileUserAgents      []string    `json:"mobileuseragents, omitempty"`
 	PartialMatch          bool        `json:"partialMatch,omitempty"`
 	PartialMatchKeywords  int         `json:"partialMatchKeywords,omitempty"`
