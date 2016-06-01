@@ -163,15 +163,13 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	}
 
 	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
-		if !v.Anonymous {
-			if rand.Float64() <= 0.1 {
-				event.CustomData["entitlement"] = "Premier"
-			} else {
-				event.CustomData["entitlement"] = "Basic"
-			}
-		} else {
-			event.CustomData["entitlement"] = "Anonymous"
-		}
+		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
+	}
+
+	// Send all the possible random custom data that can be added from the config
+	// scenario file.
+	for _, elem := range v.Config.RandomCustomData {
+		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
 	if v.LastResponse.TotalCount > 0 {
@@ -245,15 +243,13 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	}
 
 	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
-		if !v.Anonymous {
-			if rand.Float64() <= 0.1 {
-				event.CustomData["entitlement"] = "Premier"
-			} else {
-				event.CustomData["entitlement"] = "Basic"
-			}
-		} else {
-			event.CustomData["entitlement"] = "Anonymous"
-		}
+		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
+	}
+
+	// Send all the possible random custom data that can be added from the config
+	// scenario file.
+	for _, elem := range v.Config.RandomCustomData {
+		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
 	// Send a UA search event
@@ -308,15 +304,13 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 	}
 
 	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
-		if !v.Anonymous {
-			if rand.Float64() <= 0.1 {
-				event.CustomData["entitlement"] = "Premier"
-			} else {
-				event.CustomData["entitlement"] = "Basic"
-			}
-		} else {
-			event.CustomData["entitlement"] = "Anonymous"
-		}
+		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
+	}
+
+	// Send all the possible random custom data that can be added from the config
+	// scenario file.
+	for _, elem := range v.Config.RandomCustomData {
+		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
 	err = v.UAClient.SendClickEvent(event)
@@ -362,15 +356,13 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	}
 
 	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
-		if !v.Anonymous {
-			if rand.Float64() <= 0.1 {
-				event.CustomData["entitlement"] = "Premier"
-			} else {
-				event.CustomData["entitlement"] = "Basic"
-			}
-		} else {
-			event.CustomData["entitlement"] = "Anonymous"
-		}
+		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
+	}
+
+	// Send all the possible random custom data that can be added from the config
+	// scenario file.
+	for _, elem := range v.Config.RandomCustomData {
+		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
 	err = v.UAClient.SendSearchEvent(event)
@@ -403,6 +395,16 @@ func Min(a int, b int) int {
 		return a
 	}
 	return b
+}
+
+func generateEntitlementBesttech(isAnonymous bool) string {
+	if isAnonymous {
+		return "Anonymous"
+	}
+	if rand.Float64() <= 0.1 {
+		return "Premier"
+	}
+	return "Basic"
 }
 
 // SetupNTO Function to instanciate with specific values for NTO demo queries

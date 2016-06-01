@@ -24,30 +24,36 @@ import (
 // ScenarioMap A map that will be built with the scenarios and their respective weights.
 type Config struct {
 	ScenarioMap           map[int]*Scenario
-	OrgName               string      `json:"orgName"`
-	GoodQueries           []string    `json:"randomGoodQueries"`
-	BadQueries            []string    `json:"randomBadQueries"`
-	Scenarios             []*Scenario `json:"scenarios"`
-	DefaultOriginLevel1   string      `json:"defaultOriginLevel1,omitempty"`
-	GlobalFilter          string      `json:"globalfilter,omitempty"`
-	SearchEndpoint        string      `json:"searchendpoint,omitempty"`
-	AnalyticsEndpoint     string      `json:"analyticsendpoint,omitempty"`
-	Emails                []string    `json:"emailSuffixes,omitempty"`
-	FirstNames            []string    `json:"firstNames,omitempty"`
-	LastNames             []string    `json:"lastNames,omitempty"`
-	RandomIPs             []string    `json:"randomIPs,omitempty"`
-	UserAgents            []string    `json:"useragents,omitempty"`
-	Languages             []string    `json:"languages,omitempty"`
-	MobileUserAgents      []string    `json:"mobileuseragents, omitempty"`
-	PartialMatch          bool        `json:"partialMatch,omitempty"`
-	PartialMatchKeywords  int         `json:"partialMatchKeywords,omitempty"`
-	PartialMatchThreshold string      `json:"partialMatchThreshold,omitempty"`
-	Pipeline              string      `json:"pipeline,omitempty"`
-	TimeBetweenVisits     int         `json:"timeBetweenVisits,omitempty"`
-	TimeBetweenActions    int         `json:"timeBetweenActions,omitempty"`
-	AllowAnonymous        bool        `json:"allowAnonymousVisits,omitempty"`
-	AnonymousTreshold     float64     `json:"anonymousTreshold,omitempty"`
-	AllowEntitlements     bool        `json:"allowEntitlements,omitempty"`
+	OrgName               string              `json:"orgName"`
+	GoodQueries           []string            `json:"randomGoodQueries"`
+	BadQueries            []string            `json:"randomBadQueries"`
+	Scenarios             []*Scenario         `json:"scenarios"`
+	DefaultOriginLevel1   string              `json:"defaultOriginLevel1,omitempty"`
+	GlobalFilter          string              `json:"globalfilter,omitempty"`
+	SearchEndpoint        string              `json:"searchendpoint,omitempty"`
+	AnalyticsEndpoint     string              `json:"analyticsendpoint,omitempty"`
+	Emails                []string            `json:"emailSuffixes,omitempty"`
+	FirstNames            []string            `json:"firstNames,omitempty"`
+	LastNames             []string            `json:"lastNames,omitempty"`
+	RandomIPs             []string            `json:"randomIPs,omitempty"`
+	UserAgents            []string            `json:"useragents,omitempty"`
+	Languages             []string            `json:"languages,omitempty"`
+	MobileUserAgents      []string            `json:"mobileuseragents, omitempty"`
+	PartialMatch          bool                `json:"partialMatch,omitempty"`
+	PartialMatchKeywords  int                 `json:"partialMatchKeywords,omitempty"`
+	PartialMatchThreshold string              `json:"partialMatchThreshold,omitempty"`
+	Pipeline              string              `json:"pipeline,omitempty"`
+	TimeBetweenVisits     int                 `json:"timeBetweenVisits,omitempty"`
+	TimeBetweenActions    int                 `json:"timeBetweenActions,omitempty"`
+	AllowAnonymous        bool                `json:"allowAnonymousVisits,omitempty"`
+	AnonymousTreshold     float64             `json:"anonymousTreshold,omitempty"`
+	AllowEntitlements     bool                `json:"allowEntitlements,omitempty"`
+	RandomCustomData      []*RandomCustomData `json:"randomCustomData,omitempty"`
+}
+
+type RandomCustomData struct {
+	APIName string   `json:"apiname"`
+	Values  []string `json:"values"`
 }
 
 // DEFAULTANONYMOUSTRESHOLD The default portion of users who are anonymous
