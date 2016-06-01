@@ -3,7 +3,9 @@ package scenariolib
 import (
 	"errors"
 	"fmt"
+	"hash/fnv"
 	"io/ioutil"
+	"math"
 	"math/rand"
 	"os"
 	"strings"
@@ -11,6 +13,7 @@ import (
 
 	ua "github.com/coveo/go-coveo/analytics"
 	"github.com/coveo/go-coveo/search"
+	"github.com/erocheleau/uabot/defaults"
 )
 
 // Visit        The struct visit is used to store one visit to the site.
@@ -307,6 +310,8 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
+	event.CustomData["author"] = generateRandomAuthor(event.DocumentTitle)
+
 	// Send all the possible random custom data that can be added from the config
 	// scenario file.
 	for _, elem := range v.Config.RandomCustomData {
@@ -395,6 +400,16 @@ func Min(a int, b int) int {
 		return a
 	}
 	return b
+}
+
+func hash(s string) uint32 {
+	h := fnv.New32a()
+	h.Write([]byte(s))
+	return h.Sum32()
+}
+
+func generateRandomAuthor(title string) string {
+	return defaults.AUTHORNAMES[(int)(math.Mod((float64)(hash(title)), (float64)(len(defaults.AUTHORNAMES))))]
 }
 
 func generateEntitlementBesttech(isAnonymous bool) string {
