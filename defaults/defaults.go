@@ -44,7 +44,6 @@ var LASTNAMES = []string{
 	"price",
 	"rivera",
 }
-
 var EMAILS = []string{
 	"@gmail.com",
 	"@hotmail.com",
@@ -54,7 +53,32 @@ var EMAILS = []string{
 	"@hexzone.com",
 	"@strongit.com",
 }
-
+var AUTHORNAMES = []string{
+	"Tommy Andrews",
+	"Rhonda Cooper",
+	"Hugh Kelly",
+	"Clayton Freeman",
+	"Clinton Douglas",
+	"Josephine Gutierrez",
+	"Victoria Boyd",
+	"Noelle Fuller",
+	"Corey Jones",
+	"Brad George",
+	"Ana Armstrong",
+	"Mike Sanchez",
+	"Clayton Freeman",
+	"Clayton Freeman",
+	"Clayton Freeman",
+	"Clayton Freeman",
+	"Corey Jones",
+	"Corey Jones",
+	"Corey Jones",
+	"Corey Jones",
+	"Clayton Freeman",
+	"Clayton Freeman",
+	"Brad George",
+	"Brad George",
+}
 var IPS = []string{
 	"66.46.18.120",
 	"74.125.226.120",
