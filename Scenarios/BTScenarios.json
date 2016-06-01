@@ -139,7 +139,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "hx720-478", "goodQuery" : false } },
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "hx720-478 stand", "docClickTitle" : "HX720 Internet TV Stand is unstable", "probability" : 0.75 } }
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "hx720 stand", "docClickTitle" : "HX720 Internet TV Stand is unstable", "probability" : 0.75 } }
 			]
 		},
 		{
@@ -147,7 +147,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "Net flix not connected", "goodQuery" : false } },
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "netflix not connect", "docClickTitle" : "Netflix setup on some televisions", "probability" : 0.75 } }
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "netflix not connect", "docClickTitle" : "How To Resolve Netflix Connection With Tivo on XB Family Smart TVs", "probability" : 0.75 } }
 			]
 		},
 		{
