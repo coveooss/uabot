@@ -436,7 +436,7 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Tv don't open)",
+			"name"   : "Scenarios not deflected (Tv don't open)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
@@ -446,7 +446,7 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Beattech Headphones)",
+			"name"   : "Scenarios not deflected (Beattech Headphones)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
@@ -456,7 +456,7 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Beattech Beatbox)",
+			"name"   : "Scenarios not deflected (Beattech Beatbox)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
@@ -466,7 +466,7 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Beattech Beatbox)",
+			"name"   : "Scenarios not deflected (Beattech Beatbox)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
@@ -476,7 +476,7 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Beattech VR)",
+			"name"   : "Scenarios not deflected (Beattech VR)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
@@ -486,7 +486,7 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Beattech VR)",
+			"name"   : "Scenarios not deflected (Beattech VR)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
@@ -496,7 +496,7 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Beattech Headphone)",
+			"name"   : "Scenarios not deflected (Beattech Headphone)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
