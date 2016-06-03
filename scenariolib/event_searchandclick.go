@@ -18,12 +18,14 @@ type SearchAndClickEvent struct {
 	quickview  bool
 	caseSearch bool
 	inputTitle string
+	customData map[string]interface{}
 }
 
 func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 	var query, docClickTitle, inputTitle string
 	var prob float64
 	var quickview, caseSearch, validCast bool
+	var customData map[string]interface{}
 
 	if query, validCast = e.Arguments["queryText"].(string); !validCast {
 		return nil, errors.New("Parameter queryText must be of type string in SearchAndClickEvent")
@@ -56,6 +58,12 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 		}
 	}
 
+	if e.Arguments["customData"] != nil {
+		if customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
+			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a custom event.")
+		}
+	}
+
 	return &SearchAndClickEvent{
 		query:      query,
 		docTitle:   docClickTitle,
@@ -63,6 +71,7 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 		quickview:  quickview,
 		caseSearch: caseSearch,
 		inputTitle: inputTitle,
+		customData: customData,
 	}, nil
 }
 
@@ -73,16 +82,19 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	se := new(SearchEvent)
 	se.query = sc.query
 	se.keyword = sc.query
+	se.customData = make(map[string]interface{})
 	if sc.caseSearch {
 		se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", se.query)
 		se.actionCause = "inputChange"
 		se.actionType = "caseCreation"
-		se.customData = map[string]interface{}{
-			"inputTitle": sc.inputTitle,
-		}
+		se.customData["inputTitle"] = sc.inputTitle
 	} else {
 		se.actionCause = "searchboxSubmit"
 		se.actionType = "search box"
+	}
+	// Override possible values of customData with the specific customData sent
+	for k, v := range sc.customData {
+		se.customData[k] = v
 	}
 	err := se.Execute(v)
 	if err != nil {
@@ -110,9 +122,13 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 			ce.clickRank = rank
 			ce.offset = 0
 			ce.probability = 1
-
 			ce.quickview = sc.quickview
 
+			ce.customData = make(map[string]interface{})
+			// Override possible values of customData with the specific customData sent
+			for k, v := range sc.customData {
+				ce.customData[k] = v
+			}
 			ce.Execute(v)
 			if err != nil {
 				return err
