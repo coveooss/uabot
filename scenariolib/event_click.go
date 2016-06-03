@@ -78,7 +78,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 			return errors.New("Click index out of bounds")
 		}
 
-		err := v.sendClickEvent(ce.clickRank, ce.quickview)
+		err := v.sendClickEvent(ce.clickRank, ce.quickview, ce.customData)
 		if err != nil {
 			return err
 		}

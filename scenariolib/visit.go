@@ -275,7 +275,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	return err
 }
 
-func (v *Visit) sendClickEvent(rank int, quickview bool) error {
+func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}) error {
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
