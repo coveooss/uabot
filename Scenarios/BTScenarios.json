@@ -335,7 +335,16 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Bravia screen broken", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (Beattech)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+				{ "type" : "Search", "arguments" : { "queryText" : "VR no power on", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech VR" } }}
 			]
 		},
 		{
@@ -356,7 +365,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
 			]
 		},
 		{
@@ -376,7 +385,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Account cannot Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech Headphone" } }}
 			]
 		},
 		{
@@ -396,16 +405,16 @@
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } } }
 			]
 		},
 		{
 			"name"   : "Scenarios not deflected (TV bluescreen)",
 			"weight" : 3,
 			"events" : [
-				{ "type" : "SetOrigin", "arguments" : { "originLevel1" : "CaseCreation" } },
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } } }
 			]
 		},
 		{
@@ -413,7 +422,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false }},
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
@@ -423,17 +432,77 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "tv is not working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Help to setup my BestTech TV and next generation", "goodQuery" : false }},
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Tv don't open)",
+			"name"   : "Scenarios not deflected (Tv don't open)",
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
-				{ "type" : "Custom", "arguments" : { "actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (Beattech Headphones)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+				{ "type" : "Search", "arguments" : { "queryText" : "Music not sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Beattech Headphone" } }}
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (Beattech Beatbox)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+				{ "type" : "Search", "arguments" : { "queryText" : "Music is not loud enough", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech Beatbox" } }}
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (Beattech Beatbox)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+				{ "type" : "Search", "arguments" : { "queryText" : "Music not in HighQuality", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech Beatbox" } }}
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (Beattech VR)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+				{ "type" : "Search", "arguments" : { "queryText" : "Image Freeze", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Beattech VR" } }}
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (Beattech VR)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+				{ "type" : "Search", "arguments" : { "queryText" : "Not enough memory", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech VR" } }}
+			]
+		},
+		{
+			"name"   : "Scenarios not deflected (Beattech Headphone)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+				{ "type" : "Search", "arguments" : { "queryText" : "Battery is dead after 5 min", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Beattech Headphone" } }}
 			]
 		},
 		{
