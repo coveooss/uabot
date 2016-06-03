@@ -278,7 +278,7 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "*Unable to Connect to the Internet*", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "Dash tutorial: How to connect Sony dash to your home wireless network", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
@@ -296,7 +296,7 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "BestTech V515W LCD TV Setup Guide", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "New User Experience - Connecting the Rift", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
 			]
 		},
@@ -376,7 +376,8 @@
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "No Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true }} }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } }}
+
 			]
 		},
 		{
@@ -394,7 +395,8 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } }}
+
 			]
 		},
 		{
@@ -423,7 +425,8 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
+
 			]
 		},
 		{
