@@ -45,3 +45,29 @@ RandomIPs | []string | A list of possible IP
 UserAgents | []string | A list of UserAgent strings
 Languages | []string | A list of possible languages (TBD)
 MobileUserAgents | []string | A list of UserAgents strings that are on mobile
+
+### Example
+
+```json
+{
+  "searchendpoint"          : "https://cloudplatform.coveo.com/rest/search/",
+  "analyticsendpoint"       : "https://usageanalytics.coveo.com/rest/v15/analytics/",
+  "partialMatch"            : true,
+  "partialMatchKeywords"    : 4,
+  "partialMatchTreshold"    : "50%",
+  "defaultOriginLevel1"     : "origin",
+  "timeBetweenVisits"       : 120,
+  "timeBetweenActions"      : 3,
+  "allowAnonymousVisits"	: true,
+  "anonymousTreshold"       : 0.5,
+  "orgName"     			: "orgname",
+  "pipeline"                : "pipeline",
+  "allowEntitlements"       : true,
+  "randomCustomData"        : [ { "apiname": "nameofacustomdimension", "values" : [ "value 1", "value 2", "value 3" ] } ],
+  "languages"               : ["en", "fr"],
+  "globalfilter"            : "@uri",
+  "randomGoodQueries"       : [ "First query", "Second query", "Third query", "etc..." ],
+  "randomBadQueries"        : [ "First bad query", "Second bad query", "You can even use query syntax @source=Sharepoint", "etc..." ],
+  "scenarios"               : []
+}
+```
