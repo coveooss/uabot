@@ -33,6 +33,11 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	if goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
 		return nil, errors.New("Parameter goodQuery must be of type bool in SearchEvent")
 	}
+	if e.Arguments["customData"] != nil {
+		if se.customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
+			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a search event.")
+		}
+	}
 
 	if se.query == "" {
 		se.query, err = c.RandomQuery(goodQuery)

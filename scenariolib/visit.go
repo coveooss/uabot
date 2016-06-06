@@ -154,6 +154,11 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.OriginLevel2 = v.OriginLevel2
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
+
+	event.CustomData = make(map[string]interface{})
+
+	event.CustomData["JSUIVersion"] = JSUIVERSION
+	event.CustomData["ipadress"] = v.IP
 	if customData != nil {
 		event.CustomData = customData
 		event.CustomData["JSUIVersion"] = JSUIVERSION
@@ -173,6 +178,11 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	// scenario file.
 	for _, elem := range v.Config.RandomCustomData {
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
+	}
+
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
 	}
 
 	if v.LastResponse.TotalCount > 0 {
@@ -258,12 +268,17 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
+	}
+
 	// Send a UA search event
 	err = v.UAClient.SendCustomEvent(event)
 	return err
 }
 
-func (v *Visit) sendClickEvent(rank int, quickview bool) error {
+func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}) error {
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
@@ -321,6 +336,11 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
+	}
+
 	err = v.UAClient.SendClickEvent(event)
 	if err != nil {
 		return err
@@ -371,6 +391,11 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	// scenario file.
 	for _, elem := range v.Config.RandomCustomData {
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
+	}
+
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
 	}
 
 	err = v.UAClient.SendSearchEvent(event)
