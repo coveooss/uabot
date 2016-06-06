@@ -13,6 +13,6 @@
 		"name"   : "PAGEVIEW",
 		"weight" : 1,
 		"events" : [
-			{ "type"      : "View", "arguments" : { "pageuri" : "https://s3.amazonaws.com/static.coveodemo.com/nto-productmanuals/Coleman+10+Tent+User+Manual.pdf", "pagereferrer" : "https://ntodemo-developer-edition.na22.force.com/s/search/All/Home/tent", "pagetitle" : "Coleman 10 Tent User Manual", "contentIdKey" : "@sysuri", "contentIdValue" : "https://s3.amazonaws.com/static.coveodemo.com/nto-productmanuals/Coleman+10+Tent+User+Manual.pdf", "contentType" : "Web" } }]
+			{ "type"      : "View", "arguments" : { "pageuri" : "https://s3.amazonaws.com/static.coveodemo.com/nto-productmanuals/Coleman+10+Tent+User+Manual.pdf", "pagereferrer" : "https://ntodemo-developer-edition.na22.force.com/s/search/All/Home/tent", "pagetitle" : "Coleman 10 Tent User Manual" } }]
 	}]
 }
