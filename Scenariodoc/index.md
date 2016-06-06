@@ -27,3 +27,21 @@ allowAnonymousVisits | boolean | If you allow some of the visits to be anonymous
 anonymousTreshold | number | Number between 0 and 1 of the % of anonymous visits | 0
 globalfilter | string | A filter to be applied to all queries | ""
 languages | []string | A list of random languages for the visits | (none)
+
+### Change default datasets parameters
+
+All the parameters in this section have a default dataset defined in the .\defaults\defaults.go file. But you can override them by setting some yourself in the config file.
+
+*The actual emails of the user will be composed of a mix of firstname+"."+lastname+emailsuffix*
+
+*In order to influence random values in the datasets, just copy the same value multiple time*
+
+Parameter | Type | Usage
+------------ | ------------- | ----------------
+Emails | []string | Email suffixes for the users in the form of `@suffix.com`
+FirstNames | []string | A list of possible first names
+LastNames | []string | A list of possible last names
+RandomIPs | []string | A list of possible IP
+UserAgents | []string | A list of UserAgent strings
+Languages | []string | A list of possible languages (TBD)
+MobileUserAgents | []string | A list of UserAgents strings that are on mobile
