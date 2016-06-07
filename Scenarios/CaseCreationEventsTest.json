@@ -1,0 +1,41 @@
+{
+	"searchendpoint": "https://cloudplatform.coveo.com/rest/search/",
+	"analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
+	"orgName": "Besttech",
+	"pipeline": "besttechCommunity",
+	"globalfilter": "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
+	"randomGoodQueries": ["hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access", "picture quality", "tv is not working",
+		"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV",
+		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual",
+		"usb to hdmi", "ipad hdmi", "dvi hdmi cable", "primus hdtv", "tv audio hts", "coaxial to hdmi cable", "hdmi splitter", "sound bar", "connect laptop to hdtv",
+		"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter",
+		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", "wifi bravia",
+		"wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync"
+	],
+	"randomBadQueries": ["no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM", "piks", "connektion"],
+	"scenarios": [
+		{
+			"name": "Scenarios deflected (Reset)",
+			"weight": 2,
+			"events": [
+				{ "type": "SearchAndClick", "arguments": { "queryText": "Reset", "caseSearch": true, "probability" : 0.75, "docClickTitle": "How Do I Perform a Factory Reset?", "goodQuery": false, "inputTitle": "Subject" } },
+				{ "type": "Custom", "arguments": { "actionCause": "cancelButton", "actionType": "caseCreation", "customData": { "hasClicks": true } } }
+			]
+		},
+		{
+			"name": "Scenarios deflected (Download software Update)",
+			"weight": 2,
+			"events": [
+				{ "type": "Search", "arguments": { "queryText": "Download software Update", "goodQuery": true, "caseSearch": true, "inputTitle": "Subject" } }
+			]
+		},
+		{
+			"name": "Scenarios not deflected (bx6r6)",
+			"weight": 2,
+			"events": [
+				{ "type": "Search", "arguments": { "queryText": "Television bx6r6", "goodQuery": true, "caseSearch": true, "actionCause": "inputChange", "actionType": "caseCreation","inputTitle": "Subject" } },
+				{ "type": "Custom", "arguments": { "actionCause": "submitButton", "actionType": "caseCreation" } }
+			]
+		}
+	]
+}

@@ -5,7 +5,7 @@
     <title>Uabot by erocheleau</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
@@ -13,105 +13,100 @@
     <section class="page-header">
       <h1 class="project-name">Uabot</h1>
       <h2 class="project-tagline">Bot to generate data to UA</h2>
+      <a href="https://github.com/erocheleau/uabot/Documentation" class="btn">Documentation</a>
       <a href="https://github.com/erocheleau/uabot" class="btn">View on GitHub</a>
       <a href="https://github.com/erocheleau/uabot/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/erocheleau/uabot/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
-      <h2>
-<a id="building-a-scenario" class="anchor" href="#building-a-scenario" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Building a scenario</h2>
+      <h1>
+<a id="uabot-" class="anchor" href="#uabot-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>uabot <a href="https://travis-ci.org/erocheleau/uabot"><img src="https://travis-ci.org/erocheleau/uabot.svg?branch=master" alt="Build Status"></a>
+</h1>
 
-<p>This is the documentation of the parameters of a scenario.</p>
+<p>Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
+Works with a configuration file using json format.
+Check the /Scenarios folder for examples.</p>
 
-<p>Parameters in <strong>bold</strong> are mandatory</p>
+<h2>
+<a id="supports" class="anchor" href="#supports" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supports</h2>
+
+<ul>
+<li>[x] Search events</li>
+<li>[x] Click events</li>
+<li>[x] Custom events</li>
+<li>[x] Facet events</li>
+<li>[x] View events</li>
+<li>[x] TabChange events</li>
+</ul>
+
+<h2>
+<a id="environment-variables" class="anchor" href="#environment-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Environment variables</h2>
+
+<p>Needs 3 environment variables to function :</p>
 
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
+<th>Variable</th>
 <th>Usage</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>name</td>
-<td>string</td>
-<td>Name of the scenario, used mainly for debugging purposes</td>
+<td>SEARCHTOKEN</td>
+<td>API key to search</td>
 </tr>
 <tr>
-<td>weight</td>
-<td>number</td>
-<td>An arbitrary weight gived to the scenario</td>
+<td>UATOKEN</td>
+<td>API key to send events to UA</td>
 </tr>
 <tr>
-<td>events</td>
-<td>[]Events</td>
-<td>The events happening in this scenario</td>
+<td>SCENARIOSURL</td>
+<td>Url to the scenario JSON file to randomize</td>
+</tr>
+<tr>
+<td>LOCAL</td>
+<td>
+<code>true</code> for local (otherwise don't use)</td>
+</tr>
+<tr>
+<td>GO15VENDOREXPERIMENT</td>
+<td>Use this for go version &lt; 1.6</td>
 </tr>
 </tbody>
 </table>
 
-<p><em>The chance that a single specific scenario will be randomized is given by weight/totalWeights</em></p>
+<h4>
+<a id="on-windows" class="anchor" href="#on-windows" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On windows</h4>
 
-<h3>
-<a id="supported-events-documentation" class="anchor" href="#supported-events-documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported events <a href="events.md">Documentation</a>
-</h3>
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">set</span> SEARCHTOKEN=value
+<span class="pl-c1">set</span> UATOKEN=value
+<span class="pl-c1">set</span> SCENARIOSURL=value
+<span class="pl-c1">set</span> LOCAL=<span class="pl-c1">true</span> <span class="pl-c">#if scenariosurl is a local path</span>
+<span class="pl-c1">set</span> GO15VENDOREXPERIMENT=1 <span class="pl-c">#if golang version &lt; 1.6</span>
+go run main.go</pre></div>
 
-<table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="events.md#Search">Search</a></td>
-<td>Represents one query sent to the index. Typically the submit of the search bar, search as you type, etc.</td>
-</tr>
-<tr>
-<td><a href="events.md#Click">Click</a></td>
-<td>Represents a click on a document that was returned by a query. Can represent either a document open or a quickview.</td>
-</tr>
-<tr>
-<td><a href="events.md#Facet">Facet</a></td>
-<td>Represents an event sent when the user chooses a value in a facet.</td>
-</tr>
-<tr>
-<td><a href="events.md#Tab">Tab</a></td>
-<td>Represents when the user changes the tabs on top of the result list in a search page.</td>
-</tr>
-<tr>
-<td><a href="events.md#SearchAndClick">SearchAndClick</a></td>
-<td>Use when you want to click on a specific document after a specific search. Ties a search and a click event together.</td>
-</tr>
-<tr>
-<td><a href="events.md#Custom">Custom</a></td>
-<td>A custom event sent to the analytics, contains custom data.</td>
-</tr>
-<tr>
-<td><a href="events.md#Origin">SetOrigin</a></td>
-<td>An event to tell the bot to change the origin of the events (use this when the user moved between search pages for example)</td>
-</tr>
-<tr>
-<td><a href="events.md#View">Page View</a></td>
-<td>An event when a user visits a page.</td>
-</tr>
-</tbody>
-</table>
+<h4>
+<a id="on-mac" class="anchor" href="#on-mac" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On MAC</h4>
 
-<p><a href="events.md"><em>Consult each event doc for information on how to build a specific event.</em></a></p>
+<div class="highlight highlight-source-shell"><pre><span class="pl-k">export</span> SEARCHTOKEN = value
+<span class="pl-k">export</span> UATOKEN = value
+<span class="pl-k">export</span> SCENARIOSURL = value
+<span class="pl-k">export</span> LOCAL=<span class="pl-c1">true</span> <span class="pl-c">#if scenariosurl is a local path</span>
+<span class="pl-k">export</span> GO15VENDOREXPERIMENT=1 <span class="pl-c">#if golang version &lt; 1.6</span>
+go run main.go</pre></div>
 
-<h3>
-<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h3>
+<h2>
+<a id="to-trigger-a-docker-rebuild-push-with-latesttag" class="anchor" href="#to-trigger-a-docker-rebuild-push-with-latesttag" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To trigger a Docker rebuild, push with <code>latest</code>tag</h2>
 
-<div class="highlight highlight-source-json"><pre>{
-    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>   : <span class="pl-s"><span class="pl-pds">"</span>A name<span class="pl-pds">"</span></span>,
-    <span class="pl-s"><span class="pl-pds">"</span>weight<span class="pl-pds">"</span></span> : <span class="pl-c1">1</span>,
-    <span class="pl-s"><span class="pl-pds">"</span>events<span class="pl-pds">"</span></span> : [ ]
-}</pre></div>
+<div class="highlight highlight-source-shell"><pre>1. Commit your changes
+<span class="pl-c"># We need to use the -f option here because tag latest already exists</span>
+2. git tag -f -a latest -m <span class="pl-s"><span class="pl-pds">"</span>Rebuild reason here<span class="pl-pds">"</span></span>
+<span class="pl-c"># Push changes to branch + push changes to tag, you will need to supply credentials twice.</span>
+3. git push <span class="pl-k">&amp;&amp;</span> git push -f --tags</pre></div>
+
+<p><a href="http://forthebadge.com"><img src="http://forthebadge.com/images/badges/made-with-crayons.svg" alt="forthebadge"></a></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/erocheleau/uabot">Uabot</a> is maintained by <a href="https://github.com/erocheleau">erocheleau</a>.</span>
@@ -121,6 +116,6 @@
 
     </section>
 
-  
+
   </body>
 </html>

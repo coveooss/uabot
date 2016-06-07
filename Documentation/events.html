@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Uabot by erocheleau</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Uabot</h1>
+      <h2 class="project-tagline">Bot to generate data to UA</h2>
+      <a href="https://github.com/erocheleau/uabot" class="btn">View on GitHub</a>
+      <a href="https://github.com/erocheleau/uabot/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/erocheleau/uabot/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <hr>
+
+<h2>
+
+<h1>
+<a id="events" class="anchor" href="#events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Events</h1>
+
+<p>Different types of events can be generated using this bot. This is the documentation on how to build them.</p>
+
+<h2>
+<a id="list-of-events" class="anchor" href="#list-of-events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>List of events</h2>
+
+<ol>
+<li><a href="#Search">Search event</a></li>
+<li><a href="#Click">Click event</a></li>
+<li><a href="#SearchAndClick">SearchAndClick event</a></li>
+<li><a href="#Custom">Custom event</a></li>
+<li><a href="#Tab">TabChange event</a></li>
+<li><a href="#Facet">FacetChange event</a></li>
+<li><a href="#Origin">SetOrigin event</a></li>
+<li><a href="#Page">PageView event</a></li>
+</ol>
+
+<h3>
+<a id="0-generic-event" class="anchor" href="#0-generic-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0. Generic event</h3>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>string</td>
+<td>The type of the event</td>
+</tr>
+<tr>
+<td>arguments</td>
+<td>Object</td>
+<td>The arguments of the event, they are different for each type of events</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="-1-search-event" class="anchor" href="#-1-search-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="Search"></a> 1. Search event</h3>
+
+<p>Represents one query sent to the index. Typically the submit of the search bar, search as you type, etc.</p>
+
+<p><code>"type" : "Search"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>queryText</td>
+<td>string</td>
+<td>The query to send. Leave "blank" for a random query</td>
+</tr>
+<tr>
+<td>goodQuery</td>
+<td>boolean</td>
+<td>If the random query should be a good or a bad query</td>
+</tr>
+<tr>
+<td>caseSearch</td>
+<td>boolean</td>
+<td>If the query comes from a Case Creation interface</td>
+</tr>
+<tr>
+<td>inputTitle</td>
+<td>string</td>
+<td>The title of the input that triggered the search if it was a case search</td>
+</tr>
+<tr>
+<td>customData</td>
+<td>object</td>
+<td>Custom data to be sent alongside the event.</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Search<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>queryText<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>goodQuery<span class="pl-pds">"</span></span> : <span class="pl-c1">true</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>caseSearch<span class="pl-pds">"</span></span> : <span class="pl-c1">true</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>inputTitle<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Product<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>customData<span class="pl-pds">"</span></span> : {
+            <span class="pl-s"><span class="pl-pds">"</span>hasclicks<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>
+        }
+    }
+}</pre></div>
+
+<h3>
+<a id="-2-click-event" class="anchor" href="#-2-click-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="Click"></a> 2. Click Event</h3>
+
+<p>Represents a click on a document that was returned by a query. Can represent either a document open or a quickview.</p>
+
+<p><code>"type" : "Click"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docNo</td>
+<td>number</td>
+<td>The rank of the document to click (0 base, put -1 for random)</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>number</td>
+<td>An offset used in random document clicking</td>
+</tr>
+<tr>
+<td>probability</td>
+<td>number</td>
+<td>The probability that the user will click (between 0 and 1)</td>
+</tr>
+<tr>
+<td>quickview</td>
+<td>boolean</td>
+<td>If the click is a quickview or not (default, false)</td>
+</tr>
+<tr>
+<td>customData</td>
+<td>object</td>
+<td>Custom data to be sent alongside the event.</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-1" class="anchor" href="#example-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Click<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>docNo<span class="pl-pds">"</span></span> :<span class="pl-c1">-1</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>offset<span class="pl-pds">"</span></span> : <span class="pl-c1">0</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>probability<span class="pl-pds">"</span></span> : <span class="pl-c1">0.45</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>quickview<span class="pl-pds">"</span></span> : <span class="pl-c1">true</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>customData<span class="pl-pds">"</span></span> : {
+            <span class="pl-s"><span class="pl-pds">"</span>hasclicks<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>
+        }
+    }
+}</pre></div>
+
+<h3>
+<a id="-3-searchandclick-event" class="anchor" href="#-3-searchandclick-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="SearchAndClick"></a> 3. SearchAndClick event</h3>
+
+<p>Use when you want to click on a specific document after a specific search. Ties a search and a click event together.</p>
+
+<p><code>"type" : "SearchAndClick"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>queryText</strong></td>
+<td>string</td>
+<td>The query to send. Not recommended to use with random query.</td>
+</tr>
+<tr>
+<td><strong>docClickTitle</strong></td>
+<td>string</td>
+<td>The title of the document you want to click on.</td>
+</tr>
+<tr>
+<td><strong>probability</strong></td>
+<td>number</td>
+<td>Between 0 and 1, the probability the user will click</td>
+</tr>
+<tr>
+<td>quickview</td>
+<td>boolean</td>
+<td>If the click is a quickview instead of a document open (default false)</td>
+</tr>
+<tr>
+<td>caseSearch</td>
+<td>boolean</td>
+<td>If the event is on a Case Creation interface (default false)</td>
+</tr>
+<tr>
+<td>inputTitle</td>
+<td>string</td>
+<td>If it's a case creation event, which input triggered the search</td>
+</tr>
+<tr>
+<td>customData</td>
+<td>object</td>
+<td>Any custom data to send with the event</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-2" class="anchor" href="#example-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>SearchAndClick<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>queryText<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>specific query<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>caseSearch<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>inputTitle<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>Subject<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>probability<span class="pl-pds">"</span></span> : <span class="pl-c1">0.85</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>docClickTitle<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>specific title<span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<h3>
+<a id="-4-custom-event" class="anchor" href="#-4-custom-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="Custom"></a> 4. Custom event</h3>
+
+<p>A custom event sent to the analytics, contains custom data.</p>
+
+<p><code>"type" : "Custom"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>actionType</strong></td>
+<td>string</td>
+<td>The event type of this custom event</td>
+</tr>
+<tr>
+<td><strong>actionCause</strong></td>
+<td>string</td>
+<td>The cause of this event, also the event value</td>
+</tr>
+<tr>
+<td>customData</td>
+<td>object</td>
+<td>Any custom data to send with the event</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-3" class="anchor" href="#example-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Custom<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>actionCause<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>submitButton<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>actionType<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>caseCreation<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>customData<span class="pl-pds">"</span></span> : {
+            <span class="pl-s"><span class="pl-pds">"</span>hasclicks<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span>,
+            <span class="pl-s"><span class="pl-pds">"</span>product<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>XBR6 TV<span class="pl-pds">"</span></span>
+        }
+    }
+}</pre></div>
+
+<h3>
+<a id="-5-tabchange-event" class="anchor" href="#-5-tabchange-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="Tab"></a> 5. TabChange event</h3>
+
+<p>Represents when the user changes the tabs on top of the result list in a search page.</p>
+
+<p><code>"type" : "TabChange"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>tabName</strong></td>
+<td>string</td>
+<td>The name of the tab that the user switched to. This will also change originLevel2.</td>
+</tr>
+<tr>
+<td><strong>tabCQ</strong></td>
+<td>string</td>
+<td>The constant query applied by this tab to the queries</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-4" class="anchor" href="#example-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>TabChange<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>tabName<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>YOUTUBE<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>tabCQ<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>@sysfiletype==<span class="pl-cce">\"</span>youtubevideo<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<h3>
+<a id="-6-facetchange-event" class="anchor" href="#-6-facetchange-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="Facet"></a> 6. FacetChange event</h3>
+
+<p>Represents an event sent when the user chooses a value in a facet.</p>
+
+<p><code>"type" : "FacetChange"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>facetTitle</strong></td>
+<td>string</td>
+<td>The title of the facet that was selected</td>
+</tr>
+<tr>
+<td><strong>facetValue</strong></td>
+<td>string</td>
+<td>The value that was selected in the facet</td>
+</tr>
+<tr>
+<td><strong>facetField</strong></td>
+<td>string</td>
+<td>The field bound to the facet</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-5" class="anchor" href="#example-5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>FacetChange<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>facetTitle<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>Type<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>facetValue<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>Message<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>facetField<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>@objecttype<span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<h3>
+<a id="-7-setorigin-event" class="anchor" href="#-7-setorigin-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="Origin"></a> 7. SetOrigin event</h3>
+
+<p>An event to tell the bot to change the origin of the events (use this when the user moved between search pages for example)</p>
+
+<p><code>"type" : "SetOrigin"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>originLevel1</td>
+<td>string</td>
+<td>The new originLevel1</td>
+</tr>
+<tr>
+<td>originLevel2</td>
+<td>string</td>
+<td>The new originLevel2</td>
+</tr>
+<tr>
+<td>originLevel3</td>
+<td>string</td>
+<td>The new originLevel3</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-6" class="anchor" href="#example-6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>SetOrigin<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>originLevel1<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Example1<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>originLevel2<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Example2<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>originLevel3<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Example3<span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<h3>
+<a id="-8-pageview-event" class="anchor" href="#-8-pageview-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="Page"></a> 8. PageView event</h3>
+
+<p>An event when a user visits a page.</p>
+
+<p><code>"type" : "View"</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Arguments</th>
+<th>Type</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pageuri</td>
+<td>string</td>
+<td>The uri of the page currently visited</td>
+</tr>
+<tr>
+<td>pagereferrer</td>
+<td>string</td>
+<td>The uri of the page referrer if available</td>
+</tr>
+<tr>
+<td>pagetitle</td>
+<td>string</td>
+<td>The title of the page</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-7" class="anchor" href="#example-7" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h4>
+
+<div class="highlight highlight-source-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>View<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>pageuri<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>https://example.com<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>pagereferrer<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>https://www.google.com<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>pagetitle<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Page Example<span class="pl-pds">"</span></span>
+    }
+}
+</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/erocheleau/uabot">Uabot</a> is maintained by <a href="https://github.com/erocheleau">erocheleau</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+
+  </body>
+</html>
