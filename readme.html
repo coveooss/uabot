@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Uabot by erocheleau</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Uabot</h1>
+      <h2 class="project-tagline">Bot to generate data to UA</h2>
+      <a href="https://github.com/erocheleau/uabot/documentation" class="btn">Documentation</a>
+      <a href="https://github.com/erocheleau/uabot" class="btn">View on GitHub</a>
+      <a href="https://github.com/erocheleau/uabot/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/erocheleau/uabot/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="uabot-" class="anchor" href="#uabot-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>uabot <a href="https://travis-ci.org/erocheleau/uabot"><img src="https://travis-ci.org/erocheleau/uabot.svg?branch=master" alt="Build Status"></a>
+</h1>
+
+<p>Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
+Works with a configuration file using json format.
+Check the /Scenarios folder for examples.</p>
+
+<h2>
+<a id="supports" class="anchor" href="#supports" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supports</h2>
+
+<ul>
+<li>[x] Search events</li>
+<li>[x] Click events</li>
+<li>[x] Custom events</li>
+<li>[x] Facet events</li>
+<li>[x] View events</li>
+<li>[x] TabChange events</li>
+</ul>
+
+<h2>
+<a id="environment-variables" class="anchor" href="#environment-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Environment variables</h2>
+
+<p>Needs 3 environment variables to function :</p>
+
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEARCHTOKEN</td>
+<td>API key to search</td>
+</tr>
+<tr>
+<td>UATOKEN</td>
+<td>API key to send events to UA</td>
+</tr>
+<tr>
+<td>SCENARIOSURL</td>
+<td>Url to the scenario JSON file to randomize</td>
+</tr>
+<tr>
+<td>LOCAL</td>
+<td>
+<code>true</code> for local (otherwise don't use)</td>
+</tr>
+<tr>
+<td>GO15VENDOREXPERIMENT</td>
+<td>Use this for go version &lt; 1.6</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="on-windows" class="anchor" href="#on-windows" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On windows</h4>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">set</span> SEARCHTOKEN=value
+<span class="pl-c1">set</span> UATOKEN=value
+<span class="pl-c1">set</span> SCENARIOSURL=value
+<span class="pl-c1">set</span> LOCAL=<span class="pl-c1">true</span> <span class="pl-c">#if scenariosurl is a local path</span>
+<span class="pl-c1">set</span> GO15VENDOREXPERIMENT=1 <span class="pl-c">#if golang version &lt; 1.6</span>
+go run main.go</pre></div>
+
+<h4>
+<a id="on-mac" class="anchor" href="#on-mac" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On MAC</h4>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-k">export</span> SEARCHTOKEN = value
+<span class="pl-k">export</span> UATOKEN = value
+<span class="pl-k">export</span> SCENARIOSURL = value
+<span class="pl-k">export</span> LOCAL=<span class="pl-c1">true</span> <span class="pl-c">#if scenariosurl is a local path</span>
+<span class="pl-k">export</span> GO15VENDOREXPERIMENT=1 <span class="pl-c">#if golang version &lt; 1.6</span>
+go run main.go</pre></div>
+
+<h2>
+<a id="to-trigger-a-docker-rebuild-push-with-latesttag" class="anchor" href="#to-trigger-a-docker-rebuild-push-with-latesttag" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To trigger a Docker rebuild, push with <code>latest</code>tag</h2>
+
+<div class="highlight highlight-source-shell"><pre>1. Commit your changes
+<span class="pl-c"># We need to use the -f option here because tag latest already exists</span>
+2. git tag -f -a latest -m <span class="pl-s"><span class="pl-pds">"</span>Rebuild reason here<span class="pl-pds">"</span></span>
+<span class="pl-c"># Push changes to branch + push changes to tag, you will need to supply credentials twice.</span>
+3. git push <span class="pl-k">&amp;&amp;</span> git push -f --tags</pre></div>
+
+<p><a href="http://forthebadge.com"><img src="http://forthebadge.com/images/badges/made-with-crayons.svg" alt="forthebadge"></a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/erocheleau/uabot">Uabot</a> is maintained by <a href="https://github.com/erocheleau">erocheleau</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+
+  </body>
+</html>
