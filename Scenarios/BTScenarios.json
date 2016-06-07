@@ -334,7 +334,7 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Bravia screen broken", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Bravia screen broken", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "XBR6 TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
 			]
 		},
@@ -343,7 +343,7 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "VR no power on", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Search", "arguments" : { "queryText" : "VR no power on", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech VR"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech VR" } }}
 			]
 		},
@@ -364,7 +364,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "XBR6 TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
 			]
 		},
@@ -375,7 +375,7 @@
 				{ "type" : "Search", "arguments" : { "queryText" : "Netflix problem", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "No Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Search", "arguments" : { "queryText" : "No Netflix", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "XBR6 TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } }}
 
 			]
@@ -385,7 +385,7 @@
 			"weight" : 2,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Account cannot Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Account cannot Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech Headphone"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech Headphone" } }}
 			]
 		},
@@ -394,7 +394,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false, "customData" : { "product" : "XBR6 TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } }}
 
 			]
@@ -406,7 +406,7 @@
 				{ "type" : "Search", "arguments" : { "queryText" : "Tv blank", "goodQuery" : true } },
 				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "Blank Tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "INTERNAL - HDTV goes blank when play blue ray", "goodQuery" : false, "customData" : { "product" : "XBR TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } } }
 			]
 		},
@@ -415,7 +415,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "TV bluescreen", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "I have blue line on my tv, anybody have the same issue?", "goodQuery" : false, "customData" : { "product" : "XBR6 TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } } }
 			]
 		},
@@ -424,7 +424,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "no picture on BX620 tv", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "The entire picture has a red, green, or blue tint", "goodQuery" : false, "customData" : { "product" : "XBR6 TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
 
 			]
@@ -434,7 +434,7 @@
 			"weight" : 3,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "tv is not working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Help to setup my BestTech TV and next generation", "goodQuery" : false }},
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "tv is not working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Help to setup my BestTech TV and next generation", "goodQuery" : false, "customData" : { "product" : "XBR6 TV"} }},
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
 			]
 		},
@@ -443,8 +443,8 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Television bx6r6", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "XBR6 TV"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "XBR6 TV"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "XBR6 TV" } }}
 			]
 		},
@@ -453,8 +453,8 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Music not sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Music not sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech Headphone"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech Headphone"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Beattech Headphone" } }}
 			]
 		},
@@ -463,8 +463,8 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Music is not loud enough", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Music is not loud enough", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech Beatbox"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech Beatbox"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech Beatbox" } }}
 			]
 		},
@@ -473,8 +473,8 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Music not in HighQuality", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Music not in HighQuality", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech Beatbox"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech Beatbox"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech Beatbox" } }}
 			]
 		},
@@ -483,8 +483,8 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Image Freeze", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Image Freeze", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech VR"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech VR"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Beattech VR" } }}
 			]
 		},
@@ -493,8 +493,8 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Not enough memory", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Not enough memory", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech VR"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech VR"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech VR" } }}
 			]
 		},
@@ -503,8 +503,8 @@
 			"weight" : 1,
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Battery is dead after 5 min", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+				{ "type" : "Search", "arguments" : { "queryText" : "Battery is dead after 5 min", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech Headphone"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech Headphone"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Beattech Headphone" } }}
 			]
 		},
