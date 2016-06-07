@@ -40,7 +40,7 @@ func newSearchEvent(e *JSONEvent, c *Config, v *Visit) (*SearchEvent, error) {
 	}
 
 	if se.query == "" {
-		return nil, errors.New("awdkjawlkdjawldkjawldkja")
+		Info.Printf("Search query expression : %s", se.query)
 		se.query, err = c.RandomQuery(goodQuery, v.Language)
 		if err != nil {
 			return nil, err

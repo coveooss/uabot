@@ -81,6 +81,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 	//Info.Printf("On device %s", _useragent)
 	if len(v.Config.Languages) > 0 {
 		v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+		Info.Printf("Language of visit : %s", v.Language)
 	} else {
 		v.Language = "en"
 	}
@@ -119,7 +120,6 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 		if err != nil {
 			return err
 		}
-
 		err = event.Execute(v)
 		if err != nil {
 			return err

@@ -1,11 +1,143 @@
 {
   "searchendpoint" 		: "https://platformdev.cloud.coveo.com/rest/search/",
   "orgName" : "coveodev",
-	"analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
-	"languages" 			: ["fr", "en"],
-  "randomGoodQueries" : [
-      "awdawdawd","awdawdawd"
-  ],
+	"analyticsendpoint" 	: "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
+	"languages" 			: ["zh", "da", "nl", "de", "en", "fi", "fr", "hu", "it", "ja", "ko", "nb", "pt", "es", "ro", "ru", "sv", "th", "tr"],
+  "randomGoodQueries" : {
+    "zh" : [
+      "耳 己轉身",
+      "可 去 在一處",
+      "訖乃返",
+      "不稱讚 關雎",
+      "第五回 覽 第四回 不題"
+    ],
+    "da" : [
+      "øl",
+      "får",
+      "sådan",
+      "dit",
+      "kun"
+    ],
+    "nl" : [
+      "grooter",
+      "markten",
+      "ongeveer",
+      "groeien",
+      "meehelpen"
+    ],
+    "de" : [
+      "geblieben",
+      "fräulein",
+      "bier",
+      "mann",
+      "vormittags"
+    ],
+    "en" : [
+      "hello",
+      "other",
+      "word",
+      "complete sentence",
+      "house full of maggot"
+    ],
+    "fi" : [
+      "pitkalla pelastaa parempaa",
+      "keinolla ",
+      "odottaen",
+      "hymahtaen ",
+      "mokottaa "
+    ],
+    "fr" : [
+        "bonjour",
+        "livre",
+        "mécanique",
+        "l'arc-en-ciel",
+        "une petite phrase en français"
+    ],
+    "hu" : [
+        "szöveg",
+        "szép",
+        "fa",
+        "számára",
+        "megtalált"
+    ],
+    "it" : [
+      "rimanete ",
+      "tristezza ",
+      "cammino ",
+      "imagina ",
+      "nato "
+    ],
+    "ja" : [
+      "第四章",
+      "第七章 第三章 第五章",
+      "第二章. 復讐者」",
+      "第十五章 第十三章",
+      "第"
+    ],
+    "ko" : [
+      "녹이다",
+      "개",
+      "주요한",
+      "감자들",
+      "여보세요"
+    ],
+    "nb" : [
+      "se",
+      "antall",
+      "avdød",
+      "bakbygning",
+      "begivenhet"
+    ],
+    "pt" : [
+      "obedeceres",
+      "Regressou",
+      "Provincia",
+      "conteve",
+      "avultava"
+    ],
+    "es" : [
+      "ultimos",
+      "operacion",
+      "Querida",
+      "Exclamaron",
+      "real"
+    ],
+    "ro" : [
+      "Bună ziua",
+      "Mă numesc ...",
+      "Îți doresc",
+      "Poftă bună!",
+      "Mersi"
+    ],
+    "ru" : [
+      "сраженье",
+      "певцов",
+      "Дань",
+      "стенаньем",
+      "склонился"
+    ],
+    "sv" : [
+      "kanske",
+      "lite",
+      "något",
+      "från",
+      "någon"
+    ],
+    "th" : [
+      "hog nam yo ti nai",
+      "Pusapa kom",
+      "chuei dai mai",
+      "chan sabai di ka",
+      "tanwa kom"
+    ],
+    "tr" : [
+      "ağlamak",
+      "allahaısmarladık",
+      "çarşamba",
+      "çikolata",
+      "tıraş"
+    ]
+  },
   "scenarios" : [
 		{
 			"name"   : "scenario1",

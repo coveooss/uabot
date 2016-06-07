@@ -75,12 +75,12 @@ func (c *Config) RandomQuery(good bool, language string) (string, error) {
 		if len(c.GoodQueries[language]) < 1 {
 			return "", errors.New("No good queries detected")
 		}
-		return c.GoodQueries[language][rand.Intn(len(c.GoodQueries))], nil
+		return c.GoodQueries[language][rand.Intn(len(c.GoodQueries[language]))], nil
 	}
 	if len(c.BadQueries[language]) < 1 {
 		return "", errors.New("No bad queries detected")
 	}
-	return c.BadQueries[language][rand.Intn(len(c.BadQueries))], nil
+	return c.BadQueries[language][rand.Intn(len(c.BadQueries[language]))], nil
 }
 
 // RandomUserAgent returns a random user agent string to send with an event
