@@ -3,6 +3,8 @@
 This is the documentation index file for all the possible options of the data generation bot.
 This file should be kept up to date with the changes, otherwise contact the author.
 
+## [Documentation of how to build a scenario](Scenarios.md)
+
 ## General parameters
 
 Parameters that are necessary are in **bold**, otherwise there is a default value in defaults\defauls.go
@@ -15,7 +17,7 @@ searchendpoint | string | Endpoint where to direct the search queries | https://
 analyticsendpoint | string | Endpoint where to direct the usage analytics events | https://usageanalytics.coveo.com/rest/v15/analytics/
 **randomGoodQueries** | []string | The dataset of random queries (good ones) | ""
 **randomBadQueries** | []string | The dataset of random queries (bad ones) | ""
-**scenarios** | []Scenarios | The dataset of scenarios to execute | (none) See below
+[**scenarios**](Scenarios.md) | []Scenarios | The dataset of scenarios to execute | (none) See [documentation](Scenarios.md)
 timeBetweenVisits | number | The time to wait between each visits (between 0 and X seconds) | 120 seconds
 timeBetweenActions | number | The time to wait between each actions (between 0 and X seconds) | 3 seconds
 *pipeline* | string | The name of the pipeline the queries will use | (none)
