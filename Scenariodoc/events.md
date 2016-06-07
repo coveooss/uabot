@@ -2,14 +2,14 @@
 Different types of events can be generated using this bot. This is the documentation on how to build them.
 
 ## List of events
-1. Search event
-2. Click event
-3. SearchAndClick event
-4. Custom event
-5. TabChange event
-6. FacetChange event
-7. SetOrigin event
-8. PageView event
+1. [Search event](#Search)
+2. [Click event](#Click)
+3. [SearchAndClick event](#SearchAndClick)
+4. [Custom event](#Custom)
+5. [TabChange event](#Tab)
+6. [FacetChange event](#Facet)
+7. [SetOrigin event](#Origin)
+8. [PageView event](#Page)
 
 ### 0. Generic event
 
@@ -18,7 +18,7 @@ Parameter | Type | Usage
 type | string | The type of the event
 arguments | Object | The arguments of the event, they are different for each type of events
 
-### 1. Search event
+### 1. Search event <a name="Search"></a>
 Represents one query sent to the index. Typically the submit of the search bar, search as you type, etc.
 
 `"type" : "Search"`
@@ -48,7 +48,7 @@ customData | object | Custom data to be sent alongside the event.
 }
 ```
 
-### 2. Click Event
+### 2. Click Event <a name="Click"></a>
 
 Represents a click on a document that was returned by a query. Can represent either a document open or a quickview.
 
@@ -77,4 +77,156 @@ customData | object | Custom data to be sent alongside the event.
         }
     }
 }
+```
+
+### 3. SearchAndClick event <a name="SearchAndClick"></a>
+
+Use when you want to click on a specific document after a specific search. Ties a search and a click event together.
+
+`"type" : "SearchAndClick"`
+
+Arguments | Type | Usage
+------------ | ------------- | ----------------
+**queryText** | string | The query to send. Not recommended to use with random query.
+**docClickTitle** | string | The title of the document you want to click on.
+**probability** | number | Between 0 and 1, the probability the user will click
+quickview | boolean | If the click is a quickview instead of a document open (default false)
+caseSearch | boolean | If the event is on a Case Creation interface (default false)
+inputTitle | string | If it's a case creation event, which input triggered the search
+customData | object | Any custom data to send with the event
+
+#### Example
+```json
+{
+    "type" : "SearchAndClick",
+    "arguments" : {
+        "queryText" : "specific query",
+        "caseSearch": true,
+        "inputTitle": "Subject",
+        "probability" : 0.85,
+        "docClickTitle" : "specific title"
+    }
+}
+```
+
+### 4. Custom event <a name="Custom"></a>
+
+A custom event sent to the analytics, contains custom data.
+
+`"type" : "Custom"`
+
+Arguments | Type | Usage
+------------ | ------------- | ----------------
+**actionType** | string | The event type of this custom event
+**actionCause** | string | The cause of this event, also the event value
+customData | object | Any custom data to send with the event
+
+#### Example
+```json
+{
+    "type" : "Custom",
+    "arguments" : {
+        "actionCause" : "submitButton",
+        "actionType" : "caseCreation",
+        "customData" : {
+            "hasclicks": false,
+            "product" : "XBR6 TV"
+        }
+    }
+}
+```
+
+### 5. TabChange event <a name="Tab"></a>
+
+Represents when the user changes the tabs on top of the result list in a search page.
+
+`"type" : "TabChange"`
+
+Arguments | Type | Usage
+------------ | ------------- | ----------------
+**tabName** | string | The name of the tab that the user switched to. This will also change originLevel2.
+**tabCQ** | string | The constant query applied by this tab to the queries
+
+#### Example
+```json
+{
+    "type" : "TabChange",
+    "arguments" : {
+        "tabName" : "YOUTUBE",
+        "tabCQ" : "@sysfiletype==\"youtubevideo\""
+    }
+}
+```
+
+### 6. FacetChange event <a name="Facet"></a>
+
+Represents an event sent when the user chooses a value in a facet.
+
+`"type" : "FacetChange"`
+
+Arguments | Type | Usage
+------------ | ------------- | ----------------
+**facetTitle** | string | The title of the facet that was selected
+**facetValue** | string | The value that was selected in the facet
+**facetField** | string | The field bound to the facet
+
+#### Example
+```json
+{
+    "type" : "FacetChange",
+    "arguments" : {
+        "facetTitle": "Type",
+        "facetValue": "Message",
+        "facetField": "@objecttype"
+    }
+}
+```
+
+### 7. SetOrigin event <a name="Origin"></a>
+
+An event to tell the bot to change the origin of the events (use this when the user moved between search pages for example)
+
+`"type" : "SetOrigin"`
+
+Arguments | Type | Usage
+------------ | ------------- | ----------------
+originLevel1 | string | The new originLevel1
+originLevel2 | string | The new originLevel2
+originLevel3 | string | The new originLevel3
+
+#### Example
+```json
+{
+    "type" : "SetOrigin",
+    "arguments" : {
+        "originLevel1" : "Example1",
+        "originLevel2" : "Example2",
+        "originLevel3" : "Example3"
+    }
+}
+```
+
+### 8. PageView event <a name="Page"></a>
+
+An event when a user visits a page.
+
+`"type" : "View"`
+
+Arguments | Type | Usage
+------------ | ------------- | ----------------
+pageuri | string | The uri of the page currently visited
+pagereferrer | string | The uri of the page referrer if available
+pagetitle | string | The title of the page
+
+#### Example
+```json
+{
+    "type" : "View",
+    "arguments" : {
+        "pageuri" : "https://example.com",
+        "pagereferrer" : "https://www.google.com",
+        "pagetitle" : "Page Example"
+    }
+}
+
 ```

@@ -22,6 +22,7 @@ Facet | Represents an event sent when the user chooses a value in a facet.
 Tab | Represents when the user changes the tabs on top of the result list in a search page.
 SearchAndClick | Use when you want to click on a specific document after a specific search. Ties a search and a click event together.
 Custom | A custom event sent to the analytics, contains custom data.
+SetOrigin | An event to tell the bot to change the origin of the events (use this when the user moved between search pages for example)
 Page View | An event when a user visits a page.
 
 *Consult each event doc for information on how to build a specific event.*
