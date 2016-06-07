@@ -18,7 +18,7 @@ Parameter | Type | Usage
 type | string | The type of the event
 arguments | Object | The arguments of the event, they are different for each type of events
 
-### 1. Search event <a name="Search"></a>
+### <a name="Search"></a> 1. Search event 
 Represents one query sent to the index. Typically the submit of the search bar, search as you type, etc.
 
 `"type" : "Search"`
@@ -48,7 +48,7 @@ customData | object | Custom data to be sent alongside the event.
 }
 ```
 
-### 2. Click Event <a name="Click"></a>
+###<a name="Click"></a> 2. Click Event 
 
 Represents a click on a document that was returned by a query. Can represent either a document open or a quickview.
 
@@ -79,7 +79,7 @@ customData | object | Custom data to be sent alongside the event.
 }
 ```
 
-### 3. SearchAndClick event <a name="SearchAndClick"></a>
+###<a name="SearchAndClick"></a> 3. SearchAndClick event 
 
 Use when you want to click on a specific document after a specific search. Ties a search and a click event together.
 
@@ -109,7 +109,7 @@ customData | object | Any custom data to send with the event
 }
 ```
 
-### 4. Custom event <a name="Custom"></a>
+###<a name="Custom"></a> 4. Custom event 
 
 A custom event sent to the analytics, contains custom data.
 
@@ -136,7 +136,7 @@ customData | object | Any custom data to send with the event
 }
 ```
 
-### 5. TabChange event <a name="Tab"></a>
+###<a name="Tab"></a> 5. TabChange event 
 
 Represents when the user changes the tabs on top of the result list in a search page.
 
@@ -158,7 +158,7 @@ Arguments | Type | Usage
 }
 ```
 
-### 6. FacetChange event <a name="Facet"></a>
+###<a name="Facet"></a> 6. FacetChange event 
 
 Represents an event sent when the user chooses a value in a facet.
 
@@ -182,7 +182,7 @@ Arguments | Type | Usage
 }
 ```
 
-### 7. SetOrigin event <a name="Origin"></a>
+###<a name="Origin"></a> 7. SetOrigin event 
 
 An event to tell the bot to change the origin of the events (use this when the user moved between search pages for example)
 
@@ -206,7 +206,7 @@ originLevel3 | string | The new originLevel3
 }
 ```
 
-### 8. PageView event <a name="Page"></a>
+###<a name="Page"></a> 8. PageView event 
 
 An event when a user visits a page.
 
