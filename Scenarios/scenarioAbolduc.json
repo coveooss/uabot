@@ -1,0 +1,18 @@
+{
+  "searchendpoint" 		: "https://platformdev.cloud.coveo.com/rest/search/",
+  "orgName" : "coveodev",
+	"analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
+	"languages" 			: ["fr", "en"],
+  "randomGoodQueries" : [
+      "awdawdawd","awdawdawd"
+  ],
+  "scenarios" : [
+		{
+			"name"   : "scenario1",
+			"weight" : 60,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } }
+			]
+		}
+  ]
+}

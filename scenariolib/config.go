@@ -8,7 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/erocheleau/uabot/defaults"
+	"github.com/adambbolduc/uabot/defaults"
 )
 
 // Config This is the struct that holds all the info on the current bot session.
@@ -25,8 +25,8 @@ import (
 type Config struct {
 	ScenarioMap           map[int]*Scenario
 	OrgName               string              `json:"orgName"`
-	GoodQueries           []string            `json:"randomGoodQueries"`
-	BadQueries            []string            `json:"randomBadQueries"`
+	GoodQueries           map[string][]string `json:"randomGoodQueries"`
+	BadQueries            map[string][]string `json:"randomBadQueries"`
 	Scenarios             []*Scenario         `json:"scenarios"`
 	DefaultOriginLevel1   string              `json:"defaultOriginLevel1,omitempty"`
 	GlobalFilter          string              `json:"globalfilter,omitempty"`
@@ -70,17 +70,17 @@ func (c *Config) RandomScenario() (*Scenario, error) {
 
 // RandomQuery Returns a random query good or bad from the list of possible queries.
 // returns an error if there are no queries to select from
-func (c *Config) RandomQuery(good bool) (string, error) {
+func (c *Config) RandomQuery(good bool, language string) (string, error) {
 	if good {
-		if len(c.GoodQueries) < 1 {
+		if len(c.GoodQueries[language]) < 1 {
 			return "", errors.New("No good queries detected")
 		}
-		return c.GoodQueries[rand.Intn(len(c.GoodQueries))], nil
+		return c.GoodQueries[language][rand.Intn(len(c.GoodQueries))], nil
 	}
-	if len(c.BadQueries) < 1 {
+	if len(c.BadQueries[language]) < 1 {
 		return "", errors.New("No bad queries detected")
 	}
-	return c.BadQueries[rand.Intn(len(c.BadQueries))], nil
+	return c.BadQueries[language][rand.Intn(len(c.BadQueries))], nil
 }
 
 // RandomUserAgent returns a random user agent string to send with an event

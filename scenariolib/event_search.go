@@ -20,7 +20,7 @@ type SearchEvent struct {
 	customData  map[string]interface{}
 }
 
-func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
+func newSearchEvent(e *JSONEvent, c *Config, v *Visit) (*SearchEvent, error) {
 	var err error
 	var inputTitle string
 	var goodQuery, validCast bool
@@ -40,7 +40,8 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	}
 
 	if se.query == "" {
-		se.query, err = c.RandomQuery(goodQuery)
+		return nil, errors.New("awdkjawlkdjawldkjawldkja")
+		se.query, err = c.RandomQuery(goodQuery, v.Language)
 		if err != nil {
 			return nil, err
 		}

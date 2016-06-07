@@ -6,11 +6,11 @@ import "errors"
 
 // ParseEvent A factory to create the correct event type coming from the JSON parse
 // of the scenario definition.
-func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
+func ParseEvent(e *JSONEvent, c *Config, v *Visit) (Event, error) {
 	switch e.Type {
 
 	case "Search":
-		event, err := newSearchEvent(e, c)
+		event, err := newSearchEvent(e, c, v)
 		if err != nil {
 			return nil, err
 		}
