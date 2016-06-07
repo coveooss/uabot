@@ -484,7 +484,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Image Freeze", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech VR"} } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech VR"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6, "quickview": true, "customData" : { "product" : "Beattech VR"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Beattech VR" } }}
 			]
 		},
@@ -494,7 +494,7 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Not enough memory", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech VR"} } },
-				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Beattech VR"} } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6, "quickview": true, "customData" : { "product" : "Beattech VR"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech VR" } }}
 			]
 		},
