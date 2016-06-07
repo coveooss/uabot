@@ -12,7 +12,7 @@ events | []Events | The events happening in this scenario
 
 *The chance that a single specific scenario will be randomized is given by weight/totalWeights*
 
-### Supported events
+### Supported [events](events.md)
 
 Type | Description
 ------------ | -------------
