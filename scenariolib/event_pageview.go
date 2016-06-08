@@ -7,16 +7,23 @@ import "errors"
 
 // ViewEvent a struct representing a search, is defined by a query to execute
 type ViewEvent struct {
-	pageURI      string
-	pageReferrer string
-	pageTitle    string
+	pageURI         string
+	pageReferrer    string
+	pageTitle       string
+	contentIdKey    string
+	contentIdValue  string
+	contentType     string
 }
 
 func newViewEvent(e *JSONEvent) (*ViewEvent, error) {
 	pageURI, ok1 := e.Arguments["pageuri"].(string)
 	pageReferrer, ok2 := e.Arguments["pagereferrer"].(string)
 	pageTitle, ok3 := e.Arguments["pagetitle"].(string)
-	if !ok1 || !ok2 || !ok3 {
+	contentIdKey, ok4 := e.Arguments["contentidkey"].(string)
+	contentIdValue, ok5 := e.Arguments["contentidvalue"].(string)
+	contentType, ok6 := e.Arguments["contenttype"].(string)
+
+	if !ok1 || !ok2 || !ok3 || !ok4 || !ok5 || !ok6 {
 		return nil, errors.New("Invalid parse of arguments on View Event")
 	}
 
@@ -25,9 +32,12 @@ func newViewEvent(e *JSONEvent) (*ViewEvent, error) {
 	}
 
 	return &ViewEvent{
-		pageURI:      pageURI,
-		pageReferrer: pageReferrer,
-		pageTitle:    pageTitle,
+		pageURI:      	pageURI,
+		pageReferrer: 	pageReferrer,
+		pageTitle:    	pageTitle,
+		contentIdKey: 	contentIdKey,
+		contentIdValue: contentIdValue,
+		contentType:  	contentType,
 	}, nil
 }
 
@@ -35,7 +45,7 @@ func newViewEvent(e *JSONEvent) (*ViewEvent, error) {
 // the analytics.
 func (ve *ViewEvent) Execute(v *Visit) error {
 
-	err := v.sendViewEvent(ve.pageTitle, ve.pageReferrer, ve.pageURI)
+	err := v.sendViewEvent(ve.pageTitle, ve.pageReferrer, ve.pageURI, ve.contentIdKey, ve.contentIdValue, ve.contentType)
 
 	return err
 }

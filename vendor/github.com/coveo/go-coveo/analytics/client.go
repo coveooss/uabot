@@ -137,6 +137,9 @@ func NewViewEvent() *ViewEvent {
 		PageURI:      "",
 		PageReferrer: "",
 		PageTitle:    "",
+		ContentIdKey: "",
+		ContentIdValue: "",
+		ContentType: "",
 	}
 }
 

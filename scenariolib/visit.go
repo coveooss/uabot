@@ -203,9 +203,9 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	return nil
 }
 
-func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
+func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI, contentIdKey, contentIdValue, contentType string) error {
 	Info.Printf("Sending PageView Event on URI: %s", pageURI)
-
+	
 	event := ua.NewViewEvent()
 
 	event.Username = v.Username
@@ -217,6 +217,9 @@ func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
 	event.PageReferrer = pageReferrer
 	event.PageTitle = pageTitle
 	event.PageURI = pageURI
+	event.ContentIdKey = contentIdKey
+	event.ContentIdValue = contentIdValue
+	event.ContentType = contentType
 	event.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
 		"ipadress":    v.IP,
