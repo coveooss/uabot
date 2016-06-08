@@ -20,3 +20,12 @@ func CreateEvent(e *JSONEvent) (event Event, err error) {
 
 	return event, err
 }
+
+// Min Function to return the minimal value between two integers, because Go "forgot"
+// to code it...
+func Min(a int, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
