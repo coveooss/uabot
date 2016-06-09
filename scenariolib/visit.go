@@ -282,7 +282,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		return err
 	}
 
-	event.DocumentURI = v.LastResponse.Results[rank].URI
+	event.DocumentURI = "/documentationTest"
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.DocumentPosition = rank + 1
 	if quickview {
