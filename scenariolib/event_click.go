@@ -58,19 +58,12 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 
 // Execute Execute the click event, sending a click event to the usage analytics
 func (ce *ClickEvent) Execute(v *Visit) error {
-	if v.LastResponse.TotalCount < 1 {
-		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
-		return nil
-	}
-
 	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ce.clickRank = 0
 		// Find a random rank within the possible click values accounting for the offset
-		if v.LastResponse.TotalCount > 1 {
-			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
-			rndRank := int(math.Abs(rand.NormFloat64()*2)) + ce.offset
-			ce.clickRank = Min(rndRank, topL-1)
-		}
+		topL := 10
+		rndRank := int(math.Abs(rand.NormFloat64()*2)) + ce.offset
+		ce.clickRank = Min(rndRank, topL-1)
 	}
 
 	if rand.Float64() <= ce.probability { // Probability to click
