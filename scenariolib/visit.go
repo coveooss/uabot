@@ -275,16 +275,20 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	return err
 }
 
-func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}) error {
+func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}, realDocument bool) error {
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
 		return err
 	}
-
-	event.DocumentURI = "/documentationTest"
+	if(realDocument){
+		event.DocumentURI = v.LastResponse.Results[rank].URI
+		event.DocumentPosition = rank + 1
+	} else {
+		event.DocumentURI = "falseDocument"
+		event.DocumentPosition = 1
+	}
 	event.SearchQueryUID = v.LastResponse.SearchUID
-	event.DocumentPosition = rank + 1
 	if quickview {
 		event.ActionCause = "documentQuickview"
 		event.ViewMethod = "documentQuickview"
@@ -292,29 +296,39 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		event.ActionCause = "documentOpen"
 	}
 
-	event.DocumentTitle = v.LastResponse.Results[rank].Title
+	if(realDocument) {
+		event.DocumentTitle = v.LastResponse.Results[rank].Title
+		event.DocumentURL = v.LastResponse.Results[rank].ClickUri
+		if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
+			event.DocumentURIHash = urihash
+		} else {
+			return errors.New("Cannot convert sysurihash to string")
+		}
+		if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
+			event.CollectionName = collection
+		} else {
+			return errors.New("Cannot convert syscollection to string")
+		}
+		if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
+			event.SourceName = source
+		} else {
+			return errors.New("Cannot convert syssource to string")
+		}
+	} else {
+		event.DocumentTitle = "falseDocumentTitle"
+		event.DocumentURL = "falseDocumentURL"
+		event.DocumentURIHash = "aklawjdqklwjhd"
+		event.collection = "falseCollection"
+		event.source = "falseSource"
+	}
+
 	event.QueryPipeline = v.LastResponse.Pipeline
-	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
 	event.Username = v.Username
 	event.Anonymous = v.Anonymous
 	event.Language = v.Language
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
-	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
-		event.DocumentURIHash = urihash
-	} else {
-		return errors.New("Cannot convert sysurihash to string")
-	}
-	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
-		event.CollectionName = collection
-	} else {
-		return errors.New("Cannot convert syscollection to string")
-	}
-	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
-		event.SourceName = source
-	} else {
-		return errors.New("Cannot convert syssource to string")
-	}
+
 
 	event.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
