@@ -65,8 +65,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
 			rndRank := int(math.Abs(rand.NormFloat64()*2)) + ce.offset
 			ce.clickRank = Min(rndRank, topL-1)
-		}
-		else {
+		} else {
 			ce.clickRank = 1
 		}
 	}
