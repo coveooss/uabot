@@ -318,8 +318,8 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		event.DocumentTitle = "falseDocumentTitle"
 		event.DocumentURL = "falseDocumentURL"
 		event.DocumentURIHash = "aklawjdqklwjhd"
-		event.Collection = "falseCollection"
-		event.Source = "falseSource"
+		event.CollectionName = "falseCollection"
+		event.SourceName = "falseSource"
 	}
 
 	event.QueryPipeline = v.LastResponse.Pipeline
