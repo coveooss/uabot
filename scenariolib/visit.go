@@ -375,7 +375,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.ActionType = actionType
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
-	event.NumberOfResults = v.LastResponse.TotalCount
+	event.NumberOfResults = Max(v.LastResponse.TotalCount, 10)
 	event.ResponseTime = v.LastResponse.Duration
 	event.CustomData = customData
 
