@@ -126,7 +126,7 @@ func NewCustomEvent() (*CustomEvent, error) {
 	}, nil
 }
 
-func NewViewEvent() *ViewEvent {
+func NewViewEvent() (*ViewEvent, error) {
 	return &ViewEvent{
 		ActionEvent: &ActionEvent{
 			Language:     "en",
@@ -140,7 +140,7 @@ func NewViewEvent() *ViewEvent {
 		ContentIdKey: "",
 		ContentIdValue: "",
 		ContentType: "",
-	}
+	}, nil
 }
 
 // StatusResponse is the response to a Status service call
