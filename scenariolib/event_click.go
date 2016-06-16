@@ -9,7 +9,7 @@ import (
 // ============== CLICK EVENT ======================
 // =================================================
 
-// ClickEvent a struct representing a click, it is definied by a clickRank, an
+// ClickEvent a struct representing a click, it is defined by a clickRank, an
 // offset and a probability to click.
 type ClickEvent struct {
 	clickRank   int
@@ -34,7 +34,7 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 		return nil, errors.New("Parameter probability must be a number between 0 and 1 in a ClickEvent")
 	}
 
-	if docNo, validcast = e.Arguments["offset"].(float64); !validcast {
+	if docNo, validcast = e.Arguments["docNo"].(float64); !validcast {
 		return nil, errors.New("Parameter docNo must be a number in a ClickEvent")
 	}
 	event.clickRank = int(docNo)
