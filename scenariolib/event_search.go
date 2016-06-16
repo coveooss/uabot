@@ -35,11 +35,6 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 		if se.logEvent, validCast = e.Arguments["logEvent"].(bool); !validCast {
 			return nil, errors.New("Parameter logEvent must be of type bool in SearchEvent")
 		}
-		if (se.logEvent) {
-			print("Logging search event")
-		} else {
-			print("Not logging search event")
-		}
 	} else {
 		se.logEvent = true
 	}
