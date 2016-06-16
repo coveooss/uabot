@@ -57,6 +57,11 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 		if event.fakeClick, validcast = e.Arguments["fakeClick"].(bool); !validcast {
 			return nil, errors.New("Parameter fakeClick must be a boolean value")
 		}
+		if e.Arguments["falseResponse"] != nil {
+			if v.LastResponse, validcast = e.Arguments["falseResponse"].(SearchResponse); !validcast {
+				return nil, errors.New("Parameter falseResponse must have proper parameters")
+			}
+		}
 	} else {
 		event.fakeClick = false
 	}
@@ -67,13 +72,8 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 func (ce *ClickEvent) Execute(v *Visit) error {
 
 	if v.LastResponse.TotalCount < 1 {
-		if(ce.fakeClick) {
-			ce.clickRank = 0
-			v.LastResponse = {Results: [URI: "DocumentURI", Title: "DocumentTitle", ClickUri: "ClickUri", sysurihash: "", syscollection: "", syssource: "", ], SearchUID: "SEARCHID"}
-		} else {
-			Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
-			return nil
-		}
+		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
+		return nil
 	}
 	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ce.clickRank = 0
