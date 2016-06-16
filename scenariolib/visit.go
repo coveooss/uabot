@@ -281,13 +281,9 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	if err != nil {
 		return err
 	}
-	if(realDocument){
-		event.DocumentURI = v.LastResponse.Results[rank].URI
-		event.DocumentPosition = rank + 1
-	} else {
-		event.DocumentURI = "falseDocument"
-		event.DocumentPosition = 1
-	}
+
+	event.DocumentURI = v.LastResponse.Results[rank].URI
+	event.DocumentPosition = rank + 1
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	if quickview {
 		event.ActionCause = "documentQuickview"
@@ -296,30 +292,22 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		event.ActionCause = "documentOpen"
 	}
 
-	if(realDocument) {
-		event.DocumentTitle = v.LastResponse.Results[rank].Title
-		event.DocumentURL = v.LastResponse.Results[rank].ClickUri
-		if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
-			event.DocumentURIHash = urihash
-		} else {
-			return errors.New("Cannot convert sysurihash to string")
-		}
-		if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
-			event.CollectionName = collection
-		} else {
-			return errors.New("Cannot convert syscollection to string")
-		}
-		if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
-			event.SourceName = source
-		} else {
-			return errors.New("Cannot convert syssource to string")
-		}
+	event.DocumentTitle = v.LastResponse.Results[rank].Title
+	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
+	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
+		event.DocumentURIHash = urihash
 	} else {
-		event.DocumentTitle = "falseDocumentTitle"
-		event.DocumentURL = "falseDocumentURL"
-		event.DocumentURIHash = "aklawjdqklwjhd"
-		event.CollectionName = "falseCollection"
-		event.SourceName = "falseSource"
+		return errors.New("Cannot convert sysurihash to string")
+	}
+	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
+		event.CollectionName = collection
+	} else {
+		return errors.New("Cannot convert syscollection to string")
+	}
+	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
+		event.SourceName = source
+	} else {
+		return errors.New("Cannot convert syssource to string")
 	}
 
 	event.QueryPipeline = v.LastResponse.Pipeline

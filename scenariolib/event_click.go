@@ -53,11 +53,28 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 		}
 	}
 
+	if e.Arguments["fakeClick"] != nil {
+		if event.fakeClick, validcast = e.Arguments["fakeClick"].(bool); !validcast {
+			return nil, errors.New("Parameter fakeClick must be a boolean value")
+		}
+	} else {
+		event.fakeClick = false
+	}
 	return event, nil
 }
 
 // Execute Execute the click event, sending a click event to the usage analytics
 func (ce *ClickEvent) Execute(v *Visit) error {
+
+	if v.LastResponse.TotalCount < 1 {
+		if(ce.fakeClick) {
+			ce.clickRank = 0
+			v.LastResponse = {Results: [URI: "DocumentURI", Title: "DocumentTitle", ClickUri: "ClickUri", sysurihash: "", syscollection: "", syssource: "", ], SearchUID: "SEARCHID"}
+		} else {
+			Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
+			return nil
+		}
+	}
 	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ce.clickRank = 0
 		// Find a random rank within the possible click values accounting for the offset
@@ -75,7 +92,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 			return errors.New("Click index out of bounds")
 		}
 
-		err := v.sendClickEvent(ce.clickRank, ce.quickview, ce.customData, v.LastResponse.TotalCount > 0)
+		err := v.sendClickEvent(ce.clickRank, ce.quickview, ce.customData)
 		if err != nil {
 			return err
 		}
