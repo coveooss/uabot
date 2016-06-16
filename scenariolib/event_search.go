@@ -38,6 +38,8 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	} else {
 		se.logEvent = true
 	}
+	Info.Printf("Will log search event to analytics: (%t)", se.logEvent)
+
 	if goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
 		return nil, errors.New("Parameter goodQuery must be of type bool in SearchEvent")
 	}
