@@ -12,7 +12,7 @@ import (
 
 // SearchEvent a struct representing a search, is defined by a query to execute
 type SearchEvent struct {
-	query string
+	query       string
 	// keyword exists because the query sent to the index may be diffrent than the keyword(s) used to search
 	keyword     string
 	actionCause string
@@ -23,8 +23,7 @@ type SearchEvent struct {
 func newSearchEvent(e *JSONEvent, c *Config, v *Visit) (*SearchEvent, error) {
 	var err error
 	var inputTitle string
-	var goodQuery, validCast bool
-
+	var goodQuery, matchLanguage, validCast bool
 	se := new(SearchEvent)
 
 	if se.query, validCast = e.Arguments["queryText"].(string); !validCast {
@@ -39,11 +38,25 @@ func newSearchEvent(e *JSONEvent, c *Config, v *Visit) (*SearchEvent, error) {
 		}
 	}
 
+	if e.Arguments["matchLanguage"] != nil {
+		if matchLanguage, validCast = e.Arguments["matchLanguage"].(bool); !validCast {
+			return nil, errors.New("Parameter matchLanguage must be a type bool in SearchEvent")
+		}
+	} else {
+		matchLanguage = false
+	}
+
 	if se.query == "" {
-		Info.Printf("Search query expression : %s", se.query)
-		se.query, err = c.RandomQuery(goodQuery, v.Language)
-		if err != nil {
-			return nil, err
+		if matchLanguage {
+			se.query, err = c.RandomQueryInLanguage(goodQuery, v.Language)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			se.query, err = c.RandomQuery(goodQuery)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 	se.keyword = se.query

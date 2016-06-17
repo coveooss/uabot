@@ -1,0 +1,270 @@
+{
+  "searchendpoint": "https://platformdev.cloud.coveo.com/rest/search/",
+  "orgName": "coveodev",
+  "timeBetweenVisits": 2,
+  "timeBetweenActions": 1,
+  "analyticsendpoint": "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
+  "languages": [
+    "zh",
+    "da",
+    "nl",
+    "de",
+    "en",
+    "fi",
+    "fr",
+    "hu",
+    "it",
+    "ja",
+    "ko",
+    "nb",
+    "pt",
+    "es",
+    "ro",
+    "ru",
+    "sv",
+    "th",
+    "tr"
+  ],
+  "randomGoodQueries": [
+    "hdmi",
+    "no picture",
+    "no picture on my tv",
+    "hdmi issue",
+    "XBR6 hdmi",
+    "netflix",
+    "netflix access",
+    "picture quality",
+    "tv is not working",
+    "multi language support",
+    "routing service",
+    "wobbly tv",
+    "upgrade laptop memory",
+    "memory issue",
+    "bravia tv",
+    "laptop crashes",
+    "XBR9 Series TV",
+    "broken cable",
+    "charger broken",
+    "TV goes blank",
+    "factory reset",
+    "multi language",
+    "setup BRAVIA tv",
+    "quick start guide",
+    "XBR6 user guide",
+    "nex-7 manual",
+    "usb to hdmi",
+    "ipad hdmi",
+    "dvi hdmi cable",
+    "primus hdtv",
+    "tv audio hts",
+    "coaxial to hdmi cable",
+    "hdmi splitter",
+    "sound bar",
+    "connect laptop to hdtv",
+    "receiver audio out",
+    "audio jacks",
+    "galaxy tab hdmi",
+    "connect playstation",
+    "on screen display",
+    "netflix on dvd player",
+    "hdmi composite converter",
+    "what is 4k",
+    "whats 4k",
+    "tv 4k",
+    "playstation 4",
+    "HDMI port on Lenovo LAPTOP",
+    "receiver without HDMI",
+    "vapor barrier for cables",
+    "vga 2 hdmi",
+    "wifi bravia",
+    "wifi tv",
+    "connection bravia",
+    "connect bravia",
+    "sound and picture out of sync"
+  ],
+  "goodQueriesInLanguage": {
+    "zh": [
+      "耳 己轉身",
+      "可 去 在一處",
+      "訖乃返",
+      "不稱讚 關雎",
+      "第五回 覽 第四回 不題"
+    ],
+    "da": [
+      "øl",
+      "får",
+      "sådan",
+      "dit",
+      "kun"
+    ],
+    "nl": [
+      "grooter",
+      "markten",
+      "ongeveer",
+      "groeien",
+      "meehelpen"
+    ],
+    "de": [
+      "geblieben",
+      "fräulein",
+      "bier",
+      "mann",
+      "vormittags"
+    ],
+    "en": [
+      "hello",
+      "other",
+      "word",
+      "complete sentence",
+      "house full of maggot"
+    ],
+    "fi": [
+      "pitkalla pelastaa parempaa",
+      "keinolla ",
+      "odottaen",
+      "hymahtaen ",
+      "mokottaa "
+    ],
+    "fr": [
+      "bonjour",
+      "livre",
+      "mécanique",
+      "l'arc-en-ciel",
+      "une petite phrase en français"
+    ],
+    "hu": [
+      "szöveg",
+      "szép",
+      "fa",
+      "számára",
+      "megtalált"
+    ],
+    "it": [
+      "rimanete ",
+      "tristezza ",
+      "cammino ",
+      "imagina ",
+      "nato "
+    ],
+    "ja": [
+      "第四章",
+      "第七章 第三章 第五章",
+      "第二章. 復讐者」",
+      "第十五章 第十三章",
+      "第"
+    ],
+    "ko": [
+      "녹이다",
+      "개",
+      "주요한",
+      "감자들",
+      "여보세요"
+    ],
+    "nb": [
+      "se",
+      "antall",
+      "avdød",
+      "bakbygning",
+      "begivenhet"
+    ],
+    "pt": [
+      "obedeceres",
+      "Regressou",
+      "Provincia",
+      "conteve",
+      "avultava"
+    ],
+    "es": [
+      "ultimos",
+      "operacion",
+      "Querida",
+      "Exclamaron",
+      "real"
+    ],
+    "ro": [
+      "Bună ziua",
+      "Mă numesc ...",
+      "Îți doresc",
+      "Poftă bună!",
+      "Mersi"
+    ],
+    "ru": [
+      "сраженье",
+      "певцов",
+      "Дань",
+      "стенаньем",
+      "склонился"
+    ],
+    "sv": [
+      "kanske",
+      "lite",
+      "något",
+      "från",
+      "någon"
+    ],
+    "th": [
+      "hog nam yo ti nai",
+      "Pusapa kom",
+      "chuei dai mai",
+      "chan sabai di ka",
+      "tanwa kom"
+    ],
+    "tr": [
+      "ağlamak",
+      "allahaısmarladık",
+      "çarşamba",
+      "çikolata",
+      "tıraş"
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "scenario1",
+      "weight": 60,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 1.0,
+            "fakeClick": true,
+            "falseResponse": {
+              "searchUid": "searchUID",
+              "totalCount": 1,
+              "totalCountFiltered": 1,
+              "duration": 140,
+              "indexDuration": 40,
+              "requestDuration": 40,
+              "pipeline": "",
+              "results": [
+                {
+                  "uri": "falseURI",
+                  "title": "falseDocumentTitle",
+                  "clickUri": "falseClickUri",
+                  "excerpt": "",
+                  "firstSentences": "",
+                  "score": 10,
+                  "percentScore": 0.5,
+                  "raw": {
+                    "sysurihash": "falseUriHash",
+                    "syscollection": "falseCollection",
+                    "syssource": "falseSource"
+                  }
+                }
+              ],
+              "groupByResults": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
