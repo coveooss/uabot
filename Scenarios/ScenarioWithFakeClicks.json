@@ -226,7 +226,8 @@
           "type": "Search",
           "arguments": {
             "queryText": "",
-            "goodQuery": true
+            "goodQuery": true,
+	    "matchLanguage": true
           }
         },
         {

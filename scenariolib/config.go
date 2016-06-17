@@ -89,12 +89,12 @@ func (c *Config) RandomQuery(good bool) (string, error) {
 func (c *Config) RandomQueryInLanguage(good bool, language string) (string, error){
 	if good {
 		if len(c.GoodQueriesInLang[language]) < 1 {
-			return "", errors.New("No good queries detected")
+			return "", errors.New("No good queries detected in lang : " + language)
 		}
 		return c.GoodQueriesInLang[language][rand.Intn(len(c.GoodQueriesInLang[language]))], nil
 	}
 	if len(c.BadQueriesInLang[language]) < 1 {
-		return "", errors.New("No bad queries detected")
+		return "", errors.New("No bad queries detected in lang : " + language)
 	}
 	return c.BadQueriesInLang[language][rand.Intn(len(c.BadQueriesInLang[language]))], nil
 }
