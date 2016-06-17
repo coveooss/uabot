@@ -68,6 +68,8 @@ MobileUserAgents | []string | A list of UserAgents strings that are on mobile
   "randomCustomData"        : [ { "apiname": "nameofacustomdimension", "values" : [ "value 1", "value 2", "value 3" ] } ],
   "languages"               : ["en", "fr"],
   "globalfilter"            : "@uri",
+  "goodQueriesInLanguage"   : {"en": ["first english query", "second"], "fr" : ["première", "deuxième"]},
+  "badQueriesInLanguage"    : {"en": ["耳 己轉身"]},
   "randomGoodQueries"       : [ "First query", "Second query", "Third query", "etc..." ],
   "randomBadQueries"        : [ "First bad query", "Second bad query", "You can even use query syntax @source=Sharepoint", "etc..." ],
   "scenarios"               : []
