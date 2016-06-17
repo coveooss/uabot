@@ -27,6 +27,7 @@ Arguments | Type | Usage
 ------------ | ------------- | ----------------
 queryText | string | The query to send. Leave "blank" for a random query
 goodQuery | boolean | If the random query should be a good or a bad query
+logEvent | boolean | If the event should be logged in the analytics (optional, default = true)
 caseSearch | boolean | If the query comes from a Case Creation interface
 inputTitle | string | The title of the input that triggered the search if it was a case search
 customData | object | Custom data to be sent alongside the event.
@@ -40,6 +41,7 @@ matchLanguage | boolean | If the query expression will be in the visit language.
     "arguments" : {
         "queryText" : "",
         "goodQuery" : true,
+        "logEvent" : true,
         "caseSearch" : true,
         "inputTitle" : "Product",
         "customData" : {

@@ -203,28 +203,36 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	return nil
 }
 
-func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
-	Info.Printf("Sending PageView Event on URI: %s", pageURI)
+func (v *Visit) sendViewEvent(rank int, contentType string) error {
+	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
 
-	event := ua.NewViewEvent()
+	event, err := ua.NewViewEvent()
+	if err != nil {
+		return err
+	}
 
+	event.PageURI = v.LastResponse.Results[rank].ClickUri
+	event.PageTitle = v.LastResponse.Results[rank].Title
+	event.ContentType = contentType
 	event.Username = v.Username
 	event.Anonymous = v.Anonymous
 	event.Language = v.Language
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
-	event.Anonymous = v.Anonymous
-	event.PageReferrer = pageReferrer
-	event.PageTitle = pageTitle
-	event.PageURI = pageURI
-	event.CustomData = map[string]interface{}{
-		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.IP,
+	event.ContentIdKey = "@sysurihash"
+	event.PageReferrer = "Referrer"
+	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
+		event.ContentIdValue = urihash
+	} else {
+		return errors.New("Cannot convert sysurihash to string")
 	}
 
-	// Send a UA search event
-	err := v.UAClient.SendViewEvent(event)
-	return err
+	// Send a UA view event
+	err = v.UAClient.SendViewEvent(event)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
