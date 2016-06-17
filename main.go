@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/adambbolduc/uabot/scenariolib"
+	"github.com/erocheleau/uabot/scenariolib"
 	"github.com/k0kubun/pp"
 )
 
