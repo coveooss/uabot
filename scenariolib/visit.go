@@ -275,7 +275,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	return err
 }
 
-func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}, realDocument bool) error {
+func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}) error {
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
@@ -363,7 +363,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.ActionType = actionType
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
-	event.NumberOfResults = Max(v.LastResponse.TotalCount, 10)
+	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
 	event.CustomData = customData
 

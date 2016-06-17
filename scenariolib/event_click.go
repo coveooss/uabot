@@ -4,6 +4,9 @@ import (
 	"errors"
 	"math"
 	"math/rand"
+
+	"github.com/coveo/go-coveo/search"
+	"encoding/json"
 )
 
 // ============== CLICK EVENT ======================
@@ -17,6 +20,8 @@ type ClickEvent struct {
 	probability float64
 	quickview   bool
 	customData  map[string]interface{}
+	fakeClick		bool
+	fakeResponse search.Response
 }
 
 func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
@@ -58,8 +63,10 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 			return nil, errors.New("Parameter fakeClick must be a boolean value")
 		}
 		if e.Arguments["falseResponse"] != nil {
-			if v.LastResponse, validcast = e.Arguments["falseResponse"].(SearchResponse); !validcast {
-				return nil, errors.New("Parameter falseResponse must have proper parameters")
+			jsonFalseResponse, _ := json.Marshal(e.Arguments["falseResponse"])
+			err := json.Unmarshal(jsonFalseResponse, &event.fakeResponse)
+			if err != nil {
+				return nil, errors.New("Parameter falseResponse must be a search.Response")
 			}
 		}
 	} else {
@@ -70,6 +77,10 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 
 // Execute Execute the click event, sending a click event to the usage analytics
 func (ce *ClickEvent) Execute(v *Visit) error {
+
+	if ce.fakeClick {
+		v.LastResponse = &ce.fakeResponse
+	}
 
 	if v.LastResponse.TotalCount < 1 {
 		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)

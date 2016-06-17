@@ -1,6 +1,8 @@
 {
   "searchendpoint" 		: "https://platformdev.cloud.coveo.com/rest/search/",
   "orgName" : "coveodev",
+	"timeBetweenVisits"		: 2,
+	"timeBetweenActions"	: 1,
 	"analyticsendpoint" 	: "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
 	"languages" 			: ["zh", "da", "nl", "de", "en", "fi", "fr", "hu", "it", "ja", "ko", "nb", "pt", "es", "ro", "ru", "sv", "th", "tr"],
   "randomGoodQueries" : {
@@ -143,7 +145,40 @@
 			"name"   : "scenario1",
 			"weight" : 60,
 			"events" : [
-				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } }
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click",
+          "arguments" : {
+            "docNo" :-1,
+            "offset" : 0,
+            "probability" : 1.0,
+            "fakeClick" : true,
+            "falseResponse" : {
+              "searchUid" : "searchUID",
+              "totalCount" : 1,
+              "totalCountFiltered" : 1,
+              "duration" : 140,
+              "indexDuration": 40,
+              "requestDuration" : 40,
+              "pipeline" : "",
+              "results" : [
+                {
+                  "uri" : "falseURI",
+                  "title" : "falseDocumentTitle",
+                  "clickUri" : "falseClickUri",
+                  "excerpt" : "",
+                  "firstSentences" : "",
+                  "score" : 10,
+                  "percentScore" : 0.5,
+                  "raw" : {
+                    "sysurihash" : "falseUriHash",
+                    "syscollection" : "falseCollection",
+                    "syssource" : "falseSource"
+                  }
+                }
+              ],
+              "groupByResults" : []
+            }
+          } }
 			]
 		}
   ]

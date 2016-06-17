@@ -1,3 +1,4 @@
+package scenariolib
 
 type Result struct {
   URI string `json:URI`
