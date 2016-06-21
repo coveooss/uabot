@@ -92,8 +92,8 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		// Find a random rank within the possible click values accounting for the offset
 		if v.LastResponse.TotalCount > 1 {
 			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
-			rndRank := int(math.Abs(rand.NormFloat64() * 2)) + ce.offset
-			ce.clickRank = Min(rndRank, topL - 1)
+			rndRank := int(math.Abs(rand.NormFloat64()*2)) + ce.offset
+			ce.clickRank = Min(rndRank, topL-1)
 		}
 	}
 
@@ -109,6 +109,6 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		}
 		return nil
 	}
-	Info.Printf("User chose not to click (probability %v%%)", int(ce.probability * 100))
+	Info.Printf("User chose not to click (probability %v%%)", int(ce.probability*100))
 	return nil
 }
