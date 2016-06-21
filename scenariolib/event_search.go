@@ -21,7 +21,7 @@ type SearchEvent struct {
 	customData  map[string]interface{}
 }
 
-func newSearchEvent(e *JSONEvent, c *Config, v *Visit) (*SearchEvent, error) {
+func newSearchEvent(e *JSONEvent, c *Config, language string) (*SearchEvent, error) {
 	var err error
 	var inputTitle string
 	var goodQuery, matchLanguage, validCast bool
@@ -52,13 +52,11 @@ func newSearchEvent(e *JSONEvent, c *Config, v *Visit) (*SearchEvent, error) {
 		if matchLanguage, validCast = e.Arguments["matchLanguage"].(bool); !validCast {
 			return nil, errors.New("Parameter matchLanguage must be a type bool in SearchEvent")
 		}
-	} else {
-		matchLanguage = false
 	}
 
 	if se.query == "" {
 		if matchLanguage {
-			se.query, err = c.RandomQueryInLanguage(goodQuery, v.Language)
+			se.query, err = c.RandomQueryInLanguage(goodQuery, language)
 			if err != nil {
 				return nil, err
 			}

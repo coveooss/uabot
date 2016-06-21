@@ -116,7 +116,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	Info.Printf("Executing scenario named : %s", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		jsonEvent := scenario.Events[i]
-		event, err := ParseEvent(&jsonEvent, c, v)
+		event, err := ParseEvent(&jsonEvent, c, v.Language)
 		if err != nil {
 			return err
 		}
@@ -301,7 +301,13 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	}
 
 	event.DocumentTitle = v.LastResponse.Results[rank].Title
+	event.QueryPipeline = v.LastResponse.Pipeline
 	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
+	event.Username = v.Username
+	event.Anonymous = v.Anonymous
+	event.Language = v.Language
+	event.OriginLevel1 = v.OriginLevel1
+	event.OriginLevel2 = v.OriginLevel2
 	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
 		event.DocumentURIHash = urihash
 	} else {
@@ -317,14 +323,6 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	} else {
 		return errors.New("Cannot convert syssource to string")
 	}
-
-	event.QueryPipeline = v.LastResponse.Pipeline
-	event.Username = v.Username
-	event.Anonymous = v.Anonymous
-	event.Language = v.Language
-	event.OriginLevel1 = v.OriginLevel1
-	event.OriginLevel2 = v.OriginLevel2
-
 
 	event.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,

@@ -23,7 +23,7 @@ import (
 // Scenarios   An array of scenarios that can happen.
 // ScenarioMap A map that will be built with the scenarios and their respective weights.
 type Config struct {
-	ScenarioMap           map[int]*Scenario
+	ScenarioMap           []*Scenario
 	OrgName               string              `json:"orgName"`
 	GoodQueries           []string 		  `json:"randomGoodQueries"`
 	BadQueries            []string 		  `json:"randomBadQueries"`
@@ -173,15 +173,13 @@ func NewConfigFromURL(jsonURL string) (*Config, error) {
 // makeScenarioMap Private function to create the map of scenarios
 // from the config that was built from a json file
 func (c *Config) makeScenarioMap() error {
-	scenarioMap := map[int]*Scenario{}
+	scenarioMap := []*Scenario{}
 	totalWeight := 0
-	iter := 0
 	for i := 0; i < len(c.Scenarios); i++ {
 		weight := c.Scenarios[i].Weight
 		totalWeight += weight
 		for j := 0; j < weight; j++ {
-			scenarioMap[iter] = c.Scenarios[i]
-			iter++
+			scenarioMap = append(scenarioMap, c.Scenarios[i])
 		}
 	}
 	c.ScenarioMap = scenarioMap
