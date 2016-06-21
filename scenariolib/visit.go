@@ -291,8 +291,8 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	}
 
 	event.DocumentURI = v.LastResponse.Results[rank].URI
-	event.DocumentPosition = rank + 1
 	event.SearchQueryUID = v.LastResponse.SearchUID
+	event.DocumentPosition = rank + 1
 	if quickview {
 		event.ActionCause = "documentQuickview"
 		event.ViewMethod = "documentQuickview"

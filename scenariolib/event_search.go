@@ -13,7 +13,7 @@ import (
 // SearchEvent a struct representing a search, is defined by a query to execute
 type SearchEvent struct {
 	query       string
-	// keyword exists because the query sent to the index may be diffrent than the keyword(s) used to search
+	// keyword exists because the query sent to the index may be different than the keyword(s) used to search
 	keyword     string
 	actionCause string
 	actionType  string
