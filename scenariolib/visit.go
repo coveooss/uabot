@@ -63,13 +63,13 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 
 	v.Anonymous = false
 	if c.AllowAnonymous {
-		var treshold float64
-		if c.AnonymousTreshold > 0 {
-			treshold = c.AnonymousTreshold
+		var threshold float64
+		if c.AnonymousThreshold > 0 {
+			threshold = c.AnonymousThreshold
 		} else {
-			treshold = DEFAULTANONYMOUSTRESHOLD
+			threshold = DEFAULTANONYMOUSTHRESHOLD
 		}
-		if rand.Float64() <= treshold {
+		if rand.Float64() <= threshold {
 			v.Anonymous = true
 			Info.Printf("Anonymous visit")
 		}
@@ -81,6 +81,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 	//Info.Printf("On device %s", _useragent)
 	if len(v.Config.Languages) > 0 {
 		v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+		Info.Printf("Language of visit : %s", v.Language)
 	} else {
 		v.Language = "en"
 	}
@@ -115,11 +116,10 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	Info.Printf("Executing scenario named : %s", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		jsonEvent := scenario.Events[i]
-		event, err := ParseEvent(&jsonEvent, c)
+		event, err := ParseEvent(&jsonEvent, c, v.Language)
 		if err != nil {
 			return err
 		}
-
 		err = event.Execute(v)
 		if err != nil {
 			return err

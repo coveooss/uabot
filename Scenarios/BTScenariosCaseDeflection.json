@@ -5,7 +5,7 @@
 	"timeBetweenVisits"		: 10,
 	"timeBetweenActions"	: 2,
 	"allowAnonymousVisits"	: true,
-	"anonymousTreshold" 	: 0.5,
+	"anonymousThreshold" 	: 0.5,
 	"orgName"     			: "Besttech",
 	"pipeline" 				: "besttechCommunity",
 	"globalfilter" 			: "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",

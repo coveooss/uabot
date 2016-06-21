@@ -23,10 +23,12 @@ import (
 // Scenarios   An array of scenarios that can happen.
 // ScenarioMap A map that will be built with the scenarios and their respective weights.
 type Config struct {
-	ScenarioMap           map[int]*Scenario
+	ScenarioMap           []*Scenario
 	OrgName               string              `json:"orgName"`
-	GoodQueries           []string            `json:"randomGoodQueries"`
-	BadQueries            []string            `json:"randomBadQueries"`
+	GoodQueries           []string 		  `json:"randomGoodQueries"`
+	BadQueries            []string 		  `json:"randomBadQueries"`
+	GoodQueriesInLang     map[string][]string `json:"goodQueriesInLanguage"`
+	BadQueriesInLang      map[string][]string `json:"badQueriesInLanguage"`
 	Scenarios             []*Scenario         `json:"scenarios"`
 	DefaultOriginLevel1   string              `json:"defaultOriginLevel1,omitempty"`
 	GlobalFilter          string              `json:"globalfilter,omitempty"`
@@ -46,7 +48,7 @@ type Config struct {
 	TimeBetweenVisits     int                 `json:"timeBetweenVisits,omitempty"`
 	TimeBetweenActions    int                 `json:"timeBetweenActions,omitempty"`
 	AllowAnonymous        bool                `json:"allowAnonymousVisits,omitempty"`
-	AnonymousTreshold     float64             `json:"anonymousTreshold,omitempty"`
+	AnonymousThreshold     float64             `json:"anonymousThreshold,omitempty"`
 	AllowEntitlements     bool                `json:"allowEntitlements,omitempty"`
 	RandomCustomData      []*RandomCustomData `json:"randomCustomData,omitempty"`
 }
@@ -56,8 +58,8 @@ type RandomCustomData struct {
 	Values  []string `json:"values"`
 }
 
-// DEFAULTANONYMOUSTRESHOLD The default portion of users who are anonymous
-const DEFAULTANONYMOUSTRESHOLD float64 = 0.5
+// DEFAULTANONYMOUSTHRESHOLD The default portion of users who are anonymous
+const DEFAULTANONYMOUSTHRESHOLD float64 = 0.5
 
 // RandomScenario Returns a random scenario from the list of possible scenarios.
 // returns an error if there are no scenarios
@@ -81,6 +83,20 @@ func (c *Config) RandomQuery(good bool) (string, error) {
 		return "", errors.New("No bad queries detected")
 	}
 	return c.BadQueries[rand.Intn(len(c.BadQueries))], nil
+}
+
+// Returns a random query in a specified language
+func (c *Config) RandomQueryInLanguage(good bool, language string) (string, error){
+	if good {
+		if len(c.GoodQueriesInLang[language]) < 1 {
+			return "", errors.New("No good queries detected in lang : " + language)
+		}
+		return c.GoodQueriesInLang[language][rand.Intn(len(c.GoodQueriesInLang[language]))], nil
+	}
+	if len(c.BadQueriesInLang[language]) < 1 {
+		return "", errors.New("No bad queries detected in lang : " + language)
+	}
+	return c.BadQueriesInLang[language][rand.Intn(len(c.BadQueriesInLang[language]))], nil
 }
 
 // RandomUserAgent returns a random user agent string to send with an event
@@ -157,15 +173,13 @@ func NewConfigFromURL(jsonURL string) (*Config, error) {
 // makeScenarioMap Private function to create the map of scenarios
 // from the config that was built from a json file
 func (c *Config) makeScenarioMap() error {
-	scenarioMap := map[int]*Scenario{}
+	scenarioMap := []*Scenario{}
 	totalWeight := 0
-	iter := 0
 	for i := 0; i < len(c.Scenarios); i++ {
 		weight := c.Scenarios[i].Weight
 		totalWeight += weight
 		for j := 0; j < weight; j++ {
-			scenarioMap[iter] = c.Scenarios[i]
-			iter++
+			scenarioMap = append(scenarioMap, c.Scenarios[i])
 		}
 	}
 	c.ScenarioMap = scenarioMap

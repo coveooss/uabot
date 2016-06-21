@@ -12,7 +12,7 @@ import (
 
 // SearchEvent a struct representing a search, is defined by a query to execute
 type SearchEvent struct {
-	query string
+	query       string
 	// keyword exists because the query sent to the index may be different than the keyword(s) used to search
 	keyword     string
 	actionCause string
@@ -21,11 +21,10 @@ type SearchEvent struct {
 	customData  map[string]interface{}
 }
 
-func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
+func newSearchEvent(e *JSONEvent, c *Config, language string) (*SearchEvent, error) {
 	var err error
 	var inputTitle string
-	var goodQuery, validCast bool
-
+	var goodQuery, matchLanguage, validCast bool
 	se := new(SearchEvent)
 
 	if se.query, validCast = e.Arguments["queryText"].(string); !validCast {
@@ -48,10 +47,24 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a search event.")
 		}
 	}
+
+	if e.Arguments["matchLanguage"] != nil {
+		if matchLanguage, validCast = e.Arguments["matchLanguage"].(bool); !validCast {
+			return nil, errors.New("Parameter matchLanguage must be a type bool in SearchEvent")
+		}
+	}
+
 	if se.query == "" {
-		se.query, err = c.RandomQuery(goodQuery)
-		if err != nil {
-			return nil, err
+		if matchLanguage {
+			se.query, err = c.RandomQueryInLanguage(goodQuery, language)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			se.query, err = c.RandomQuery(goodQuery)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 	se.keyword = se.query
