@@ -86,8 +86,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		}
 
 	}
-	if ce.clickRank == -1 {
-		// if rank == -1 we need to randomize a rank
+	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ce.clickRank = 0
 		// Find a random rank within the possible click values accounting for the offset
 		if v.LastResponse.TotalCount > 1 {
@@ -97,8 +96,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		}
 	}
 
-	if rand.Float64() <= ce.probability {
-		// Probability to click
+	if rand.Float64() <= ce.probability { // Probability to click
 		if ce.clickRank > v.LastResponse.TotalCount {
 			return errors.New("Click index out of bounds")
 		}
