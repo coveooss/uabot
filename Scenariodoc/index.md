@@ -24,9 +24,9 @@ timeBetweenActions | number | The time to wait between each actions (between 0 a
 *defaultOriginLevel1* | string | The name of the originLevel1 param by default | (none)
 partialMatch | boolean | Enable partial match on the queries | false
 partialMatchKeywords | number | Number of words after which to enable partial match | (none)
-partialMatchTreshold | string | Number of words considered in a partial match (string because you can send "50%") | (none)
+partialMatchThreshold | string | Number of words considered in a partial match (string because you can send "50%") | (none)
 allowAnonymousVisits | boolean | If you allow some of the visits to be anonymous | false
-anonymousTreshold | number | Number between 0 and 1 of the % of anonymous visits | 0
+anonymousThreshold | number | Number between 0 and 1 of the % of anonymous visits | 0
 globalfilter | string | A filter to be applied to all queries | ""
 languages | []string | A list of random languages for the visits | (none)
 
@@ -56,12 +56,12 @@ MobileUserAgents | []string | A list of UserAgents strings that are on mobile
   "analyticsendpoint"       : "https://usageanalytics.coveo.com/rest/v15/analytics/",
   "partialMatch"            : true,
   "partialMatchKeywords"    : 4,
-  "partialMatchTreshold"    : "50%",
+  "partialMatchThreshold"    : "50%",
   "defaultOriginLevel1"     : "origin",
   "timeBetweenVisits"       : 120,
   "timeBetweenActions"      : 3,
   "allowAnonymousVisits"	: true,
-  "anonymousTreshold"       : 0.5,
+  "anonymousThreshold"       : 0.5,
   "orgName"     			: "orgname",
   "pipeline"                : "pipeline",
   "allowEntitlements"       : true,

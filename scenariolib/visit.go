@@ -63,13 +63,13 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 
 	v.Anonymous = false
 	if c.AllowAnonymous {
-		var treshold float64
-		if c.AnonymousTreshold > 0 {
-			treshold = c.AnonymousTreshold
+		var threshold float64
+		if c.AnonymousThreshold > 0 {
+			threshold = c.AnonymousThreshold
 		} else {
-			treshold = DEFAULTANONYMOUSTRESHOLD
+			threshold = DEFAULTANONYMOUSTHRESHOLD
 		}
-		if rand.Float64() <= treshold {
+		if rand.Float64() <= threshold {
 			v.Anonymous = true
 			Info.Printf("Anonymous visit")
 		}

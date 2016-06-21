@@ -3,6 +3,10 @@
   "orgName": "coveodev",
   "timeBetweenVisits": 2,
   "timeBetweenActions": 1,
+  "allowAnonymousVisits" : true,
+  "anonymousThreshold" : 1,
+  "analyticsendpoint": "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
+  "Emails" : ["abolduc@coveo.com"],
   "analyticsendpoint": "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
   "languages": [
     "zh",
