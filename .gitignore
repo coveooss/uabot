@@ -3,3 +3,6 @@
 log.txt
 localdebug.sh
 .idea/**
+src/
+pkg/
+**.iml
