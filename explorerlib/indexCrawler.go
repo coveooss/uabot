@@ -1,4 +1,4 @@
-package natural_language
+package explorerlib
 
 import (
 	"github.com/coveo/go-coveo/search"
