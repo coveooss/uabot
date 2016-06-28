@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-func CountWordOccurence(words []string) WordCounts{
+func CountWordOccurence(words []string) WordCounts {
 	word_occurence := make(map[string]int)
 	for _, word := range words {
 		if _, ok := word_occurence[word]; ok {
@@ -17,7 +17,7 @@ func CountWordOccurence(words []string) WordCounts{
 	}
 	wordCounts := WordCounts{}
 	for key, value := range word_occurence {
-		wordCounts = append(wordCounts, WordCount{Key: key, Value: value})
+		wordCounts.Words = append(wordCounts.Words, WordCount{Word: key, Count: value})
 	}
 	return wordCounts
 }
@@ -34,47 +34,10 @@ func RankByWordCount(wordCounts WordCounts) WordCounts {
 	return wordCounts
 }
 
-type WordCount struct {
-	Key string
-	Value int
+type WordsByFieldValue struct {
+	FieldName  string
+	FieldValue string
+	Words      WordCounts
 }
 
-type WordCounts []WordCount
 
-func (wordCountList WordCounts) Len() int { return len(wordCountList) }
-func (wordCountList WordCounts) Less(i, j int) bool { return wordCountList[i].Value < wordCountList[j].Value }
-func (wordCountList WordCounts) Swap(i, j int){ wordCountList[i], wordCountList[j] = wordCountList[j], wordCountList[i] }
-func (wordCountList WordCounts) Add(pair WordCount) (WordCounts) {
-	addedPairlist := WordCounts{}
-	if wordCountList.ContainsKey(pair.Key) {
-		for _, in_pair := range wordCountList {
-			if in_pair.Key == pair.Key {
-				addedPairlist = append(addedPairlist, WordCount{pair.Key, in_pair.Value + pair.Value})
-			} else {
-				addedPairlist = append(addedPairlist, in_pair)
-			}
-		}
-	} else {
-		addedPairlist = append(wordCountList, WordCount{pair.Key, pair.Value})
-	}
-	return addedPairlist
-}
-func (wordCounts WordCounts) ContainsKey(key string) (bool) {
-	for _, pair := range wordCounts{
-		if pair.Key == key {
-			return true
-		}
-	}
-	return false
-}
-
-func (firstPairList WordCounts) Extend(secondPairList WordCounts) (WordCounts) {
-	mergedPairList := WordCounts{}
-	for _, pair := range firstPairList {
-		mergedPairList = append(mergedPairList, pair)
-	}
-	for _,pair := range secondPairList {
-		mergedPairList = mergedPairList.Add(pair)
-	}
-	return mergedPairList
-}
