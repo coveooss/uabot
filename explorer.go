@@ -4,16 +4,15 @@ import (
 	"log"
 	"os"
 	"github.com/adambbolduc/uabot/natural-language"
-	"github.com/coveo/go-coveo/search"
-	"strconv"
 	"github.com/erocheleau/uabot/scenariolib"
 	"io/ioutil"
 	"encoding/json"
+	"flag"
+	"strings"
 )
 
 var (
 	Info *log.Logger
-	searchToken = os.Getenv("SEARCHTOKEN")
 )
 
 func check(e error) {
@@ -22,72 +21,31 @@ func check(e error) {
 	}
 }
 
+var (
+	PARAM_FETCH_NUMBER_OF_RESULTS = flag.Int("fetchQueryNumber", 100, "Amount of results for each query")
+	PARAM_DOCUMENTS_EXPLORATION_PERCENTAGE = flag.Float64("explorationRatio", 0.5, "Query Response Result Considered / Amount of Documents in Index")
+	PARAM_FIELD_TO_EXPLORE_EQUALLY = flag.String("fields", "", "Fields to Explore Equally, seperated by comas ex: @syssource,@filetype")
+	PARAM_INDEX_ENDPOINT = flag.String("searchEndpoint", "", "Search Endpoint Url")
+	PARAM_SEARCH_TOKEN = flag.String("token", "", "Search Token for the organization")
+	PARAM_MAXIMUM_NUMBER_OF_QUERY_BY_LANGUAGE = flag.Int("maxNumberOfQueryPerLanguage", 10, "The Maximum number of query expression for each languages")
+)
+
 func main() {
+	flag.Parse()
 	Info = log.New(os.Stdout, "INFO | ", log.Ldate | log.Ltime)
-	index, status:= natural_language.NewIndex("https://platformdev.cloud.coveo.com/rest/search/", searchToken)
+	index, status := natural_language.NewIndex(*PARAM_INDEX_ENDPOINT, *PARAM_SEARCH_TOKEN)
 	check(status)
-	fields := []string{"@syssource"}
 
-	wordsByFieldValueByLanguage := map[string][]natural_language.WordsByFieldValue{}
-	// for each language
-	languages, status := index.FetchLanguages()
+	fields := strings.Split(*PARAM_FIELD_TO_EXPLORE_EQUALLY, ",")
+
+	wordCountsByLanguage, status := natural_language.FindWordsByLanguageInIndex(index, fields, *PARAM_DOCUMENTS_EXPLORATION_PERCENTAGE, *PARAM_FETCH_NUMBER_OF_RESULTS)
 	check(status)
-	for _, language := range languages {
-		// discover Words
-		wordsByFieldValueByLanguage[language] = []natural_language.WordsByFieldValue{}
-		// for every fields provided
-		for _, field := range fields {
-			values, status := index.FetchFieldValues(field)
-			check(status)
-			// for all values of the field
-			for _, value := range values.Values {
-				wordCounts := natural_language.WordCounts{}
-				totalCount, status := index.FindTotalCountFromQuery(search.Query{
-					AQ:"@syslanguage=\"" + language + "\" " + field + "=\"" + value.Value + "\"",
-				})
-				check(status)
-				queryNumber := totalCount / 100 + 1
-				randomWord := ""
-
-				Info.Println(strconv.Itoa(queryNumber), language, field, value.Value)
-				for i := 0; i < queryNumber; i++ {
-					// build A query from the word counts in the appropriate language with a filter on the field value
-					queryExpression := randomWord +
-					" @syslanguage=\"" + language + "\" " +
-					field + "=\"" + value.Value + "\" "
-					response, status := index.FetchResponse(queryExpression, 100)
-					check(status)
-					// extract words from the response
-					newWordCounts := natural_language.ExtractWordsFromResponse(*response)
-					// update word counts
-					wordCounts = wordCounts.Extend(newWordCounts)
-					// pick a random word (Probability by popularity, or constant)
-					randomWord = wordCounts.PickRandomWord()
-				}
-				wordsByFieldValueByLanguage[language] = append(wordsByFieldValueByLanguage[language], natural_language.WordsByFieldValue{
-					FieldName:field,
-					FieldValue:value.Value,
-					Words:wordCounts,
-				})
-			}
-		}
-	}
-	// collapse results from all fields
-	wordCountsByLanguage := map[string]natural_language.WordCounts{}
-	for language, wordCountsInLanguage := range wordsByFieldValueByLanguage {
-		wordCounts := natural_language.WordCounts{}
-		for _, wordCountsByFields := range wordCountsInLanguage {
-			wordCounts = wordCounts.Extend(wordCountsByFields.Words)
-		}
-		natural_language.RankByWordCount(wordCounts)
-		wordCountsByLanguage[language] = wordCounts
-	}
 
 	queriesInLanguage := make(map[string][]string)
 	for language, wordCounts := range wordCountsByLanguage {
 		words := []string{}
-		for i, word := range wordCounts.Words{
-			if i < 20 {
+		for i, word := range wordCounts.Words {
+			if i < *PARAM_MAXIMUM_NUMBER_OF_QUERY_BY_LANGUAGE{
 				words = append(words, word.Word)
 			} else {
 				break

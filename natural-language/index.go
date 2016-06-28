@@ -42,3 +42,4 @@ func (index *Index) FetchResponse(queryExpression string, numberOfResults int) (
 		NumberOfResults:numberOfResults,
 	})
 }
+

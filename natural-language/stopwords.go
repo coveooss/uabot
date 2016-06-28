@@ -3,7 +3,6 @@ package natural_language
 import (
 	"io/ioutil"
 	"strings"
-	"fmt"
 )
 
 type Stopwords struct {
@@ -25,7 +24,6 @@ func (stopwords *Stopwords) LoadRecursivelyFromDirectory(path string) (error) {
 	}
 	for _, file := range dir {
 		fileName := path + "/" + file.Name()
-		fmt.Println(fileName)
 		if file.IsDir() {
 			err := stopwords.LoadRecursivelyFromDirectory(fileName)
 			if err != nil {
