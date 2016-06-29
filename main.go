@@ -69,9 +69,6 @@ func main() {
 	err = bot.Run()
 	if err != nil {
 		Error.Println(err)
-		return
 	}
 	pp.Println("LOG >>> DONE")
 }
-
-
