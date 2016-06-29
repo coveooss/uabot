@@ -45,8 +45,8 @@ func main() {
 		Error.Println("SCENARIOSURL env variable needs to define a file path")
 	}
 
-	local := os.Getenv("LOCAL")
-	if local == "true" {
+	local := os.Getenv("LOCAL") == "true"
+	if local {
 		Info.Println("STARTING IN LOCAL MODE, MAKE SURE THE SCENARIOSURL IS A LOCAL PATH")
 	}
 
@@ -54,7 +54,7 @@ func main() {
 	var conf *scenariolib.Config
 	var err error
 	// Init from path instead of URL, for testing purposes
-	if local == "true" {
+	if local {
 		conf, err = scenariolib.NewConfigFromPath(scenarioURL)
 	} else {
 		conf, err = scenariolib.NewConfigFromURL(scenarioURL)

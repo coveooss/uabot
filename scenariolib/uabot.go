@@ -8,20 +8,20 @@ import (
 // DEFAULTTIMEBETWEENVISITS The time for the bot to wait between visits, between 0 and X Seconds
 const DEFAULTTIMEBETWEENVISITS int = 120
 
-type Uabot interface{
+type Uabot interface {
 	Run() error
 }
 
 type uabot struct {
-	local string
-	conf *Config
-	scenarioURL string
-	searchToken string
+	local          bool
+	conf           *Config
+	scenarioURL    string
+	searchToken    string
 	analyticsToken string
-	random *rand.Rand
+	random         *rand.Rand
 }
 
-func NewUabot(local string, conf *Config, scenarioUrl string, searchToken string, analyticsToken string, random *rand.Rand) *uabot {
+func NewUabot(local bool, conf *Config, scenarioUrl string, searchToken string, analyticsToken string, random *rand.Rand) *uabot {
 	return &uabot{
 		local,
 		conf,
@@ -33,17 +33,18 @@ func NewUabot(local string, conf *Config, scenarioUrl string, searchToken string
 }
 
 func (bot *uabot) Run() error {
+	// false for local filepath, true for web hosted file
+	var isURL = true
+	if bot.local {
+		isURL = false
+	}
+
 	count := 0
 	timeNow := time.Now()
-	for {// Run forever
+	for { 	// Run forever
 		// Refresh the scenario files every 5 hours automatically.
 		// This way, no need to stop the bot to update the possible scenarios.
 		if time.Since(timeNow).Hours() > 5 {
-			// false for local filepath, true for web hosted file
-			var isURL = true
-			if bot.local == "true" {
-				isURL = false
-			}
 			conf2 := refreshScenarios(bot.scenarioURL, isURL)
 			if conf2 != nil {
 				bot.conf = conf2
@@ -91,7 +92,6 @@ func (bot *uabot) Run() error {
 
 		count++
 		Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
-
 	}
 }
 
