@@ -9,7 +9,7 @@ import (
 const DEFAULTTIMEBETWEENVISITS int = 300
 // DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS The standard deviation when updating time between visits
 const DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS int = 150
-// WEEKEND_DIMINUTION_QUOTIENT The quotient to divide DEFAULTTIMEBETWEENVISITS during weekends
+// WEEKEND_MODIFIER The modifier to multiply DEFAULTTIMEBETWEENVISITS during weekends
 const WEEKEND_MODIFIER = 10
 
 type Uabot interface {
