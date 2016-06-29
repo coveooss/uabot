@@ -19,11 +19,6 @@ var (
 	Error   *log.Logger
 )
 
-// DEFAULTTIMEBETWEENVISITS The time for the bot to wait between visits, between 0 and X Seconds
-const DEFAULTTIMEBETWEENVISITS int = 120
-
-var timeVisits int
-
 func Init(traceHandle io.Writer, infoHandle io.Writer, warningHandle io.Writer, errorHandle io.Writer) {
 	Trace = log.New(traceHandle, "TRACE | ", log.Ldate|log.Ltime|log.Lshortfile)
 	Info = log.New(infoHandle, "INFO | ", log.Ldate|log.Ltime)
@@ -36,7 +31,8 @@ func main() {
 	Init(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
 	// Seed Random based on current time
-	rand.Seed(int64(time.Now().Unix()))
+	source := rand.NewSource(int64(time.Now().Unix()))
+	random := rand.New(source)
 
 	searchToken := os.Getenv("SEARCHTOKEN")
 	analyticsToken := os.Getenv("UATOKEN")
@@ -54,7 +50,6 @@ func main() {
 		Info.Println("STARTING IN LOCAL MODE, MAKE SURE THE SCENARIOSURL IS A LOCAL PATH")
 	}
 
-	timeNow := time.Now()
 
 	var conf *scenariolib.Config
 	var err error
@@ -70,86 +65,13 @@ func main() {
 		return
 	}
 
-	count := 0
-	for { // Run forever
-
-		// Refresh the scenario files every 5 hours automatically.
-		// This way, no need to stop the bot to update the possible scenarios.
-		if time.Since(timeNow).Hours() > 5 {
-			// false for local filepath, true for web hosted file
-			var isURL = true
-			if local == "true" {
-				isURL = false
-			}
-			conf2 := refreshScenarios(scenarioURL, isURL)
-			if conf2 != nil {
-				conf = conf2
-			}
-			timeNow = time.Now()
-		}
-
-		if conf.TimeBetweenVisits > 0 {
-			timeVisits = conf.TimeBetweenVisits
-		} else {
-			timeVisits = DEFAULTTIMEBETWEENVISITS
-		}
-
-		scenario, err := conf.RandomScenario()
-		if err != nil {
-			Error.Println(err)
-		}
-
-		if scenario.UserAgent == "" {
-			scenario.UserAgent, err = conf.RandomUserAgent(false)
-			if err != nil {
-				Error.Println(err)
-			}
-		}
-
-		// New visit
-		visit, err := scenariolib.NewVisit(searchToken, analyticsToken, scenario.UserAgent, conf)
-		if err != nil {
-			Error.Println(err)
-			return
-		}
-
-		// Setup specific stuff for NTO
-		//visit.SetupNTO()
-		// Use this line instead outside of NTO
-		visit.SetupGeneral()
-		visit.LastQuery.CQ = conf.GlobalFilter
-
-		err = visit.ExecuteScenario(*scenario, conf)
-		if err != nil {
-			Error.Println(err)
-		}
-
-		visit.UAClient.DeleteVisit()
-		time.Sleep(time.Duration(rand.Intn(timeVisits)) * time.Second)
-
-		count++
-		Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
-
+	bot := scenariolib.NewUabot(local, conf, scenarioURL, searchToken, analyticsToken, random)
+	err = bot.Run()
+	if err != nil {
+		Error.Println(err)
+		return
 	}
 	pp.Println("LOG >>> DONE")
 }
 
-func refreshScenarios(url string, isUrl bool) *scenariolib.Config {
-	Info.Println("Updating Scenario file")
 
-	var err error
-	var conf *scenariolib.Config
-
-	if isUrl {
-		conf, err = scenariolib.NewConfigFromURL(url)
-	} else {
-		conf, err = scenariolib.NewConfigFromPath(url)
-	}
-
-	if err != nil {
-		Warning.Println("Cannot update scenario file, keeping the old one")
-		return nil
-	} else {
-		return conf
-	}
-}
