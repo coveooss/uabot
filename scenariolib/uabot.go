@@ -10,7 +10,7 @@ const DEFAULTTIMEBETWEENVISITS int = 300
 // DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS The standard deviation when updating time between visits
 const DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS int = 150
 // WEEKEND_DIMINUTION_QUOTIENT The quotient to divide DEFAULTTIMEBETWEENVISITS during weekends
-const WEEKEND_DIMNUTION_QUOTIENT = 10
+const WEEKEND_MODIFIER = 10
 
 type Uabot interface {
 	Run() error
@@ -110,7 +110,7 @@ func (bot *uabot) continuallyUpdateTimeVisitsEvery(timeDuration time.Duration, t
 		for _ = range ticker.C {
 			var effectiveMeanTimeBetweenVisits = DEFAULTTIMEBETWEENVISITS
 			if time.Now().Weekday() == time.Saturday || time.Now().Weekday() == time.Sunday{
-				effectiveMeanTimeBetweenVisits = DEFAULTTIMEBETWEENVISITS / WEEKEND_DIMNUTION_QUOTIENT
+				effectiveMeanTimeBetweenVisits = DEFAULTTIMEBETWEENVISITS * WEEKEND_MODIFIER
 			}
 			var randomPositiveTime int
 			for randomPositiveTime = 0; randomPositiveTime <= 0 ; randomPositiveTime = int(float64(DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS) * bot.random.NormFloat64() + 0.5) + effectiveMeanTimeBetweenVisits{}
