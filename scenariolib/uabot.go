@@ -124,7 +124,7 @@ func (bot*uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, co
 	ticker := time.NewTicker(timeDuration)
 	go func() {
 		for _ = range ticker.C {
-			conf2 := refreshScenarios(bot.scenarioURL, !bot.local)
+			conf2 := refreshScenarios(bot.scenarioURL, bot.local)
 			if conf2 != nil {
 				Info.Println("Refreshing scenario")
 				conf = conf2
@@ -133,16 +133,17 @@ func (bot*uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, co
 	}()
 }
 
-func refreshScenarios(url string, isUrl bool) *Config {
+func refreshScenarios(url string, isLocal bool) *Config {
 	Info.Println("Updating Scenario file")
 
 	var err error
 	var conf *Config
 
-	if isUrl {
-		conf, err = NewConfigFromURL(url)
-	} else {
+	if isLocal {
 		conf, err = NewConfigFromPath(url)
+
+	} else {
+		conf, err = NewConfigFromURL(url)
 	}
 
 	if err != nil {
