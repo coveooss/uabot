@@ -21,7 +21,7 @@ func check(e error) {
 }
 
 var (
-	configFile = flag.String("config","config.json","File Path for configuration File")
+	configFile = flag.String("config", "config.json", "File Path for configuration File")
 )
 
 func main() {
@@ -61,7 +61,39 @@ func main() {
 				Arguments: map[string]interface{}{
 					"docNo": -1,
 					"offset": 0,
-					"probability": 1.0,
+					"probability": 0.3,
+				},
+			},
+			scenariolib.JSONEvent{
+				Type:"View",
+				Arguments: map[string]interface{}{
+					"docNo": -1,
+					"offset": 0,
+					"probability": 0.3,
+				},
+			},
+			scenariolib.JSONEvent{
+				Type: "Search",
+				Arguments: map[string]interface{}{
+					"queryText" :"",
+					"goodQuery":true,
+					"matchLanguage":true,
+				},
+			},
+			scenariolib.JSONEvent{
+				Type:"Click",
+				Arguments: map[string]interface{}{
+					"docNo": 1,
+					"offset": 0,
+					"probability": 0.5,
+				},
+			},
+			scenariolib.JSONEvent{
+				Type:"View",
+				Arguments: map[string]interface{}{
+					"docNo": 1,
+					"offset": 0,
+					"probability": 0.5,
 				},
 			},
 		},
