@@ -1,0 +1,14 @@
+{
+  "fetchQueryNumber": 1000,
+  "explorationRatio": 0.001,
+  "fields": [
+    "@syssource"
+  ],
+  "searchEndpoint": "https://platformdev.cloud.coveo.com/rest/search/",
+  "searchToken": "e7c447e4-917b-4206-8e71-36e259b401b3",
+  "numberOfQueryPerLanguage": 10,
+  "analyticsEndpoint": "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
+  "org": "uafunctionaltests",
+  "outputFilePath": "autoScenario.json",
+  "avgNumberWordsPerQuery": 1
+}
