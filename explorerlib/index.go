@@ -43,3 +43,23 @@ func (index *Index) FetchResponse(queryExpression string, numberOfResults int) (
 	})
 }
 
+func (index *Index) BuildGoodQueries(wordCountsByLanguage map[string]WordCounts, numberOfQueryByLanguage int, averageNumberOfWords int) (map[string][]string, error) {
+	queriesInLanguage := make(map[string][]string)
+	for language, wordCounts := range wordCountsByLanguage {
+		words := []string{}
+		for i := 0; i < numberOfQueryByLanguage; {
+			word := wordCounts.PickExpNWords(averageNumberOfWords)
+			response, err := index.FetchResponse(word, 10)
+			if err != nil{
+				return nil, err
+			}
+			if len(response.Results) > 0 {
+				words = append(words, word)
+				i++
+			}
+		}
+		queriesInLanguage[language] = words
+	}
+	return queriesInLanguage, nil
+}
+

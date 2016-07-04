@@ -14,7 +14,6 @@ func FindWordsByLanguageInIndex(index Index, fields []string, documentsExplorati
 	// for each language
 	for _, language := range languages {
 		// discover Words
-		wordsByFieldValueByLanguage[language] = []WordsByFieldValue{}
 		// for every fields provided
 		for _, field := range fields {
 			values, status := index.FetchFieldValues(field)
@@ -54,7 +53,8 @@ func FindWordsByLanguageInIndex(index Index, fields []string, documentsExplorati
 					// pick a random word (Probability by popularity, or constant)
 					randomWord = wordCounts.PickRandomWord()
 				}
-				wordsByFieldValueByLanguage[language] = append(wordsByFieldValueByLanguage[language], WordsByFieldValue{
+				taggedLanguage := LanguageToTag(language)
+				wordsByFieldValueByLanguage[taggedLanguage] = append(wordsByFieldValueByLanguage[taggedLanguage], WordsByFieldValue{
 					FieldName:field,
 					FieldValue:value.Value,
 					Words:wordCounts,

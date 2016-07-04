@@ -31,7 +31,7 @@ func (builder *scenarioBuilder) WithLanguages(languages []string) *scenarioBuild
 
 func (builder *scenarioBuilder) AllAnonymous() *scenarioBuilder {
 	builder.config.AllowAnonymous = true
-	builder.config.AnonymousThreshold = 1.0
+	builder.config.AnonymousThreshold = 1
 	return builder
 }
 
@@ -55,23 +55,13 @@ func (builder *scenarioBuilder) WithTimeBetweenVisits(time int) *scenarioBuilder
 	return builder
 }
 
-func (builder *scenarioBuilder) WithWordCountsByLanguage(wordCountsByLanguage map[string]WordCounts, numberOfQueryByLanguage int, averageNumberOfWords int) *scenarioBuilder {
-	queriesInLanguage := make(map[string][]string)
-	for language, wordCounts := range wordCountsByLanguage {
-		words := []string{}
-		for i := 0; i < numberOfQueryByLanguage; i++ {
-			words = append(words, wordCounts.PickExpNWords(averageNumberOfWords))
-		}
-		queriesInLanguage[language] = words
-	}
-	builder.config.GoodQueriesInLang = queriesInLanguage
+func (builder *scenarioBuilder) WithGoodQueryByLanguage(goodQueriesByLanguage map[string][]string) *scenarioBuilder {
+	builder.config.GoodQueriesInLang = goodQueriesByLanguage
 	return builder
 }
 
-func (builder *scenarioBuilder) WithScenarios(scenario *scenariolib.Scenario) *scenarioBuilder {
-	builder.config.Scenarios = []*scenariolib.Scenario{
-		scenario,
-	}
+func (builder *scenarioBuilder) WithScenarios(scenarios []*scenariolib.Scenario) *scenarioBuilder {
+	builder.config.Scenarios = scenarios
 	return builder
 }
 
