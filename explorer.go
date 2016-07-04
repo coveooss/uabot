@@ -40,15 +40,21 @@ func main() {
 	languages, status := index.FetchLanguages();
 	check(status)
 
-	err := explorerlib.NewScenarioBuilder().WithOrgName(config.Org).WithSearchEndpoint(config.SearchEndpoint).WithAnalyticsEndpoint(config.AnalyticsEndpoint).AllAnonymous().WithLanguages(languages).WithWordCountsByLanguage(wordCountsByLanguage, config.NumberOfQueryByLanguage, config.AverageNumberOfWordsPerQuery).WithTimeBetweenActions(1).WithTimeBetweenVisits(5).WithScenarios(config.MainScenario).Save(config.OutputFilePath)
+	goodQueries, status:= index.BuildGoodQueries(wordCountsByLanguage, config.NumberOfQueryByLanguage, config.AverageNumberOfWordsPerQuery)
+	check(status)
+
+	taggedLanguages := make([]string,0)
+
+	for _, lang := range languages {
+		taggedLanguages = append(taggedLanguages, explorerlib.LanguageToTag(lang))
+	}
+
+	err := explorerlib.NewScenarioBuilder().WithOrgName(config.Org).WithSearchEndpoint(config.SearchEndpoint).WithAnalyticsEndpoint(config.AnalyticsEndpoint).AllAnonymous().WithLanguages(taggedLanguages).WithGoodQueryByLanguage(goodQueries).WithTimeBetweenActions(1).WithTimeBetweenVisits(5).WithScenarios(config.MainScenario).Save(config.OutputFilePath)
 	check(err)
 
 	scenariolib.Info.Println("Running Bot")
 
-	conf, err := scenariolib.NewConfigFromPath(config.OutputFilePath)
-	check(err)
-
-	uabot := scenariolib.NewUabot(true, conf, config.OutputFilePath, config.SearchToken, config.AnalyticsToken, random)
+	uabot := scenariolib.NewUabot(true, config.OutputFilePath, config.SearchToken, config.AnalyticsToken, random)
 	err =uabot.Run()
 	check(err)
 }
