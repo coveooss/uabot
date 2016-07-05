@@ -54,7 +54,7 @@ const (
 // _searchtoken The token used to be able to search
 // _uatoken     The token used to send usage analytics events
 // _useragent   The user agent the analytics events will see
-func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config) (*Visit, error) {
+func NewVisit(_searchtoken string, _uatoken string, _useragent string, language string, c *Config) (*Visit, error) {
 
 	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
@@ -79,12 +79,17 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 		Info.Printf("New visit from %s", v.Username)
 	}
 	//Info.Printf("On device %s", _useragent)
-	if len(v.Config.Languages) > 0 {
-		v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
-		Info.Printf("Language of visit : %s", v.Language)
+	if language != "" {
+		v.Language = language
 	} else {
-		v.Language = "en"
+		if len(v.Config.Languages) > 0 {
+			v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+		} else {
+			v.Language = "en"
+		}
 	}
+	Info.Printf("Language of visit : %s", v.Language)
+
 	// Create the http searchClient
 	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
 	searchClient, err := search.NewClient(searchConfig)
@@ -170,7 +175,8 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 		}
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -263,7 +269,8 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 		}
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -329,7 +336,8 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		"ipadress":    v.IP,
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -388,7 +396,8 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		"ipadress":    v.IP,
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 

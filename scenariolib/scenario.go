@@ -8,7 +8,8 @@ type Scenario struct {
 	Name      string      `json:"name"`
 	Weight    int         `json:"weight"`
 	UserAgent string      `json:"useragent,omitempty"`
-	Events    []JSONEvent `json:"events"`
+	Events    []JSONEvent `json:"events,omitempty"`
+	Language  string      `json:"language,omitempty"`
 }
 
 // JSONEvent An action taken by the user such as a search, a click, a SearchAndClick, etc.

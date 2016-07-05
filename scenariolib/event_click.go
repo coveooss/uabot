@@ -5,8 +5,8 @@ import (
 	"math"
 	"math/rand"
 
-	"github.com/coveo/go-coveo/search"
 	"encoding/json"
+	"github.com/coveo/go-coveo/search"
 )
 
 // ============== CLICK EVENT ======================
