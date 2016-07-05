@@ -14,17 +14,18 @@ import (
 type SearchEvent struct {
 	query string
 	// keyword exists because the query sent to the index may be different than the keyword(s) used to search
-	keyword     string
-	actionCause string
-	actionType  string
-	logEvent    bool
-	customData  map[string]interface{}
+	keyword       string
+	actionCause   string
+	actionType    string
+	logEvent      bool
+	customData    map[string]interface{}
+	matchLanguage bool
+	goodQuery     bool
 }
 
-func newSearchEvent(e *JSONEvent, c *Config, language string) (*SearchEvent, error) {
-	var err error
+func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	var inputTitle string
-	var goodQuery, matchLanguage, validCast bool
+	var validCast bool
 	se := new(SearchEvent)
 
 	if se.query, validCast = e.Arguments["queryText"].(string); !validCast {
@@ -39,7 +40,7 @@ func newSearchEvent(e *JSONEvent, c *Config, language string) (*SearchEvent, err
 	}
 	Info.Printf("Will log search event to analytics: (%t)", se.logEvent)
 
-	if goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
+	if se.goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
 		return nil, errors.New("Parameter goodQuery must be of type bool in SearchEvent")
 	}
 	if e.Arguments["customData"] != nil {
@@ -49,24 +50,11 @@ func newSearchEvent(e *JSONEvent, c *Config, language string) (*SearchEvent, err
 	}
 
 	if e.Arguments["matchLanguage"] != nil {
-		if matchLanguage, validCast = e.Arguments["matchLanguage"].(bool); !validCast {
+		if se.matchLanguage, validCast = e.Arguments["matchLanguage"].(bool); !validCast {
 			return nil, errors.New("Parameter matchLanguage must be a type bool in SearchEvent")
 		}
 	}
 
-	if se.query == "" {
-		if matchLanguage {
-			se.query, err = c.RandomQueryInLanguage(goodQuery, language)
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			se.query, err = c.RandomQuery(goodQuery)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
 	se.keyword = se.query
 	se.actionCause = "searchboxSubmit"
 	se.actionType = "search box"
@@ -95,7 +83,23 @@ func newSearchEvent(e *JSONEvent, c *Config, language string) (*SearchEvent, err
 // Execute Execute the search event, runs the query and sends a search event to
 // the analytics.
 func (se *SearchEvent) Execute(v *Visit) error {
+	var err error
+	if se.query == "" {
+		if se.matchLanguage {
+			se.query, err = v.Config.RandomQueryInLanguage(se.goodQuery, v.Language)
+			if err != nil {
+				return err
+			}
+		} else {
+			se.query, err = v.Config.RandomQuery(se.goodQuery)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
 	Info.Printf("Searching for : %s", se.query)
+
 	v.LastQuery.Q = se.query
 
 	// Execute a search and save the response

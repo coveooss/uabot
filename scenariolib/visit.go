@@ -121,7 +121,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	Info.Printf("Executing scenario named : %s", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		jsonEvent := scenario.Events[i]
-		event, err := ParseEvent(&jsonEvent, c, v.Language)
+		event, err := ParseEvent(&jsonEvent, c)
 		if err != nil {
 			return err
 		}
