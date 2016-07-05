@@ -7,6 +7,7 @@ Parameters in **bold** are mandatory
 Parameter | Type | Usage
 ------------ | ------------- | ----------------
 name | string | Name of the scenario, used mainly for debugging purposes
+language | string | The language of the given scenario or random if not specified
 weight | number | An arbitrary weight gived to the scenario
 events | []Events | The events happening in this scenario
 
