@@ -1,14 +1,14 @@
 package main
 
 import (
-	"os"
+	"encoding/json"
+	"flag"
 	"github.com/adambbolduc/uabot/explorerlib"
 	"github.com/erocheleau/uabot/scenariolib"
-	"encoding/json"
 	"io/ioutil"
-	"flag"
-	"time"
 	"math/rand"
+	"os"
+	"time"
 )
 
 var (
@@ -37,13 +37,13 @@ func main() {
 		config.FetchNumberOfResults)
 	check(status)
 
-	languages, status := index.FetchLanguages();
+	languages, status := index.FetchLanguages()
 	check(status)
 
-	goodQueries, status:= index.BuildGoodQueries(wordCountsByLanguage, config.NumberOfQueryByLanguage, config.AverageNumberOfWordsPerQuery)
+	goodQueries, status := index.BuildGoodQueries(wordCountsByLanguage, config.NumberOfQueryByLanguage, config.AverageNumberOfWordsPerQuery)
 	check(status)
 
-	taggedLanguages := make([]string,0)
+	taggedLanguages := make([]string, 0)
 
 	for _, lang := range languages {
 		taggedLanguages = append(taggedLanguages, explorerlib.LanguageToTag(lang))
@@ -55,7 +55,7 @@ func main() {
 	scenariolib.Info.Println("Running Bot")
 
 	uabot := scenariolib.NewUabot(true, config.OutputFilePath, config.SearchToken, config.AnalyticsToken, random)
-	err =uabot.Run()
+	err = uabot.Run()
 	check(err)
 }
 
@@ -64,4 +64,3 @@ func check(e error) {
 		panic(e)
 	}
 }
-
