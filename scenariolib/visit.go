@@ -268,8 +268,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 		}
 	}
 
-	if v.Config.AllowEntitlements {
-		// Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -335,8 +334,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		"ipadress":    v.IP,
 	}
 
-	if v.Config.AllowEntitlements {
-		// Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -395,8 +393,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		"ipadress":    v.IP,
 	}
 
-	if v.Config.AllowEntitlements {
-		// Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
