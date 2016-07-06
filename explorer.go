@@ -37,19 +37,28 @@ func main() {
 		config.FetchNumberOfResults)
 	check(status)
 
-	languages, status := index.FetchLanguages()
+	languages, status := index.Client.ListFacetValues("@language",1000)
 	check(status)
 
 	goodQueries, status := index.BuildGoodQueries(wordCountsByLanguage, config.NumberOfQueryByLanguage, config.AverageNumberOfWordsPerQuery)
 	check(status)
 
 	taggedLanguages := make([]string, 0)
+	scenarios := []*scenariolib.Scenario{}
 
-	for _, lang := range languages {
-		taggedLanguages = append(taggedLanguages, explorerlib.LanguageToTag(lang))
+	for _, lang := range languages.Values {
+		taggedLanguage := explorerlib.LanguageToTag(lang.Value)
+		taggedLanguages = append(taggedLanguages, taggedLanguage)
+		scenario := explorerlib.NewScenarioBuilder().WithName("search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.4)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenarios = append(scenarios, scenario)
+		viewScenarioBuilder := explorerlib.NewScenarioBuilder().WithName("views in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSearchEvent(false))
+		for i := 0 ; i < 20 ; i++ {
+			viewScenarioBuilder.WithEvent(explorerlib.NewViewEvent())
+		}
+		scenarios = append(scenarios, viewScenarioBuilder.Build())
 	}
 
-	err := explorerlib.NewScenarioBuilder().WithOrgName(config.Org).WithSearchEndpoint(config.SearchEndpoint).WithAnalyticsEndpoint(config.AnalyticsEndpoint).AllAnonymous().WithLanguages(taggedLanguages).WithGoodQueryByLanguage(goodQueries).WithTimeBetweenActions(1).WithTimeBetweenVisits(5).WithScenarios(config.MainScenario).Save(config.OutputFilePath)
+	err := explorerlib.NewBotConfigurationBuilder().WithOrgName(config.Org).WithSearchEndpoint(config.SearchEndpoint).WithAnalyticsEndpoint(config.AnalyticsEndpoint).AllAnonymous().WithLanguages(taggedLanguages).WithGoodQueryByLanguage(goodQueries).WithTimeBetweenActions(1).WithTimeBetweenVisits(5).WithScenarios(scenarios).Save(config.OutputFilePath)
 	check(err)
 
 	scenariolib.Info.Println("Running Bot")

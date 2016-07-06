@@ -12,20 +12,5 @@
   "numberOfQueryPerLanguage": 10,
   "fields": [
     "@syssource"
-  ],
-  "scenario": [
-    {
-    "name": "scenario",
-    "weight": 1,
-      "useragent": "",
-      "events": [
-        {"type": "Search", "arguments": {"queryText": "", "goodQuery": true, "matchLanguage": true}},
-        {"type": "Click", "arguments": {"docNo": -1, "offset": 0, "probability": 0.3}},
-        {"type": "View", "arguments": {"docNo": -1, "offset": 0, "probability": 0.3}},
-        {"type": "Search", "arguments": {"queryText": "", "goodQuery": true, "matchLanguage": true}},
-        {"type": "Click", "arguments": {"docNo": -1, "offset": 0, "probability": 0.5}},
-        {"type": "View", "arguments": {"docNo": -1, "offset": 0, "probability": 0.5}}
-      ]
-    }
   ]
 }

@@ -2,83 +2,76 @@ package explorerlib
 
 import (
 	"github.com/erocheleau/uabot/scenariolib"
-	"encoding/json"
-	"io/ioutil"
 )
 
-type ScenarioBuilder interface {
-	build(*scenariolib.Config)
-}
-
 type scenarioBuilder struct {
-	config scenariolib.Config
+	scenario scenariolib.Scenario
 }
 
-func NewScenarioBuilder() (*scenarioBuilder) {
-	return &scenarioBuilder{
-		config:scenariolib.Config{},
+func (builder *scenarioBuilder) WithLanguage(language string) *scenarioBuilder {
+	builder.scenario.Language = language
+	return builder
+}
+
+func (builder *scenarioBuilder) WithName(name string) *scenarioBuilder {
+	builder.scenario.Name = name
+	return builder
+}
+
+func (builder *scenarioBuilder) WithUserAgent(userAgent string) *scenarioBuilder {
+	builder.scenario.UserAgent = userAgent
+	return builder
+}
+
+func (builder *scenarioBuilder) WithWeight(weight int) *scenarioBuilder {
+	builder.scenario.Weight = weight
+	return builder
+}
+
+func (builder *scenarioBuilder) WithEvent(event scenariolib.JSONEvent) *scenarioBuilder {
+	builder.scenario.Events = append(builder.scenario.Events, event)
+	return builder
+}
+
+func (builder *scenarioBuilder) Build() *scenariolib.Scenario {
+	return &builder.scenario
+}
+
+func NewScenarioBuilder() *scenarioBuilder {
+	return &scenarioBuilder{}
+}
+
+func NewSearchEvent(log bool) scenariolib.JSONEvent {
+	return scenariolib.JSONEvent{
+		Type: "Search",
+		Arguments: map[string]interface{}{
+			"queryText": "",
+			"logEvent": log,
+			"goodQuery": true,
+			"matchLanguage": true,
+			"caseSearch": false,
+		},
 	}
 }
-func (builder *scenarioBuilder) WithOrgName(orgName string) *scenarioBuilder {
-	builder.config.OrgName = orgName
-	return builder
-}
 
-func (builder *scenarioBuilder) WithLanguages(languages []string) *scenarioBuilder {
-	builder.config.Languages = languages
-	return builder
-}
-
-func (builder *scenarioBuilder) AllAnonymous() *scenarioBuilder {
-	builder.config.AllowAnonymous = true
-	builder.config.AnonymousThreshold = 1
-	return builder
-}
-
-func (builder *scenarioBuilder) WithSearchEndpoint(endpoint string) *scenarioBuilder {
-	builder.config.SearchEndpoint = endpoint
-	return builder
-}
-
-func (builder *scenarioBuilder) WithAnalyticsEndpoint(endpoint string) *scenarioBuilder {
-	builder.config.AnalyticsEndpoint = endpoint
-	return builder
-}
-
-func (builder *scenarioBuilder) WithTimeBetweenActions(time int) *scenarioBuilder {
-	builder.config.TimeBetweenActions = time
-	return builder
-}
-
-func (builder *scenarioBuilder) WithTimeBetweenVisits(time int) *scenarioBuilder {
-	builder.config.TimeBetweenVisits = time
-	return builder
-}
-
-func (builder *scenarioBuilder) WithGoodQueryByLanguage(goodQueriesByLanguage map[string][]string) *scenarioBuilder {
-	builder.config.GoodQueriesInLang = goodQueriesByLanguage
-	return builder
-}
-
-func (builder *scenarioBuilder) WithScenarios(scenarios []*scenariolib.Scenario) *scenarioBuilder {
-	builder.config.Scenarios = scenarios
-	return builder
-}
-
-func (builder *scenarioBuilder) Build() (*scenariolib.Config) {
-	return &scenariolib.Config{}
-}
-
-func (builder *scenarioBuilder) Save(path string) error {
-	bytes, err := json.Marshal(builder.config)
-	if err != nil {
-		return err
+func NewClickEvent(probability float64) scenariolib.JSONEvent {
+	return scenariolib.JSONEvent{
+		Type: "Click",
+		Arguments: map[string]interface{}{
+			"offset": 0,
+			"probability": probability,
+			"docNo": -1,
+		},
 	}
-	writeerr := ioutil.WriteFile(path, bytes, 0644)
-	if writeerr != nil {
-		return writeerr
-	}
-	return nil
 }
 
-
+func NewViewEvent() scenariolib.JSONEvent {
+	return scenariolib.JSONEvent{
+		Type: "View",
+		Arguments: map[string]interface{}{
+			"offset": 0,
+			"probability": 1,
+			"docNo": -1,
+		},
+	}
+}
