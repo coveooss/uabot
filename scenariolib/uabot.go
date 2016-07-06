@@ -1,14 +1,16 @@
 package scenariolib
 
 import (
-	"time"
 	"math/rand"
+	"time"
 )
 
 // DEFAULTTIMEBETWEENVISITS The time for the bot to wait between visits, between 0 and X Seconds
 const DEFAULTTIMEBETWEENVISITS int = 300
+
 // DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS The standard deviation when updating time between visits
 const DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS int = 150
+
 // WEEKEND_MODIFIER The modifier to multiply DEFAULTTIMEBETWEENVISITS during weekends
 const WEEKEND_MODIFIER = 10
 
@@ -36,8 +38,8 @@ func NewUabot(local bool, scenarioUrl string, searchToken string, analyticsToken
 
 func (bot *uabot) Run() error {
 	var (
-		conf *Config
-		err error
+		conf       *Config
+		err        error
 		timeVisits int
 	)
 
@@ -53,13 +55,12 @@ func (bot *uabot) Run() error {
 
 	// Refresh the scenario files every 5 hours automatically.
 	// This way, no need to stop the bot to update the possible scenarios.
-	bot.continuallyRefreshScenariosEvery(5 * time.Hour, conf)
+	bot.continuallyRefreshScenariosEvery(5*time.Hour, conf)
 	if conf.TimeBetweenVisits > 0 {
 		timeVisits = conf.TimeBetweenVisits
 	} else {
 		timeVisits = DEFAULTTIMEBETWEENVISITS
-		Info.Println("ajalwkdjalwkjdalkwjdalwkdjwalkdjalwkjd")
-		bot.continuallyUpdateTimeVisitsEvery(24 * time.Hour, &timeVisits)
+		bot.continuallyUpdateTimeVisitsEvery(24*time.Hour, &timeVisits)
 	}
 
 	count := 0
@@ -79,7 +80,7 @@ func (bot *uabot) Run() error {
 		}
 
 		// New visit
-		visit, err := NewVisit(bot.searchToken, bot.analyticsToken, scenario.UserAgent, conf)
+		visit, err := NewVisit(bot.searchToken, bot.analyticsToken, scenario.UserAgent, scenario.Language, conf)
 		if err != nil {
 			return err
 		}
@@ -103,24 +104,24 @@ func (bot *uabot) Run() error {
 	}
 }
 
-
 func (bot *uabot) continuallyUpdateTimeVisitsEvery(timeDuration time.Duration, timeVisits *int) {
 	ticker := time.NewTicker(timeDuration)
 	go func() {
 		for _ = range ticker.C {
 			var effectiveMeanTimeBetweenVisits = DEFAULTTIMEBETWEENVISITS
-			if time.Now().Weekday() == time.Saturday || time.Now().Weekday() == time.Sunday{
+			if time.Now().Weekday() == time.Saturday || time.Now().Weekday() == time.Sunday {
 				effectiveMeanTimeBetweenVisits = DEFAULTTIMEBETWEENVISITS * WEEKEND_MODIFIER
 			}
 			var randomPositiveTime int
-			for randomPositiveTime = 0; randomPositiveTime <= 0 ; randomPositiveTime = int(float64(DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS) * bot.random.NormFloat64() + 0.5) + effectiveMeanTimeBetweenVisits{}
+			for randomPositiveTime = 0; randomPositiveTime <= 0; randomPositiveTime = int(float64(DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS)*bot.random.NormFloat64()+0.5) + effectiveMeanTimeBetweenVisits {
+			}
 			*timeVisits = randomPositiveTime
 			Info.Println("Updating Time Visits to", *timeVisits)
 		}
 	}()
 }
 
-func (bot*uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, conf *Config) {
+func (bot *uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, conf *Config) {
 	ticker := time.NewTicker(timeDuration)
 	go func() {
 		for _ = range ticker.C {

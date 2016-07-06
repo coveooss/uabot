@@ -25,8 +25,8 @@ import (
 type Config struct {
 	ScenarioMap           []*Scenario
 	OrgName               string              `json:"orgName"`
-	GoodQueries           []string 		  `json:"randomGoodQueries"`
-	BadQueries            []string 		  `json:"randomBadQueries"`
+	GoodQueries           []string            `json:"randomGoodQueries"`
+	BadQueries            []string            `json:"randomBadQueries"`
 	GoodQueriesInLang     map[string][]string `json:"goodQueriesInLanguage"`
 	BadQueriesInLang      map[string][]string `json:"badQueriesInLanguage"`
 	Scenarios             []*Scenario         `json:"scenarios"`
@@ -48,7 +48,7 @@ type Config struct {
 	TimeBetweenVisits     int                 `json:"timeBetweenVisits,omitempty"`
 	TimeBetweenActions    int                 `json:"timeBetweenActions,omitempty"`
 	AllowAnonymous        bool                `json:"allowAnonymousVisits,omitempty"`
-	AnonymousThreshold     float64             `json:"anonymousThreshold,omitempty"`
+	AnonymousThreshold    float64             `json:"anonymousThreshold,omitempty"`
 	AllowEntitlements     bool                `json:"allowEntitlements,omitempty"`
 	RandomCustomData      []*RandomCustomData `json:"randomCustomData,omitempty"`
 }
@@ -86,7 +86,7 @@ func (c *Config) RandomQuery(good bool) (string, error) {
 }
 
 // Returns a random query in a specified language
-func (c *Config) RandomQueryInLanguage(good bool, language string) (string, error){
+func (c *Config) RandomQueryInLanguage(good bool, language string) (string, error) {
 	if good {
 		if len(c.GoodQueriesInLang[language]) < 1 {
 			return "", errors.New("No good queries detected in lang : " + language)

@@ -54,7 +54,7 @@ const (
 // _searchtoken The token used to be able to search
 // _uatoken     The token used to send usage analytics events
 // _useragent   The user agent the analytics events will see
-func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config) (*Visit, error) {
+func NewVisit(_searchtoken string, _uatoken string, _useragent string, language string, c *Config) (*Visit, error) {
 
 	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
@@ -79,12 +79,17 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 		Info.Printf("New visit from %s", v.Username)
 	}
 	//Info.Printf("On device %s", _useragent)
-	if len(v.Config.Languages) > 0 {
-		v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
-		Info.Printf("Language of visit : %s", v.Language)
+	if language != "" {
+		v.Language = language
 	} else {
-		v.Language = "en"
+		if len(v.Config.Languages) > 0 {
+			v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+		} else {
+			v.Language = "en"
+		}
 	}
+	Info.Printf("Language of visit : %s", v.Language)
+
 	// Create the http searchClient
 	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
 	searchClient, err := search.NewClient(searchConfig)
@@ -116,7 +121,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	Info.Printf("Executing scenario named : %s", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		jsonEvent := scenario.Events[i]
-		event, err := ParseEvent(&jsonEvent, c, v.Language)
+		event, err := ParseEvent(&jsonEvent, c)
 		if err != nil {
 			return err
 		}
