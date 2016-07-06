@@ -175,8 +175,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 		}
 	}
 
-	if v.Config.AllowEntitlements {
-		// Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
