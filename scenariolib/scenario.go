@@ -8,7 +8,7 @@ type Scenario struct {
 	Name      string      `json:"name"`
 	Weight    int         `json:"weight"`
 	UserAgent string      `json:"useragent,omitempty"`
-	Events    []JSONEvent `json:"events,omitempty"`
+	Events    []JSONEvent `json:"events"`
 	Language  string      `json:"language,omitempty"`
 }
 
