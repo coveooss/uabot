@@ -64,7 +64,7 @@ func main() {
 	scenariolib.Info.Println("Running Bot")
 
 	uabot := scenariolib.NewUabot(true, config.OutputFilePath, config.SearchToken, config.AnalyticsToken, random)
-	err = uabot.Run()
+	err = uabot.Run(make(chan interface{}))
 	check(err)
 }
 
