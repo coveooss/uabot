@@ -5,7 +5,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/satori/go.uuid"
 	"net/http"
-	"github.com/adambbolduc/uabot/scenariolib"
 )
 
 var (
