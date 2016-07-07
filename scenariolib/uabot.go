@@ -38,7 +38,7 @@ func NewUabot(local bool, scenarioUrl string, searchToken string, analyticsToken
 	}
 }
 
-func (bot *uabot) Run() error {
+func (bot *uabot) Run(quitChannel chan bool) error {
 	var (
 		conf       *Config
 		err        error
@@ -68,46 +68,51 @@ func (bot *uabot) Run() error {
 	}
 
 	count := 0
-	for {
-		// Run forever
+	for { // Run forever
 
-		scenario, err := conf.RandomScenario()
-		if err != nil {
-			return err
-		}
-
-		if scenario.UserAgent == "" {
-			scenario.UserAgent, err = conf.RandomUserAgent(false)
+		select {
+		default:
+			scenario, err := conf.RandomScenario()
 			if err != nil {
 				return err
 			}
+
+			if scenario.UserAgent == "" {
+				scenario.UserAgent, err = conf.RandomUserAgent(false)
+				if err != nil {
+					return err
+				}
+			}
+
+			// New visit
+			visit, err := NewVisit(bot.searchToken, bot.analyticsToken, scenario.UserAgent, scenario.Language, conf)
+			if err != nil {
+				return err
+			}
+
+			// Setup specific stuff for NTO
+			//visit.SetupNTO()
+			// Use this line instead outside of NTO
+			visit.SetupGeneral()
+			visit.LastQuery.CQ = conf.GlobalFilter
+
+			err = visit.ExecuteScenario(*scenario, conf)
+			if err != nil {
+				return err
+			}
+
+			visit.UAClient.DeleteVisit()
+			if bot.WaitBetweenVisits {
+				waitTime := time.Duration(bot.random.Intn(timeVisits)) * time.Second
+				time.Sleep(waitTime)
+			}
+
+			count++
+			Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
+
+		case <- quitChannel:
+			return nil
 		}
-
-		// New visit
-		visit, err := NewVisit(bot.searchToken, bot.analyticsToken, scenario.UserAgent, scenario.Language, conf)
-		if err != nil {
-			return err
-		}
-
-		// Setup specific stuff for NTO
-		//visit.SetupNTO()
-		// Use this line instead outside of NTO
-		visit.SetupGeneral()
-		visit.LastQuery.CQ = conf.GlobalFilter
-
-		err = visit.ExecuteScenario(*scenario, conf)
-		if err != nil {
-			return err
-		}
-
-		visit.UAClient.DeleteVisit()
-		if bot.WaitBetweenVisits {
-			waitTime := time.Duration(bot.random.Intn(timeVisits)) * time.Second
-			time.Sleep(waitTime)
-		}
-
-		count++
-		Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
 	}
 }
 
