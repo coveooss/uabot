@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"github.com/goinggo/workpool"
 	"runtime"
+	"time"
+	"math/rand"
 )
 
 var(
@@ -13,8 +15,13 @@ var(
 )
 
 func main() {
+
+	source := rand.NewSource(int64(time.Now().Unix()))
+	random := rand.New(source)
+
+
 	workPool = workpool.New(runtime.NumCPU(), 100)
-	server.Inject(workPool)
+	server.Init(workPool, random)
 	router := server.NewRouter()
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

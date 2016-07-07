@@ -1,8 +1,9 @@
 package search_test
 
 import (
-	"github.com/coveo/go-coveo/search"
 	"testing"
+
+	"github.com/coveo/go-coveo/search"
 )
 
 func TestClient(t *testing.T) {

@@ -62,6 +62,12 @@ func (builder *botConfigurationBuilder) WithScenarios(scenarios []*scenariolib.S
 	return builder
 }
 
+func (builder *botConfigurationBuilder) NoWait() *botConfigurationBuilder {
+	builder.config.DontWaitBetweenVisits = true
+	builder.config.DontWaitBetweenActions = true
+	return builder
+}
+
 func (builder *botConfigurationBuilder) Build() (*scenariolib.Config) {
 	return &scenariolib.Config{}
 }
