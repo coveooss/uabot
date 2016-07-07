@@ -37,9 +37,5 @@ func main() {
 	bot := scenariolib.NewUabot(local, scenarioURL, searchToken, analyticsToken, random)
 	quitChannel := make(chan bool)
 	go bot.Run(quitChannel)
-
-	time.Sleep(10 * time.Second)
-	quitChannel <- true
-
 	pp.Println("LOG >>> DONE")
 }
