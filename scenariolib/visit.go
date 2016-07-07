@@ -26,19 +26,20 @@ import (
 // OriginLevel2 Same as OriginLevel1
 // LastTab      The tab the user last visited
 type Visit struct {
-	SearchClient search.Client
-	UAClient     ua.Client
-	LastQuery    *search.Query
-	LastResponse *search.Response
-	Username     string
-	OriginLevel1 string
-	OriginLevel2 string
-	OriginLevel3 string
-	LastTab      string
-	Config       *Config
-	IP           string
-	Anonymous    bool
-	Language     string
+	SearchClient       search.Client
+	UAClient           ua.Client
+	LastQuery          *search.Query
+	LastResponse       *search.Response
+	Username           string
+	OriginLevel1       string
+	OriginLevel2       string
+	OriginLevel3       string
+	LastTab            string
+	Config             *Config
+	IP                 string
+	Anonymous          bool
+	Language           string
+	WaitBetweenActions bool
 }
 
 const (
@@ -54,13 +55,14 @@ const (
 // _searchtoken The token used to be able to search
 // _uatoken     The token used to send usage analytics events
 // _useragent   The user agent the analytics events will see
-func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config) (*Visit, error) {
+func NewVisit(_searchtoken string, _uatoken string, _useragent string, language string, c *Config) (*Visit, error) {
 
 	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
 	v := Visit{}
 	v.Config = c
 
+	v.WaitBetweenActions = !c.DontWaitBetweenVisits
 	v.Anonymous = false
 	if c.AllowAnonymous {
 		var threshold float64
@@ -79,12 +81,17 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 		Info.Printf("New visit from %s", v.Username)
 	}
 	//Info.Printf("On device %s", _useragent)
-	if len(v.Config.Languages) > 0 {
-		v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
-		Info.Printf("Language of visit : %s", v.Language)
+	if language != "" {
+		v.Language = language
 	} else {
-		v.Language = "en"
+		if len(v.Config.Languages) > 0 {
+			v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+		} else {
+			v.Language = "en"
+		}
 	}
+	Info.Printf("Language of visit : %s", v.Language)
+
 	// Create the http searchClient
 	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
 	searchClient, err := search.NewClient(searchConfig)
@@ -116,7 +123,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	Info.Printf("Executing scenario named : %s", scenario.Name)
 	for i := 0; i < len(scenario.Events); i++ {
 		jsonEvent := scenario.Events[i]
-		event, err := ParseEvent(&jsonEvent, c, v.Language)
+		event, err := ParseEvent(&jsonEvent, c)
 		if err != nil {
 			return err
 		}
@@ -124,13 +131,15 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 		if err != nil {
 			return err
 		}
-		var timeToWait int
-		if c.TimeBetweenActions > 0 {
-			timeToWait = c.TimeBetweenActions
-		} else {
-			timeToWait = DEFAULTTIMEBETWEENACTIONS
+		if v.WaitBetweenActions {
+			var timeToWait int
+			if c.TimeBetweenActions > 0 {
+				timeToWait = c.TimeBetweenActions
+			} else {
+				timeToWait = DEFAULTTIMEBETWEENACTIONS
+			}
+			WaitBetweenActions(timeToWait)
 		}
-		WaitBetweenActions(timeToWait)
 	}
 	return nil
 }

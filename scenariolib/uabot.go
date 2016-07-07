@@ -19,11 +19,12 @@ type Uabot interface {
 }
 
 type uabot struct {
-	local          bool
-	scenarioURL    string
-	searchToken    string
-	analyticsToken string
-	random         *rand.Rand
+	local             bool
+	scenarioURL       string
+	searchToken       string
+	analyticsToken    string
+	random            *rand.Rand
+	WaitBetweenVisits bool
 }
 
 func NewUabot(local bool, scenarioUrl string, searchToken string, analyticsToken string, random *rand.Rand) *uabot {
@@ -33,10 +34,11 @@ func NewUabot(local bool, scenarioUrl string, searchToken string, analyticsToken
 		searchToken,
 		analyticsToken,
 		random,
+		true,
 	}
 }
 
-func (bot *uabot) Run(quit chan interface{}) error {
+func (bot *uabot) Run(quitChannel chan bool) error {
 	var (
 		conf       *Config
 		err        error
@@ -53,6 +55,8 @@ func (bot *uabot) Run(quit chan interface{}) error {
 		return err
 	}
 
+	bot.WaitBetweenVisits = !conf.DontWaitBetweenVisits
+
 	// Refresh the scenario files every 5 hours automatically.
 	// This way, no need to stop the bot to update the possible scenarios.
 	bot.continuallyRefreshScenariosEvery(5*time.Hour, conf)
@@ -64,7 +68,8 @@ func (bot *uabot) Run(quit chan interface{}) error {
 	}
 
 	count := 0
-	for { // Run Until the channel is closed
+	for { // Run forever
+
 		select {
 		default:
 			scenario, err := conf.RandomScenario()
@@ -97,12 +102,15 @@ func (bot *uabot) Run(quit chan interface{}) error {
 			}
 
 			visit.UAClient.DeleteVisit()
-			time.Sleep(time.Duration(bot.random.Intn(timeVisits)) * time.Second)
+			if bot.WaitBetweenVisits {
+				waitTime := time.Duration(bot.random.Intn(timeVisits)) * time.Second
+				time.Sleep(waitTime)
+			}
 
 			count++
 			Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
-		case <-quit:
-			Info.Println("Stopping Uabot")
+
+		case <- quitChannel:
 			return nil
 		}
 	}
