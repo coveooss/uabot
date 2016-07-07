@@ -19,11 +19,12 @@ type Uabot interface {
 }
 
 type uabot struct {
-	local          bool
-	scenarioURL    string
-	searchToken    string
-	analyticsToken string
-	random         *rand.Rand
+	local             bool
+	scenarioURL       string
+	searchToken       string
+	analyticsToken    string
+	random            *rand.Rand
+	WaitBetweenVisits bool
 }
 
 func NewUabot(local bool, scenarioUrl string, searchToken string, analyticsToken string, random *rand.Rand) *uabot {
@@ -33,6 +34,7 @@ func NewUabot(local bool, scenarioUrl string, searchToken string, analyticsToken
 		searchToken,
 		analyticsToken,
 		random,
+		true,
 	}
 }
 
@@ -52,6 +54,8 @@ func (bot *uabot) Run() error {
 	if err != nil {
 		return err
 	}
+
+	bot.WaitBetweenVisits = !conf.DontWaitBetweenVisits
 
 	// Refresh the scenario files every 5 hours automatically.
 	// This way, no need to stop the bot to update the possible scenarios.
@@ -97,7 +101,10 @@ func (bot *uabot) Run() error {
 		}
 
 		visit.UAClient.DeleteVisit()
-		time.Sleep(time.Duration(bot.random.Intn(timeVisits)) * time.Second)
+		if bot.WaitBetweenVisits {
+			waitTime := time.Duration(bot.random.Intn(timeVisits)) * time.Second
+			time.Sleep(waitTime)
+		}
 
 		count++
 		Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
