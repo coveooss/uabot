@@ -2,8 +2,8 @@ package explorerlib
 
 import (
 	"github.com/coveo/go-coveo/search"
-	"strings"
 	"regexp"
+	"strings"
 )
 
 func ExtractWordsFromResponse(response search.Response) WordCounts {

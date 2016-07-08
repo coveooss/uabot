@@ -13,8 +13,8 @@ type Autobot struct {
 
 func NewAutobot(_config *explorerlib.Config, _random *rand.Rand) *Autobot {
 	return &Autobot{
-		config:_config,
-		random:_random,
+		config: _config,
+		random: _random,
 	}
 }
 
@@ -65,4 +65,18 @@ func (bot *Autobot) Run(quitChannel chan bool) error {
 	uabot := scenariolib.NewUabot(true, bot.config.OutputFilePath, bot.config.SearchToken, bot.config.AnalyticsToken, bot.random)
 	err = uabot.Run(quitChannel)
 	return err
+}
+
+func (bot *Autobot) GetInfo() map[string]interface{} {
+	return map[string]interface{}{
+		"searchEndpoint":                 bot.config.SearchEndpoint,
+		"analyticsEndpoint":              bot.config.AnalyticsEndpoint,
+		"averageNumberOfWordsPerQuery":   bot.config.AverageNumberOfWordsPerQuery,
+		"documentsExplorationPercentage": bot.config.DocumentsExplorationPercentage,
+		"fieldsToExploreEqually":         bot.config.FieldsToExploreEqually,
+		"org":                      bot.config.Org,
+		"outputFilepath":           bot.config.OutputFilePath,
+		"numberOfQueryPerLanguage": bot.config.NumberOfQueryByLanguage,
+		"numberOfResultsPerQuery":  bot.config.FetchNumberOfResults,
+	}
 }

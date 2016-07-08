@@ -1,15 +1,15 @@
 package explorerlib
 
 import (
-	"time"
-	"math/rand"
 	"math"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 var (
-	s1 = rand.NewSource(time.Now().UnixNano())
-	random = rand.New(s1)
+	s1        = rand.NewSource(time.Now().UnixNano())
+	random    = rand.New(s1)
 	stopwords *Stopwords
 )
 
@@ -32,7 +32,7 @@ func (wordCountList WordCounts) Less(i, j int) bool {
 func (wordCountList WordCounts) Swap(i, j int) {
 	wordCountList.Words[i], wordCountList.Words[j] = wordCountList.Words[j], wordCountList.Words[i]
 }
-func (wordCountList WordCounts) Add(pair WordCount) (WordCounts) {
+func (wordCountList WordCounts) Add(pair WordCount) WordCounts {
 	// Do not Add a word that is in the stopword list
 	loadStopWords()
 	if stopwords.Contains(pair.Word) {
@@ -65,7 +65,7 @@ func loadStopWords() {
 	}
 }
 
-func (wordCounts WordCounts) ContainsKey(key string) (bool) {
+func (wordCounts WordCounts) ContainsKey(key string) bool {
 	for _, pair := range wordCounts.Words {
 		if pair.Word == key {
 			return true
@@ -74,7 +74,7 @@ func (wordCounts WordCounts) ContainsKey(key string) (bool) {
 	return false
 }
 
-func (firstPairList WordCounts) Extend(secondPairList WordCounts) (WordCounts) {
+func (firstPairList WordCounts) Extend(secondPairList WordCounts) WordCounts {
 	mergedPairList := WordCounts{}
 	for _, pair := range firstPairList.Words {
 		mergedPairList = mergedPairList.Add(pair)
@@ -104,7 +104,7 @@ func (wordCounts WordCounts) PickExpNWords(n int) string {
 func randomNumberWithExpMinMax(min int, max int, lambda float64) int {
 	var exponentialrandomint = math.MaxInt64
 	for min > exponentialrandomint || exponentialrandomint >= max {
-		exponentialrandomint = int(random.ExpFloat64() * lambda + 0.5)
+		exponentialrandomint = int(random.ExpFloat64()*lambda + 0.5)
 	}
 	return exponentialrandomint
 }

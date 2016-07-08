@@ -45,11 +45,11 @@ func NewSearchEvent(log bool) scenariolib.JSONEvent {
 	return scenariolib.JSONEvent{
 		Type: "Search",
 		Arguments: map[string]interface{}{
-			"queryText": "",
-			"logEvent": log,
-			"goodQuery": true,
+			"queryText":     "",
+			"logEvent":      log,
+			"goodQuery":     true,
 			"matchLanguage": true,
-			"caseSearch": false,
+			"caseSearch":    false,
 		},
 	}
 }
@@ -58,9 +58,9 @@ func NewClickEvent(probability float64) scenariolib.JSONEvent {
 	return scenariolib.JSONEvent{
 		Type: "Click",
 		Arguments: map[string]interface{}{
-			"offset": 0,
+			"offset":      0,
 			"probability": probability,
-			"docNo": -1,
+			"docNo":       -1,
 		},
 	}
 }
@@ -69,9 +69,9 @@ func NewViewEvent() scenariolib.JSONEvent {
 	return scenariolib.JSONEvent{
 		Type: "View",
 		Arguments: map[string]interface{}{
-			"offset": 0,
+			"offset":      0,
 			"probability": 1,
-			"docNo": -1,
+			"docNo":       -1,
 		},
 	}
 }

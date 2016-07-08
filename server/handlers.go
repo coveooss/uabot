@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/adambbolduc/uabot/autobot"
-	"github.com/adambbolduc/uabot/explorerlib"
 	"github.com/erocheleau/uabot/scenariolib"
-	"github.com/goinggo/workpool"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"math/rand"
@@ -17,34 +15,33 @@ import (
 
 var (
 	quitChannels []chan bool
-	workPool     *workpool.WorkPool
 	random       *rand.Rand
+	workPool     *WorkPool
 )
 
-type StatusResponse struct {
-	Stat string `json:"status"`
-}
-
-func Status(writter http.ResponseWriter, request *http.Request) {
-	status := StatusResponse{Stat: "UP"}
-	json.NewEncoder(writter).Encode(status)
+func Init(_workPool *WorkPool, _random *rand.Rand) {
+	workPool = _workPool
+	quitChannels = make([]chan bool, 8)
+	scenariolib.InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
+	random = _random
 }
 
 func Start(writter http.ResponseWriter, request *http.Request) {
-	config := &explorerlib.Config{}
-	err := json.NewDecoder(request.Body).Decode(config)
+	config, err := DecodeConfig(request.Body)
 	if err != nil {
-		scenariolib.Error.Println(err)
+		http.Error(writter, err.Error(), 418)
+		return
 	}
-	scenariolib.Info.Printf("Config : %v\n", config)
-	worker := BotWorker{
-		bot: autobot.NewAutobot(config, random),
+	worker := WorkWrapper{
+		realWorker: &BotWorker{
+			bot: autobot.NewAutobot(config, random),
+		},
+		workPool: workPool,
 	}
-	err = workPool.PostWork("routine", &worker)
+	err = workPool.PostWork(&worker)
 	if err != nil {
 		fmt.Printf("Error : %v\n", err)
 	}
-	json.NewEncoder(writter).Encode(quitChannels)
 }
 
 func Stop(writter http.ResponseWriter, request *http.Request) {
@@ -54,23 +51,12 @@ func Stop(writter http.ResponseWriter, request *http.Request) {
 	quitChannels[id] = nil
 }
 
-func Init(_workPool *workpool.WorkPool, _random *rand.Rand) {
-	workPool = _workPool
-	quitChannels = make([]chan bool, 8)
-	scenariolib.InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
-	random = _random
-}
-
-type BotWorker struct {
-	bot *autobot.Autobot
-}
-
-func (worker *BotWorker) DoWork(goRoutine int) {
-	quitChannel := make(chan bool)
-	quitChannels[goRoutine] = quitChannel
-	scenariolib.Info.Printf("Bot starting on worker: %v\n", goRoutine)
-	err := worker.bot.Run(quitChannel)
-	if err != nil {
-		scenariolib.Error.Println(err)
+func GetInfo(writter http.ResponseWriter, request *http.Request) {
+	infos := map[string]interface{}{
+		"status":         "UP",
+		"botWorkerInfos": workPool.getInfo(),
+		"activeRoutines": fmt.Sprintf("%v/%v", workPool.ActiveRoutines(), workPool.NumberConcurrentRoutine),
+		"queuedWork":     fmt.Sprintf("%v/%v", workPool.QueuedWork(), workPool.QueueLength),
 	}
+	json.NewEncoder(writter).Encode(infos)
 }

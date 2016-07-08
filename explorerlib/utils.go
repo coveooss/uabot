@@ -1,9 +1,9 @@
 package explorerlib
 
 import (
+	"regexp"
 	"sort"
 	"strings"
-	"regexp"
 )
 
 func CountWordOccurence(words []string) WordCounts {
@@ -39,5 +39,3 @@ type WordsByFieldValue struct {
 	FieldValue string
 	Words      WordCounts
 }
-
-

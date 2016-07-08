@@ -1,8 +1,8 @@
 package explorerlib
 
 import (
-	"github.com/erocheleau/uabot/scenariolib"
 	"encoding/json"
+	"github.com/erocheleau/uabot/scenariolib"
 	"io/ioutil"
 )
 
@@ -10,9 +10,9 @@ type botConfigurationBuilder struct {
 	config scenariolib.Config
 }
 
-func NewBotConfigurationBuilder() (*botConfigurationBuilder) {
+func NewBotConfigurationBuilder() *botConfigurationBuilder {
 	return &botConfigurationBuilder{
-		config:scenariolib.Config{},
+		config: scenariolib.Config{},
 	}
 }
 
@@ -57,7 +57,7 @@ func (builder *botConfigurationBuilder) WithGoodQueryByLanguage(goodQueriesByLan
 	return builder
 }
 
-func (builder *botConfigurationBuilder) WithScenarios(scenarios []*scenariolib.Scenario) *botConfigurationBuilder{
+func (builder *botConfigurationBuilder) WithScenarios(scenarios []*scenariolib.Scenario) *botConfigurationBuilder {
 	builder.config.Scenarios = scenarios
 	return builder
 }
@@ -68,7 +68,7 @@ func (builder *botConfigurationBuilder) NoWait() *botConfigurationBuilder {
 	return builder
 }
 
-func (builder *botConfigurationBuilder) Build() (*scenariolib.Config) {
+func (builder *botConfigurationBuilder) Build() *scenariolib.Config {
 	return &scenariolib.Config{}
 }
 
@@ -83,5 +83,3 @@ func (builder *botConfigurationBuilder) Save(path string) error {
 	}
 	return nil
 }
-
-

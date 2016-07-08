@@ -54,15 +54,13 @@ var (
 	englishDisplay = display.English.Tags()
 
 	exceptionLanguages = map[string]string{
-		"Esperanto" : "eo",
-		"Norwegian" : "no",
+		"Esperanto": "eo",
+		"Norwegian": "no",
 	}
 )
 
-
-
 func LanguageToTag(language string) string {
-	for lang, code:= range exceptionLanguages {
+	for lang, code := range exceptionLanguages {
 		if lang == language {
 			return code
 		}
@@ -75,5 +73,3 @@ func LanguageToTag(language string) string {
 	}
 	return ""
 }
-
-

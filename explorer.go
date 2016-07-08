@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"github.com/adambbolduc/uabot/explorerlib"
 	"github.com/adambbolduc/uabot/autobot"
+	"github.com/adambbolduc/uabot/explorerlib"
 	"github.com/erocheleau/uabot/scenariolib"
 	"io/ioutil"
 	"math/rand"
@@ -37,7 +37,6 @@ func main() {
 	time.Sleep(5 * time.Minute)
 
 	stop <- true
-
 
 }
 
