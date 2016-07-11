@@ -22,9 +22,10 @@ var (
 func main() {
 	flag.Parse()
 
-	scenariolib.InitLogger(ioutil.Discard, ioutil.Discard, os.Stdout, os.Stderr)
+	scenariolib.InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
-	fmt.Printf("Queue Length: %v\nServer Port:%v", *queueLength, *port)
+	scenariolib.Info.Printf("Queue Length: %v", *queueLength)
+	scenariolib.Info.Printf("Server Port: %v", *port)
 
 	source := rand.NewSource(int64(time.Now().Unix()))
 	random := rand.New(source)
