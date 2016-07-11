@@ -16,4 +16,5 @@ type Config struct {
 	AverageNumberOfWordsPerQuery   int                     `json:"avgNumberWordsPerQuery"`
 	MainScenario                   []*scenariolib.Scenario `json:"scenario"`
 	Timeout                        int                     `json:"timeout"`
+	OriginLevels                   map[string][]string     `json:"originLevels"`
 }
