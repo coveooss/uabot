@@ -15,4 +15,5 @@ type Config struct {
 	OutputFilePath                 string                  `json:"outputFilePath"`
 	AverageNumberOfWordsPerQuery   int                     `json:"avgNumberWordsPerQuery"`
 	MainScenario                   []*scenariolib.Scenario `json:"scenario"`
+	Timeout                        int                     `json:"timeout"`
 }
