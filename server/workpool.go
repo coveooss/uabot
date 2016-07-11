@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/goinggo/workpool"
+	"github.com/satori/go.uuid"
 )
 
 const routine = "bot"
@@ -29,18 +30,25 @@ func (workPool *WorkPool) PostWork(worker *WorkWrapper) error {
 type WorkWrapper struct {
 	realWorker *BotWorker
 	workPool   *WorkPool
+	workerID   uuid.UUID
 }
 
 func (_workWrapper *WorkWrapper) DoWork(goRoutine int) {
 	info := _workWrapper.realWorker.bot.GetInfo()
-	info["workerId"] = goRoutine
+	info["workerId"] = _workWrapper.realWorker.id.String()
 	_workWrapper.workPool.workerInfo[goRoutine] = info
 	_workWrapper.realWorker.DoWork(goRoutine)
 	_workWrapper.workPool.workerInfo[goRoutine] = nil
 }
 
 func (workPool *WorkPool) getInfo() []map[string]interface{} {
-	return workPool.workerInfo
+	filteredInfo := make([]map[string]interface{}, 0)
+	for _, info := range workPool.workerInfo {
+		if info != nil {
+			filteredInfo = append(filteredInfo, info)
+		}
+	}
+	return filteredInfo
 }
 
 func (workPool *WorkPool) ActiveRoutines() int32 {

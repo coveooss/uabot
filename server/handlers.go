@@ -10,18 +10,18 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"strconv"
+	"github.com/satori/go.uuid"
 )
 
 var (
-	quitChannels []chan bool
+	quitChannels map[uuid.UUID]chan bool
 	random       *rand.Rand
 	workPool     *WorkPool
 )
 
 func Init(_workPool *WorkPool, _random *rand.Rand) {
 	workPool = _workPool
-	quitChannels = make([]chan bool, 8)
+	quitChannels = make(map[uuid.UUID]chan bool)
 	scenariolib.InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 	random = _random
 }
@@ -32,9 +32,11 @@ func Start(writter http.ResponseWriter, request *http.Request) {
 		http.Error(writter, err.Error(), 418)
 		return
 	}
+	id := uuid.NewV4()
 	worker := WorkWrapper{
 		realWorker: &BotWorker{
 			bot: autobot.NewAutobot(config, random),
+			id: id,
 		},
 		workPool: workPool,
 	}
@@ -42,13 +44,16 @@ func Start(writter http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		fmt.Printf("Error : %v\n", err)
 	}
+	json.NewEncoder(writter).Encode(map[string]interface{}{
+		"workerID":id,
+	})
 }
 
 func Stop(writter http.ResponseWriter, request *http.Request) {
 	Vars := mux.Vars(request)
-	id, _ := strconv.Atoi(Vars["id"])
+	id, _ := uuid.FromString(Vars["id"])
 	quitChannels[id] <- true
-	quitChannels[id] = nil
+	delete(quitChannels, id)
 }
 
 func GetInfo(writter http.ResponseWriter, request *http.Request) {
