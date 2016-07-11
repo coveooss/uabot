@@ -3,14 +3,13 @@ package server
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/adambbolduc/uabot/autobot"
 	"github.com/erocheleau/uabot/scenariolib"
 	"github.com/gorilla/mux"
+	"github.com/satori/go.uuid"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"os"
-	"github.com/satori/go.uuid"
 )
 
 var (
@@ -33,19 +32,14 @@ func Start(writter http.ResponseWriter, request *http.Request) {
 		return
 	}
 	id := uuid.NewV4()
-	worker := WorkWrapper{
-		realWorker: &BotWorker{
-			bot: autobot.NewAutobot(config, random),
-			id: id,
-		},
-		workPool: workPool,
-	}
+	config.OutputFilePath = id.String()+".json"
+	worker := NewWorker(config, random, id)
 	err = workPool.PostWork(&worker)
 	if err != nil {
 		fmt.Printf("Error : %v\n", err)
 	}
 	json.NewEncoder(writter).Encode(map[string]interface{}{
-		"workerID":id,
+		"workerID": id,
 	})
 }
 

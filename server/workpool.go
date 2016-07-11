@@ -23,17 +23,18 @@ func NewWorkPool(numConcurrentRoutine int, queueLength int32) *WorkPool {
 	}
 }
 
-func (workPool *WorkPool) PostWork(worker *WorkWrapper) error {
-	return workPool.goinggoWorkpool.PostWork(routine, worker)
+func (workPool *WorkPool) PostWork(worker *Worker) error {
+	return workPool.goinggoWorkpool.PostWork(routine, *worker)
 }
 
 type WorkWrapper struct {
+	Worker
 	realWorker *BotWorker
 	workPool   *WorkPool
 	workerID   uuid.UUID
 }
 
-func (_workWrapper *WorkWrapper) DoWork(goRoutine int) {
+func (_workWrapper WorkWrapper) DoWork(goRoutine int) {
 	info := _workWrapper.realWorker.bot.GetInfo()
 	info["workerId"] = _workWrapper.realWorker.id.String()
 	_workWrapper.workPool.workerInfo[goRoutine] = info
