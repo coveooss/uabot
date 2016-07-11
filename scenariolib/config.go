@@ -23,34 +23,35 @@ import (
 // Scenarios   An array of scenarios that can happen.
 // ScenarioMap A map that will be built with the scenarios and their respective weights.
 type Config struct {
-	ScenarioMap           []*Scenario
-	OrgName               string              `json:"orgName"`
-	GoodQueries           []string            `json:"randomGoodQueries"`
-	BadQueries            []string            `json:"randomBadQueries"`
-	GoodQueriesInLang     map[string][]string `json:"goodQueriesInLanguage"`
-	BadQueriesInLang      map[string][]string `json:"badQueriesInLanguage"`
-	Scenarios             []*Scenario         `json:"scenarios"`
-	DefaultOriginLevel1   string              `json:"defaultOriginLevel1,omitempty"`
-	GlobalFilter          string              `json:"globalfilter,omitempty"`
-	SearchEndpoint        string              `json:"searchendpoint,omitempty"`
-	AnalyticsEndpoint     string              `json:"analyticsendpoint,omitempty"`
-	Emails                []string            `json:"emailSuffixes,omitempty"`
-	FirstNames            []string            `json:"firstNames,omitempty"`
-	LastNames             []string            `json:"lastNames,omitempty"`
-	RandomIPs             []string            `json:"randomIPs,omitempty"`
-	UserAgents            []string            `json:"useragents,omitempty"`
-	Languages             []string            `json:"languages,omitempty"`
-	MobileUserAgents      []string            `json:"mobileuseragents, omitempty"`
-	PartialMatch          bool                `json:"partialMatch,omitempty"`
-	PartialMatchKeywords  int                 `json:"partialMatchKeywords,omitempty"`
-	PartialMatchThreshold string              `json:"partialMatchThreshold,omitempty"`
-	Pipeline              string              `json:"pipeline,omitempty"`
-	TimeBetweenVisits     int                 `json:"timeBetweenVisits,omitempty"`
-	TimeBetweenActions    int                 `json:"timeBetweenActions,omitempty"`
-	AllowAnonymous        bool                `json:"allowAnonymousVisits,omitempty"`
-	AnonymousThreshold    float64             `json:"anonymousThreshold,omitempty"`
-	AllowEntitlements     bool                `json:"allowEntitlements,omitempty"`
-	RandomCustomData      []*RandomCustomData `json:"randomCustomData,omitempty"`
+	ScenarioMap            []*Scenario
+	OrgName                string              `json:"orgName"`
+	GoodQueries            []string            `json:"randomGoodQueries"`
+	BadQueries             []string            `json:"randomBadQueries"`
+	GoodQueriesInLang      map[string][]string `json:"goodQueriesInLanguage"`
+	BadQueriesInLang       map[string][]string `json:"badQueriesInLanguage"`
+	Scenarios              []*Scenario         `json:"scenarios"`
+	DefaultOriginLevel1    string              `json:"defaultOriginLevel1,omitempty"`
+	OriginLevels           map[string][]string `json:"originLevels"`
+	GlobalFilter           string              `json:"globalfilter,omitempty"`
+	SearchEndpoint         string              `json:"searchendpoint,omitempty"`
+	AnalyticsEndpoint      string              `json:"analyticsendpoint,omitempty"`
+	Emails                 []string            `json:"emailSuffixes,omitempty"`
+	FirstNames             []string            `json:"firstNames,omitempty"`
+	LastNames              []string            `json:"lastNames,omitempty"`
+	RandomIPs              []string            `json:"randomIPs,omitempty"`
+	UserAgents             []string            `json:"useragents,omitempty"`
+	Languages              []string            `json:"languages,omitempty"`
+	MobileUserAgents       []string            `json:"mobileuseragents, omitempty"`
+	PartialMatch           bool                `json:"partialMatch,omitempty"`
+	PartialMatchKeywords   int                 `json:"partialMatchKeywords,omitempty"`
+	PartialMatchThreshold  string              `json:"partialMatchThreshold,omitempty"`
+	Pipeline               string              `json:"pipeline,omitempty"`
+	TimeBetweenVisits      int                 `json:"timeBetweenVisits,omitempty"`
+	TimeBetweenActions     int                 `json:"timeBetweenActions,omitempty"`
+	AllowAnonymous         bool                `json:"allowAnonymousVisits,omitempty"`
+	AnonymousThreshold     float64             `json:"anonymousThreshold,omitempty"`
+	AllowEntitlements      bool                `json:"allowEntitlements,omitempty"`
+	RandomCustomData       []*RandomCustomData `json:"randomCustomData,omitempty"`
 }
 
 type RandomCustomData struct {
@@ -68,6 +69,28 @@ func (c *Config) RandomScenario() (*Scenario, error) {
 		return nil, errors.New("No scenarios detected")
 	}
 	return c.ScenarioMap[rand.Intn(len(c.ScenarioMap))], nil
+}
+
+func (c *Config) RandomOriginLevel1() (string, error) {
+	choices := []string{}
+	for key, _ := range c.OriginLevels {
+		choices = append(choices, key)
+	}
+	if len(choices) == 0 {
+		return "", errors.New("No Origin Level 1 Found")
+	}
+	return choices[rand.Intn(len(choices))], nil
+}
+
+func (c *Config) RandomOriginLevel2(originLevel1 string) (string, error) {
+	choices, present := c.OriginLevels[originLevel1]
+	if !present {
+		return "", errors.New("no such origin level1")
+	}
+	if len(choices) == 0 {
+		return "", errors.New("No Origin Level 2 Found")
+	}
+	return choices[rand.Intn(len(choices))], nil
 }
 
 // RandomQuery Returns a random query good or bad from the list of possible queries.
