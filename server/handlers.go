@@ -7,6 +7,8 @@ import (
 	"github.com/satori/go.uuid"
 	"math/rand"
 	"net/http"
+	"time"
+	"github.com/erocheleau/uabot/scenariolib"
 )
 
 var (
@@ -33,7 +35,15 @@ func Start(writter http.ResponseWriter, request *http.Request) {
 		config.OutputFilePath = id.String() + ".json"
 	}
 
-	worker := NewWorker(config, random, id)
+	timer := time.NewTimer(time.Duration(config.Timeout) * time.Minute)
+	quitChannel := make(chan bool)
+	go func() {
+		<-timer.C
+		scenariolib.Info.Printf("Timer Timed Out")
+		close(quitChannel)
+	}()
+	quitChannels[id] = quitChannel
+	worker := NewWorker(config, quitChannel, random, id)
 	err = workPool.PostWork(&worker)
 	if err != nil {
 		fmt.Printf("Error : %v\n", err)
@@ -46,7 +56,7 @@ func Start(writter http.ResponseWriter, request *http.Request) {
 func Stop(writter http.ResponseWriter, request *http.Request) {
 	Vars := mux.Vars(request)
 	id, _ := uuid.FromString(Vars["id"])
-	quitChannels[id] <- true
+	close(quitChannels[id])
 	delete(quitChannels, id)
 }
 
@@ -57,5 +67,6 @@ func GetInfo(writter http.ResponseWriter, request *http.Request) {
 		"activeRoutines": fmt.Sprintf("%v/%v", workPool.ActiveRoutines(), workPool.NumberConcurrentRoutine),
 		"queuedWork":     fmt.Sprintf("%v/%v", workPool.QueuedWork(), workPool.QueueLength),
 	}
+	writter.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(writter).Encode(infos)
 }

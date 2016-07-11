@@ -12,6 +12,7 @@ type BotWorker struct {
 	Worker
 	bot *autobot.Autobot
 	id  uuid.UUID
+	channel chan bool
 }
 
 type Worker interface {
@@ -19,20 +20,19 @@ type Worker interface {
 }
 
 func (worker BotWorker) DoWork(goRoutine int) {
-	quitChannel := make(chan bool)
-	quitChannels[worker.id] = quitChannel
 	scenariolib.Info.Printf("Bot starting on worker: %v\n", goRoutine)
-	err := worker.bot.Run(quitChannel)
+	err := worker.bot.Run(worker.channel)
 	if err != nil {
 		scenariolib.Error.Println(err)
 	}
 }
 
-func NewWorker(config *explorerlib.Config, random *rand.Rand, id uuid.UUID) Worker {
+func NewWorker(config *explorerlib.Config, quitChannel chan bool, random *rand.Rand, id uuid.UUID) Worker {
 	return Worker(WorkWrapper{
 		realWorker: &BotWorker{
 			bot: autobot.NewAutobot(config, random),
 			id:  id,
+			channel: quitChannel,
 		},
 		workPool: workPool,
 	})
