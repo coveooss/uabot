@@ -3,13 +3,10 @@ package server
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/erocheleau/uabot/scenariolib"
 	"github.com/gorilla/mux"
 	"github.com/satori/go.uuid"
-	"io/ioutil"
 	"math/rand"
 	"net/http"
-	"os"
 )
 
 var (
@@ -21,7 +18,6 @@ var (
 func Init(_workPool *WorkPool, _random *rand.Rand) {
 	workPool = _workPool
 	quitChannels = make(map[uuid.UUID]chan bool)
-	scenariolib.InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 	random = _random
 }
 
@@ -31,8 +27,12 @@ func Start(writter http.ResponseWriter, request *http.Request) {
 		http.Error(writter, err.Error(), 418)
 		return
 	}
+
 	id := uuid.NewV4()
-	config.OutputFilePath = id.String()+".json"
+	if config.OutputFilePath == "" {
+		config.OutputFilePath = id.String() + ".json"
+	}
+
 	worker := NewWorker(config, random, id)
 	err = workPool.PostWork(&worker)
 	if err != nil {

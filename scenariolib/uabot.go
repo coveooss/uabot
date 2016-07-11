@@ -110,7 +110,7 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 			count++
 			Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
 
-		case <- quitChannel:
+		case <-quitChannel:
 			return nil
 		}
 	}
