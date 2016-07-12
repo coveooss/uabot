@@ -102,6 +102,8 @@ func (se *SearchEvent) Execute(v *Visit) error {
 
 	v.LastQuery.Q = se.query
 
+	se.keyword = se.query
+
 	// Execute a search and save the response
 	resp, err := v.SearchClient.Query(*v.LastQuery)
 	if err != nil {
