@@ -69,7 +69,6 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 
 	count := 0
 	for { // Run forever
-
 		select {
 		default:
 			scenario, err := conf.RandomScenario()
@@ -98,7 +97,7 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 
 			err = visit.ExecuteScenario(*scenario, conf)
 			if err != nil {
-				return err
+				Warning.Print(err)
 			}
 
 			visit.UAClient.DeleteVisit()

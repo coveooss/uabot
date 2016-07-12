@@ -87,11 +87,13 @@ func (se *SearchEvent) Execute(v *Visit) error {
 	if se.query == "" {
 		if se.matchLanguage {
 			se.query, err = v.Config.RandomQueryInLanguage(se.goodQuery, v.Language)
+			se.keyword = se.query
 			if err != nil {
 				return err
 			}
 		} else {
 			se.query, err = v.Config.RandomQuery(se.goodQuery)
+			se.keyword = se.query
 			if err != nil {
 				return err
 			}
@@ -101,8 +103,6 @@ func (se *SearchEvent) Execute(v *Visit) error {
 	Info.Printf("Searching for : %s", se.query)
 
 	v.LastQuery.Q = se.query
-
-	se.keyword = se.query
 
 	// Execute a search and save the response
 	resp, err := v.SearchClient.Query(*v.LastQuery)
