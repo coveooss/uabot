@@ -62,8 +62,8 @@ func validateConfig(config *explorerlib.Config) error {
 	if config.OriginLevels == nil {
 		return errors.New("Origin Level 1 Missing")
 	} else {
-		for _, originLevel1 := range config.OriginLevels {
-			if len(originLevel1) == 0 {
+		for originLevel1, originLevel2 := range config.OriginLevels {
+			if len(originLevel2) == 0 {
 				return errors.New("Origin Level 2 Missing for originLevel1: " + originLevel1)
 			}
 		}
