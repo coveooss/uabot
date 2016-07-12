@@ -31,6 +31,7 @@ type Config struct {
 	BadQueriesInLang       map[string][]string `json:"badQueriesInLanguage"`
 	Scenarios              []*Scenario         `json:"scenarios"`
 	DefaultOriginLevel1    string              `json:"defaultOriginLevel1,omitempty"`
+	OriginLevels           map[string][]string `json:"originLevels"`
 	GlobalFilter           string              `json:"globalfilter,omitempty"`
 	SearchEndpoint         string              `json:"searchendpoint,omitempty"`
 	AnalyticsEndpoint      string              `json:"analyticsendpoint,omitempty"`
@@ -70,6 +71,28 @@ func (c *Config) RandomScenario() (*Scenario, error) {
 		return nil, errors.New("No scenarios detected")
 	}
 	return c.ScenarioMap[rand.Intn(len(c.ScenarioMap))], nil
+}
+
+func (c *Config) RandomOriginLevel1() (string, error) {
+	choices := []string{}
+	for key, _ := range c.OriginLevels {
+		choices = append(choices, key)
+	}
+	if len(choices) == 0 {
+		return "", errors.New("No Origin Level 1 Found")
+	}
+	return choices[rand.Intn(len(choices))], nil
+}
+
+func (c *Config) RandomOriginLevel2(originLevel1 string) (string, error) {
+	choices, present := c.OriginLevels[originLevel1]
+	if !present {
+		return "", errors.New("no such origin level1")
+	}
+	if len(choices) == 0 {
+		return "", errors.New("No Origin Level 2 Found")
+	}
+	return choices[rand.Intn(len(choices))], nil
 }
 
 // RandomQuery Returns a random query good or bad from the list of possible queries.

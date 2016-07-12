@@ -10,8 +10,8 @@ import (
 
 type BotWorker struct {
 	Worker
-	bot *autobot.Autobot
-	id  uuid.UUID
+	bot     *autobot.Autobot
+	id      uuid.UUID
 	channel chan bool
 }
 
@@ -30,8 +30,8 @@ func (worker BotWorker) DoWork(goRoutine int) {
 func NewWorker(config *explorerlib.Config, quitChannel chan bool, random *rand.Rand, id uuid.UUID) Worker {
 	return Worker(WorkWrapper{
 		realWorker: &BotWorker{
-			bot: autobot.NewAutobot(config, random),
-			id:  id,
+			bot:     autobot.NewAutobot(config, random),
+			id:      id,
 			channel: quitChannel,
 		},
 		workPool: workPool,

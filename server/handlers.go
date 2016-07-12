@@ -3,12 +3,12 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/erocheleau/uabot/scenariolib"
 	"github.com/gorilla/mux"
 	"github.com/satori/go.uuid"
 	"math/rand"
 	"net/http"
 	"time"
-	"github.com/erocheleau/uabot/scenariolib"
 )
 
 var (

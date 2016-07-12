@@ -46,16 +46,16 @@ func (bot *Autobot) Run(quitChannel chan bool) error {
 	for _, lang := range languages.Values {
 		taggedLanguage := explorerlib.LanguageToTag(lang.Value)
 		taggedLanguages = append(taggedLanguages, taggedLanguage)
-		scenario := explorerlib.NewScenarioBuilder().WithName("search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.4)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenario := explorerlib.NewScenarioBuilder().WithName("search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.4)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
 		scenarios = append(scenarios, scenario)
 		viewScenarioBuilder := explorerlib.NewScenarioBuilder().WithName("views in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSearchEvent(false))
 		for i := 0; i < 20; i++ {
-			viewScenarioBuilder.WithEvent(explorerlib.NewViewEvent())
+			viewScenarioBuilder.WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewViewEvent())
 		}
 		scenarios = append(scenarios, viewScenarioBuilder.Build())
 	}
 
-	err := explorerlib.NewBotConfigurationBuilder().WithOrgName(bot.config.Org).WithSearchEndpoint(bot.config.SearchEndpoint).WithAnalyticsEndpoint(bot.config.AnalyticsEndpoint).AllAnonymous().WithLanguages(taggedLanguages).WithGoodQueryByLanguage(goodQueries).WithTimeBetweenActions(1).WithTimeBetweenVisits(5).WithScenarios(scenarios).NoWait().Save(bot.config.OutputFilePath)
+	err := explorerlib.NewBotConfigurationBuilder().WithOrgName(bot.config.Org).WithSearchEndpoint(bot.config.SearchEndpoint).WithAnalyticsEndpoint(bot.config.AnalyticsEndpoint).AllAnonymous().WithLanguages(taggedLanguages).WithGoodQueryByLanguage(goodQueries).WithTimeBetweenActions(1).WithTimeBetweenVisits(5).WithScenarios(scenarios).NoWait().WithOriginLevels(bot.config.OriginLevels).Save(bot.config.OutputFilePath)
 	if err != nil {
 		return err
 	}
@@ -78,5 +78,6 @@ func (bot *Autobot) GetInfo() map[string]interface{} {
 		"outputFilepath":           bot.config.OutputFilePath,
 		"numberOfQueryPerLanguage": bot.config.NumberOfQueryByLanguage,
 		"numberOfResultsPerQuery":  bot.config.FetchNumberOfResults,
+		"originLevels":             bot.config.OriginLevels,
 	}
 }
