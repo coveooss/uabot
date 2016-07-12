@@ -76,7 +76,7 @@ func NewViewEvent() scenariolib.JSONEvent {
 	}
 }
 
-func NewSetOriginEvent() scenariolib.JSONEvent {
+func NewRandomizeOriginEvent() scenariolib.JSONEvent {
 	return scenariolib.JSONEvent{
 		Type: "SetOrigin",
 		Arguments: map[string]interface{}{
