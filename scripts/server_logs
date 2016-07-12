@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DOCKERID=$(sudo docker ps -l -q)
+sudo docker logs $DOCKERID
+
