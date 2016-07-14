@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker build --no-cache -t abolduc/autobot .
+docker build --no-cache -t abolduc/autobot .
