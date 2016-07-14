@@ -80,6 +80,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 		v.Username = buildUserEmail(c)
 		Info.Printf("New visit from %s", v.Username)
 	}
+
 	//Info.Printf("On device %s", _useragent)
 	if language != "" {
 		v.Language = language
@@ -114,7 +115,14 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 }
 
 func buildUserEmail(c *Config) string {
-	return fmt.Sprint(c.FirstNames[rand.Intn(len(c.FirstNames))], ".", c.LastNames[rand.Intn(len(c.LastNames))], c.Emails[rand.Intn(len(c.Emails))])
+	firstName := c.FirstNames[rand.Intn(len(c.FirstNames))]
+	lastName := c.LastNames[rand.Intn(len(c.LastNames))]
+	emailSuffix := c.Emails[rand.Intn(len(c.Emails))]
+	if lastName == "" {
+		return fmt.Sprint(firstName, emailSuffix)
+	} else {
+		return fmt.Sprint(firstName, ".", lastName, emailSuffix)
+	}
 }
 
 // ExecuteScenario Execute a specific scenario, send the config for all the
