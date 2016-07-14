@@ -46,11 +46,11 @@ func (bot *Autobot) Run(quitChannel chan bool) error {
 	for _, lang := range languages.Values {
 		taggedLanguage := explorerlib.LanguageToTag(lang.Value)
 		taggedLanguages = append(taggedLanguages, taggedLanguage)
-		scenario := explorerlib.NewScenarioBuilder().WithName("search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.4)).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenario := explorerlib.NewScenarioBuilder().WithName("search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.4)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
 		scenarios = append(scenarios, scenario)
-		viewScenarioBuilder := explorerlib.NewScenarioBuilder().WithName("views in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSearchEvent(false))
+		viewScenarioBuilder := explorerlib.NewScenarioBuilder().WithName("views in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(false))
 		for i := 0; i < 20; i++ {
-			viewScenarioBuilder.WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewViewEvent())
+			viewScenarioBuilder.WithEvent(explorerlib.NewViewEvent())
 		}
 		scenarios = append(scenarios, viewScenarioBuilder.Build())
 	}
