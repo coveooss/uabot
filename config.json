@@ -1,0 +1,16 @@
+{
+
+  "searchEndpoint": "https://platformdev.cloud.coveo.com/rest/search/",
+  "searchToken": "877b0b74-87eb-4edf-955f-6f5ee2efb1e3",
+  "analyticsEndpoint": "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
+  "analyticsToken": "270ffeee-7952-487a-bff4-6dadc07ebd74",
+  "org": "uafunctionaltests",
+  "outputFilePath": "scenario.json",
+  "avgNumberWordsPerQuery": 1,
+  "fetchQueryNumber": 1000,
+  "explorationRatio": 0.01,
+  "numberOfQueryPerLanguage": 10,
+  "fields": [
+    "@syssource"
+  ]
+}

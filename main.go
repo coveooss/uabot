@@ -1,39 +1,41 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"github.com/adambbolduc/uabot/server"
-	"github.com/erocheleau/uabot/scenariolib"
 	"io/ioutil"
-	"log"
 	"math/rand"
-	"net/http"
 	"os"
-	"runtime"
 	"time"
-)
 
-var (
-	queueLength = flag.Int("queue-length", 100, "Length of the queue of workers")
-	port        = flag.String("port", "8080", "Server port")
+	"github.com/erocheleau/uabot/scenariolib"
+	"github.com/k0kubun/pp"
 )
 
 func main() {
-	flag.Parse()
-
+	// Init loggers
 	scenariolib.InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
-	scenariolib.Info.Printf("Queue Length: %v", *queueLength)
-	scenariolib.Info.Printf("Server Port: %v", *port)
-
+	// Seed Random based on current time
 	source := rand.NewSource(int64(time.Now().Unix()))
 	random := rand.New(source)
 
-	concurrentGoRoutine := runtime.NumCPU()
-	workPool := server.NewWorkPool(concurrentGoRoutine, int32(*queueLength))
+	searchToken := os.Getenv("SEARCHTOKEN")
+	analyticsToken := os.Getenv("UATOKEN")
+	if searchToken == "" || analyticsToken == "" {
+		scenariolib.Error.Println("SEARCHTOKEN, UATOKEN need to be defined as env variables")
+	}
 
-	server.Init(workPool, random)
-	router := server.NewRouter()
-	log.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%v", *port),"server.crt", "server.key", router))
+	scenarioURL := os.Getenv("SCENARIOSURL")
+	if scenarioURL == "" {
+		scenariolib.Error.Println("SCENARIOSURL env variable needs to define a file path")
+	}
+
+	local := os.Getenv("LOCAL") == "true"
+	if local {
+		scenariolib.Info.Println("STARTING IN LOCAL MODE, MAKE SURE THE SCENARIOSURL IS A LOCAL PATH")
+	}
+
+	bot := scenariolib.NewUabot(local, scenarioURL, searchToken, analyticsToken, random)
+	quitChannel := make(chan bool)
+	bot.Run(quitChannel)
+	pp.Println("LOG >>> DONE")
 }

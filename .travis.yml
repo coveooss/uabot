@@ -1,0 +1,7 @@
+language: go
+
+go:
+  - tip
+
+env:
+    GO15VENDOREXPERIMENT=1

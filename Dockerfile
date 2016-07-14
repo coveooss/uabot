@@ -12,4 +12,4 @@ RUN cp -r /go/uabot/scenariolib/ /go/src/github.com/erocheleau/uabot/
 EXPOSE 8080
 
 #run server
-CMD [ "go", "run", "main.go", "-queue-length=20", "-port=8080" ]
+CMD [ "go", "run", "server.go", "-queue-length=20", "-port=8080" ]

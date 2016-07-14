@@ -1,0 +1,91 @@
+{
+	"searchendpoint" : "https://cloudplatform.coveo.com/rest/search/",
+	"analyticsendpoint" : "https://usageanalyticsdev.coveo.com/rest/v14/analytics/",
+	"orgName"     : "NTO",
+	"emailSuffixes" : ["@gmail.com", "@hotmail.com", "@apple.com", "@yahoo.com", "@facebook.com", "@hexzone.com", "@strongit.com", "@mec.com", "@geoflex.com"],
+	"firstNames" : ["erin", "paul", "beverley", "pedro", "clayton", "lydia", "regina", "sue", "marjorie", "april", "victoria", "vera", "shannon", "minnie", "reginald", 
+		"brandie",	"christian", "wallace", "avery", "dawn"],
+	"lastNames" : ["lawson", "torres", "grant", "ray", "young", "caldwell", "morris", "craig",	"lewis", "brown", "rhodes", "james", "wagner", "richards", "allen", "berry",
+		"boyd", "price", "price", "rivera"],
+	"randomGoodQueries": ["tent", "bike helmet", "hiking", "race of hope", "hiking equipment", "backpack", "flat tires", "runner pack", "hiking boots", "user manual", 
+		"bag", "camping gear", "trails outfitter", "how to repair my tent", "rivendale 800", "kampa tent", "mec tent", "hiking tips", "climbing shoe", "camping shelter", 
+		"darkstar", "running equipment", "tire pressure", "repair flat tire", "tent assembly", "tour backpack", "best family tents", "yeti tundra", "portable usb charger",
+		"waterproof jacket", "saddles", "airbeam tent", "checkout"],
+	"randomBadQueries" : ["kampa explorer 8", "stuck zip", "my zipper is broken", "tents", "camping", "travel", "bike", "hike", "northern trail", 
+		"northern trail outfitters", "northern trails", "travel tips", "hiking and tent", "travel tip"],
+	"randomIPs" : ["66.46.18.120", "74.125.226.120", "66.46.18.1", "192.40.239.233", "198.169.156.67", "160.72.0.1", "155.15.0.45", "162.248.127.25",
+		"52.24.0.108", "159.28.0.98", "205.214.160.167", "216.252.192.109", "72.9.32.109", "198.199.154.209", "209.137.0.105", "216.249.112.8" ],
+	"scenarios"   : [
+	{
+		"name"   : "GQ -> C(50%) -> C(15%)", 
+		"weight" : 70, 
+		"events" : [
+			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.15 } } ]
+	}, {
+		"name"   : "BQ -> C(+10,33%)",
+		"weight" : 20,
+		"events" : [
+			{ "type"      : "Search",  "arguments" : { "queryText" : "", "goodQuery" : false } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 10,  "probability" : 0.33 } } ]
+	}, {
+		"name"   : "BQ -> C(10%) -> GQ -> C(50%) -> C(35%)",
+		"weight" : 8,
+		"events" : [
+			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0, "probability" : 0.1 } }, 
+			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.35 } } ]
+	}, {
+		"name"   : "GQ -> C(50%) -> GQ -> C(35%)",
+		"weight" : 35,
+		"events" : [
+			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0, "probability" : 0.5 } }, 
+			{ "type"      : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } }, 
+			{ "type"      : "Click", "arguments" : { "docNo" :-1, "offset" : 0, "probability" : 0.35 } } ]
+	}, {
+		"name"   : "QC(ripped cover, I just noticed)",
+		"weight" : 1,
+		"events" : [
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.4 } } ]
+	}, {
+		"name"   : "QC(ripped cover, I just noticed) -> QC(Tent Repair Basics, NTO Tent Repair Basics booklet, 75%)",
+		"weight" : 2,
+		"events" : [
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.25 } }, 
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "Tent Repair Basics", "docClickTitle" : "NTO Tent Repair Basics booklet", "probability" : 0.75 } } ]
+	}, {
+		"name"   : "QC(ripped cover, I just noticed) -> QC(Repair Basics Booklet, NTO Tent Repair Basics booklet, 75%)",
+		"weight" : 1,
+		"events" : [
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.25 } }, 
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "Repair Basics booklet", "docClickTitle" : "NTO Tent Repair Basics booklet", "probability" : 0.75 } } ]
+	}, {
+		"name"   : "QC(ripped cover, I just noticed) -> QC(NTO Repair Basics, NTO Tent Repair Basic booklet, 75%)",
+		"weight" : 1,
+		"events" : [
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.25 } }, 
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "NTO Repair Basics", "docClickTitle" : "NTO Tent Repair Basics booklet", "probability" : 0.75 } } ]
+	}, {
+		"name"   : "QC(ripped cover, I just noticed ..., 50%) -> TC(YOUTUBE) -> QC(tear tent, How to repair a tear in your tent, 40%)",
+		"weight" : 3,
+		"events" : [
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "ripped cover", "docClickTitle" : "I just noticed the rain cover for my tent is ripped", "probability" : 0.15 } }, 
+			{ "type"      : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "tear tent", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.7 } } ]
+	}, {
+		"name"   : "BQ(rivendale 801) -> QC(rivenda 800, 35%)",
+		"weight" : 3,
+		"events" : [
+			{ "type"      : "Search", "arguments" : { "queryText" : "rivendale 801", "goodQuery" : false } }, 
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "rivendale 800", "docClickTitle" : "Vango Rivendale 800", "probability" : 0.55 } } ] 
+	}, {
+		"name"   : "QC(How to repair a tear in your tent, How to repair a tear in your tent, 45%)",
+		"weight" : 3,
+		"events" : [
+			{ "type"      : "SearchAndClick", "arguments" : { "queryText" : "How to repair a tear in your tent", "docClickTitle" : "How to repair a tear in your tent", "probability" : 0.45 } } ]
+	} ]
+}

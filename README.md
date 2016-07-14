@@ -1,42 +1,54 @@
-# Autobot 
+# uabot [![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
+Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
+Works with a configuration file using json format.
+Check the /Scenarios folder for examples.
 
-Application wrapper to the exisiting [uabot](https://github.com/erocheleau/uabot) to send "intelligent" usage analytics to simulate user interaction with an organization. Autobot grant an endpoint service to POST an autobot query.
+## Supports
+- [x] Search events
+- [x] Click events
+- [x] Custom events
+- [x] Facet events
+- [x] View events
+- [x] TabChange events
 
-## Installation
+## Environment variables
+Needs 3 environment variables to function :
 
-1. Install [Docker-engine](https://docs.docker.com/engine/installation/)
-2. Use the scripts to build and run the docker image
+Variable | Usage
+------------ | -------------
+SEARCHTOKEN | API key to search
+UATOKEN | API key to send events to UA
+SCENARIOSURL | Url to the scenario JSON file to randomize
+LOCAL | `true` for local (otherwise don't use)
+GO15VENDOREXPERIMENT | Use this for go version < 1.6
 
-## Usage
 
-Once installed, you can use the following API to use Autobot :
-
-To post a task to the robot
+#### On windows
+```sh
+set SEARCHTOKEN=value
+set UATOKEN=value
+set SCENARIOSURL=value
+set LOCAL=true #if scenariosurl is a local path
+set GO15VENDOREXPERIMENT=1 #if golang version < 1.6
+go run main.go
 ```
-POST : [HOST]:8080/start
-HEADER : {Content-Type : application/json}
-BODY : {
-[REQUIRED] "searchEndpoint" : YOUR-SEARCH-ENDPOINT, 
-[REQUIRED] "searchToken" : YOUR-SEARCH-TOKEN, 
-[REQUIRED] "analyticsEndpoint" : YOUR-ANALYTICS-ENDPOINT, 
-[REQUIRED] "analyticsToken" : YOUR-ANALYTICS-TOKEN, 
-[REQUIRED] "timeout" : LIFETIME-OF-THE-AUTOBOT, 
-[REQUIRED] "originLevels" : {ORIGIN-LEVEL1 : [LIST-OF-ORIGIN-LEVEL-2]}, 
-[OPTIONAL] "avgNumberWordsPerQuery" : AVERAGE-NUMBER-OF-WORDS-PER-QUERY (default=1), 
-[OPTIONAL] "fetchQueryNumber" : NUMBER-OF-RESULT-IN-SEARCH-RESPONSE (default=1000), 
-[OPTIONAL] "explorationRatio" : INDEX-EXPLORATION-RATIO (default=0.01), 
-[OPTIONAL] "numberOfQueryPerLanguage" : MAX-NUMBER-OF-QUERY-PER-LANGUAGE (default=10), 
-[OPTIONAL] "fields" : FIELDS-TO-EXPLORE-EQUALLY (default=["@syssource"]), 
-}
+#### On MAC
+```sh
+export SEARCHTOKEN = value
+export UATOKEN = value
+export SCENARIOSURL = value
+export LOCAL=true #if scenariosurl is a local path
+export GO15VENDOREXPERIMENT=1 #if golang version < 1.6
+go run main.go
 ```
 
-To stop a task prematurely
-```
-POST : [HOST]:8080/stop/{workerid}
-workerid    :   The id provided by the server
+## To trigger a Docker rebuild, push with `latest`tag
+```sh
+1. Commit your changes
+# We need to use the -f option here because tag latest already exists
+2. git tag -f -a latest -m "Rebuild reason here"
+# Push changes to branch + push changes to tag, you will need to supply credentials twice.
+3. git push && git push -f --tags
 ```
 
-To get information about running tasks
-```
-GET : [HOST]:8080/info
-```
+[![forthebadge](http://forthebadge.com/images/badges/made-with-crayons.svg)](http://forthebadge.com)
