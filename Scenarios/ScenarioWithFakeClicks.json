@@ -242,7 +242,6 @@
             "probability": 1.0,
             "fakeClick": true,
             "falseResponse": {
-              "searchUid": "searchUID",
               "totalCount": 1,
               "totalCountFiltered": 1,
               "duration": 140,

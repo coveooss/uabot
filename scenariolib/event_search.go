@@ -111,6 +111,7 @@ func (se *SearchEvent) Execute(v *Visit) error {
 	}
 	v.LastResponse = resp
 
+
 	// in some scenarios (logging of page views), we don't want to send the search event to the analytics
 	if se.logEvent {
 		err = v.sendSearchEvent(se.keyword, se.actionCause, se.actionType, se.customData)
