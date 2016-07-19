@@ -46,8 +46,21 @@ func (bot *Autobot) Run(quitChannel chan bool) error {
 	for _, lang := range languages.Values {
 		taggedLanguage := explorerlib.LanguageToTag(lang.Value)
 		taggedLanguages = append(taggedLanguages, taggedLanguage)
-		scenario := explorerlib.NewScenarioBuilder().WithName("search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.4)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenario := explorerlib.NewScenarioBuilder().WithName("1 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
 		scenarios = append(scenarios, scenario)
+
+		scenario = explorerlib.NewScenarioBuilder().WithName("2 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenarios = append(scenarios, scenario)
+
+		scenario = explorerlib.NewScenarioBuilder().WithName("3 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenarios = append(scenarios, scenario)
+
+		scenario = explorerlib.NewScenarioBuilder().WithName("4 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenarios = append(scenarios, scenario)
+
+		scenario = explorerlib.NewScenarioBuilder().WithName("5 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
+		scenarios = append(scenarios, scenario)
+
 		viewScenarioBuilder := explorerlib.NewScenarioBuilder().WithName("views in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(false))
 		for i := 0; i < 20; i++ {
 			viewScenarioBuilder.WithEvent(explorerlib.NewViewEvent())
