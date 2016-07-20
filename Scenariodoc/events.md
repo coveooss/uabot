@@ -10,6 +10,7 @@ Different types of events can be generated using this bot. This is the documenta
 6. [FacetChange event](#Facet)
 7. [SetOrigin event](#Origin)
 8. [PageView event](#Page)
+9. [FakeSearch event](#FakeSearch) 
 
 ### 0. Generic event
 
@@ -234,4 +235,39 @@ pagetitle | string | The title of the page
     }
 }
 
+```
+
+`"type" : "FakeSearch"`
+
+Arguments | Type | Usage
+------------ | ------------- | ----------------
+fakeResponse | search.response | a response from search api
+
+```json
+"fakeResponse": 
+{
+              "totalCount": 1,
+              "totalCountFiltered": 1,
+              "duration": 140,
+              "indexDuration": 40,
+              "requestDuration": 40,
+              "pipeline": "",
+              "results": [
+                {
+                  "uri": "falseURI",
+                  "title": "falseDocumentTitle",
+                  "clickUri": "falseClickUri",
+                  "excerpt": "",
+                  "firstSentences": "",
+                  "score": 10,
+                  "percentScore": 0.5,
+                  "raw": {
+                    "sysurihash": "falseUriHash",
+                    "syscollection": "falseCollection",
+                    "syssource": "falseSource"
+                  }
+                }
+              ],
+              "groupByResults": []
+            }
 ```
