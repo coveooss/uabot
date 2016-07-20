@@ -26,19 +26,20 @@ import (
 // OriginLevel2 Same as OriginLevel1
 // LastTab      The tab the user last visited
 type Visit struct {
-	SearchClient search.Client
-	UAClient     ua.Client
-	LastQuery    *search.Query
-	LastResponse *search.Response
-	Username     string
-	OriginLevel1 string
-	OriginLevel2 string
-	OriginLevel3 string
-	LastTab      string
-	Config       *Config
-	IP           string
-	Anonymous    bool
-	Language     string
+	SearchClient       search.Client
+	UAClient           ua.Client
+	LastQuery          *search.Query
+	LastResponse       *search.Response
+	Username           string
+	OriginLevel1       string
+	OriginLevel2       string
+	OriginLevel3       string
+	LastTab            string
+	Config             *Config
+	IP                 string
+	Anonymous          bool
+	Language           string
+	WaitBetweenActions bool
 }
 
 const (
@@ -61,6 +62,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 	v := Visit{}
 	v.Config = c
 
+	v.WaitBetweenActions = !c.DontWaitBetweenVisits
 	v.Anonymous = false
 	if c.AllowAnonymous {
 		var threshold float64
@@ -129,13 +131,15 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 		if err != nil {
 			return err
 		}
-		var timeToWait int
-		if c.TimeBetweenActions > 0 {
-			timeToWait = c.TimeBetweenActions
-		} else {
-			timeToWait = DEFAULTTIMEBETWEENACTIONS
+		if v.WaitBetweenActions {
+			var timeToWait int
+			if c.TimeBetweenActions > 0 {
+				timeToWait = c.TimeBetweenActions
+			} else {
+				timeToWait = DEFAULTTIMEBETWEENACTIONS
+			}
+			WaitBetweenActions(timeToWait)
 		}
-		WaitBetweenActions(timeToWait)
 	}
 	return nil
 }
