@@ -1,6 +1,6 @@
 package explorerlib
 
-import "github.com/erocheleau/uabot/scenariolib"
+import "github.com/coveo/uabot/scenariolib"
 
 type Config struct {
 	FetchNumberOfResults           int                     `json:"fetchQueryNumber"`

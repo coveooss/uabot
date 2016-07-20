@@ -1,7 +1,7 @@
 package explorerlib
 
 import (
-	"github.com/erocheleau/uabot/scenariolib"
+	"github.com/coveo/uabot/scenariolib"
 )
 
 type scenarioBuilder struct {

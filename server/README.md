@@ -1,6 +1,6 @@
 # Autobot 
 
-Application wrapper to the exisiting [uabot](https://github.com/erocheleau/uabot) to send "intelligent" usage analytics to simulate user interaction with an organization. Autobot grant an endpoint service to POST an autobot query.
+Application wrapper to the exisiting [uabot](https://github.com/coveo/uabot) to send "intelligent" usage analytics to simulate user interaction with an organization. Autobot grant an endpoint service to POST an autobot query.
 
 ## Installation
 

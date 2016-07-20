@@ -1,9 +1,9 @@
 package server
 
 import (
-	"github.com/erocheleau/uabot/autobot"
-	"github.com/erocheleau/uabot/explorerlib"
-	"github.com/erocheleau/uabot/scenariolib"
+	"github.com/coveo/uabot/autobot"
+	"github.com/coveo/uabot/explorerlib"
+	"github.com/coveo/uabot/scenariolib"
 	"github.com/satori/go.uuid"
 	"math/rand"
 )

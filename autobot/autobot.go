@@ -1,8 +1,8 @@
 package autobot
 
 import (
-	"github.com/erocheleau/uabot/explorerlib"
-	"github.com/erocheleau/uabot/scenariolib"
+	"github.com/coveo/uabot/explorerlib"
+	"github.com/coveo/uabot/scenariolib"
 	"math/rand"
 	"strconv"
 )

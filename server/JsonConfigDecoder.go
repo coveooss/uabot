@@ -2,7 +2,7 @@ package server
 
 import (
 	"encoding/json"
-	"github.com/erocheleau/uabot/explorerlib"
+	"github.com/coveo/uabot/explorerlib"
 	"io"
 )
 

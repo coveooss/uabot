@@ -2,7 +2,7 @@ package explorerlib
 
 import (
 	"encoding/json"
-	"github.com/erocheleau/uabot/scenariolib"
+	"github.com/coveo/uabot/scenariolib"
 	"io/ioutil"
 )
 

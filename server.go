@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/erocheleau/uabot/server"
-	"github.com/erocheleau/uabot/scenariolib"
+	"github.com/coveo/uabot/scenariolib"
+	"github.com/coveo/uabot/server"
 	"io/ioutil"
 	"log"
 	"math/rand"
