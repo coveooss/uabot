@@ -76,7 +76,7 @@ func NewViewEvent() scenariolib.JSONEvent {
 	}
 }
 
-func NewSetOriginEvent(originLevel1 string, originLevel2 string) {
+func NewSetOriginEvent(originLevel1 string, originLevel2 string) scenariolib.JSONEvent {
 	return scenariolib.JSONEvent{
 		Type: "SetOrigin",
 		Arguments: map[string]interface{}{
