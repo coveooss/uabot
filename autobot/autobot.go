@@ -1,7 +1,7 @@
 package autobot
 
 import (
-	"github.com/adambbolduc/uabot/explorerlib"
+	"github.com/erocheleau/uabot/explorerlib"
 	"github.com/erocheleau/uabot/scenariolib"
 	"math/rand"
 )

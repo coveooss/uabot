@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/adambbolduc/uabot/server"
+	"github.com/erocheleau/uabot/server"
 	"github.com/erocheleau/uabot/scenariolib"
 	"io/ioutil"
 	"log"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/adambbolduc/uabot/explorerlib"
+	"github.com/erocheleau/uabot/explorerlib"
 	"github.com/erocheleau/uabot/scenariolib"
 	"github.com/gorilla/mux"
 	"github.com/satori/go.uuid"
