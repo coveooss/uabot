@@ -25,6 +25,7 @@ Type | Description
 [Custom](events.md#Custom) | A custom event sent to the analytics, contains custom data.
 [SetOrigin](events.md#Origin) | An event to tell the bot to change the origin of the events (use this when the user moved between search pages for example)
 [Page View](events.md#View) | An event when a user visits a page.
+[FakeSearch](events.md#FakeSearch) | Fake a search by getting a valid searchID but replacing the response to the fakeResponse
 
 [*Consult each event doc for information on how to build a specific event.*](events.md)
 
