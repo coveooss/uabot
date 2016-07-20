@@ -8,7 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/erocheleau/uabot/defaults"
+	"github.com/coveo/uabot/defaults"
 )
 
 // Config This is the struct that holds all the info on the current bot session.
