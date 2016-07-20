@@ -1,7 +1,5 @@
 package search
 
-// Response A collection of results from the Coveo index following a query.
-// It contains the results that were returned from the query and some metadata.
 type Response struct {
 	TotalCount         int             `json:"totalCount"`
 	TotalCountFiltered int             `json:"totalCountFiltered"`
@@ -14,7 +12,6 @@ type Response struct {
 	Results            []Result        `json:"results,omitempty"`
 }
 
-// Result A single result returned from a query to the Coveo index.
 type Result struct {
 	Title          string                 `json:"title"`
 	URI            string                 `json:"uri"`
@@ -22,11 +19,10 @@ type Result struct {
 	FirstSentences string                 `json:"firstSentences"`
 	Score          int                    `json:"score"`
 	PercentScore   float32                `json:"percentScore"`
-	ClickURI       string                 `json:"clickUri"`
+	ClickUri       string                 `json:"clickUri"`
 	Raw            map[string]interface{} `json:"raw"`
 }
 
-// GroupByResult The result of a group by request to the index.
 type GroupByResult struct {
 	Field  string `json:"field"`
 	Values []struct {
