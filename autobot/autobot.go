@@ -4,6 +4,7 @@ import (
 	"github.com/erocheleau/uabot/explorerlib"
 	"github.com/erocheleau/uabot/scenariolib"
 	"math/rand"
+	"strconv"
 )
 
 type Autobot struct {
@@ -43,29 +44,27 @@ func (bot *Autobot) Run(quitChannel chan bool) error {
 	taggedLanguages := make([]string, 0)
 	scenarios := []*scenariolib.Scenario{}
 
-	for _, lang := range languages.Values {
+	for _, lang := range languages.Values { // For each language
 		taggedLanguage := explorerlib.LanguageToTag(lang.Value)
 		taggedLanguages = append(taggedLanguages, taggedLanguage)
-		scenario := explorerlib.NewScenarioBuilder().WithName("1 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
-		scenarios = append(scenarios, scenario)
+		for originLevel1, originLevels2 := range bot.config.OriginLevels {
+			for _, originLevel2 := range originLevels2 {
+				for i := 1; i <= 5; i++ {
+					scenarioBuilder := explorerlib.NewScenarioBuilder().WithName(strconv.Itoa(i) + " search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSetOriginEvent(originLevel1, originLevel2))
+					for j := 1; j <= i; j++ {
+						scenarioBuilder = scenarioBuilder.WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.4)).WithEvent(explorerlib.NewClickEvent(0.8))
+					}
+					scenarios = append(scenarios, scenarioBuilder.Build())
+				}
 
-		scenario = explorerlib.NewScenarioBuilder().WithName("2 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
-		scenarios = append(scenarios, scenario)
-
-		scenario = explorerlib.NewScenarioBuilder().WithName("3 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
-		scenarios = append(scenarios, scenario)
-
-		scenario = explorerlib.NewScenarioBuilder().WithName("4 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
-		scenarios = append(scenarios, scenario)
-
-		scenario = explorerlib.NewScenarioBuilder().WithName("5 search and click in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).WithEvent(explorerlib.NewSearchEvent(true)).WithEvent(explorerlib.NewClickEvent(0.5)).WithEvent(explorerlib.NewClickEvent(0.8)).Build()
-		scenarios = append(scenarios, scenario)
-
-		viewScenarioBuilder := explorerlib.NewScenarioBuilder().WithName("views in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewRandomizeOriginEvent()).WithEvent(explorerlib.NewSearchEvent(false))
-		for i := 0; i < 20; i++ {
-			viewScenarioBuilder.WithEvent(explorerlib.NewViewEvent())
+				viewScenarioBuilder := explorerlib.NewScenarioBuilder().WithName("views in " + lang.Value).WithWeight(lang.NumberOfResults).WithLanguage(taggedLanguage).WithEvent(explorerlib.NewSetOriginEvent(originLevel1, originLevel2)).WithEvent(explorerlib.NewSearchEvent(false))
+				for i := 0; i < 20; i++ {
+					viewScenarioBuilder.WithEvent(explorerlib.NewViewEvent())
+				}
+				scenarios = append(scenarios, viewScenarioBuilder.Build())
+			}
 		}
-		scenarios = append(scenarios, viewScenarioBuilder.Build())
+
 	}
 
 	err := explorerlib.NewBotConfigurationBuilder().WithOrgName(bot.config.Org).WithSearchEndpoint(bot.config.SearchEndpoint).WithAnalyticsEndpoint(bot.config.AnalyticsEndpoint).AllAnonymous().WithLanguages(taggedLanguages).WithGoodQueryByLanguage(goodQueries).WithTimeBetweenActions(1).WithTimeBetweenVisits(5).WithScenarios(scenarios).NoWait().WithOriginLevels(bot.config.OriginLevels).Save(bot.config.OutputFilePath)
