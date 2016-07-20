@@ -1,4 +1,4 @@
-# uabot [![Build Status](https://travis-ci.org/erocheleau/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
+# uabot [![Build Status](https://travis-ci.org/coveo/uabot.svg?branch=master)](https://travis-ci.org/erocheleau/uabot)
 Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
 Works with a configuration file using json format.
 Check the /Scenarios folder for examples.
