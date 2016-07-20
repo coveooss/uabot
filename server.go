@@ -35,5 +35,5 @@ func main() {
 
 	server.Init(workPool, random)
 	router := server.NewRouter()
-	log.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%v", *port),"server/server.crt", "server/server.key", router))
+	log.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%v", *port), "server/server.crt", "server/server.key", router))
 }

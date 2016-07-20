@@ -15,11 +15,13 @@ import (
 // ClickEvent a struct representing a click, it is defined by a clickRank, an
 // offset and a probability to click.
 type ClickEvent struct {
-	clickRank   int
-	offset      int
-	probability float64
-	quickview   bool
-	customData  map[string]interface{}
+	clickRank    int
+	offset       int
+	probability  float64
+	quickview    bool
+	customData   map[string]interface{}
+	fakeClick    bool
+	fakeResponse search.Response
 }
 
 func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
@@ -56,12 +58,30 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 		}
 	}
 
+	if e.Arguments["fakeClick"] != nil {
+		if event.fakeClick, validcast = e.Arguments["fakeClick"].(bool); !validcast {
+			return nil, errors.New("Parameter fakeClick must be a boolean value")
+		}
+		if e.Arguments["falseResponse"] != nil {
+			jsonFalseResponse, _ := json.Marshal(e.Arguments["falseResponse"])
+			err := json.Unmarshal(jsonFalseResponse, &event.fakeResponse)
+			if err != nil {
+				return nil, errors.New("Parameter falseResponse must be a search.Response")
+			}
+		}
+	} else {
+		event.fakeClick = false
+	}
 	return event, nil
 }
 
 // Execute Execute the click event, sending a click event to the usage analytics
 func (ce *ClickEvent) Execute(v *Visit) error {
-	if v.LastResponse.TotalCount < 1 {
+	if ce.fakeClick {
+		searchUID := v.LastResponse.SearchUID
+		v.LastResponse = &ce.fakeResponse
+		v.LastResponse.SearchUID = searchUID
+	} else if v.LastResponse.TotalCount < 1 {
 		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
 		return nil
 	}

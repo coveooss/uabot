@@ -40,7 +40,7 @@ func Start(writter http.ResponseWriter, request *http.Request) {
 
 	id := uuid.NewV4()
 
-	timer := time.NewTimer(time.Duration(config.Timeout) * time.Minute)
+	timer := time.NewTimer(time.Duration(config.TimeToLive) * time.Minute)
 	quitChannel := make(chan bool)
 	go func() {
 		<-timer.C
@@ -68,7 +68,7 @@ func validateConfig(config *explorerlib.Config) error {
 			}
 		}
 	}
-	if config.SearchEndpoint == ""{
+	if config.SearchEndpoint == "" {
 		return errors.New("searchEndpoint Missing")
 	}
 	if config.SearchToken == "" {
@@ -80,22 +80,22 @@ func validateConfig(config *explorerlib.Config) error {
 	if config.AnalyticsToken == "" {
 		return errors.New("analyticsToken Missing")
 	}
-	if config.Timeout == 0 {
-		return errors.New("timeout Missing")
+	if config.TimeToLive == 0 {
+		return errors.New("timeToLive Missing")
 	}
-	if config.AverageNumberOfWordsPerQuery == 0{
+	if config.AverageNumberOfWordsPerQuery == 0 {
 		config.AverageNumberOfWordsPerQuery = 1
 	}
-	if config.DocumentsExplorationPercentage == 0{
+	if config.DocumentsExplorationPercentage == 0 {
 		config.DocumentsExplorationPercentage = 0.01
 	}
-	if config.NumberOfQueryByLanguage == 0{
+	if config.NumberOfQueryByLanguage == 0 {
 		config.NumberOfQueryByLanguage = 10
 	}
-	if config.FetchNumberOfResults == 0{
+	if config.FetchNumberOfResults == 0 {
 		config.FetchNumberOfResults = 1000
 	}
-	if config.FieldsToExploreEqually == nil || len(config.FieldsToExploreEqually) == 0{
+	if config.FieldsToExploreEqually == nil || len(config.FieldsToExploreEqually) == 0 {
 		config.FieldsToExploreEqually = []string{"@syssource"}
 	}
 	if config.OutputFilePath == "" {

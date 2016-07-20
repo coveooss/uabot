@@ -71,6 +71,7 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 	for { // Run forever
 		select {
 		default:
+
 			scenario, err := conf.RandomScenario()
 			if err != nil {
 				return err
