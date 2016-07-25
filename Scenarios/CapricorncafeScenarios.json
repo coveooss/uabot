@@ -1,0 +1,191 @@
+{
+	"searchendpoint" 		: "https://cloudplatform.coveo.com/rest/search/",
+	"analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
+	"partialMatch" 			: true,
+	"partialMatchKeywords" 	: 4,
+	"partialMatchTreshold" 	: "50%",
+	"defaultOriginLevel1" 	: "CommunitySearch",
+	"timeBetweenVisits"		: 20,
+	"timeBetweenActions"	: 3,
+	"allowAnonymousVisits"	: true,
+	"anonymousTreshold" 	: 0.5,
+	"orgName"     			: "Capricorn Cafe",
+	"pipeline" 				: "default",
+	"allowEntitlements"		: true,
+	"randomCustomData" 		: [ ],
+	"languages" 			: ["en", "en", "en", "en", "en", "fr"],
+	"globalfilter" 			: "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
+	"randomGoodQueries" : ["cafe", "coffee", "coffee brew", "black coffee", "coffee experience", "capricorncafe", "roasted coffee", "expresso", "brewing", "tea ware",
+		"cafe grinder", "CapGourmet", "cafe cake recipe", "fairtrade coffee"],
+	"randomBadQueries" : [ "cafr", "coffe brow", "espresso", "browing", "fillter", "fairetrad coffe", "deccaf", "caffe" ],
+	"scenarios" : [
+		{
+			"name"   : "GQ -> C(60%)",
+			"weight" : 60,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+			]
+		},
+		{
+			"name"   : "GQ -> C(45%) -> GQ -> C(50%)",
+			"weight" : 20,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+			]
+		},
+		{
+			"name"   : "GQ -> C(55%) -> GQ -> C(55%) -> GQ -> C(60%)",
+			"weight" : 10,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.45 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+			]
+		},
+		{
+			"name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
+			"weight" : 3,
+			"useragent" : "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.4 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+			]
+		},
+		{
+			"name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%)",
+			"weight" : 2,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 3,  "probability" : 0.5 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+			]
+		},
+		{
+			"name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(50%)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.5 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
+			]
+		},
+		{
+			"name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
+			"weight" : 2,
+			"useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.6 } }
+			]
+		},
+		{
+			"name"   : "BQ -> C(20%) -> GQ -> C(40%)",
+			"weight" : 4,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.1 } },
+				{ "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+			]
+		},
+		{
+			"name"   : "GQ with tabchange to youtube-> GQ -> C(40%)",
+			"weight" : 2,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "coffee", "goodQuery" : true } },
+				{ "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } }
+			]
+		},
+		{
+			"name"   : "Mobile GQ with tabchange to youtube-> GQ -> C(50%)",
+			"weight" : 3,
+			"useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "Coffee", "goodQuery" : true } },
+				{ "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5, "quickview": true } }
+			]
+		},
+		{
+			"name"   : "GQ with tabchange to Article> GQ -> C(40%)",
+			"weight" : 2,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "brewing", "goodQuery" : true } },
+				{ "type" : "TabChange", "arguments" : { "tabName" : "KB", "tabCQ" : "@sfkbid" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } }
+			]
+		},
+		{
+			"name"   : "GQ with tabchange to Knowledge> GQ -> C(60%)",
+			"weight" : 2,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "good coffee", "goodQuery" : true } },
+				{ "type" : "TabChange", "arguments" : { "tabName" : "Knowledge", "tabCQ" : "@beautifulrepositorytype==\"Oracle Knowledge\" AND NOT @title=(Document ID:)" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+			]
+		},
+		{
+			"name"   : "GQ with facetchange to Repository (Youtube)> GQ -> C(55%)",
+			"weight" : 3,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "cafe cake", "goodQuery" : true } },
+				{ "type" : "FacetChange", "arguments" : { "facetTitle": "Repository", "facetField": "@beautifulrepositorytype", "facetValue": "Youtube" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
+			]
+		},
+		{
+			"name"   : "GQ with facetchange to Year (2016)> GQ -> C(55%)",
+			"weight" : 1,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "coffee experience", "goodQuery" : true } },
+				{ "type" : "FacetChange", "arguments" : { "facetTitle": "Year", "facetField": "@sysyear", "facetValue": "2016" } },
+				{ "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
+			]
+		},
+		{
+			"name"   : "QC(coffee grinder)",
+			"weight" : 2,
+			"events" : [
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "grinder", "docClickTitle" : "Need help picking a grinder for my Expresso machine", "probability": 0.6, "quickview": true } }
+			]
+		},
+		{
+			"name"   : "Reveal scenario",
+			"weight" : 3,
+			"events" : [
+				{ "type" : "Search", "arguments" : { "queryText" : "cafe grinder", "goodQuery" : false } },
+				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "coffee grinder", "docClickTitle" : "What is best coffee grinder", "probability" : 0.75 } }
+			]
+		},
