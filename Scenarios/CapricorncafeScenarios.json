@@ -188,4 +188,6 @@
 				{ "type" : "Search", "arguments" : { "queryText" : "cafe grinder", "goodQuery" : false } },
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "coffee grinder", "docClickTitle" : "What is best coffee grinder", "probability" : 0.75 } }
 			]
-		},
+		}
+	]
+}
