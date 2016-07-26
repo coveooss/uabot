@@ -15,6 +15,7 @@ type SetOriginEvent struct {
 func newSetOriginEvent(e *JSONEvent) (*SetOriginEvent, error) {
 	var originLevel1, originLevel2, originLevel3 string
 	var validCast bool
+
 	if e.Arguments["originLevel1"] != nil {
 		if originLevel1, validCast = e.Arguments["originLevel1"].(string); !validCast {
 			return nil, errors.New("Parameter originLevel1 must be a string")
@@ -49,5 +50,6 @@ func (oe *SetOriginEvent) Execute(v *Visit) error {
 	if oe.originLevel3 != "" {
 		v.OriginLevel3 = oe.originLevel3
 	}
+
 	return nil
 }

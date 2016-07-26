@@ -35,9 +35,7 @@ func main() {
 	}
 
 	bot := scenariolib.NewUabot(local, scenarioURL, searchToken, analyticsToken, random)
-	err := bot.Run()
-	if err != nil {
-		scenariolib.Error.Println(err)
-	}
+	quitChannel := make(chan bool)
+	bot.Run(quitChannel)
 	pp.Println("LOG >>> DONE")
 }

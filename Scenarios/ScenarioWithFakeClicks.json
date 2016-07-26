@@ -151,11 +151,11 @@
       "nato "
     ],
     "ja": [
-      "第四章",
-      "第七章 第三章 第五章",
-      "第二章. 復讐者」",
-      "第十五章 第十三章",
-      "第"
+      "手洗い",
+      "死にそう",
+      "学生",
+      "まんが喫茶",
+      "美味しい第"
     ],
     "ko": [
       "녹이다",
@@ -227,22 +227,9 @@
       "weight": 60,
       "events": [
         {
-          "type": "Search",
+          "type": "FakeSearch",
           "arguments": {
-            "queryText": "",
-            "goodQuery": true,
-	    "matchLanguage": true
-          }
-        },
-        {
-          "type": "Click",
-          "arguments": {
-            "docNo": -1,
-            "offset": 0,
-            "probability": 1.0,
-            "fakeClick": true,
-            "falseResponse": {
-              "searchUid": "searchUID",
+            "fakeResponse": {
               "totalCount": 1,
               "totalCountFiltered": 1,
               "duration": 140,
@@ -267,6 +254,14 @@
               ],
               "groupByResults": []
             }
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 1.0
           }
         }
       ]
