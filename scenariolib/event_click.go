@@ -81,7 +81,9 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		searchUID := v.LastResponse.SearchUID
 		v.LastResponse = &ce.fakeResponse
 		v.LastResponse.SearchUID = searchUID
-	} else if v.LastResponse.TotalCount < 1 {
+	}
+
+	if v.LastResponse.TotalCount < 1 {
 		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
 		return nil
 	}

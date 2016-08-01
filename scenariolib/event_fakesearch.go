@@ -30,7 +30,7 @@ func newFakeSearchEvent(e *JSONEvent, c *Config) (*FakeSearchEvent, error) {
 	return se, nil
 }
 
-// Execute Execute the fake search event, set the Last response to the fake response
+// Execute the fake search event, set the Last response to the fake response
 func (fse *FakeSearchEvent) Execute(v *Visit) error {
 	v.LastQuery.Q = ""
 	resp, err := v.SearchClient.Query(*v.LastQuery)
