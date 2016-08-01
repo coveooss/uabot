@@ -69,8 +69,8 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 
 	count := 0
 	for { // Run forever
-		select {
-		default:
+		select { // select on the quitChannel
+		default: // default means there is no quit signal
 
 			scenario, err := conf.RandomScenario()
 			if err != nil {
@@ -110,7 +110,7 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 			count++
 			Info.Printf("Scenarios executed : %d \n =============================\n\n", count)
 
-		case <-quitChannel:
+		case <-quitChannel: // this means something was written on the quitChannel, stop everything and return
 			return nil
 		}
 	}
