@@ -1,5 +1,5 @@
-# uabot [![Build Status](https://travis-ci.org/coveo/uabot.svg?branch=master)](https://travis-ci.org/coveo/uabot)
-[![Go Report Card](https://goreportcard.com/badge/github.com/coveo/uabot)](https://goreportcard.com/report/github.com/coveo/uabot)
+# uabot [![Build Status](https://travis-ci.org/coveo/uabot.svg?branch=master)](https://travis-ci.org/coveo/uabot) [![Go Report Card](https://goreportcard.com/badge/github.com/coveo/uabot)](https://goreportcard.com/report/github.com/coveo/uabot)
+
 Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
 Works with a configuration file using json format.
 Check the /Scenarios folder for examples.
