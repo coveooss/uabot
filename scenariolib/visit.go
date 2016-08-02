@@ -145,6 +145,9 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 }
 
 func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData map[string]interface{}) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil. Cannot send search event.")
+	}
 	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
 	event, err := ua.NewSearchEvent()
 	if err != nil {
@@ -293,6 +296,9 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 }
 
 func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil cannot send click event.")
+	}
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
@@ -363,6 +369,9 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 }
 
 func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customData map[string]interface{}) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil cannot send InterfaceChange event.")
+	}
 	event, err := ua.NewSearchEvent()
 	if err != nil {
 		return err
@@ -422,6 +431,9 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 // FindDocumentRankByTitle Looks through the last response to a query to find a document
 // rank by his title
 func (v *Visit) FindDocumentRankByTitle(toFind string) int {
+	if v.LastResponse == nil {
+		return -1
+	}
 	for i := 0; i < len(v.LastResponse.Results); i++ {
 		if strings.Contains(strings.ToLower(v.LastResponse.Results[i].Title), strings.ToLower(toFind)) {
 			return i
