@@ -25,9 +25,25 @@ func (e *CustomEvent) Parse(jse *JSONEvent) error {
 	return nil
 }
 
-// Execute the search event, runs the query and sends a search event to
+// Execute the custom event, runs the query and sends a search event to
 // the analytics.
 func (e *CustomEvent) Execute(v *Visit) error {
+
+	defaultCustomData := map[string]interface{}{
+		"JSUIVersion": JSUIVERSION,
+		"ipadress":    v.User.IP,
+	}
+
+	if e.CustomData == nil {
+		e.CustomData = defaultCustomData
+	} else {
+		for k, v := range defaultCustomData {
+			if e.CustomData[k] == nil {
+				e.CustomData[k] = v
+			}
+		}
+	}
+
 	// Execute the event and send to analytics
 	if err := e.sendCustomEvent(v); err != nil {
 		return err
@@ -46,20 +62,7 @@ func (e *CustomEvent) sendCustomEvent(v *Visit) error {
 	event.Language = v.User.Language
 	event.EventType = e.EventType
 	event.EventValue = e.EventValue
-
-	defaultCustomData := map[string]interface{}{
-		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.User.IP,
-	}
-	if event.CustomData == nil {
-		event.CustomData = defaultCustomData
-	} else {
-		for k, v := range defaultCustomData {
-			if event.CustomData[k] == nil {
-				event.CustomData[k] = v
-			}
-		}
-	}
+	event.CustomData = e.CustomData
 
 	// Send all the possible random custom data that can be added from the config
 	// scenario file.
