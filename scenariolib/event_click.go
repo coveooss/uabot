@@ -78,18 +78,22 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 
 // Execute Execute the click event, sending a click event to the usage analytics
 func (ce *ClickEvent) Execute(v *Visit) error {
-
 	if ce.fakeClick {
+		searchUID := v.LastResponse.SearchUID
 		v.LastResponse = &ce.fakeResponse
+		v.LastResponse.SearchUID = searchUID
 	}
-	// Error handling, error if last response is nil, warning if last response had no results
+
+    // Error handling, error if last response is nil, warning if last response had no results
 	if v.LastResponse == nil {
 		return errors.New("Cannot execute a click on a nil LastResponse. Please use a search event first.")
 	}
+
 	if v.LastResponse.TotalCount < 1 {
 		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
 		return nil
 	}
+	
 
 	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ce.clickRank = 0

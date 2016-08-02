@@ -16,6 +16,13 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 		}
 		return event, nil
 
+	case "FakeSearch":
+		event, err := newFakeSearchEvent(e, c)
+		if err != nil {
+			return nil, err
+		}
+		return event, nil
+
 	case "Click":
 		event, err := newClickEvent(e)
 		if err != nil {

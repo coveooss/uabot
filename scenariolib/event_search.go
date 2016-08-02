@@ -87,11 +87,13 @@ func (se *SearchEvent) Execute(v *Visit) error {
 	if se.query == "" {
 		if se.matchLanguage {
 			se.query, err = v.Config.RandomQueryInLanguage(se.goodQuery, v.Language)
+			se.keyword = se.query
 			if err != nil {
 				return err
 			}
 		} else {
 			se.query, err = v.Config.RandomQuery(se.goodQuery)
+			se.keyword = se.query
 			if err != nil {
 				return err
 			}
