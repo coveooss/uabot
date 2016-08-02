@@ -51,6 +51,9 @@ func newViewEvent(e *JSONEvent) (*ViewEvent, error) {
 
 // Execute Execute the view event, sending a view event to the usage analytics
 func (ve *ViewEvent) Execute(v *Visit) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil, cannot send a pageview. Please use a search event before.")
+	}
 	if v.LastResponse.TotalCount < 1 {
 		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
 		return nil
