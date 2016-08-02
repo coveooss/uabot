@@ -78,7 +78,6 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 
 // Execute Execute the click event, sending a click event to the usage analytics
 func (ce *ClickEvent) Execute(v *Visit) error {
-<<<<<<< HEAD
 	if ce.fakeClick {
 		searchUID := v.LastResponse.SearchUID
 		v.LastResponse = &ce.fakeResponse
