@@ -7,6 +7,7 @@ import (
 	"math/rand"
 
 	"github.com/go-coveo/analytics"
+	"github.com/go-coveo/search"
 )
 
 // ============== CLICK EVENT ======================
@@ -14,11 +15,14 @@ import (
 
 // A ClickEvent is an event sent when the user clicks on a document
 type ClickEvent struct {
-	DocNo       int                    `json:"docNo,omitempty"`
-	Offset      int                    `json:"offset,omitempty"`
-	Probability float64                `json:"probability"`
-	Quickview   bool                   `json:"quickview,omitempty"`
-	CustomData  map[string]interface{} `json:"customData,omitempty"`
+	DocNo            int                    `json:"docNo,omitempty"`
+	Offset           int                    `json:"offset,omitempty"`
+	Probability      float64                `json:"probability"`
+	Quickview        bool                   `json:"quickview,omitempty"`
+	CustomData       map[string]interface{} `json:"customData,omitempty"`
+	FakeClick        bool                   `json:"fakeClick,omitempty"`
+	FakeResponseJSON json.RawMessage        `json:"fakeResponse,omitempty"`
+	fakeResponse     *search.Response
 }
 
 // Parse the remaining bits of the json event into the right arguments for this event.
@@ -35,19 +39,29 @@ func (e *ClickEvent) Parse(jse *JSONEvent) error {
 	if e.DocNo < -1 {
 		return errors.New("DocNo must be > 0 or -1 (for a random rank) in a click event")
 	}
+	if e.FakeClick {
+		if err := json.Unmarshal(e.FakeResponseJSON, e.fakeResponse); err != nil {
+			return errors.New("FakeResponse must be a search.Response.")
+		}
+	}
 	return nil
 }
 
 // Execute Execute the search event, runs the query and sends a search event to
 // the analytics.
 func (e *ClickEvent) Execute(v *Visit) error {
+	if e.FakeClick {
+		v.LastResponse = e.fakeResponse
+	}
+	if v.LastResponse == nil {
+		return errors.New("LastResponse is nil cannot execute a click event.")
+	}
 	if v.LastResponse.TotalCount < 1 {
-		//Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
+		// Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
 		return nil
 	}
 
-	roll := rand.Float64()
-	if roll <= e.Probability {
+	if rand.Float64() <= e.Probability {
 		if e.DocNo == -1 {
 			e.DocNo = e.findClickRank(v)
 		}
@@ -57,11 +71,15 @@ func (e *ClickEvent) Execute(v *Visit) error {
 		}
 	}
 
-	// Execute the event and send to analytics
+	// Info.Printf("User chose not to click (probability %v%%)", int(ce.probability*100))
 	return nil
 }
 
 func (e *ClickEvent) sendClickEvent(v *Visit) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil cannot send click event.")
+	}
+	// Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	var validcast bool
 	result := v.LastResponse.Results[e.DocNo]
 
@@ -89,20 +107,26 @@ func (e *ClickEvent) sendClickEvent(v *Visit) error {
 	event.QueryPipeline = v.LastResponse.Pipeline
 	event.DocumentURL = result.ClickURI
 	event.Username = v.User.Email
+	event.Anonymous = v.User.Anonymous
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
-	event.Anonymous = v.User.Anonymous
 	event.Language = v.User.Language
 
 	// CustomData
-	event.CustomData = make(map[string]interface{})
-	event.CustomData["JSUIVersion"] = JSUIVERSION
-	event.CustomData["ipadress"] = v.User.IP
-	event.CustomData["author"] = v.Config.RandomDocumentAuthors[rand.Intn(len(v.Config.RandomDocumentAuthors))]
-
-	/*if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
-		event.CustomData["entitlement"] = generateEntitlementBesttech(v.User.Anonymous)
-	}*/
+	defaultCustomData := map[string]interface{}{
+		"JSUIVersion": JSUIVERSION,
+		"ipadress":    v.User.IP,
+		"author":      v.Config.RandomDocumentAuthors[rand.Intn(len(v.Config.RandomDocumentAuthors))],
+	}
+	if event.CustomData == nil {
+		event.CustomData = defaultCustomData
+	} else {
+		for k, v := range defaultCustomData {
+			if event.CustomData[k] == nil {
+				event.CustomData[k] = v
+			}
+		}
+	}
 
 	// Send all the possible random custom data that can be added from the config
 	// scenario file.
