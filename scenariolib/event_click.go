@@ -94,6 +94,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		return nil
 	}
 	
+
 	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ce.clickRank = 0
 		// Find a random rank within the possible click values accounting for the offset
