@@ -1,0 +1,177 @@
+{
+	"searchendpoint": "https://cloudplatform.coveo.com/rest/search/",
+	"analyticsendpoint": "https://usageanalyticsdev.coveo.com/rest/v15/analytics/",
+	"orgName": "NTO",
+	"emailSuffixes": [
+		"@gmail.com",
+		"@hotmail.com",
+		"@apple.com",
+		"@yahoo.com",
+		"@facebook.com",
+		"@hexzone.com",
+		"@strongit.com",
+		"@mec.com",
+		"@geoflex.com"
+	],
+	"firstNames": [
+		"erin",
+		"paul",
+		"beverley",
+		"pedro",
+		"clayton",
+		"lydia",
+		"regina",
+		"sue",
+		"marjorie",
+		"april",
+		"victoria",
+		"vera",
+		"shannon",
+		"minnie",
+		"reginald",
+		"brandie",
+		"christian",
+		"wallace",
+		"avery",
+		"dawn"
+	],
+	"lastNames": [
+		"lawson",
+		"torres",
+		"grant",
+		"ray",
+		"young",
+		"caldwell",
+		"morris",
+		"craig",
+		"lewis",
+		"brown",
+		"rhodes",
+		"james",
+		"wagner",
+		"richards",
+		"allen",
+		"berry",
+		"boyd",
+		"price",
+		"price",
+		"rivera"
+	],
+	"randomGoodQueries": [
+		"tent",
+		"bike helmet",
+		"hiking",
+		"race of hope",
+		"hiking equipment",
+		"backpack",
+		"flat tires",
+		"runner pack",
+		"hiking boots",
+		"user manual",
+		"bag",
+		"camping gear",
+		"trails outfitter",
+		"how to repair my tent",
+		"rivendale 800",
+		"kampa tent",
+		"mec tent",
+		"hiking tips",
+		"climbing shoe",
+		"camping shelter",
+		"darkstar",
+		"running equipment",
+		"tire pressure",
+		"repair flat tire",
+		"tent assembly",
+		"tour backpack",
+		"best family tents",
+		"yeti tundra",
+		"portable usb charger",
+		"waterproof jacket",
+		"saddles",
+		"airbeam tent",
+		"checkout"
+	],
+	"randomBadQueries": [
+		"kampa explorer 8",
+		"stuck zip",
+		"my zipper is broken",
+		"tents",
+		"camping",
+		"travel",
+		"bike",
+		"hike",
+		"northern trail",
+		"northern trail outfitters",
+		"northern trails",
+		"travel tips",
+		"hiking and tent",
+		"travel tip"
+	],
+	"randomIPs": [
+		"66.46.18.120",
+		"74.125.226.120",
+		"66.46.18.1",
+		"192.40.239.233",
+		"198.169.156.67",
+		"160.72.0.1",
+		"155.15.0.45",
+		"162.248.127.25",
+		"52.24.0.108",
+		"159.28.0.98",
+		"205.214.160.167",
+		"216.252.192.109",
+		"72.9.32.109",
+		"198.199.154.209",
+		"209.137.0.105",
+		"216.249.112.8"
+	],
+	"scenarios": [
+		{
+			"name": "GQ -> V(50%) -> V(15%)",
+			"weight": 7000,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"logEvent": false,
+						"goodQuery": false
+					}
+				},
+				{
+					"type": "View",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 1.0
+					}
+				},
+				{
+					"type": "View",
+					"arguments": {
+						"docNo": -1,
+						"offset": 1,
+						"probability": 0.75
+					}
+				},
+				{
+					"type": "View",
+					"arguments": {
+						"docNo": -1,
+						"offset": 2,
+						"probability": 0.5
+					}
+				},
+				{
+					"type": "View",
+					"arguments": {
+						"docNo": -1,
+						"offset": 3,
+						"probability": 0.35
+					}
+				}				
+			]
+		}
+	]
+}

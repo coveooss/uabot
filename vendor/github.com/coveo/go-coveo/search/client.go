@@ -59,9 +59,6 @@ func (c *client) Query(q Query) (*Response, error) {
 	buf := bytes.NewReader(marshalledQuery)
 
 	var endpoint = c.endpoint
-	if q.Pipeline != "" {
-		endpoint = endpoint + "?pipeline=" + q.Pipeline
-	}
 
 	req, err := http.NewRequest("POST", endpoint, buf)
 	if err != nil {

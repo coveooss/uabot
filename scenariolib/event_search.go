@@ -13,33 +13,48 @@ import (
 // SearchEvent a struct representing a search, is defined by a query to execute
 type SearchEvent struct {
 	query string
-	// keyword exists because the query sent to the index may be diffrent than the keyword(s) used to search
-	keyword     string
-	actionCause string
-	actionType  string
-	customData  map[string]interface{}
+	// keyword exists because the query sent to the index may be different than the keyword(s) used to search
+	keyword       string
+	actionCause   string
+	actionType    string
+	logEvent      bool
+	customData    map[string]interface{}
+	matchLanguage bool
+	goodQuery     bool
 }
 
 func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
-	var err error
 	var inputTitle string
-	var goodQuery, validCast bool
-
+	var validCast bool
 	se := new(SearchEvent)
 
 	if se.query, validCast = e.Arguments["queryText"].(string); !validCast {
 		return nil, errors.New("Parameter query must be of type string in SearchEvent")
 	}
-	if goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
+	if e.Arguments["logEvent"] != nil {
+		if se.logEvent, validCast = e.Arguments["logEvent"].(bool); !validCast {
+			return nil, errors.New("Parameter logEvent must be of type bool in SearchEvent")
+		}
+	} else {
+		se.logEvent = true
+	}
+	Info.Printf("Will log search event to analytics: (%t)", se.logEvent)
+
+	if se.goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
 		return nil, errors.New("Parameter goodQuery must be of type bool in SearchEvent")
 	}
-
-	if se.query == "" {
-		se.query, err = c.RandomQuery(goodQuery)
-		if err != nil {
-			return nil, err
+	if e.Arguments["customData"] != nil {
+		if se.customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
+			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a search event.")
 		}
 	}
+
+	if e.Arguments["matchLanguage"] != nil {
+		if se.matchLanguage, validCast = e.Arguments["matchLanguage"].(bool); !validCast {
+			return nil, errors.New("Parameter matchLanguage must be a type bool in SearchEvent")
+		}
+	}
+
 	se.keyword = se.query
 	se.actionCause = "searchboxSubmit"
 	se.actionType = "search box"
@@ -68,7 +83,23 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 // Execute Execute the search event, runs the query and sends a search event to
 // the analytics.
 func (se *SearchEvent) Execute(v *Visit) error {
+	var err error
+	if se.query == "" {
+		if se.matchLanguage {
+			se.query, err = v.Config.RandomQueryInLanguage(se.goodQuery, v.Language)
+			if err != nil {
+				return err
+			}
+		} else {
+			se.query, err = v.Config.RandomQuery(se.goodQuery)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
 	Info.Printf("Searching for : %s", se.query)
+
 	v.LastQuery.Q = se.query
 
 	// Execute a search and save the response
@@ -78,9 +109,12 @@ func (se *SearchEvent) Execute(v *Visit) error {
 	}
 	v.LastResponse = resp
 
-	err = v.sendSearchEvent(se.keyword, se.actionCause, se.actionType, se.customData)
-	if err != nil {
-		return err
+	// in some scenarios (logging of page views), we don't want to send the search event to the analytics
+	if se.logEvent {
+		err = v.sendSearchEvent(se.keyword, se.actionCause, se.actionType, se.customData)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

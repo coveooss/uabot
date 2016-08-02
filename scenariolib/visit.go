@@ -13,7 +13,7 @@ import (
 
 	ua "github.com/coveo/go-coveo/analytics"
 	"github.com/coveo/go-coveo/search"
-	"github.com/erocheleau/uabot/defaults"
+	"github.com/coveo/uabot/defaults"
 )
 
 // Visit        The struct visit is used to store one visit to the site.
@@ -26,19 +26,20 @@ import (
 // OriginLevel2 Same as OriginLevel1
 // LastTab      The tab the user last visited
 type Visit struct {
-	SearchClient search.Client
-	UAClient     ua.Client
-	LastQuery    *search.Query
-	LastResponse *search.Response
-	Username     string
-	OriginLevel1 string
-	OriginLevel2 string
-	OriginLevel3 string
-	LastTab      string
-	Config       *Config
-	IP           string
-	Anonymous    bool
-	Language     string
+	SearchClient       search.Client
+	UAClient           ua.Client
+	LastQuery          *search.Query
+	LastResponse       *search.Response
+	Username           string
+	OriginLevel1       string
+	OriginLevel2       string
+	OriginLevel3       string
+	LastTab            string
+	Config             *Config
+	IP                 string
+	Anonymous          bool
+	Language           string
+	WaitBetweenActions bool
 }
 
 const (
@@ -54,22 +55,23 @@ const (
 // _searchtoken The token used to be able to search
 // _uatoken     The token used to send usage analytics events
 // _useragent   The user agent the analytics events will see
-func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config) (*Visit, error) {
+func NewVisit(_searchtoken string, _uatoken string, _useragent string, language string, c *Config) (*Visit, error) {
 
 	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
 	v := Visit{}
 	v.Config = c
 
+	v.WaitBetweenActions = !c.DontWaitBetweenVisits
 	v.Anonymous = false
 	if c.AllowAnonymous {
-		var treshold float64
-		if c.AnonymousTreshold > 0 {
-			treshold = c.AnonymousTreshold
+		var threshold float64
+		if c.AnonymousThreshold > 0 {
+			threshold = c.AnonymousThreshold
 		} else {
-			treshold = DEFAULTANONYMOUSTRESHOLD
+			threshold = DEFAULTANONYMOUSTHRESHOLD
 		}
-		if rand.Float64() <= treshold {
+		if rand.Float64() <= threshold {
 			v.Anonymous = true
 			Info.Printf("Anonymous visit")
 		}
@@ -79,11 +81,17 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, c *Config
 		Info.Printf("New visit from %s", v.Username)
 	}
 	//Info.Printf("On device %s", _useragent)
-	if len(v.Config.Languages) > 0 {
-		v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+	if language != "" {
+		v.Language = language
 	} else {
-		v.Language = "en"
+		if len(v.Config.Languages) > 0 {
+			v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+		} else {
+			v.Language = "en"
+		}
 	}
+	Info.Printf("Language of visit : %s", v.Language)
+
 	// Create the http searchClient
 	searchConfig := search.Config{Token: _searchtoken, UserAgent: _useragent, Endpoint: c.SearchEndpoint}
 	searchClient, err := search.NewClient(searchConfig)
@@ -119,23 +127,27 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 		if err != nil {
 			return err
 		}
-
 		err = event.Execute(v)
 		if err != nil {
 			return err
 		}
-		var timeToWait int
-		if c.TimeBetweenActions > 0 {
-			timeToWait = c.TimeBetweenActions
-		} else {
-			timeToWait = DEFAULTTIMEBETWEENACTIONS
+		if v.WaitBetweenActions {
+			var timeToWait int
+			if c.TimeBetweenActions > 0 {
+				timeToWait = c.TimeBetweenActions
+			} else {
+				timeToWait = DEFAULTTIMEBETWEENACTIONS
+			}
+			WaitBetweenActions(timeToWait)
 		}
-		WaitBetweenActions(timeToWait)
 	}
 	return nil
 }
 
 func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData map[string]interface{}) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil. Cannot send search event.")
+	}
 	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
 	event, err := ua.NewSearchEvent()
 	if err != nil {
@@ -154,6 +166,11 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.OriginLevel2 = v.OriginLevel2
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
+
+	event.CustomData = make(map[string]interface{})
+
+	event.CustomData["JSUIVersion"] = JSUIVERSION
+	event.CustomData["ipadress"] = v.IP
 	if customData != nil {
 		event.CustomData = customData
 		event.CustomData["JSUIVersion"] = JSUIVERSION
@@ -175,6 +192,11 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
+	}
+
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
 			event.Results = []ua.ResultHash{
@@ -193,28 +215,36 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	return nil
 }
 
-func (v *Visit) sendViewEvent(pageTitle, pageReferrer, pageURI string) error {
-	Info.Printf("Sending PageView Event on URI: %s", pageURI)
+func (v *Visit) sendViewEvent(rank int, contentType string) error {
+	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
 
-	event := ua.NewViewEvent()
+	event, err := ua.NewViewEvent()
+	if err != nil {
+		return err
+	}
 
+	event.PageURI = v.LastResponse.Results[rank].ClickUri
+	event.PageTitle = v.LastResponse.Results[rank].Title
+	event.ContentType = contentType
 	event.Username = v.Username
 	event.Anonymous = v.Anonymous
 	event.Language = v.Language
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
-	event.Anonymous = v.Anonymous
-	event.PageReferrer = pageReferrer
-	event.PageTitle = pageTitle
-	event.PageURI = pageURI
-	event.CustomData = map[string]interface{}{
-		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.IP,
+	event.ContentIdKey = "@sysurihash"
+	event.PageReferrer = "Referrer"
+	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
+		event.ContentIdValue = urihash
+	} else {
+		return errors.New("Cannot convert sysurihash to string")
 	}
 
-	// Send a UA search event
-	err := v.UAClient.SendViewEvent(event)
-	return err
+	// Send a UA view event
+	err = v.UAClient.SendViewEvent(event)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
@@ -255,12 +285,20 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
+	}
+
 	// Send a UA search event
 	err = v.UAClient.SendCustomEvent(event)
 	return err
 }
 
-func (v *Visit) sendClickEvent(rank int, quickview bool) error {
+func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil cannot send click event.")
+	}
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
@@ -318,6 +356,11 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
+	}
+
 	err = v.UAClient.SendClickEvent(event)
 	if err != nil {
 		return err
@@ -326,6 +369,9 @@ func (v *Visit) sendClickEvent(rank int, quickview bool) error {
 }
 
 func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customData map[string]interface{}) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil cannot send InterfaceChange event.")
+	}
 	event, err := ua.NewSearchEvent()
 	if err != nil {
 		return err
@@ -370,6 +416,11 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
 	}
 
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		event.CustomData[k] = v
+	}
+
 	err = v.UAClient.SendSearchEvent(event)
 	if err != nil {
 		return err
@@ -380,6 +431,9 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 // FindDocumentRankByTitle Looks through the last response to a query to find a document
 // rank by his title
 func (v *Visit) FindDocumentRankByTitle(toFind string) int {
+	if v.LastResponse == nil {
+		return -1
+	}
 	for i := 0; i < len(v.LastResponse.Results); i++ {
 		if strings.Contains(strings.ToLower(v.LastResponse.Results[i].Title), strings.ToLower(toFind)) {
 			return i

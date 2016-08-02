@@ -2,3 +2,4 @@
 *.exe
 log.txt
 localdebug.sh
+.idea/**
