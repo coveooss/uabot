@@ -26,7 +26,6 @@ In general, things we find useful when reviewing suggestions are:
 * An overview of the suggested solution
 * Examples of how the suggestion would work in various places
   * Code examples showing e.g. "this would be an error, this wouldn't"
-  * Code examples showing the generated JavaScript (if applicable)
 
 # Instructions for Contributing Code
 
@@ -36,7 +35,7 @@ uabot is currently accepting contributions in the form of bug fixes. A bug must 
 
 ## Contributing features
 
-Features (things that add new or improved functionality to eslint-config-coveo) may be accepted, but will need to first be approved (marked as "Milestone == Community" by a eslint-config-coveo coordinator with the message "Approved") in the suggestion issue. Features with language design impact, or that are adequately satisfied with external tools, will not be accepted.
+Features (things that add new or improved functionality to uabot) may be accepted, but will need to first be approved (marked as "Milestone == Community" by a uabot coordinator with the message "Approved") in the suggestion issue. Features with language design impact, or that are adequately satisfied with external tools, will not be accepted.
 
 Design changes will not be accepted at this time. If you have a design change proposal, please log a suggestion issue.
 
