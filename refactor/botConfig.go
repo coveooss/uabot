@@ -1,5 +1,10 @@
 package refactor
 
+import (
+	"errors"
+	"math/rand"
+)
+
 // BotConfig All the information necessary to run the ua bot
 type BotConfig struct {
 	OrgName               string              `json:"orgName"`
@@ -29,8 +34,10 @@ type QueryParams struct {
 
 // QueriesDataSet The dataset of random queries that the bot can use
 type QueriesDataSet struct {
-	GoodQueries []string `json:"goodQueries"`
-	BadQueries  []string `json:"badQueries"`
+	GoodQueries       []string            `json:"goodQueries"`
+	BadQueries        []string            `json:"badQueries"`
+	GoodQueriesInLang map[string][]string `json:"goodQueriesInLanguage"`
+	BadQueriesInLang  map[string][]string `json:"badQueriesInLanguage"`
 }
 
 // UserDataSet The dataset of random user information the bot can use
@@ -47,4 +54,18 @@ type UserDataSet struct {
 type RandomCustomData struct {
 	APIName string   `json:"apiname"`
 	Values  []string `json:"values"`
+}
+
+// Returns a random query in a specified language
+func (c *Config) RandomQueryInLanguage(good bool, language string) (string, error) {
+	if good {
+		if len(c.GoodQueriesInLang[language]) < 1 {
+			return "", errors.New("No good queries detected in lang : " + language)
+		}
+		return c.GoodQueriesInLang[language][rand.Intn(len(c.GoodQueriesInLang[language]))], nil
+	}
+	if len(c.BadQueriesInLang[language]) < 1 {
+		return "", errors.New("No bad queries detected in lang : " + language)
+	}
+	return c.BadQueriesInLang[language][rand.Intn(len(c.BadQueriesInLang[language]))], nil
 }
