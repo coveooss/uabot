@@ -56,9 +56,6 @@ const (
 // _uatoken     The token used to send usage analytics events
 // _useragent   The user agent the analytics events will see
 func NewVisit(_searchtoken string, _uatoken string, _useragent string, language string, c *Config) (*Visit, error) {
-
-	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
-
 	v := Visit{}
 	v.Config = c
 
