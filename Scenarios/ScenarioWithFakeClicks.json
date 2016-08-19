@@ -227,21 +227,10 @@
       "weight": 60,
       "events": [
         {
-          "type": "Search",
+          "type": "FakeSearch",
           "arguments": {
             "queryText": "",
-            "goodQuery": true,
-	    "matchLanguage": true
-          }
-        },
-        {
-          "type": "Click",
-          "arguments": {
-            "docNo": -1,
-            "offset": 0,
-            "probability": 1.0,
-            "fakeClick": true,
-            "falseResponse": {
+            "fakeResponse": {
               "searchUid": "searchUID",
               "totalCount": 1,
               "totalCountFiltered": 1,
@@ -266,7 +255,17 @@
                 }
               ],
               "groupByResults": []
-            }
+            },
+            "goodQuery": true,
+	    "matchLanguage": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 1.0
           }
         }
       ]
