@@ -12,7 +12,8 @@
 	"orgName"     			: "Besttech",
 	"pipeline" 				: "besttechCommunity",
 	"allowEntitlements"		: true,
-	"randomCustomData" 		: [ { "apiname": "product", "values" : [ "XBR6 TV", "XBR6 TV", "XBR6 TV", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Beatbox", "Beattech VR" ] } ],
+	"randomCustomData" 		: [ { "apiname": "product", "values" : [ "XBR6 TV", "XBR6 TV", "XBR6 TV", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Beatbox", "Beattech VR" ] },
+	 													{ "apiname": "partners", "values" : [ "Arizona Seed Specialists", "J&J Seed Inc", "Mortens Seed Consultants", "Pioneer Seed Consulting" ] } ],
 	"languages" 			: ["en", "en", "en", "en", "en", "fr"],
 	"globalfilter" 			: "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
 	"randomGoodQueries" : [
