@@ -31,6 +31,7 @@ type Config struct {
 	BadQueriesInLang       map[string][]string `json:"badQueriesInLanguage"`
 	Scenarios              []*Scenario         `json:"scenarios"`
 	DefaultOriginLevel1    string              `json:"defaultOriginLevel1,omitempty"`
+	DefaultPageViewField   string              `json:"defaultPageViewField,omitempty"`
 	GlobalFilter           string              `json:"globalfilter,omitempty"`
 	SearchEndpoint         string              `json:"searchendpoint,omitempty"`
 	AnalyticsEndpoint      string              `json:"analyticsendpoint,omitempty"`
