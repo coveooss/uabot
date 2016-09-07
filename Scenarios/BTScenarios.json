@@ -13,7 +13,7 @@
 	"pipeline" 				: "besttechCommunity",
 	"allowEntitlements"		: true,
 	"randomCustomData" 		: [ { "apiname": "product", "values" : [ "XBR6 TV", "XBR6 TV", "XBR6 TV", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Beatbox", "Beattech VR" ] },
-  				    { "apiname": "partners", "values" : [ "Arizona Seed Specialists", "J&J Seed Inc", "Mortens Seed Consultants", "Pioneer Seed Consulting", "Jackson & Larry", "Inty", "IPartner", "Algo", "ProIntegrater", "Integrateinc2015.com", "SoftPlus" ] },
+  				            { "apiname": "partners", "values" : [ "Arizona Seed Specialists", "J&J Seed Inc", "Mortens Seed Consultants", "Pioneer Seed Consulting", "Jackson & Larry", "Inty", "IPartner", "Algo", "ProIntegrater", "Integrateinc2015.com", "SoftPlus" ] },
 					    { "apiname": "PartnersType", "values" : [  "ISV", "Reseller", "SI's", "Distributors", "", "", "", "", "", "", "ISV", "ISV", "ISV", "ISV", "ISV", "SI's", "SI's" ] },
 					    { "apiname": "Recommendation", "values" : ["Training Courses", "Training Courses", "Training Courses", "Training Courses", "Training Courses", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Status Upgrades", "Service Contracts", "", "" ] },
 					    { "apiname": "CustomValue", "values" : [ "", "", "", "", "", "", "", "Value1", "Value1", "Value2", "Value2", "Value2", "Value2", "Value2", "Value3", "Value3", "Value3"] } ],
