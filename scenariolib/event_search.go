@@ -17,7 +17,7 @@ type SearchEvent struct {
 	keyword       string
 	actionCause   string
 	actionType    string
-	logEvent      bool
+	ignoreEvent   bool
 	customData    map[string]interface{}
 	matchLanguage bool
 	goodQuery     bool
@@ -31,14 +31,14 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	if se.query, validCast = e.Arguments["queryText"].(string); !validCast {
 		return nil, errors.New("Parameter query must be of type string in SearchEvent")
 	}
-	if e.Arguments["logEvent"] != nil {
-		if se.logEvent, validCast = e.Arguments["logEvent"].(bool); !validCast {
+	if e.Arguments["ignoreEvent"] != nil {
+		if se.ignoreEvent, validCast = e.Arguments["logEvent"].(bool); !validCast {
 			return nil, errors.New("Parameter logEvent must be of type bool in SearchEvent")
 		}
 	} else {
-		se.logEvent = true
+		se.ignoreEvent = false
 	}
-	Info.Printf("Will log search event to analytics: (%t)", se.logEvent)
+	Info.Printf("Will log search event to analytics: (%t)", se.ignoreEvent)
 
 	if se.goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
 		return nil, errors.New("Parameter goodQuery must be of type bool in SearchEvent")
@@ -112,11 +112,14 @@ func (se *SearchEvent) Execute(v *Visit) error {
 	v.LastResponse = resp
 
 	// in some scenarios (logging of page views), we don't want to send the search event to the analytics
-	if se.logEvent {
-		err = v.sendSearchEvent(se.keyword, se.actionCause, se.actionType, se.customData)
-		if err != nil {
-			return err
-		}
+	if se.ignoreEvent {
+		return nil
 	}
+
+	err = v.sendSearchEvent(se.keyword, se.actionCause, se.actionType, se.customData)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
