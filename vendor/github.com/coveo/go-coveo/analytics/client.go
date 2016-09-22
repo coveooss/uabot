@@ -134,12 +134,12 @@ func NewViewEvent() (*ViewEvent, error) {
 			OriginLevel1: "default",
 			OriginLevel2: "All",
 		},
-		PageURI:      "",
-		PageReferrer: "",
-		PageTitle:    "",
-		ContentIdKey: "",
+		PageURI:        "",
+		PageReferrer:   "",
+		PageTitle:      "",
+		ContentIdKey:   "",
 		ContentIdValue: "",
-		ContentType: "",
+		ContentType:    "",
 	}, nil
 }
 

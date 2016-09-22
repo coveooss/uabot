@@ -331,12 +331,18 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
 		event.CollectionName = collection
 	} else {
-		return errors.New("Cannot convert syscollection to string")
+		// TODO: handle indexless option here
+		event.CollectionName = "default"
+		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
+		//return errors.New("Cannot convert syscollection to string")
 	}
 	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
 		event.SourceName = source
 	} else {
-		return errors.New("Cannot convert syssource to string")
+		// TODO: handle indexless option here
+		event.SourceName = "default"
+		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
+		// return errors.New("Cannot convert syssource to string")
 	}
 
 	event.CustomData = map[string]interface{}{
