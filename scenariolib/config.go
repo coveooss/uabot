@@ -221,4 +221,8 @@ func fillDefaults(c *Config) {
 	if c.AnalyticsEndpoint == "" {
 		c.AnalyticsEndpoint = defaults.ANALYTICSENDPOINT_PROD
 	}
+
+	if c.DefaultPageViewField == "" {
+		c.DefaultPageViewField = defaults.DEFAULTPAGEVIEWFIELD
+	}
 }

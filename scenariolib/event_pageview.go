@@ -51,10 +51,8 @@ func newViewEvent(e *JSONEvent, c *Config) (*ViewEvent, error) {
 		if event.pageViewField, validcast = e.Arguments["pageViewField"].(string); !validcast {
 			return nil, errors.New("Parameter pageViewField must be of type string in ViewEvent")
 		}
-	} else if c.DefaultPageViewField != "" {
-		event.pageViewField = c.DefaultPageViewField
 	} else {
-		event.pageViewField = "sysurihash"
+		event.pageViewField = c.DefaultPageViewField
 	}
 
 	return event, nil
