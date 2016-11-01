@@ -10,15 +10,16 @@ import (
 // =================================================
 
 // ViewEvent a struct representing a view, it is defined by a clickRank, an
-// offset, a probability to click and the contentType
+// offset, a probability to click, the contentType and a pageViewField
 type ViewEvent struct {
-	clickRank   int
-	offset      int
-	probability float64
-	contentType string
+	clickRank     int
+	offset        int
+	probability   float64
+	contentType   string
+	pageViewField string
 }
 
-func newViewEvent(e *JSONEvent) (*ViewEvent, error) {
+func newViewEvent(e *JSONEvent, c *Config) (*ViewEvent, error) {
 	var validcast bool
 	var offset, docNo float64
 
@@ -45,6 +46,14 @@ func newViewEvent(e *JSONEvent) (*ViewEvent, error) {
 		return nil, errors.New("Parameter docNo must be a number in a ViewEvent")
 	}
 	event.clickRank = int(docNo)
+
+	if e.Arguments["pageViewField"] != nil {
+		if event.pageViewField, validcast = e.Arguments["pageViewField"].(string); !validcast {
+			return nil, errors.New("Parameter pageViewField must be of type string in ViewEvent")
+		}
+	} else {
+		event.pageViewField = c.DefaultPageViewField
+	}
 
 	return event, nil
 }
@@ -74,7 +83,7 @@ func (ve *ViewEvent) Execute(v *Visit) error {
 			return errors.New("Search results index out of bounds")
 		}
 
-		err := v.sendViewEvent(ve.clickRank, ve.contentType)
+		err := v.sendViewEvent(ve.clickRank, ve.contentType, ve.pageViewField)
 		if err != nil {
 			return err
 		}

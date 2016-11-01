@@ -215,7 +215,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	return nil
 }
 
-func (v *Visit) sendViewEvent(rank int, contentType string) error {
+func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string) error {
 	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
 
 	event, err := ua.NewViewEvent()
@@ -231,12 +231,13 @@ func (v *Visit) sendViewEvent(rank int, contentType string) error {
 	event.Language = v.Language
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
-	event.ContentIdKey = "@sysurihash"
+	event.ContentIdKey = "@" + pageViewField
+
 	event.PageReferrer = "Referrer"
-	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
-		event.ContentIdValue = urihash
+	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
+		event.ContentIdValue = contentIDValue
 	} else {
-		return errors.New("Cannot convert sysurihash to string")
+		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[rank].Raw[pageViewField], pageViewField)
 	}
 
 	// Send a UA view event

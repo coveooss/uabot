@@ -58,7 +58,7 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 		return event, nil
 
 	case "View":
-		event, err := newViewEvent(e)
+		event, err := newViewEvent(e, c)
 		if err != nil {
 			return nil, err
 		}
