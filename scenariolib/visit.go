@@ -134,11 +134,16 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 		if v.WaitBetweenActions {
 			var timeToWait int
 			if c.TimeBetweenActions > 0 {
-				timeToWait = c.TimeBetweenActions
+				timeToWait = c.TimeBetweenActions //Random waiting time
+				WaitBetweenActions(timeToWait)
+			}else if c.TimeBetweenActions < 0 {
+				timeToWait = c.TimeBetweenActions*(-1)
+				time.Sleep(time.Duration(timeToWait) * time.Second) //Constant Waiting time
 			} else {
 				timeToWait = DEFAULTTIMEBETWEENACTIONS
+				WaitBetweenActions(timeToWait)
 			}
-			WaitBetweenActions(timeToWait)
+
 		}
 	}
 	return nil
