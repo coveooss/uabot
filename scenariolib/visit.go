@@ -140,7 +140,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 				timeToWait = c.TimeBetweenActions*(-1)
 				time.Sleep(time.Duration(timeToWait) * time.Second) //Constant Waiting time
 			} else {
-				timeToWait = DEFAULTTIMEBETWEENACTIONS
+				timeToWait = DEFAULTTIMEBETWEENACTIONS //Defauly waiting time
 				WaitBetweenActions(timeToWait)
 			}
 
