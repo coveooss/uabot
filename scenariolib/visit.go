@@ -132,16 +132,10 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 			return err
 		}
 		if v.WaitBetweenActions {
-			var timeToWait int
 			if c.TimeBetweenActions > 0 {
-				timeToWait = c.TimeBetweenActions //Random waiting time
-				WaitBetweenActions(timeToWait)
-			}else if c.TimeBetweenActions < 0 {
-				timeToWait = c.TimeBetweenActions*(-1)
-				time.Sleep(time.Duration(timeToWait) * time.Second) //Constant Waiting time
+				WaitBetweenActions(c.TimeBetweenActions, c.IsWaitConstant)
 			} else {
-				timeToWait = DEFAULTTIMEBETWEENACTIONS //Default waiting time
-				WaitBetweenActions(timeToWait)
+				WaitBetweenActions(DEFAULTTIMEBETWEENACTIONS, c.IsWaitConstant)
 			}
 
 		}
@@ -187,7 +181,8 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 		}
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -221,7 +216,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 }
 
 func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string) error {
-	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
+	Info.Printf("Sending ViewEvent rank=%d ", rank + 1)
 
 	event, err := ua.NewViewEvent()
 	if err != nil {
@@ -281,7 +276,8 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 		}
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -305,7 +301,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	if v.LastResponse == nil {
 		return errors.New("LastResponse was nil cannot send click event.")
 	}
-	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
+	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank + 1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
 		return err
@@ -356,7 +352,8 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		"ipadress":    v.IP,
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -418,7 +415,8 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		"ipadress":    v.IP,
 	}
 
-	if v.Config.AllowEntitlements { // Custom shit for besttech, I don't like it
+	if v.Config.AllowEntitlements {
+		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
@@ -454,9 +452,14 @@ func (v *Visit) FindDocumentRankByTitle(toFind string) int {
 	return -1
 }
 
-// WaitBetweenActions Wait a random number of seconds between user actions
-func WaitBetweenActions(timeToWait int) {
-	time.Sleep(time.Duration(rand.Intn(timeToWait)) * time.Second)
+// WaitBetweenActions Wait a random or constant number of seconds between user actions
+func WaitBetweenActions(timeToWait int, isConstant bool) {
+	if isConstant {
+		time.Sleep(time.Duration(timeToWait) * time.Second)
+	} else {
+		time.Sleep(time.Duration(rand.Intn(timeToWait)) * time.Second)
+	}
+
 }
 
 // Min Function to return the minimal value between two integers, because Go "forgot"
