@@ -111,7 +111,7 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	} else {
 		timeToWait = DEFAULTTIMEBETWEENACTIONS
 	}
-	WaitBetweenActions(timeToWait)
+	WaitBetweenActions(timeToWait, v.Config.IsWaitConstant)
 
 	if rand.Float64() <= sc.prob {
 		rank := v.FindDocumentRankByTitle(sc.docTitle)

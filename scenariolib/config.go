@@ -54,6 +54,7 @@ type Config struct {
 	AnonymousThreshold     float64             `json:"anonymousThreshold,omitempty"`
 	AllowEntitlements      bool                `json:"allowEntitlements,omitempty"`
 	RandomCustomData       []*RandomCustomData `json:"randomCustomData,omitempty"`
+	IsWaitConstant	       bool		   `json:"isWaitConstant,omitempty"`
 }
 
 type RandomCustomData struct {
