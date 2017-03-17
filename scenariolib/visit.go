@@ -22,8 +22,10 @@ import (
 // LastQuery    The last query that was searched
 // LastResponse The last response that was received
 // Username     The name of the user visiting
-// OriginLevel1 Where the events originate from
-// OriginLevel2 Same as OriginLevel1
+// OriginLevel1 Page/Hub where the events originate from 
+// OriginLevel2 Tab where the events originate from
+// OriginLevel3 The HTTP identifier of the page from which any type of event originates
+// Referrer     Same as OriginLevel3
 // LastTab      The tab the user last visited
 type Visit struct {
 	SearchClient       search.Client
