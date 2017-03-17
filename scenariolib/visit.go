@@ -22,8 +22,10 @@ import (
 // LastQuery    The last query that was searched
 // LastResponse The last response that was received
 // Username     The name of the user visiting
-// OriginLevel1 Where the events originate from
-// OriginLevel2 Same as OriginLevel1
+// OriginLevel1 Page/Hub where the events originate from 
+// OriginLevel2 Tab where the events originate from
+// OriginLevel3 The HTTP identifier of the page from which any type of event originates
+// Referrer     Same as OriginLevel3
 // LastTab      The tab the user last visited
 type Visit struct {
 	SearchClient       search.Client
@@ -34,6 +36,7 @@ type Visit struct {
 	OriginLevel1       string
 	OriginLevel2       string
 	OriginLevel3       string
+	Referrer           string
 	LastTab            string
 	Config             *Config
 	IP                 string
@@ -163,9 +166,9 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.ActionType = actionType
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
+	event.OriginLevel3 = v.OriginLevel3
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
-
 	event.CustomData = make(map[string]interface{})
 
 	event.CustomData["JSUIVersion"] = JSUIVERSION
@@ -231,9 +234,10 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 	event.Language = v.Language
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
+	event.OriginLevel3 = v.OriginLevel3
 	event.ContentIdKey = "@" + pageViewField
+	event.PageReferrer = v.Referrer
 
-	event.PageReferrer = "Referrer"
 	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
 		event.ContentIdValue = contentIDValue
 	} else {
@@ -265,6 +269,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	event.CustomData = customData
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
+	event.OriginLevel3 = v.OriginLevel3
 	if customData != nil {
 		event.CustomData = customData
 		event.CustomData["JSUIVersion"] = JSUIVERSION
@@ -325,6 +330,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	event.Language = v.Language
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
+	event.OriginLevel3 = v.OriginLevel3
 	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
 		event.DocumentURIHash = urihash
 	} else {
@@ -396,6 +402,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.ActionType = actionType
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
+	event.OriginLevel3 = v.OriginLevel3
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
 	event.CustomData = customData
