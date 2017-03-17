@@ -70,6 +70,13 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 			return nil, err
 		}
 		return event, nil
+
+	case "SetReferrer":
+		event, err := newSetReferrerEvent(e)
+		if err != nil {
+			return nil, err
+		}
+		return event, nil
 	}
 	return nil, errors.New("Event type not supported")
 }
