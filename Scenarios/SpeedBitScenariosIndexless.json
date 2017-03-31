@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
  "searchendpoint" 		: "https://platform.coveo.com/rest/search/",
+=======
+ "searchendpoint" 		: "https://platform.cloud.coveo.com/rest/search/",
+>>>>>>> 68a7ede236c2ff46918b2359c785ec9eaf0eeaf2
  "analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
  "partialMatch" 			: true,
  "partialMatchKeywords" 	: 4,
