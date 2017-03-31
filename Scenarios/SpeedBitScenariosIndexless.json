@@ -1,5 +1,5 @@
 {
- "searchendpoint" 		: "https://cloudplatform.coveo.com/rest/search/",
+ "searchendpoint" 		: "https://platform.coveo.com/rest/search/",
  "analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
  "partialMatch" 			: true,
  "partialMatchKeywords" 	: 4,
@@ -11,6 +11,7 @@
  "anonymousThreshold" 	: 0.5,
  "orgName"     			: "SpeedBitDemo",
  "pipeline" 				: "default",
+  "globalfilter":"@objecttype=(Account,Case,FeedItem,Contact,KnowledgeArticleVersion,User,Lead,ContentDocument,Opportunity,SpeedBit_Product__c,Prodcuct)",
  "allowEntitlements"		: true,
  "randomCustomData" 		: [ { "apiname": "product", "values" : [ "Speedbit Blaze Smart", "Speedbit Flex 2 Fitness", "Speedbit Charge 2 Fitness", "Fitbit Flex 2 Bangle", "Speedbit Zip Fitness Tracker", "Fitbit Flex 2 Lariat Necklace Silver", "Speedbit Charge HR", "Fitbit Alta Fitness", "Fitbit Blaze Smart Fitness Watch - Large - Black", "Speed Flex 2 Fitness Tracker" ] },
                      { "apiname": "partners", "values" : [ "Arizona Fitness Specialists", "J&J Fitness Inc", "Mortens Fitness Consultants", "Pro Fitness Consulting", "Jackson & Larry", "Inty", "IPartner FIT FIT", "Algofit.com", "ProFitYourSELF", "FitnessPlus" ] },
