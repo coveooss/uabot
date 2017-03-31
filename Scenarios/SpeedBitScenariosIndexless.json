@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
  "searchendpoint" 		: "https://platform.coveo.com/rest/search/",
-=======
- "searchendpoint" 		: "https://platform.cloud.coveo.com/rest/search/",
->>>>>>> 68a7ede236c2ff46918b2359c785ec9eaf0eeaf2
  "analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
  "partialMatch" 			: true,
  "partialMatchKeywords" 	: 4,
@@ -14,6 +10,7 @@
  "allowAnonymousVisits"	: true,
  "anonymousThreshold" 	: 0.5,
  "orgName"     			: "SpeedBitDemo",
+ "globalfilter":"@objecttype=(Account,Case,FeedItem,Contact,KnowledgeArticleVersion,User,Lead,ContentDocument,Opportunity,SpeedBit_Product__c,Prodcuct)",
  "pipeline" 				: "default",
   "globalfilter":"@objecttype=(Account,Case,FeedItem,Contact,KnowledgeArticleVersion,User,Lead,ContentDocument,Opportunity,SpeedBit_Product__c,Prodcuct)",
  "allowEntitlements"		: true,
