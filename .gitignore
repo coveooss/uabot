@@ -1,0 +1,6 @@
+# Ignore the built go programs
+*.exe
+log.txt
+localdebug.sh
+.idea/**
+*.bat

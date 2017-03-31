@@ -1,0 +1,396 @@
+{
+	"searchendpoint": "https://platform.cloud.coveo.com/rest/search/",
+	"analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
+	"partialMatch": true,
+	"partialMatchKeywords": 3,
+	"partialMatchThreshold": "50%",
+	"defaultOriginLevel1": "CommunitySearch",
+	"timeBetweenVisits": 20,
+	"timeBetweenActions": 3,
+	"allowAnonymousVisits": true,
+	"anonymousThreshold": 0.5,
+	"orgName": "goprodemo",
+	"pipeline": "default",
+	"allowEntitlements": false,
+	"randomCustomData": [
+		{
+			"apiname": "product",
+			"values": [
+				"Hero",
+				"Hero5",
+				"Hero black",
+				"Hero5 black",
+				"Hero session",
+				"Hero4 ",
+				"Hero4 silver",
+				"hero LCD",
+				"hero+",
+				"hero3+",
+				"hero3+ silver",
+				"hero3",
+				"hero3 white",
+				"HD hero",
+				"Karma grip",
+				"Karma grip stabilizer",
+				"Cameras",
+				"Drone",
+				"Dive ",
+				"Moto"
+			]
+		},
+		{
+			"apiname": "CustomValue",
+			"values": [
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"Value1",
+				"Value1",
+				"Value2",
+				"Value2",
+				"Value2",
+				"Value2",
+				"Value2",
+				"Value3",
+				"Value3",
+				"Value3"
+			]
+		}
+	],
+	"languages": [
+		"en",
+		"en",
+		"en",
+		"en",
+		"en",
+		"fr"
+	],
+	"globalfilter": "",
+	"randomGoodQueries": [
+		"Hero4 silver support",
+		"Getting the most out of my Hero4 silver",
+		"Using my hero3+ ",
+		" Hero4 silver instruction manuals",
+		" hero3 white features",
+		"Prices for Hero",
+		"hero LCD features",
+		"Best uses for hero3+",
+		"Is the hero LCD waterproof",
+		"Cameras cases and protection",
+		"HD hero videos",
+		"Hero5 black editing software",
+		"hero+ publishing software",
+		"Uploading hero3+ files to facebook",
+		"Uploading hero3+ files to twitter",
+		"Uploading Hero session files to instagram",
+		"Uploading Hero4 silver files to snapchat",
+		"hero3+ support",
+		"Getting the most out of my hero3",
+		"Using my hero LCD ",
+		" hero LCD instruction manuals",
+		" Hero4  features",
+		"Prices for Hero4 ",
+		"Karma grip features",
+		"Best uses for hero LCD",
+		"Is the Hero5 black waterproof",
+		"Hero5 cases and protection",
+		"Drone videos",
+		"Hero editing software",
+		"Hero5 black publishing software",
+		"Uploading hero+ files to facebook",
+		"Uploading Hero5 black files to twitter",
+		"Uploading hero+ files to instagram",
+		"Uploading Dive  files to snapchat",
+		"Hero5 support",
+		"Getting the most out of my hero3+ silver",
+		"Using my hero+ ",
+		" Karma grip instruction manuals",
+		" hero3+ silver features",
+		"Prices for Dive ",
+		"Dive  features",
+		"Best uses for Hero black",
+		"Is the Moto waterproof",
+		"Karma grip stabilizer cases and protection",
+		"hero3+ videos",
+		"Drone editing software",
+		"Moto publishing software",
+		"Uploading Karma grip files to facebook",
+		"Uploading Hero files to twitter",
+		"Uploading Karma grip files to instagram",
+		"Uploading Hero session files to snapchat",
+		"grips for Hero black",
+		"What are the best Cases for Hero4 ",
+		"What is the best camera to use for Skydiving",
+		"Skiing videos",
+		"Driving discussions and communities",
+		"Playing Football groups",
+		"Surfing events",
+		"Best practices for capturing Skiing",
+		"Using Hero4 silver for Snowboarding",
+		"Is Hero session good for recording Rock Climbing",
+		"What is the best way to protect my Hero5 black while Beach",
+		"What is the best camera to use for Road Biking",
+		"Kayaking videos",
+		"Snowmobiling discussions and communities",
+		"Road Biking groups",
+		"Beach events",
+		"Best practices for capturing Boating",
+		"Using hero3+ silver for Skating",
+		"Is hero LCD good for recording Skydiving",
+		"What is the best way to protect my Karma grip while Kayaking",
+		"What is the best camera to use for Wakeboarding",
+		"Beach videos",
+		"Skydiving discussions and communities",
+		"Snowmobiling groups",
+		"Boating events",
+		"Best practices for capturing Skiing",
+		"Using Moto for Beach",
+		"Is Drone good for recording Skiing",
+		"What is the best way to protect my Karma grip while Driving"
+	],
+	"randomBadQueries": [
+		"Heri",
+		"Herp",
+		"Heri5",
+		"Herp5",
+		"Heri4",
+		"Herp4",
+		"error",
+		"Hero plus",
+		"golf",
+		"lag",
+		"resolution",
+		"Hero6"
+	],
+	"scenarios": [
+		{
+			"name": "GQ -> C(60%)",
+			"weight": 20,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": true
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.6
+					}
+				}
+			]
+		},
+		{
+			"name": "GQ -> C(40%) -> GQ -> C(60%)",
+			"weight": 50,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": true
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.4
+					}
+				},
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": true
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.6
+					}
+				}
+			]
+		},
+		{
+			"name": "GQ -> C(60%) -> GQ -> C(40%) -> GQ -> C(20%)",
+			"weight": 10,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": true
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.6
+					}
+				},
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": true
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.4
+					}
+				},
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": true
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.2
+					}
+				}
+			]
+		},
+		{
+			"name": "BQ -> C(20%) -> GQ -> C(40%)",
+			"weight": 15,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": false
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.1
+					}
+				},
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "",
+						"goodQuery": true
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.4
+					}
+				}
+			]
+		},
+		{
+			"name": "Reveal scenario",
+			"weight": 3,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "Hero6",
+						"goodQuery": false
+					}
+				},
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "Hero5"
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.75
+					}
+				}
+			]
+		},
+		{
+			"name": "Reveal scenario",
+			"weight": 3,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "Heri4",
+						"goodQuery": false
+					}
+				},
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "Hero4"
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.75
+					}
+				}
+			]
+		},
+		{
+			"name": "Reveal scenario",
+			"weight": 3,
+			"events": [
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "Hero plus",
+						"goodQuery": false
+					}
+				},
+				{
+					"type": "Search",
+					"arguments": {
+						"queryText": "Hero+"
+					}
+				},
+				{
+					"type": "Click",
+					"arguments": {
+						"docNo": -1,
+						"offset": 0,
+						"probability": 0.75
+					}
+				}
+			]
+		}
+	]
+}
