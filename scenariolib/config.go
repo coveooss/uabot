@@ -50,20 +50,16 @@ type Config struct {
 	DontWaitBetweenActions bool                `json:"dontWaitBetweenActions"`
 	TimeBetweenVisits      int                 `json:"timeBetweenVisits,omitempty"`
 	TimeBetweenActions     int                 `json:"timeBetweenActions,omitempty"`
-	AllowAnonymous         bool                `json:"allowAnonymousVisits,omitempty"`
 	AnonymousThreshold     float64             `json:"anonymousThreshold,omitempty"`
 	AllowEntitlements      bool                `json:"allowEntitlements,omitempty"`
 	RandomCustomData       []*RandomCustomData `json:"randomCustomData,omitempty"`
-	IsWaitConstant	       bool		   `json:"isWaitConstant,omitempty"`
+	IsWaitConstant         bool                `json:"isWaitConstant,omitempty"`
 }
 
 type RandomCustomData struct {
 	APIName string   `json:"apiname"`
 	Values  []string `json:"values"`
 }
-
-// DEFAULTANONYMOUSTHRESHOLD The default portion of users who are anonymous
-const DEFAULTANONYMOUSTHRESHOLD float64 = 0.5
 
 // RandomScenario Returns a random scenario from the list of possible scenarios.
 // returns an error if there are no scenarios

@@ -25,7 +25,6 @@ timeBetweenActions | number | The time to wait between each actions (between 0 a
 partialMatch | boolean | Enable partial match on the queries | false
 partialMatchKeywords | number | Number of words after which to enable partial match | (none)
 partialMatchThreshold | string | Number of words considered in a partial match (string because you can send "50%") | (none)
-allowAnonymousVisits | boolean | If you allow some of the visits to be anonymous | false
 anonymousThreshold | number | Number between 0 and 1 of the % of anonymous visits | 0
 globalfilter | string | A filter to be applied to all queries | ""
 languages | []string | A list of random languages for the visits | (none)
@@ -60,8 +59,7 @@ MobileUserAgents | []string | A list of UserAgents strings that are on mobile
   "defaultOriginLevel1"     : "origin",
   "timeBetweenVisits"       : 120,
   "timeBetweenActions"      : 3,
-  "allowAnonymousVisits"	: true,
-  "anonymousThreshold"       : 0.5,
+  "anonymousThreshold"       : 1,
   "orgName"     			: "orgname",
   "pipeline"                : "pipeline",
   "allowEntitlements"       : true,

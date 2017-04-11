@@ -22,7 +22,7 @@ import (
 // LastQuery    The last query that was searched
 // LastResponse The last response that was received
 // Username     The name of the user visiting
-// OriginLevel1 Page/Hub where the events originate from 
+// OriginLevel1 Page/Hub where the events originate from
 // OriginLevel2 Tab where the events originate from
 // OriginLevel3 The HTTP identifier of the page from which any type of event originates
 // Referrer     Same as OriginLevel3
@@ -67,23 +67,19 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 
 	v.WaitBetweenActions = !c.DontWaitBetweenVisits
 	v.Anonymous = false
-	if c.AllowAnonymous {
-		var threshold float64
-		if c.AnonymousThreshold > 0 {
-			threshold = c.AnonymousThreshold
-		} else {
-			threshold = DEFAULTANONYMOUSTHRESHOLD
-		}
-		if rand.Float64() <= threshold {
+
+	if c.AnonymousThreshold > 0 {
+		if rand.Float64() <= c.AnonymousThreshold {
 			v.Anonymous = true
 			Info.Printf("Anonymous visit")
 		}
 	}
+
 	if !v.Anonymous {
 		v.Username = buildUserEmail(c)
 		Info.Printf("New visit from %s", v.Username)
 	}
-	//Info.Printf("On device %s", _useragent)
+
 	if language != "" {
 		v.Language = language
 	} else {
@@ -219,7 +215,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 }
 
 func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string) error {
-	Info.Printf("Sending ViewEvent rank=%d ", rank + 1)
+	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
 
 	event, err := ua.NewViewEvent()
 	if err != nil {
@@ -306,7 +302,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	if v.LastResponse == nil {
 		return errors.New("LastResponse was nil cannot send click event.")
 	}
-	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank + 1, quickview)
+	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event, err := ua.NewClickEvent()
 	if err != nil {
 		return err
