@@ -3,6 +3,7 @@ package search
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -79,6 +80,7 @@ func (c *client) Query(q Query) (*Response, error) {
 	if resp.StatusCode != http.StatusOK {
 		body, _ := ioutil.ReadAll(resp.Body)
 		fmt.Printf("\nRequest response error (%d): %s\n", resp.StatusCode, string(body))
+		return nil, errors.New(string(body))
 	}
 
 	queryResponse := &Response{}

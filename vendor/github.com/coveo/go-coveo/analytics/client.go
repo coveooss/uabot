@@ -3,6 +3,7 @@ package analytics
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -237,6 +238,7 @@ func (c *client) sendEventRequest(path string, event interface{}) error {
 
 	if resp.StatusCode != http.StatusOK {
 		fmt.Printf("\nRequest response error (%d): %s\n", resp.StatusCode, string(body))
+		return errors.New(string(body))
 	}
 
 	if c.cookies == nil {

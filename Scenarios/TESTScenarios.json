@@ -1,0 +1,196 @@
+{
+  "searchendpoint": "https://cloudplatform.coveo.com/rest/search/",
+  "analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
+  "defaultOriginLevel1": "BotSearch",
+  "timeBetweenVisits": 3,
+  "timeBetweenActions": 2,
+  "anonymousThreshold": 1,
+  "orgName": "Test",
+  "pipeline": "besttechCommunity",
+  "randomCustomData": [
+    {
+      "apiname": "customData1",
+      "values": [
+        "customValue 1"
+      ]
+    }
+  ],
+  "languages": [
+    "en"
+  ],
+  "globalfilter": "",
+  "randomGoodQueries": [
+    "@uri"
+  ],
+  "randomBadQueries": [
+    "aaaaaaaaaaa"
+  ],
+  "scenarios": [
+    {
+      "name": "GQ -> C(45%) -> GQ -> C(50%)",
+      "weight": 20,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 0.45
+          }
+        },
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mobile GQ -> C(40%)",
+      "weight": 2,
+      "useragent": "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 0.6
+          }
+        }
+      ]
+    },
+    {
+      "name": "BQ -> C(20%)",
+      "weight": 4,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": false
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "name": "GQ tabchange to youtube-> GQ -> C(40%)",
+      "weight": 2,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "TabChange",
+          "arguments": {
+            "tabName": "YOUTUBE",
+            "tabCQ": "@sysfiletype==\"youtubevideo\""
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 0.4,
+            "quickview": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "GQ with facetchange to Type (message)> GQ -> C(45%)",
+      "weight": 1,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "FacetChange",
+          "arguments": {
+            "facetTitle": "Type",
+            "facetField": "@objecttype",
+            "facetValue": "Message"
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 0.45
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scenarios caseCreation",
+      "weight": 1,
+      "events": [
+        {
+          "type": "SetOrigin",
+          "arguments": {
+            "originLevel1": "CaseCreation"
+          }
+        },
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Custom",
+          "arguments": {
+            "actionCause": "cancelButton",
+            "actionType": "caseCreation",
+            "customData": {
+              "hasclicks": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

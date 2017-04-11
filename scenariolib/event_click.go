@@ -16,12 +16,14 @@ import (
 // ClickEvent a struct representing a click, it is defined by a clickRank, an
 // offset and a probability to click.
 type ClickEvent struct {
-	clickRank    int
-	offset       int
-	probability  float64
-	quickview    bool
-	customData   map[string]interface{}
-	fakeClick    bool
+	clickRank   int
+	offset      int
+	probability float64
+	quickview   bool
+	customData  map[string]interface{}
+	// fakeClick Is only used if you provide a fakeResponse (this is to simulate clicks without having to search first.)
+	fakeClick bool
+	// Provide a fake response instead of searching first.
 	fakeResponse search.Response
 }
 
@@ -84,7 +86,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		v.LastResponse.SearchUID = searchUID
 	}
 
-    // Error handling, error if last response is nil, warning if last response had no results
+	// Error handling, error if last response is nil, warning if last response had no results
 	if v.LastResponse == nil {
 		return errors.New("Cannot execute a click on a nil LastResponse. Please use a search event first.")
 	}
@@ -93,7 +95,6 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
 		return nil
 	}
-	
 
 	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ce.clickRank = 0

@@ -31,14 +31,10 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	if se.query, validCast = e.Arguments["queryText"].(string); !validCast {
 		return nil, errors.New("Parameter query must be of type string in SearchEvent")
 	}
-	if e.Arguments["ignoreEvent"] != nil {
-		if se.ignoreEvent, validCast = e.Arguments["logEvent"].(bool); !validCast {
-			return nil, errors.New("Parameter logEvent must be of type bool in SearchEvent")
-		}
-	} else {
+
+	if se.ignoreEvent, validCast = e.Arguments["ignoreEvent"].(bool); !validCast {
 		se.ignoreEvent = false
 	}
-	Info.Printf("Will log search event to analytics: (%t)", se.ignoreEvent)
 
 	if se.goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
 		return nil, errors.New("Parameter goodQuery must be of type bool in SearchEvent")
