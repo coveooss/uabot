@@ -1,0 +1,517 @@
+{
+ "searchendpoint" 		: "https://platform.cloud.coveo.com/rest/search/",
+ "analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
+ "partialMatch" 			: true,
+ "partialMatchKeywords" 	: 4,
+ "partialMatchThreshold" 	: "50%",
+ "defaultOriginLevel1" 	: "CommunitySearch",
+ "timeBetweenVisits"		: 20,
+ "timeBetweenActions"	: 3,
+ "allowAnonymousVisits"	: true,
+ "anonymousThreshold" 	: 0.5,
+ "orgName"     			: "SpeedBit",
+ "pipeline" 				: "default",
+ "allowEntitlements"		: true,
+ "randomCustomData" 		: [ { "apiname": "product", "values" : [ "Speedbit Blaze Smart", "Speedbit Flex 2 Fitness", "Speedbit Charge 2 Fitness", "Fitbit Flex 2 Bangle", "Speedbit Zip Fitness Tracker", "Fitbit Flex 2 Lariat Necklace Silver", "Speedbit Charge HR", "Fitbit Alta Fitness", "Fitbit Blaze Smart Fitness Watch - Large - Black", "Speed Flex 2 Fitness Tracker" ] },
+                     { "apiname": "partners", "values" : [ "Arizona Fitness Specialists", "J&J Fitness Inc", "Mortens Fitness Consultants", "Pro Fitness Consulting", "Jackson & Larry", "Inty", "IPartner FIT FIT", "Algofit.com", "ProFitYourSELF", "FitnessPlus" ] },
+             { "apiname": "PartnersType", "values" : [  "ISV", "Reseller", "SI's", "Distributors", "", "", "", "", "", "", "ISV", "ISV", "ISV", "ISV", "ISV", "SI's", "SI's" ] },
+             { "apiname": "Recommendation", "values" : ["Training Courses", "Training Courses", "Training Courses", "Training Courses", "Training Courses", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Certifications", "Status Upgrades", "Service Contracts", "", "" ] },
+             { "apiname": "CustomValue", "values" : [ "", "", "", "", "", "", "", "Value1", "Value1", "Value2", "Value2", "Value2", "Value2", "Value2", "Value3", "Value3", "Value3"] } ],
+
+ "languages" 			: ["en", "en", "en", "en", "en", "fr"],
+ "randomGoodQueries" : [
+   "Fitness Watch", "Tracking Watch", "How do Fitbit trackers sync their data?", "Can I turn off the LED lights?", "Can I improve my tracker's battery life?", "¢",  "How do I track my health and fitness goals with Fitbit?", "What is PurePulse?", "How does my tracker detect my heart rate?", "Map Watch", "Smart watch", "Training Watch", "Training Device", "memory issue", "no picture on my watch", "how to setup bluetooth with my cell phone", "connect cellphone",
+   "broken screen", "connect laptop to smart watch", "update watch", "how to add maps", "how to see map on cell phone", "how to enable the intelligent assistant", "how to charge the watch", "Where could I find", "no more colors on my",
+   "Connect smart watch", "smart watch is not working", "Speedbit vs fitbit", "tracking system", "how can I see my run", "Mortens Fitness", "Arizona Specialists", "Certification of speedbit", "How to become a reseller", "Blaze User guide"
+ ],
+ "randomBadQueries" : [ "no picture seedbit", "betooth not functionnal", "can't connect to my", "no pickture", "Speedbit blase", "Update flex 1", "piks", "connektion" ],
+ "scenarios" : [
+   {
+     "name"   : "GQ -> C(60%)",
+     "weight" : 60,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(45%) -> GQ -> C(50%)",
+     "weight" : 20,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(55%) -> GQ -> C(55%) -> GQ -> C(60%)",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.45 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+     ]
+   },
+   {
+     "name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
+     "weight" : 3,
+     "useragent" : "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 3,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(50%)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
+     ]
+   },
+   {
+     "name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
+     "weight" : 2,
+     "useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.6 } }
+     ]
+   },
+   {
+     "name"   : "BQ -> C(20%) -> GQ -> C(40%)",
+     "weight" : 4,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.1 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+     ]
+   },
+   {
+     "name"   : "ML scenario Blase to Blaze",
+     "weight" : 3,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "SpeedBit Blase", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "SpeedBit Blaze", "docClickTitle" : "Introducing Fitbit Blaze™", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML scenario fitbit 452547",
+     "weight" : 3,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "fitbit 452547", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "fitbit Charge", "docClickTitle" : "Introducing Fitbit Charge HR™", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML Scenario Warranty",
+     "weight" : 3,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "Warranty", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "Battery Life", "docClickTitle" : "Fitbit Help - Can I improve my tracker's battery life?", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "GQ with tabchange to youtube-> GQ -> C(40%)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "FitBit Flex", "goodQuery" : true } },
+       { "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } }
+     ]
+   },
+   {
+     "name"   : "Mobile GQ with tabchange to youtube-> GQ -> C(50%)",
+     "weight" : 3,
+     "useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "Fitbit Charge", "goodQuery" : true } },
+       { "type" : "TabChange", "arguments" : { "tabName" : "YOUTUBE", "tabCQ" : "@sysfiletype==\"youtubevideo\"" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5, "quickview": true } }
+     ]
+   },
+   {
+     "name"   : "GQ with tabchange to lithium> GQ -> C(50%)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "connect smart watch", "goodQuery" : true } },
+       { "type" : "TabChange", "arguments" : { "tabName" : "lithium", "tabCQ" : "@objecttype==(Post,Message)" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } }
+     ]
+   },
+   {
+     "name"   : "GQ with tabchange to SharePoint> GQ -> C(40%)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "speedbit", "goodQuery" : true } },
+       { "type" : "TabChange", "arguments" : { "tabName" : "SharePoint", "tabCQ" : "@sysconnectortype==(\"Sharepoint\") NOT @sysfiletype=(SPUserProfile,SPSite) NOT @documenttype==(\"List\") NOT @syssource==(\"SharePoint Online - Bombardier\")" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+     ]
+   },
+   {
+     "name"   : "GQ with tabchange to Article> GQ -> C(40%)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "how to enable the intelligent assistant", "goodQuery" : true } },
+       { "type" : "TabChange", "arguments" : { "tabName" : "KB", "tabCQ" : "@sfkbid" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } }
+     ]
+   },
+   {
+     "name"   : "GQ with facetchange to Type (message)> GQ -> C(45%)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "connection", "goodQuery" : true } },
+       { "type" : "FacetChange", "arguments" : { "facetTitle": "Type", "facetValue": "Message", "facetField": "@objecttype" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } }
+     ]
+   },
+   {
+     "name"   : "GQ with facetchange to Repository (Youtube)> GQ -> C(55%)",
+     "weight" : 3,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "fitbit Blaze", "goodQuery" : true } },
+       { "type" : "FacetChange", "arguments" : { "facetTitle": "Repository", "facetField": "@beautifulrepositorytype", "facetValue": "Youtube" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
+     ]
+   },
+   {
+     "name"   : "GQ with facetchange to Year (2016)> GQ -> C(55%)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "Map", "goodQuery" : true } },
+       { "type" : "FacetChange", "arguments" : { "facetTitle": "Year", "facetField": "@sysyear", "facetValue": "2016" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.55, "quickview": true } }
+     ]
+   },
+   {
+     "name"   : "QC(quick view function, 60%, Quickview)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "quick view function", "docClickTitle" : "The quick view function is being introduced as a firmware...", "probability": 0.6, "quickview": true } }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (Reset)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "Reset", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "Resets", "goodQuery" : false } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (Sync problem)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "Sync problems", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "Sync problems", "goodQuery" : false } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (No connection)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "No connection", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "no connection to smartphone", "goodQuery" : false } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (My Speedbit is not recording )",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "My Speedbit is not recording", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "My Speedbit is not recording floors climbed", "goodQuery" : false } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (xbr6 user guide)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "xbr6 user guide", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.90, "docClickTitle" : "New User Experience - Connecting the Rift", "goodQuery" : false } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "cancelButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (buttons stopped working)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "buttons stopped working", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+       { "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": false }} }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (Download software Update)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Download software Update", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.8, "quickview": true } },
+       { "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (Problem with activity goals)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Problem with activity goals", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.8, "quickview": true } },
+       { "type" : "Custom", "arguments" : { "actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenrios deflected (random)",
+     "weight" : 4,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Custom", "arguments" : { "actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenrios not deflected (random)",
+     "weight" : 4,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Custom", "arguments" : { "actionCause":"submitButton", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (How to add maps)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "How to add maps", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Blaze Smart"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Speedbit Blaze Smart" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (memory issue)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "memory issue", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Fitbit Flex 2 Bangle"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Fitbit Flex 2 Bangle" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (connect cellphone)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "connect cellphone", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "connect cellphone", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.8, "quickview": true } },
+       { "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (no picture on my watch)",
+     "weight" : 3,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "no picture on my watch", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Zip Fitness Tracker"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Speedbit Zip Fitness Tracker" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (Where could I find)",
+     "weight" : 5,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "Where could I find", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Where could I find", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Zip Fitness Tracker"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Speedbit Zip Fitness Tracker" } }}
+
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (Not Sync)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Account cannot Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Fitbit Alta Fitness"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Fitbit Alta Fitness" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (buttons stopped working)",
+     "weight" : 3,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "buttons stopped working", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Re: Blaze buttons stopped working!", "goodQuery" : false, "customData" : { "product" : "XBR6 TV"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Speedbit Charge 2 Fitness" } }}
+
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (tracker's battery life)",
+     "weight" : 4,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "tracker's battery life", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "tracker's battery life", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Fitbit Help - Can I improve my tracker's battery life?", "goodQuery" : false, "customData" : { "product" : "Speedbit Zip Fitness Tracker"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Speedbit Zip Fitness Tracker" } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (how to charge the watch)",
+     "weight" : 3,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"} },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "how to charge the watch", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "how to set the watch on chargehr.", "goodQuery" : false, "customData" : { "product" : "Speed Flex 2 Fitness Tracker"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Speed Flex 2 Fitness Tracker" } } }
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (Training Device)",
+     "weight" : 3,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "Training Device", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Re: Blaze and 'Training'", "goodQuery" : false, "customData" : { "product" : "Speed Flex 2 Fitness Tracker"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Speed Flex 2 Fitness Tracker" } }}
+
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (can't connect to my)",
+     "weight" : 3,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "can't connect to my", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Can't connect to my Bluetooth", "goodQuery" : false, "customData" : { "product" : "Speedbit Charge 2 Fitness"} }},
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Speedbit Charge 2 Fitness" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (connect laptop to smart watch)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "connect laptop to smart watch", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Fitbit Flex 2 Bangle"} } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Fitbit Flex 2 Bangle"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Fitbit Flex 2 Bangle" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (Tracking Watch)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Tracking Watch", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Blaze Smart"} } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Speedbit Blaze Smart"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Speedbit Blaze Smart" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (how to see map on cell phone)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "how to see map on cell phone", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Blaze Smart"} } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Speedbit Blaze Smart"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Speedbit Blaze Smart" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (how to enable the intelligent assistant)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "how to enable the intelligent assistant", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Charge 2 Fitness"} } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Speedbit Charge 2 Fitness"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Speedbit Charge 2 Fitness" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (Image Freeze)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Image Freeze", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Fitbit Flex 2 Bangle"} } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6, "quickview": true, "customData" : { "product" : "Fitbit Flex 2 Bangle"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Fitbit Flex 2 Bangle" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (Not enough memory)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Not enough memory", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Flex 2 Fitness"} } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6, "quickview": true, "customData" : { "product" : "Speedbit Flex 2 Fitness"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Speedbit Flex 2 Fitness" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios not deflected (Battery is dead after 5 min)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Battery is dead after 5 min", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Speedbit Charge HR"} } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true, "customData" : { "product" : "Speedbit Charge HR"} } },
+       { "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "Speedbit Charge HR" } }}
+     ]
+   },
+   {
+     "name"   : "Scenarios deflected (Connection with my Mac)",
+     "weight" : 3,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "Connection with my Mac", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4, "quickview": true } },
+       { "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
+       { "type" : "Search", "arguments" : { "queryText" : "Connection with my Mac", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.9, "quickview": true } },
+       { "type" : "Custom", "arguments" : { "actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasclicks": true } } }
+     ]
+   }
+ ]
+}
