@@ -14,15 +14,15 @@
 	"allowEntitlements"		: true,
 	"randomCustomData" 		: [ { "apiname": "product", "values" : [ "XBR6 TV", "XBR6 TV", "XBR6 TV", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Headphones", "Beattech Beatbox", "Beattech VR" ] } ],
 	"languages" 			: ["en", "en", "en", "en", "en", "fr"],
-	"globalfilter" 			: "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"YouTube - Sony\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.sony.com\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
+	"globalfilter" 			: "@syssource=(\"SharePoint Online - Bombardier\", \"Oracle Knowledge\", \"YouTube - Bestbuy\", \"Confluence - Besttech\", \"Dropbox - demo_besttech@coveo.com\", \"SharePoint - https://sp2010.coveodemo.com\", \"Salesforce - Knowledge - demouser@besttech.early\", \"Salesforce - demouser@besttech.early\", \"Lithium - http://community.futureshop.ca/\", \"Lithium - http://forums.bestbuy.com/\")",
 	"randomGoodQueries" : [
 		"hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access", "picture quality", "tv is not working",
 		"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV",
-		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual",
+		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "quick start guide", "XBR6 user guide", "nex-7 manual",
 		"usb to hdmi", "ipad hdmi", "dvi hdmi cable", "primus hdtv", "tv audio hts", "coaxial to hdmi cable", "hdmi splitter", "sound bar", "connect laptop to hdtv",
-		"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter",
-		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", "wifi bravia",
-		"wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync"
+		"receiver audio out", "audio jacks", "galaxy tab hdmi", "on screen display", "netflix on dvd player", "hdmi composite converter",
+		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", 
+		"wifi tv", "sound and picture out of sync"
 	],
 	"randomBadQueries" : [ "no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM", "piks", "connektion" ],
 	"scenarios" : [
@@ -132,14 +132,6 @@
 			"events" : [
 				{ "type" : "Search", "arguments" : { "queryText" : "install hdmi-QAM", "goodQuery" : false } },
 				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "convert coaxial cable to hdmi", "docClickTitle" : "How to Convert Coaxial Cable to HDMI", "probability" : 0.75 } }
-			]
-		},
-		{
-			"name"   : "Reveal scenario hx720-478",
-			"weight" : 3,
-			"events" : [
-				{ "type" : "Search", "arguments" : { "queryText" : "hx720-478", "goodQuery" : false } },
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "hx720 stand", "docClickTitle" : "HX720 Internet TV Stand is unstable", "probability" : 0.75 } }
 			]
 		},
 		{
@@ -387,16 +379,6 @@
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Account cannot Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject", "customData" : { "product" : "Beattech Headphone"} } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": false, "product" : "Beattech Headphone" } }}
-			]
-		},
-		{
-			"name"   : "Scenarios not deflected (No HD)",
-			"weight" : 3,
-			"events" : [
-				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.85, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false, "customData" : { "product" : "XBR6 TV"} } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasclicks": true, "product" : "XBR6 TV" } }}
-
 			]
 		},
 		{
