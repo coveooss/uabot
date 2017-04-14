@@ -15,19 +15,6 @@ Reveal should learns and show the doc with the title «convert coaxial cable to 
 ### Actual Results: 
 Without reveal you should not see your solution because the products «hdmi-QAM» is not a listed products. 
 
-# HX720-478
-### Events:
-```json
-{ "type" : "Search", "arguments" : { "queryText" : "hx720-478", "goodQuery" : false } },
-{ "type" : "SearchAndClick", "arguments" : { "queryText" : "hx720-478 stand", "docClickTitle" : "HX720 Internet TV Stand is unstable", "goodQuery" : false } }
-```
-### Explication:
-Client has trouble installing the stand for is new HX720 TV. Start a new query with the complete serial number «hx720-478» but, the model is only hx720. After finding nothing the client asks for «HX720-478 stand» and then find a resolved case that show him step by step. 
-### Expected Results: 
-KB with the title : HX720 Internet TV Stand is unstable.
-### Actual Results:
-No results
-
 # Net flix not connect
 ### Events:
 ```json
