@@ -12,13 +12,13 @@
 	"randomGoodQueries" 	: [
 		"hdmi", "no picture", "no picture on my tv", "hdmi issue", "XBR6 hdmi", "netflix", "netflix access", "picture quality", "tv is not working",
 		"multi language support", "routing service", "wobbly tv", "upgrade laptop memory", "memory issue", "bravia tv", "laptop crashes", "XBR9 Series TV",
-		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "setup BRAVIA tv", "quick start guide", "XBR6 user guide", "nex-7 manual",
+		"broken cable", "charger broken", "TV goes blank", "factory reset", "multi language", "quick start guide", "XBR6 user guide", "nex-7 manual",
 		"usb to hdmi", "ipad hdmi", "dvi hdmi cable", "primus hdtv", "tv audio hts", "coaxial to hdmi cable", "hdmi splitter", "sound bar", "connect laptop to hdtv",
-		"receiver audio out", "audio jacks", "galaxy tab hdmi", "connect playstation", "on screen display", "netflix on dvd player", "hdmi composite converter",
-		"what is 4k", "whats 4k", "tv 4k", "playstation 4", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", "wifi bravia",
-		"wifi tv", "connection bravia", "connect bravia", "sound and picture out of sync"
+		"receiver audio out", "audio jacks", "galaxy tab hdmi", "on screen display", "netflix on dvd player", "hdmi composite converter",
+		"what is 4k", "whats 4k", "tv 4k", "HDMI port on Lenovo LAPTOP", "receiver without HDMI", "vapor barrier for cables", "vga 2 hdmi", 
+		"wifi tv", "sound and picture out of sync"
 	],
-	"randomBadQueries" : [ "no picture on BX620 tv", "error tv", "blank BX620", "no pickture", "BX620 user guide", "install hdmi-QAM", "piks", "connektion" ],
+	"randomBadQueries" : [ "no picture on tv", "error tv", "blank screen", "no pickture", "tv user guide", "install hdmi-QAM", "piks", "connektion" ],
 	"scenarios" : [
 		{
 			"name"   : "GQ -> C(60%)",
@@ -101,14 +101,6 @@
 			]
 		},
 		{
-			"name"   : "Scenarios deflected (Bravia)",
-			"weight" : 1,
-			"events" : [
-				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "Search", "arguments" : { "queryText" : "Bravia", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : {"actionCause":"unloadPage", "actionType":"caseCreation", "customData" : { "hasClicks": false }} }
-				]},
-		{
 			"name"   : "Scenarios deflected (Hdmi Not Working)",
 			"weight" : 1,
 			"events" : [
@@ -141,15 +133,6 @@
 			"events" : [
 				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
 				{ "type" : "Search", "arguments" : { "queryText" : "Not Sync", "goodQuery" : true, "caseSearch" : true, "inputTitle" : "Subject" } },
-				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
-			]
-		},
-		{
-			"name"   : "Scenarios not deflected (No HD)",
-			"weight" : 7,
-			"events" : [
-				{ "type" : "SetOrigin", "arguments" : {"originLevel1" : "CaseCreation"}},
-				{ "type" : "SearchAndClick", "arguments" : { "queryText" : "No HD", "caseSearch": true, "inputTitle": "Subject", "probability" : 0.75, "docClickTitle" : "Setting up HD on Your XJ5 Series Television", "goodQuery" : false } },
 				{ "type" : "Custom", "arguments" : { "actionCause" : "submitButton", "actionType" : "caseCreation", "customData" : { "hasClicks": true } } }
 			]
 		},
