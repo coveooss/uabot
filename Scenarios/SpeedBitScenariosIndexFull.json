@@ -135,11 +135,18 @@
      ]
    },
    {
-     "name"   : "ML scenario fitbit 452547",
+     "name"   : "ML scenario Speedbit 452547",
      "weight" : 3,
      "events" : [
-       { "type" : "Search", "arguments" : { "queryText" : "fitbit 452547", "goodQuery" : false } },
-       { "type" : "SearchAndClick", "arguments" : { "queryText" : "fitbit Charge", "docClickTitle" : "Introducing Fitbit Charge HR™", "probability" : 0.75 } }
+       { "type" : "Search", "arguments" : { "queryText" : "452547", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "Fitbit Charge", "docClickTitle" : "Introducing Fitbit Charge HR™", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML scenario Visit Browser Direct Link Speedbit 452547",
+     "weight" : 3,
+     "events" : [
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "452547", "docClickTitle" : "Introducing Fitbit Charge HR™", "probability" : 0.75 } }
      ]
    },
    {
