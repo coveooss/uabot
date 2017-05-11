@@ -19,7 +19,6 @@ type ViewEvent struct {
 	probability   float64
 	contentType   string
 	pageViewField string
-	willExecute   bool
 }
 
 func newViewEvent(e *JSONEvent, c *Config) (*ViewEvent, error) {
@@ -71,10 +70,9 @@ func (ve *ViewEvent) Execute(v *Visit) error {
 		return nil
 	}
 
-	ve.computeClickRank(v). // Randomize a click rank if the clickRank is -1
-				checkProbability(v) // Random chance to execute the view event or not based on ve.probability
+	if rand.Float64() <= ve.probability { // test if the event will exectute according to probability
+		ve.computeClickRank(v)
 
-	if ve.willExecute {
 		err := v.sendViewEvent(ve.clickRank, ve.contentType, ve.pageViewField)
 		if err != nil {
 			return err
@@ -97,14 +95,4 @@ func (ve *ViewEvent) computeClickRank(v *Visit) *ViewEvent {
 		}
 	}
 	return ve
-}
-
-// Random chance to execute the view event or not based on ve.probability
-func (ve *ViewEvent) checkProbability(v *Visit) *ViewEvent {
-	if rand.Float64() <= ve.probability { // Probability to click
-		ve.willExecute = true
-		return ve
-	}
-	return ve
-
 }

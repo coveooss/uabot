@@ -61,6 +61,11 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 		}
 	}
 
+	// falseResponse is deprecated
+	if e.Arguments["falseResponse"] != nil {
+		return nil, errors.New("Parameter falseResponse is deprecated, please use fakeResponse instead.")
+	}
+
 	if e.Arguments["fakeClick"] != nil {
 		if event.fakeClick, validcast = e.Arguments["fakeClick"].(bool); !validcast {
 			return nil, errors.New("Parameter fakeClick must be a boolean value")
