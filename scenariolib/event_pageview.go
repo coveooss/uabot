@@ -11,12 +11,15 @@ import (
 
 // ViewEvent a struct representing a view, it is defined by a clickRank, an
 // offset, a probability to click, the contentType and a pageViewField
+// We keep a similar structure to a click event because we can simulate that the user
+// visited a page that was returned as a result
 type ViewEvent struct {
 	clickRank     int
 	offset        int
 	probability   float64
 	contentType   string
 	pageViewField string
+	willExecute   bool
 }
 
 func newViewEvent(e *JSONEvent, c *Config) (*ViewEvent, error) {
@@ -58,7 +61,7 @@ func newViewEvent(e *JSONEvent, c *Config) (*ViewEvent, error) {
 	return event, nil
 }
 
-// Execute Execute the view event, sending a view event to the usage analytics
+// Execute the view event, sending a view event to the usage analytics
 func (ve *ViewEvent) Execute(v *Visit) error {
 	if v.LastResponse == nil {
 		return errors.New("LastResponse was nil, cannot send a pageview. Please use a search event before.")
@@ -68,6 +71,22 @@ func (ve *ViewEvent) Execute(v *Visit) error {
 		return nil
 	}
 
+	ve.computeClickRank(v). // Randomize a click rank if the clickRank is -1
+				checkProbability(v) // Random chance to execute the view event or not based on ve.probability
+
+	if ve.willExecute {
+		err := v.sendViewEvent(ve.clickRank, ve.contentType, ve.pageViewField)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+	Info.Printf("User chose not to view (probability %v%%)", int(ve.probability*100))
+	return nil
+}
+
+// Randomize a click rank if the clickRank is -1
+func (ve *ViewEvent) computeClickRank(v *Visit) *ViewEvent {
 	if ve.clickRank == -1 { // if rank == -1 we need to randomize a rank
 		ve.clickRank = 0
 		// Find a random rank within the possible click values accounting for the offset
@@ -77,18 +96,15 @@ func (ve *ViewEvent) Execute(v *Visit) error {
 			ve.clickRank = Min(rndRank, topL-1)
 		}
 	}
+	return ve
+}
 
+// Random chance to execute the view event or not based on ve.probability
+func (ve *ViewEvent) checkProbability(v *Visit) *ViewEvent {
 	if rand.Float64() <= ve.probability { // Probability to click
-		if ve.clickRank > v.LastResponse.TotalCount {
-			return errors.New("Search results index out of bounds")
-		}
-
-		err := v.sendViewEvent(ve.clickRank, ve.contentType, ve.pageViewField)
-		if err != nil {
-			return err
-		}
-		return nil
+		ve.willExecute = true
+		return ve
 	}
-	Info.Printf("User chose not to view (probability %v%%)", int(ve.probability*100))
-	return nil
+	return ve
+
 }

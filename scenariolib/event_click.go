@@ -65,11 +65,11 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 		if event.fakeClick, validcast = e.Arguments["fakeClick"].(bool); !validcast {
 			return nil, errors.New("Parameter fakeClick must be a boolean value")
 		}
-		if e.Arguments["falseResponse"] != nil {
-			jsonFalseResponse, _ := json.Marshal(e.Arguments["falseResponse"])
-			err := json.Unmarshal(jsonFalseResponse, &event.fakeResponse)
+		if e.Arguments["fakeResponse"] != nil {
+			jsonFakeResponse, _ := json.Marshal(e.Arguments["fakeResponse"])
+			err := json.Unmarshal(jsonFakeResponse, &event.fakeResponse)
 			if err != nil {
-				return nil, errors.New("Parameter falseResponse must be a search.Response")
+				return nil, errors.New("Parameter fakeResponse must be a search.Response")
 			}
 		}
 	} else {

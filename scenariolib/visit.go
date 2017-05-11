@@ -231,11 +231,11 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
 	event.OriginLevel3 = v.OriginLevel3
-	event.ContentIdKey = "@" + pageViewField
+	event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
 
 	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
-		event.ContentIdValue = contentIDValue
+		event.ContentIDValue = contentIDValue
 	} else {
 		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[rank].Raw[pageViewField], pageViewField)
 	}

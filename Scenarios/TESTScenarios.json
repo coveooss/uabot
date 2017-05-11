@@ -27,7 +27,7 @@
   ],
   "scenarios": [
     {
-      "name": "GQ -> C(45%) -> GQ -> C(50%)",
+      "name": "PageView",
       "weight": 20,
       "events": [
         {
@@ -38,156 +38,14 @@
           }
         },
         {
-          "type": "Click",
+          "type": "View",
           "arguments": {
-            "docNo": -1,
             "offset": 0,
-            "probability": 0.45
-          }
-        },
-        {
-          "type": "Search",
-          "arguments": {
-            "queryText": "",
-            "goodQuery": true
-          }
-        },
-        {
-          "type": "Click",
-          "arguments": {
             "docNo": -1,
-            "offset": 0,
-            "probability": 0.5
-          }
-        }
-      ]
-    },
-    {
-      "name": "Mobile GQ -> C(40%)",
-      "weight": 2,
-      "useragent": "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
-      "events": [
-        {
-          "type": "Search",
-          "arguments": {
-            "queryText": "",
-            "goodQuery": true
-          }
-        },
-        {
-          "type": "Click",
-          "arguments": {
-            "docNo": -1,
-            "offset": 0,
-            "probability": 0.6
-          }
-        }
-      ]
-    },
-    {
-      "name": "BQ -> C(20%)",
-      "weight": 4,
-      "events": [
-        {
-          "type": "Search",
-          "arguments": {
-            "queryText": "",
-            "goodQuery": false
-          }
-        },
-        {
-          "type": "Click",
-          "arguments": {
-            "docNo": -1,
-            "offset": 0,
-            "probability": 0.1
-          }
-        }
-      ]
-    },
-    {
-      "name": "GQ tabchange to youtube-> GQ -> C(40%)",
-      "weight": 2,
-      "events": [
-        {
-          "type": "Search",
-          "arguments": {
-            "queryText": "",
-            "goodQuery": true
-          }
-        },
-        {
-          "type": "TabChange",
-          "arguments": {
-            "tabName": "YOUTUBE",
-            "tabCQ": "@sysfiletype==\"youtubevideo\""
-          }
-        },
-        {
-          "type": "Click",
-          "arguments": {
-            "docNo": -1,
-            "offset": 0,
-            "probability": 0.4,
-            "quickview": true
-          }
-        }
-      ]
-    },
-    {
-      "name": "GQ with facetchange to Type (message)> GQ -> C(45%)",
-      "weight": 1,
-      "events": [
-        {
-          "type": "Search",
-          "arguments": {
-            "queryText": "",
-            "goodQuery": true
-          }
-        },
-        {
-          "type": "FacetChange",
-          "arguments": {
-            "facetTitle": "Type",
-            "facetField": "@objecttype",
-            "facetValue": "Message"
-          }
-        },
-        {
-          "type": "Click",
-          "arguments": {
-            "docNo": -1,
-            "offset": 0,
-            "probability": 0.45
-          }
-        }
-      ]
-    },
-    {
-      "name": "Scenarios caseCreation",
-      "weight": 1,
-      "events": [
-        {
-          "type": "SetOrigin",
-          "arguments": {
-            "originLevel1": "CaseCreation"
-          }
-        },
-        {
-          "type": "Search",
-          "arguments": {
-            "queryText": "",
-            "goodQuery": true
-          }
-        },
-        {
-          "type": "Custom",
-          "arguments": {
-            "actionCause": "cancelButton",
-            "actionType": "caseCreation",
-            "customData": {
-              "hasclicks": true
-            }
+            "probability": 1,
+            "pageuri": "https://example.com",
+            "pagereferrer": "https://www.google.com",
+            "pagetitle": "Page Example"
           }
         }
       ]
