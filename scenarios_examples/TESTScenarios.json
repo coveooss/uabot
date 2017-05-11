@@ -1,0 +1,54 @@
+{
+  "searchendpoint": "https://cloudplatform.coveo.com/rest/search/",
+  "analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
+  "defaultOriginLevel1": "BotSearch",
+  "timeBetweenVisits": 3,
+  "timeBetweenActions": 2,
+  "anonymousThreshold": 1,
+  "orgName": "Test",
+  "pipeline": "besttechCommunity",
+  "randomCustomData": [
+    {
+      "apiname": "customData1",
+      "values": [
+        "customValue 1"
+      ]
+    }
+  ],
+  "languages": [
+    "en"
+  ],
+  "globalfilter": "",
+  "randomGoodQueries": [
+    "@uri"
+  ],
+  "randomBadQueries": [
+    "aaaaaaaaaaa"
+  ],
+  "scenarios": [
+    {
+      "name": "PageView",
+      "weight": 20,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "View",
+          "arguments": {
+            "offset": 0,
+            "docNo": -1,
+            "probability": 1,
+            "pageuri": "https://example.com",
+            "pagereferrer": "https://www.google.com",
+            "pagetitle": "Page Example"
+          }
+        }
+      ]
+    }
+  ]
+}

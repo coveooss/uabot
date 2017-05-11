@@ -5,6 +5,7 @@ package scenariolib
 import (
 	"encoding/json"
 	"errors"
+
 	"github.com/coveo/go-coveo/search"
 )
 
@@ -20,10 +21,10 @@ func newFakeSearchEvent(e *JSONEvent, c *Config) (*FakeSearchEvent, error) {
 	se := new(FakeSearchEvent)
 
 	if e.Arguments["fakeResponse"] != nil {
-		jsonFalseResponse, _ := json.Marshal(e.Arguments["fakeResponse"])
-		err := json.Unmarshal(jsonFalseResponse, &se.fakeResponse)
+		jsonFakeResponse, _ := json.Marshal(e.Arguments["fakeResponse"])
+		err := json.Unmarshal(jsonFakeResponse, &se.fakeResponse)
 		if err != nil {
-			return nil, errors.New("Parameter falseResponse must be a search.Response")
+			return nil, errors.New("Parameter fakeResponse must be a search.Response")
 		}
 	}
 

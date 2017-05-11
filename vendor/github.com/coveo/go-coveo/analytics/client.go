@@ -138,8 +138,8 @@ func NewViewEvent() (*ViewEvent, error) {
 		PageURI:        "",
 		PageReferrer:   "",
 		PageTitle:      "",
-		ContentIdKey:   "",
-		ContentIdValue: "",
+		ContentIDKey:   "",
+		ContentIDValue: "",
 		ContentType:    "",
 	}, nil
 }

@@ -65,7 +65,7 @@ probability | number | The probability that the user will click (between 0 and 1
 quickview | boolean | If the click is a quickview or not (default, false)
 customData | object | Custom data to be sent alongside the event.
 fakeClick | boolean | Click on a document in falseResponse.
-falseResponse | search.Response | A fake response from the search
+fakeResponse | search.Response | A fake response from the search
 
 #### Example
 
