@@ -20,7 +20,7 @@
  "scenarios" : [
    {
      "name"   : "GQ -> C(60%)",
-     "weight" : 20,
+     "weight" : 5,
      "events" : [
        { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
        { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
@@ -122,6 +122,22 @@
      ]
    },
    {
+     "name"   : "ML rotting deer",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "rotting deer", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "animal carcasses", "docClickTitle" : "DIV 450 Disposal Notes", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML roadkill",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "roadkill", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "animal carcasses", "docClickTitle" : "DIV 450 Disposal Notes", "probability" : 0.75 } }
+     ]
+   },
+   {
      "name"   : "ML ground grips",
      "weight" : 10,
      "events" : [
@@ -130,10 +146,26 @@
      ]
    },
    {
+     "name"   : "ML Mowers",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "mowers", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "grass clippings", "docClickTitle" : "DIV 450 Disposal Notes", "probability" : 0.75 } }
+     ]
+   },
+   {
      "name"   : "ML will you recycle the ground grips",
      "weight" : 10,
      "events" : [
        { "type" : "Search", "arguments" : { "queryText" : "will you recycle the ground grips", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "grass clippings", "docClickTitle" : "DIV 450 Disposal Notes", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML will you recycle the ground grips off of my riding mower?",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "will you recycle the ground grips off of my riding mower?", "goodQuery" : false } },
        { "type" : "SearchAndClick", "arguments" : { "queryText" : "grass clippings", "docClickTitle" : "DIV 450 Disposal Notes", "probability" : 0.75 } }
      ]
    }
