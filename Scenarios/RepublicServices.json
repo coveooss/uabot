@@ -1,0 +1,141 @@
+{
+ "searchendpoint" 		: "https://platform.cloud.coveo.com/rest/search/",
+ "analyticsendpoint" 	: "https://usageanalytics.coveo.com/rest/v15/analytics/",
+ "partialMatch" 			: true,
+ "partialMatchKeywords" 	: 4,
+ "partialMatchThreshold" 	: "50%",
+ "defaultOriginLevel1" 	: "Search",
+ "timeBetweenVisits"		: 20,
+ "timeBetweenActions"	: 3,
+ "allowAnonymousVisits"	: true,
+ "anonymousThreshold" 	: 0.5,
+ "orgName"     			: "republicservices",
+ "pipeline" 				: "default",
+ "allowEntitlements"		: true,
+ "languages" 			: ["en", "en", "en", "en", "en", "fr"],
+ "randomGoodQueries" : [ "tire disposal", "bulk tire pickup", "tire", "recycle tire", "large container", "special waste",  "Sludge", "ashes",
+   "contaminated soils", "powders", "dust", "shredder materials", "abrasives", "off spec raw",
+    "refinery brick materials", "animal carcasses", "animal waste", "oversized items", "spoiled foods", "foundry sand", "PCB materials" ],
+ "randomBadQueries" : [ "tire dispossal", "wast", "contanine soel", "abrisive"],
+ "scenarios" : [
+   {
+     "name"   : "GQ -> C(60%)",
+     "weight" : 20,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(45%) -> GQ -> C(50%)",
+     "weight" : 5,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(55%) -> GQ -> C(55%) -> GQ -> C(60%)",
+     "weight" : 5,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.45 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.45 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.6 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%)",
+     "weight" : 2,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 3,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } }
+     ]
+   },
+   {
+     "name"   : "GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(50%)",
+     "weight" : 1,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 4,  "probability" : 0.5 } }
+     ]
+   },
+   {
+     "name"   : "Mobile GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(40%) -> GQ -> C(50%) -> GQ -> C(60%)",
+     "weight" : 2,
+     "useragent" : "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36",
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 1,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.5 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 2,  "probability" : 0.6 } }
+     ]
+   },
+   {
+     "name"   : "BQ -> C(20%) -> GQ -> C(40%)",
+     "weight" : 4,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : false } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.1 } },
+       { "type" : "Search", "arguments" : { "queryText" : "", "goodQuery" : true } },
+       { "type" : "Click", "arguments" : { "docNo" :-1, "offset" : 0,  "probability" : 0.4 } }
+     ]
+   },
+   {
+     "name"   : "ML can I toss my golf cart’s wheels",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "can I toss my golf cart’s wheels", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "dispose of tires", "docClickTitle" : "DIV 769 Disposal Notes", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML dead animals",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "dead animals", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "animal carcasses", "docClickTitle" : "DIV 450 Disposal Notes", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML ground grips",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "ground grips", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "tire disposal", "docClickTitle" : "DIV 769 Disposal Notes", "probability" : 0.75 } }
+     ]
+   },
+   {
+     "name"   : "ML will you recycle the ground grips",
+     "weight" : 10,
+     "events" : [
+       { "type" : "Search", "arguments" : { "queryText" : "will you recycle the ground grips", "goodQuery" : false } },
+       { "type" : "SearchAndClick", "arguments" : { "queryText" : "grass clippings", "docClickTitle" : "DIV 450 Disposal Notes", "probability" : 0.75 } }
+     ]
+   }
+ ]
+}
