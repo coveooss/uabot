@@ -165,6 +165,8 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.OriginLevel3 = v.OriginLevel3
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
+	event.SplitTestRunName = v.LastResponse.SplitTestRunName
+	event.SplitTestRunVersion = v.LastResponse.Pipeline
 	event.CustomData = make(map[string]interface{})
 
 	event.CustomData["JSUIVersion"] = JSUIVERSION
@@ -233,6 +235,8 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 	event.OriginLevel3 = v.OriginLevel3
 	event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
+	event.SplitTestRunName = v.LastResponse.SplitTestRunName
+	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
 		event.ContentIDValue = contentIDValue
@@ -266,6 +270,9 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	event.OriginLevel1 = v.OriginLevel1
 	event.OriginLevel2 = v.OriginLevel2
 	event.OriginLevel3 = v.OriginLevel3
+	event.SplitTestRunName = v.LastResponse.SplitTestRunName
+	event.SplitTestRunVersion = v.LastResponse.Pipeline
+
 	if customData != nil {
 		event.CustomData = customData
 		event.CustomData["JSUIVersion"] = JSUIVERSION
@@ -308,9 +315,21 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		return err
 	}
 
-	event.DocumentURI = v.LastResponse.Results[rank].URI
+	event.Username = v.Username
+	event.Anonymous = v.Anonymous
+	event.Language = v.Language
 	event.SearchQueryUID = v.LastResponse.SearchUID
-	event.DocumentPosition = rank + 1
+	event.OriginLevel1 = v.OriginLevel1
+	event.OriginLevel2 = v.OriginLevel2
+	event.OriginLevel3 = v.OriginLevel3
+	event.DocumentURI = v.LastResponse.Results[rank].URI
+	event.DocumentTitle = v.LastResponse.Results[rank].Title
+	event.QueryPipeline = v.LastResponse.Pipeline
+	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
+	event.DocumentPosition = rank + 1 //Document Position is 1 based in UA
+	event.SplitTestRunName = v.LastResponse.SplitTestRunName
+	event.SplitTestRunVersion = v.LastResponse.Pipeline
+
 	if quickview {
 		event.ActionCause = "documentQuickview"
 		event.ViewMethod = "documentQuickview"
@@ -318,15 +337,6 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		event.ActionCause = "documentOpen"
 	}
 
-	event.DocumentTitle = v.LastResponse.Results[rank].Title
-	event.QueryPipeline = v.LastResponse.Pipeline
-	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
-	event.Username = v.Username
-	event.Anonymous = v.Anonymous
-	event.Language = v.Language
-	event.OriginLevel1 = v.OriginLevel1
-	event.OriginLevel2 = v.OriginLevel2
-	event.OriginLevel3 = v.OriginLevel3
 	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
 		event.DocumentURIHash = urihash
 	} else {
@@ -401,6 +411,9 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.OriginLevel3 = v.OriginLevel3
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
+	event.SplitTestRunName = v.LastResponse.SplitTestRunName
+	event.SplitTestRunVersion = v.LastResponse.Pipeline
+
 	event.CustomData = customData
 
 	if v.LastResponse.TotalCount > 0 {

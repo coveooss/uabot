@@ -10,6 +10,7 @@ type Response struct {
 	Pipeline           string          `json:"pipeline"`
 	GroupByResults     []GroupByResult `json:"groupByResults,omitempty"`
 	Results            []Result        `json:"results,omitempty"`
+	SplitTestRunName   string          `json:"splitTestRun,omitempty"`
 }
 
 type Result struct {
