@@ -103,7 +103,8 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 
 			visit.UAClient.DeleteVisit()
 			if bot.WaitBetweenVisits {
-				waitTime := time.Duration(bot.random.Intn(timeVisits)) * time.Second
+				// Minimum wait time of 500ms between visits.
+				waitTime := (time.Duration(rand.Intn(timeVisits*1000)) + 500) * time.Millisecond
 				time.Sleep(waitTime)
 			}
 
@@ -161,8 +162,8 @@ func refreshScenarios(url string, isLocal bool) *Config {
 
 	if err != nil {
 		Warning.Println("Cannot update scenario file, keeping the old one")
+		Warning.Println(err)
 		return nil
-	} else {
-		return conf
 	}
+	return conf
 }
