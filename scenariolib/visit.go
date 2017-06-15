@@ -403,14 +403,13 @@ func (v *Visit) FindDocumentRankByTitle(toFind string) int {
 
 // WaitBetweenActions Wait a random or constant number of seconds between user actions
 func WaitBetweenActions(timeToWait int, isConstant bool) {
-	if isConstant {
-		// Never faster than 500 Millisecond
-		time.Sleep(MaxDuration(time.Duration(timeToWait*1000)*time.Millisecond, 500*time.Millisecond))
-	} else {
-		// Failsafe to never go higher than 2 QPS per bot.
-		time.Sleep(MaxDuration(time.Duration(rand.Intn(timeToWait*1000))*time.Millisecond, 500*time.Millisecond))
+	timeToWait = timeToWait * 1000
+	if !isConstant {
+		timeToWait = rand.Intn(timeToWait)
 	}
+	timeToWait = Max(timeToWait, 500)
 
+	time.Sleep(time.Duration(timeToWait) * time.Millisecond)
 }
 
 // Min Function to return the minimal value between two integers, because Go "forgot"
@@ -422,8 +421,8 @@ func Min(a, b int) int {
 	return b
 }
 
-// MaxDuration function returning the maximum between two values of type time.Duration
-func MaxDuration(a, b time.Duration) time.Duration {
+// Max function returning the maximum between two values of type int
+func Max(a, b int) int {
 	if a > b {
 		return b
 	}
