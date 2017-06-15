@@ -408,9 +408,10 @@ func (v *Visit) FindDocumentRankByTitle(toFind string) int {
 // WaitBetweenActions Wait a random or constant number of seconds between user actions
 func WaitBetweenActions(timeToWait int, isConstant bool) {
 	if isConstant {
-		time.Sleep(time.Duration(timeToWait) * time.Second)
+		time.Sleep((time.Duration(timeToWait*1000) + 500) * time.Second)
 	} else {
-		time.Sleep(time.Duration(rand.Intn(timeToWait)) * time.Second)
+		// Failsafe to never go higher than 2 QPS per bot.
+		time.Sleep((time.Duration(rand.Intn(timeToWait*1000)) + 500) * time.Millisecond)
 	}
 
 }
