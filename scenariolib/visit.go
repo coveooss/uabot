@@ -161,7 +161,8 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.ActionType = actionType
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
-	event.CustomData = make(map[string]interface{})
+	event.SplitTestRunName = v.LastResponse.SplitTestRunName
+	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	v.decorateCustomMetadata(event.ActionEvent, customData)
 
@@ -203,6 +204,8 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 	event.ContentType = contentType
 	event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
+	event.SplitTestRunName = v.LastResponse.SplitTestRunName
+	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
 		event.ContentIDValue = contentIDValue
@@ -231,7 +234,6 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	event.ActionType = actionType
 	event.EventType = actionType
 	event.EventValue = actionCause
-	event.CustomData = customData
 
 	v.decorateCustomMetadata(event.ActionEvent, customData)
 
@@ -328,8 +330,6 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.ActionType = actionType
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
-
-	event.CustomData = customData
 
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
