@@ -161,8 +161,6 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.ActionType = actionType
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
-	event.SplitTestRunName = v.LastResponse.SplitTestRunName
-	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	v.decorateCustomMetadata(event.ActionEvent, customData)
 
@@ -204,8 +202,6 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 	event.ContentType = contentType
 	event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
-	event.SplitTestRunName = v.LastResponse.SplitTestRunName
-	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
 		event.ContentIDValue = contentIDValue
