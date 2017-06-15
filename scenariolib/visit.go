@@ -412,7 +412,7 @@ func WaitBetweenActions(timeToWait int, isConstant bool) {
 		time.Sleep(MaxDuration(time.Duration(timeToWait*1000)*time.Millisecond, 500*time.Millisecond))
 	} else {
 		// Failsafe to never go higher than 2 QPS per bot.
-		time.Sleep((time.Duration(rand.Intn(timeToWait*1000)) + 500) * time.Millisecond)
+		time.Sleep(MaxDuration(time.Duration(rand.Intn(timeToWait*1000))*time.Millisecond, 500*time.Millisecond))
 	}
 
 }
