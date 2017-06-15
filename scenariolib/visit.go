@@ -419,22 +419,14 @@ func WaitBetweenActions(timeToWait int, isConstant bool) {
 
 // Min Function to return the minimal value between two integers, because Go "forgot"
 // to code it...
-func Min(a, b int64) int64 {
+func Min(a, b int) int {
 	if a < b {
 		return a
 	}
 	return b
 }
 
-// Max function returning the maximum between two values of type int64
-func Max(a, b int64) int64 {
-	if a > b {
-		return b
-	}
-	return a
-}
-
-// Max function returning the maximum between two values of type time.Duration
+// MaxDuration function returning the maximum between two values of type time.Duration
 func MaxDuration(a, b time.Duration) time.Duration {
 	if a > b {
 		return b
