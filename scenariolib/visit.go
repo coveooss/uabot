@@ -152,50 +152,23 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 		return err
 	}
 
-	event.Username = v.Username
-	event.Anonymous = v.Anonymous
-	event.Language = v.Language
+	v.decorateEvent(event.ActionEvent)
+
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.QueryText = q
 	event.AdvancedQuery = v.LastQuery.AQ
 	event.ActionCause = actionCause
 	event.ActionType = actionType
-	event.OriginLevel1 = v.OriginLevel1
-	event.OriginLevel2 = v.OriginLevel2
-	event.OriginLevel3 = v.OriginLevel3
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
 	event.SplitTestRunName = v.LastResponse.SplitTestRunName
 	event.SplitTestRunVersion = v.LastResponse.Pipeline
-	event.CustomData = make(map[string]interface{})
 
-	event.CustomData["JSUIVersion"] = JSUIVERSION
-	event.CustomData["ipadress"] = v.IP
-	if customData != nil {
-		event.CustomData = customData
-		event.CustomData["JSUIVersion"] = JSUIVERSION
-		event.CustomData["ipadress"] = v.IP
-	} else {
-		event.CustomData = map[string]interface{}{
-			"JSUIVersion": JSUIVERSION,
-			"ipadress":    v.IP,
-		}
-	}
+	v.decorateCustomMetadata(event.ActionEvent, customData)
 
 	if v.Config.AllowEntitlements {
 		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
-	}
-
-	// Send all the possible random custom data that can be added from the config
-	// scenario file.
-	for _, elem := range v.Config.RandomCustomData {
-		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
-	}
-
-	// Override possible values of customData with the specific customData sent
-	for k, v := range customData {
-		event.CustomData[k] = v
 	}
 
 	if v.LastResponse.TotalCount > 0 {
@@ -224,15 +197,11 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 		return err
 	}
 
+	v.decorateEvent(event.ActionEvent)
+
 	event.PageURI = v.LastResponse.Results[rank].ClickUri
 	event.PageTitle = v.LastResponse.Results[rank].Title
 	event.ContentType = contentType
-	event.Username = v.Username
-	event.Anonymous = v.Anonymous
-	event.Language = v.Language
-	event.OriginLevel1 = v.OriginLevel1
-	event.OriginLevel2 = v.OriginLevel2
-	event.OriginLevel3 = v.OriginLevel3
 	event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
 	event.SplitTestRunName = v.LastResponse.SplitTestRunName
@@ -259,45 +228,18 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 		return err
 	}
 
-	event.Username = v.Username
-	event.Anonymous = v.Anonymous
-	event.Language = v.Language
+	v.decorateEvent(event.ActionEvent)
+
 	event.ActionCause = actionCause
 	event.ActionType = actionType
 	event.EventType = actionType
 	event.EventValue = actionCause
-	event.CustomData = customData
-	event.OriginLevel1 = v.OriginLevel1
-	event.OriginLevel2 = v.OriginLevel2
-	event.OriginLevel3 = v.OriginLevel3
-	event.SplitTestRunName = v.LastResponse.SplitTestRunName
-	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
-	if customData != nil {
-		event.CustomData = customData
-		event.CustomData["JSUIVersion"] = JSUIVERSION
-		event.CustomData["ipadress"] = v.IP
-	} else {
-		event.CustomData = map[string]interface{}{
-			"JSUIVersion": JSUIVERSION,
-			"ipadress":    v.IP,
-		}
-	}
+	v.decorateCustomMetadata(event.ActionEvent, customData)
 
 	if v.Config.AllowEntitlements {
 		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
-	}
-
-	// Send all the possible random custom data that can be added from the config
-	// scenario file.
-	for _, elem := range v.Config.RandomCustomData {
-		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
-	}
-
-	// Override possible values of customData with the specific customData sent
-	for k, v := range customData {
-		event.CustomData[k] = v
 	}
 
 	// Send a UA search event
@@ -315,20 +257,14 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		return err
 	}
 
-	event.Username = v.Username
-	event.Anonymous = v.Anonymous
-	event.Language = v.Language
+	v.decorateEvent(event.ActionEvent)
+
 	event.SearchQueryUID = v.LastResponse.SearchUID
-	event.OriginLevel1 = v.OriginLevel1
-	event.OriginLevel2 = v.OriginLevel2
-	event.OriginLevel3 = v.OriginLevel3
 	event.DocumentURI = v.LastResponse.Results[rank].URI
 	event.DocumentTitle = v.LastResponse.Results[rank].Title
 	event.QueryPipeline = v.LastResponse.Pipeline
 	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
 	event.DocumentPosition = rank + 1 //Document Position is 1 based in UA
-	event.SplitTestRunName = v.LastResponse.SplitTestRunName
-	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	if quickview {
 		event.ActionCause = "documentQuickview"
@@ -359,10 +295,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		// return errors.New("Cannot convert syssource to string")
 	}
 
-	event.CustomData = map[string]interface{}{
-		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.IP,
-	}
+	v.decorateCustomMetadata(event.ActionEvent, customData)
 
 	if v.Config.AllowEntitlements {
 		// Custom shit for besttech, I don't like it
@@ -370,17 +303,6 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	}
 
 	event.CustomData["author"] = generateRandomAuthor(event.DocumentTitle)
-
-	// Send all the possible random custom data that can be added from the config
-	// scenario file.
-	for _, elem := range v.Config.RandomCustomData {
-		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
-	}
-
-	// Override possible values of customData with the specific customData sent
-	for k, v := range customData {
-		event.CustomData[k] = v
-	}
 
 	err = v.UAClient.SendClickEvent(event)
 	if err != nil {
@@ -398,23 +320,16 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		return err
 	}
 
-	event.Username = v.Username
-	event.Anonymous = v.Anonymous
-	event.Language = v.Language
+	// Add all the metadata on the event that is common across all events.
+	v.decorateEvent(event.ActionEvent)
+
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.QueryText = v.LastQuery.Q
 	event.AdvancedQuery = v.LastQuery.AQ
 	event.ActionCause = actionCause
 	event.ActionType = actionType
-	event.OriginLevel1 = v.OriginLevel1
-	event.OriginLevel2 = v.OriginLevel2
-	event.OriginLevel3 = v.OriginLevel3
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
-	event.SplitTestRunName = v.LastResponse.SplitTestRunName
-	event.SplitTestRunVersion = v.LastResponse.Pipeline
-
-	event.CustomData = customData
 
 	if v.LastResponse.TotalCount > 0 {
 		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
@@ -426,25 +341,11 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		}
 	}
 
-	event.CustomData = map[string]interface{}{
-		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.IP,
-	}
+	v.decorateCustomMetadata(event.ActionEvent, customData)
 
 	if v.Config.AllowEntitlements {
 		// Custom shit for besttech, I don't like it
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
-	}
-
-	// Send all the possible random custom data that can be added from the config
-	// scenario file.
-	for _, elem := range v.Config.RandomCustomData {
-		event.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
-	}
-
-	// Override possible values of customData with the specific customData sent
-	for k, v := range customData {
-		event.CustomData[k] = v
 	}
 
 	err = v.UAClient.SendSearchEvent(event)
@@ -452,6 +353,42 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		return err
 	}
 	return nil
+}
+
+// decorateEvent is used to assign all the common data to send with all analytics events
+func (v *Visit) decorateEvent(evt *ua.ActionEvent) {
+	evt.Username = v.Username
+	evt.Anonymous = v.Anonymous
+	evt.Language = v.Language
+	evt.OriginLevel1 = v.OriginLevel1
+	evt.OriginLevel2 = v.OriginLevel2
+	evt.OriginLevel3 = v.OriginLevel3
+
+	// Only send AB tests metadata if there is an acutal AB test involved in the last Response.
+	if v.LastResponse.SplitTestRunName != "" {
+		evt.SplitTestRunName = v.LastResponse.SplitTestRunName
+		evt.SplitTestRunVersion = v.LastResponse.Pipeline
+	}
+}
+
+// decorateCustomMetadata is used to handle all the customMetadata for the events that allow it.
+func (v *Visit) decorateCustomMetadata(evt *ua.ActionEvent, customData map[string]interface{}) {
+
+	evt.CustomData = map[string]interface{}{
+		"JSUIVersion": JSUIVERSION,
+		"ipaddress":   v.IP,
+	}
+
+	// Send all the possible random custom data that can be added from the config
+	// scenario file.
+	for _, elem := range v.Config.RandomCustomData {
+		evt.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
+	}
+
+	// Override possible values of customData with the specific customData sent
+	for k, v := range customData {
+		evt.CustomData[k] = v
+	}
 }
 
 // FindDocumentRankByTitle Looks through the last response to a query to find a document
