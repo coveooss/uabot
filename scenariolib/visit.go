@@ -376,7 +376,7 @@ func (v *Visit) decorateCustomMetadata(evt *ua.ActionEvent, customData map[strin
 
 	evt.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
-		"ipadress":    v.IP,
+		"ipaddress":   v.IP,
 	}
 
 	// Send all the possible random custom data that can be added from the config
