@@ -161,8 +161,6 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.ActionType = actionType
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
-	event.SplitTestRunName = v.LastResponse.SplitTestRunName
-	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	v.decorateCustomMetadata(event.ActionEvent, customData)
 
@@ -204,8 +202,6 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 	event.ContentType = contentType
 	event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
-	event.SplitTestRunName = v.LastResponse.SplitTestRunName
-	event.SplitTestRunVersion = v.LastResponse.Pipeline
 
 	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
 		event.ContentIDValue = contentIDValue
@@ -407,22 +403,30 @@ func (v *Visit) FindDocumentRankByTitle(toFind string) int {
 
 // WaitBetweenActions Wait a random or constant number of seconds between user actions
 func WaitBetweenActions(timeToWait int, isConstant bool) {
-	if isConstant {
-		time.Sleep((time.Duration(timeToWait*1000) + 500) * time.Second)
-	} else {
-		// Failsafe to never go higher than 2 QPS per bot.
-		time.Sleep((time.Duration(rand.Intn(timeToWait*1000)) + 500) * time.Millisecond)
+	timeToWait = timeToWait * 1000
+	if !isConstant {
+		timeToWait = rand.Intn(timeToWait)
 	}
+	timeToWait = Max(timeToWait, 500)
 
+	time.Sleep(time.Duration(timeToWait) * time.Millisecond)
 }
 
 // Min Function to return the minimal value between two integers, because Go "forgot"
 // to code it...
-func Min(a int, b int) int {
+func Min(a, b int) int {
 	if a < b {
 		return a
 	}
 	return b
+}
+
+// Max function returning the maximum between two values of type int
+func Max(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
 }
 
 func hash(s string) uint32 {
