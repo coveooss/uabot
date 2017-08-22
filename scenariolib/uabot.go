@@ -15,7 +15,7 @@ const DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS int = 150
 const WEEKEND_MODIFIER = 10
 
 type Uabot interface {
-	Run() error
+	Run(quitChannel chan bool) error
 }
 
 type uabot struct {
@@ -27,10 +27,10 @@ type uabot struct {
 	WaitBetweenVisits bool
 }
 
-func NewUabot(local bool, scenarioUrl string, searchToken string, analyticsToken string, random *rand.Rand) *uabot {
+func NewUabot(local bool, scenarioURL string, searchToken string, analyticsToken string, random *rand.Rand) Uabot {
 	return &uabot{
 		local,
-		scenarioUrl,
+		scenarioURL,
 		searchToken,
 		analyticsToken,
 		random,

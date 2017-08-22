@@ -103,7 +103,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 	ip := c.RandomIPs[rand.Intn(len(c.RandomIPs))]
 	v.IP = ip
 	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: ip, Endpoint: c.AnalyticsEndpoint}
-	uaClient, err := ua.NewClient(uaConfig)
+	uaClient := ua.NewClient(uaConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -147,10 +147,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 		return errors.New("LastResponse was nil. Cannot send search event.")
 	}
 	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
-	event, err := ua.NewSearchEvent()
-	if err != nil {
-		return err
-	}
+	event := ua.NewSearchEvent()
 
 	v.decorateEvent(event.ActionEvent)
 
@@ -158,7 +155,6 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	event.QueryText = q
 	event.AdvancedQuery = v.LastQuery.AQ
 	event.ActionCause = actionCause
-	event.ActionType = actionType
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
 
@@ -182,7 +178,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	// Send a UA search event
 	error := v.UAClient.SendSearchEvent(event)
 	if error != nil {
-		return err
+		return error
 	}
 	return nil
 }
@@ -190,27 +186,24 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string) error {
 	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
 
-	event, err := ua.NewViewEvent()
-	if err != nil {
-		return err
-	}
+	event := ua.NewViewEvent()
 
 	v.decorateEvent(event.ActionEvent)
 
-	event.PageURI = v.LastResponse.Results[rank].ClickUri
+	event.PageURI = v.LastResponse.Results[rank].ClickURI
 	event.PageTitle = v.LastResponse.Results[rank].Title
-	event.ContentType = contentType
-	event.ContentIDKey = "@" + pageViewField
+	// event.ContentType = contentType
+	// event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
 
-	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
-		event.ContentIDValue = contentIDValue
-	} else {
-		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[rank].Raw[pageViewField], pageViewField)
-	}
+	// if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
+	// 	event.ContentIDValue = contentIDValue
+	// } else {
+	// 	return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[rank].Raw[pageViewField], pageViewField)
+	// }
 
 	// Send a UA view event
-	err = v.UAClient.SendViewEvent(event)
+	err := v.UAClient.SendViewEvent(event)
 	if err != nil {
 		return err
 	}
@@ -219,15 +212,10 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 
 func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
 	Info.Printf("Sending CustomEvent cause: %s ||| type: %s", actionCause, actionType)
-	event, err := ua.NewCustomEvent()
-	if err != nil {
-		return err
-	}
+	event := ua.NewCustomEvent()
 
 	v.decorateEvent(event.ActionEvent)
 
-	event.ActionCause = actionCause
-	event.ActionType = actionType
 	event.EventType = actionType
 	event.EventValue = actionCause
 
@@ -239,7 +227,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 	}
 
 	// Send a UA search event
-	err = v.UAClient.SendCustomEvent(event)
+	err := v.UAClient.SendCustomEvent(event)
 	return err
 }
 
@@ -248,10 +236,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		return errors.New("LastResponse was nil cannot send click event.")
 	}
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
-	event, err := ua.NewClickEvent()
-	if err != nil {
-		return err
-	}
+	event := ua.NewClickEvent()
 
 	v.decorateEvent(event.ActionEvent)
 
@@ -259,12 +244,11 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	event.DocumentURI = v.LastResponse.Results[rank].URI
 	event.DocumentTitle = v.LastResponse.Results[rank].Title
 	event.QueryPipeline = v.LastResponse.Pipeline
-	event.DocumentURL = v.LastResponse.Results[rank].ClickUri
+	event.DocumentURL = v.LastResponse.Results[rank].ClickURI
 	event.DocumentPosition = rank + 1 //Document Position is 1 based in UA
 
 	if quickview {
 		event.ActionCause = "documentQuickview"
-		event.ViewMethod = "documentQuickview"
 	} else {
 		event.ActionCause = "documentOpen"
 	}
@@ -300,7 +284,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 
 	event.CustomData["author"] = generateRandomAuthor(event.DocumentTitle)
 
-	err = v.UAClient.SendClickEvent(event)
+	err := v.UAClient.SendClickEvent(event)
 	if err != nil {
 		return err
 	}
@@ -311,10 +295,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	if v.LastResponse == nil {
 		return errors.New("LastResponse was nil cannot send InterfaceChange event.")
 	}
-	event, err := ua.NewSearchEvent()
-	if err != nil {
-		return err
-	}
+	event := ua.NewSearchEvent()
 
 	// Add all the metadata on the event that is common across all events.
 	v.decorateEvent(event.ActionEvent)
@@ -323,7 +304,6 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.QueryText = v.LastQuery.Q
 	event.AdvancedQuery = v.LastQuery.AQ
 	event.ActionCause = actionCause
-	event.ActionType = actionType
 	event.NumberOfResults = v.LastResponse.TotalCount
 	event.ResponseTime = v.LastResponse.Duration
 
@@ -344,7 +324,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
 	}
 
-	err = v.UAClient.SendSearchEvent(event)
+	err := v.UAClient.SendSearchEvent(event)
 	if err != nil {
 		return err
 	}
@@ -361,8 +341,8 @@ func (v *Visit) decorateEvent(evt *ua.ActionEvent) {
 	evt.OriginLevel3 = v.OriginLevel3
 
 	// Only send AB tests metadata if there is an acutal AB test involved in the last Response.
-	if v.LastResponse.SplitTestRunName != "" {
-		evt.SplitTestRunName = v.LastResponse.SplitTestRunName
+	if v.LastResponse.SplitTestRun != "" {
+		evt.SplitTestRunName = v.LastResponse.SplitTestRun
 		evt.SplitTestRunVersion = v.LastResponse.Pipeline
 	}
 }
