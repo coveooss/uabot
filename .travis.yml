@@ -1,12 +1,11 @@
 language: go
 go:
-  - 1.5
   - 1.6
   - tip
 env:
   global:
-  - GO15VENDOREXPERIMENT=1
-  - VERSION=$(cat VERSION)
+    - GO15VENDOREXPERIMENT=1
+    - VERSION=$(cat VERSION)
 before_script:
   - go get
 script:
