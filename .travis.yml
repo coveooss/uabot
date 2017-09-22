@@ -12,9 +12,9 @@ script:
   - go test
 before_deploy:
   - mkdir -p release
-  - GOOS-linux GOARCH=amd64 go build -o release/uabot-v$VERSION-linux-amd64
-  - GOOS-darwin GOARCH=amd64 go build -o release/uabot-v$VERSION-darwin-amd64
-  - GOOS-windows GOARCH=amd64 go build -o release/uabot-v$VERSION-windows-amd64
+  - GOOS=linux GOARCH=amd64 go build -o release/uabot-v$VERSION-linux-amd64
+  - GOOS=darwin GOARCH=amd64 go build -o release/uabot-v$VERSION-darwin-amd64
+  - GOOS=windows GOARCH=amd64 go build -o release/uabot-v$VERSION-windows-amd64
 deploy:
   provider: releases
   api_key:
