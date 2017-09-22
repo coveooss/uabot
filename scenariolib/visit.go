@@ -104,9 +104,6 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 	v.IP = ip
 	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: ip, Endpoint: c.AnalyticsEndpoint}
 	uaClient := ua.NewClient(uaConfig)
-	if err != nil {
-		return nil, err
-	}
 	v.UAClient = uaClient
 
 	return &v, nil
