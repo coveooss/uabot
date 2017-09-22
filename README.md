@@ -55,4 +55,14 @@ go run main.go
 3. git push && git push -f --tags
 ```
 
+## To release a newer version of the bot, with Travis automated builds
+```sh
+# Create a new tag with the version number to use.
+1. git tag -a [v0.9.9] -m "Release comment here"
+# Push tag.
+2. git push --tags origin master
+# It takes a little bit of time for Travis to generate the artefacts
+3. Visit https://github.com/coveo/uabot/releases to view the releases to ensure your new release is visible.
+```
+
 [![forthebadge](http://forthebadge.com/images/badges/made-with-crayons.svg)](http://forthebadge.com)
