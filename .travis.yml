@@ -1,18 +1,15 @@
 language: go
 go:
   - tip
-env:
-  global:
-    - VERSION=$TRAVIS_TAG
 before_script:
   - go get
 script:
   - go test
 before_deploy:
   - mkdir -p release
-  - "GOOS=linux GOARCH=amd64 go build -o release/uabot-v$VERSION-linux-amd64"
-  - "GOOS=darwin GOARCH=amd64 go build -o release/uabot-v$VERSION-mac-amd64"
-  - "GOOS=windows GOARCH=amd64 go build -o release/uabot-v$VERSION-windows-amd64.exe"
+  - "GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux-amd64"
+  - "GOOS=darwin GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-mac-amd64"
+  - "GOOS=windows GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-windows-amd64.exe"
 deploy:
   provider: releases
   api_key:
