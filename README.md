@@ -2,7 +2,7 @@
 
 Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
 Works with a configuration file using json format.
-Check the /Scenarios folder for examples.
+Check the [/scenarios_examples](https://github.com/coveo/uabot/tree/master/scenarios_examples) folder for examples.
 
 ## How to use:
 
