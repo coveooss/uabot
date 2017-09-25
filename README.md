@@ -2,7 +2,18 @@
 
 Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
 Works with a configuration file using json format.
-Check the /Scenarios folder for examples.
+Check the [/scenarios_examples](https://github.com/coveo/uabot/tree/master/scenarios_examples) folder for examples.
+
+## How to use:
+
+1. [Download executable](https://github.com/coveo/uabot/releases/latest).
+2. Set Environment variables (refer to the section below).
+3. Build your scenarios ([How to build scenarios](http://coveo.github.io/uabot/scenario.html)).
+4. Execute the bot.
+
+[Examples of scenarios](https://github.com/coveo/uabot/tree/master/scenarios_examples)
+
+<hr/>
 
 ## [Usage documentation](http://coveo.github.io/uabot/)
 ## [Code documentation](http://godoc.org/github.com/coveo/uabot/scenariolib)
@@ -46,7 +57,10 @@ export GO15VENDOREXPERIMENT=1 #if golang version < 1.6
 go run main.go
 ```
 
-## To trigger a Docker rebuild, push with `latest`tag
+## Developper section
+<hr/>
+
+### To trigger a Docker rebuild, push with `latest` tag
 ```sh
 1. Commit your changes
 # We need to use the -f option here because tag latest already exists
@@ -55,7 +69,7 @@ go run main.go
 3. git push && git push -f --tags
 ```
 
-## To release a newer version of the bot, with Travis automated builds
+### To release a newer version of the bot, with Travis automated builds
 ```sh
 # Create a new tag with the version number to use.
 1. git tag -a [v0.9.9] -m "Release comment here"
