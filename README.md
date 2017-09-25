@@ -44,8 +44,6 @@ set SEARCHTOKEN=value
 set UATOKEN=value
 set SCENARIOSURL=value
 set LOCAL=true #if scenariosurl is a local path
-set GO15VENDOREXPERIMENT=1 #if golang version < 1.6
-go run main.go
 ```
 #### On MAC
 ```sh
@@ -53,12 +51,19 @@ export SEARCHTOKEN = value
 export UATOKEN = value
 export SCENARIOSURL = value
 export LOCAL=true #if scenariosurl is a local path
-export GO15VENDOREXPERIMENT=1 #if golang version < 1.6
-go run main.go
 ```
 
 ## Developper section
 <hr/>
+
+### To build an executable
+```sh
+# Install the dependencies
+1. go get
+# Build an executable -o sets the output name
+2. go build -o myexecutable
+3. Run the executable
+```
 
 ### To trigger a Docker rebuild, push with `latest` tag
 ```sh
