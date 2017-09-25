@@ -34,8 +34,7 @@ Variable | Usage
 SEARCHTOKEN | API key to search
 UATOKEN | API key to send events to UA
 SCENARIOSURL | Url to the scenario JSON file to randomize
-LOCAL | `true` for local (otherwise don't use)
-GO15VENDOREXPERIMENT | Use this for go version < 1.6
+LOCAL | `true` for local (default false)
 
 
 #### On windows
