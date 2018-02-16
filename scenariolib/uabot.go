@@ -14,6 +14,7 @@ const DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS int = 150
 // WEEKEND_MODIFIER The modifier to multiply DEFAULTTIMEBETWEENVISITS during weekends
 const WEEKEND_MODIFIER = 10
 
+// Uabot is the interface that allows you to run a bot.
 type Uabot interface {
 	Run(quitChannel chan bool) error
 }
@@ -60,6 +61,7 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 	// Refresh the scenario files every 5 hours automatically.
 	// This way, no need to stop the bot to update the possible scenarios.
 	bot.continuallyRefreshScenariosEvery(5*time.Hour, conf)
+
 	if conf.TimeBetweenVisits > 0 {
 		timeVisits = conf.TimeBetweenVisits
 	} else {
@@ -138,7 +140,7 @@ func (bot *uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, c
 	ticker := time.NewTicker(timeDuration)
 	go func() {
 		for _ = range ticker.C {
-			conf2 := refreshScenarios(bot.scenarioURL, bot.local)
+			conf2 := refreshConfig(bot.scenarioURL, bot.local)
 			if conf2 != nil {
 				Info.Println("Refreshing scenario")
 				conf = conf2
@@ -147,7 +149,7 @@ func (bot *uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, c
 	}()
 }
 
-func refreshScenarios(url string, isLocal bool) *Config {
+func refreshConfig(url string, isLocal bool) *Config {
 	Info.Println("Updating Scenario file")
 
 	var err error

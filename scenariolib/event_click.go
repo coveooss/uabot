@@ -57,13 +57,8 @@ func newClickEvent(e *JSONEvent) (*ClickEvent, error) {
 
 	if e.Arguments["customData"] != nil {
 		if event.customData, validcast = e.Arguments["customData"].(map[string]interface{}); !validcast {
-			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a click event.")
+			return nil, errors.New("Parameter customData must be a json object (map[string]interface{}) in a click event")
 		}
-	}
-
-	// falseResponse is deprecated
-	if e.Arguments["falseResponse"] != nil {
-		return nil, errors.New("Parameter falseResponse is deprecated, please use fakeResponse instead.")
 	}
 
 	if e.Arguments["fakeClick"] != nil {
@@ -93,7 +88,7 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 
 	// Error handling, error if last response is nil, warning if last response had no results
 	if v.LastResponse == nil {
-		return errors.New("Cannot execute a click on a nil LastResponse. Please use a search event first.")
+		return errors.New("LastResponse is nil, execute a search first")
 	}
 
 	if v.LastResponse.TotalCount < 1 {

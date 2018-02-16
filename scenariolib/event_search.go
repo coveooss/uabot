@@ -41,7 +41,7 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 	}
 	if e.Arguments["customData"] != nil {
 		if se.customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
-			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a search event.")
+			return nil, errors.New("Parameter customData must be a json object (map[string]interface{}) in a search event")
 		}
 	}
 

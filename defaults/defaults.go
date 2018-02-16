@@ -130,6 +130,7 @@ var MOBILEUSERAGENTS = []string{
 }
 
 var DEFAULTPAGEVIEWFIELD = "sysurihash"
+var DEFAULTORIGIN1 = "All"
 
 var SEARCHENDPOINT_PROD = "https://cloudplatform.coveo.com/rest/search/"
 var SEARCHENDPOINT_STAGING = "https://cloudplatformstaging.coveo.com/rest/search/"

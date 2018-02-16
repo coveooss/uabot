@@ -83,8 +83,8 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 	if language != "" {
 		v.Language = language
 	} else {
-		if len(v.Config.Languages) > 0 {
-			v.Language = v.Config.Languages[rand.Intn(len(v.Config.Languages))]
+		if len(v.Config.RandomData.Languages) > 0 {
+			v.Language = v.Config.RandomData.Languages[rand.Intn(len(v.Config.RandomData.Languages))]
 		} else {
 			v.Language = "en"
 		}
@@ -100,7 +100,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 	v.SearchClient = searchClient
 
 	// Create the http UAClient
-	ip := c.RandomIPs[rand.Intn(len(c.RandomIPs))]
+	ip := c.RandomData.RandomIPs[rand.Intn(len(c.RandomData.RandomIPs))]
 	v.IP = ip
 	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: ip, Endpoint: c.AnalyticsEndpoint}
 	uaClient := ua.NewClient(uaConfig)
@@ -110,7 +110,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 }
 
 func buildUserEmail(c *Config) string {
-	return fmt.Sprint(c.FirstNames[rand.Intn(len(c.FirstNames))], ".", c.LastNames[rand.Intn(len(c.LastNames))], c.Emails[rand.Intn(len(c.Emails))])
+	return fmt.Sprint(c.RandomData.FirstNames[rand.Intn(len(c.RandomData.FirstNames))], ".", c.RandomData.LastNames[rand.Intn(len(c.RandomData.LastNames))], c.RandomData.Emails[rand.Intn(len(c.RandomData.Emails))])
 }
 
 // ExecuteScenario Execute a specific scenario, send the config for all the
@@ -141,7 +141,7 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 
 func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData map[string]interface{}) error {
 	if v.LastResponse == nil {
-		return errors.New("LastResponse was nil. Cannot send search event.")
+		return errors.New("LastResponse was nil. Cannot send search event")
 	}
 	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
 	event := ua.NewSearchEvent()
@@ -180,7 +180,7 @@ func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData ma
 	return nil
 }
 
-func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string) error {
+func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string, customData map[string]interface{}) error {
 	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
 
 	event := ua.NewViewEvent()
@@ -189,15 +189,17 @@ func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string
 
 	event.PageURI = v.LastResponse.Results[rank].ClickURI
 	event.PageTitle = v.LastResponse.Results[rank].Title
-	// event.ContentType = contentType
-	// event.ContentIDKey = "@" + pageViewField
+	event.ContentType = contentType
+	event.ContentIDKey = "@" + pageViewField
 	event.PageReferrer = v.Referrer
 
-	// if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
-	// 	event.ContentIDValue = contentIDValue
-	// } else {
-	// 	return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[rank].Raw[pageViewField], pageViewField)
-	// }
+	v.decorateCustomMetadata(event.ActionEvent, customData)
+
+	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
+		event.ContentIDValue = contentIDValue
+	} else {
+		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[rank].Raw[pageViewField], pageViewField)
+	}
 
 	// Send a UA view event
 	err := v.UAClient.SendViewEvent(event)
@@ -230,7 +232,7 @@ func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[s
 
 func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]interface{}) error {
 	if v.LastResponse == nil {
-		return errors.New("LastResponse was nil cannot send click event.")
+		return errors.New("LastResponse was nil cannot send click event")
 	}
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event := ua.NewClickEvent()
@@ -290,7 +292,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 
 func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customData map[string]interface{}) error {
 	if v.LastResponse == nil {
-		return errors.New("LastResponse was nil cannot send InterfaceChange event.")
+		return errors.New("LastResponse was nil cannot send InterfaceChange event")
 	}
 	event := ua.NewSearchEvent()
 
@@ -480,10 +482,6 @@ func (v *Visit) SetupGeneral() {
 
 	v.LastQuery = q
 
-	if v.Config.DefaultOriginLevel1 != "" {
-		v.OriginLevel1 = v.Config.DefaultOriginLevel1
-	} else {
-		v.OriginLevel1 = ORIGINALL
-	}
-	v.OriginLevel2 = ORIGINALL
+	v.OriginLevel1 = v.Config.RandomData.DefaultOriginLevel1
+	v.OriginLevel2 = ""
 }
