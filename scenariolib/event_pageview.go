@@ -106,7 +106,11 @@ func (ve *ViewEvent) send(v *Visit) error {
 	v.DecorateEvent(event.ActionEvent)
 	v.DecorateCustomMetadata(event.ActionEvent, ve.customData)
 
-	if contentIDValue, ok := v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField].(string); ok {
+	if _, ok := v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField]; !ok { // If the field does not exist on the "clicked" result
+		Warning.Printf("Fields %s does not exist on result ranked %d. Not sending view event.", ve.pageViewField, ve.clickRank)
+		return nil
+	}
+	if contentIDValue, ok := v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField].(string); ok { // If we can convert the fieldValue to a string
 		event.ContentIDValue = contentIDValue
 	} else {
 		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField], ve.pageViewField)
