@@ -2,8 +2,8 @@
   "searchendpoint": "https://cloudplatform.coveo.com/rest/search/",
   "analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
   "defaultOriginLevel1": "BotSearch",
-  "timeBetweenVisits": 3,
-  "timeBetweenActions": 2,
+  "timeBetweenVisits": 1,
+  "timeBetweenActions": 1,
   "anonymousThreshold": 1,
   "orgName": "Test",
   "pipeline": "besttechCommunity",
@@ -25,25 +25,69 @@
     ]
   },
   "scenarios": [{
-    "name": "PageView",
-    "weight": 20,
-    "events": [{
+      "name": "PageView",
+      "weight": 1,
+      "events": [{
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true,
+            "ignoreEvent": true
+          }
+        },
+        {
+          "type": "View",
+          "arguments": {
+            "offset": 0,
+            "docNo": -1,
+            "probability": 1,
+            "pageViewField": "sysdocumenttype",
+            "contentType": "document"
+          }
+        }
+      ]
+    },
+    {
+      "name": "testSearchGood",
+      "weight": 1,
+      "events": [{
         "type": "Search",
         "arguments": {
           "queryText": "",
           "goodQuery": true
         }
-      },
-      {
-        "type": "View",
+      }]
+    },
+    {
+      "name": "testSearchBad",
+      "weight": 1,
+      "events": [{
+        "type": "Search",
         "arguments": {
-          "offset": 0,
-          "docNo": -1,
-          "probability": 1,
-          "pageViewField": "sysdocumenttype",
-          "contentType": "document"
+          "queryText": "",
+          "goodQuery": false
         }
-      }
-    ]
-  }]
+      }]
+    },
+    {
+      "name": "testSearchClick",
+      "weight": 1,
+      "events": [{
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 1
+          }
+        }
+      ]
+    }
+  ]
 }

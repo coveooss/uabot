@@ -5,6 +5,9 @@ package scenariolib
 import (
 	"errors"
 	"fmt"
+	"math/rand"
+
+	ua "github.com/coveo/go-coveo/analytics"
 )
 
 // ============== SEARCH EVENT ======================
@@ -77,45 +80,100 @@ func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
 }
 
 // Execute Execute the search event, runs the query and sends a search event to
-// the analytics.
-func (se *SearchEvent) Execute(v *Visit) error {
-	var err error
-	if se.query == "" {
-		if se.matchLanguage {
-			se.query, err = v.Config.RandomQueryInLanguage(se.goodQuery, v.Language)
-			se.keyword = se.query
-			if err != nil {
-				return err
+// the analytics. Returns an error if something went wrong.
+func (se *SearchEvent) Execute(v *Visit) (err error) {
+
+	if se.query == "" { // if the query is empty, randomize one
+		var queriesToRandom []string
+		if queriesToRandom, err = se.getQueriesToRandomize(v); err != nil { // Figure out from which queries to randomize
+			return
+		}
+		if se.query, err = randomQuery(queriesToRandom); err != nil { // Randomize the query from the selected array
+			return
+		}
+	}
+	se.keyword = se.query
+	v.LastQuery.Q = se.query
+	Info.Printf("Searching for : %s", se.query)
+
+	// Execute a search and save the response
+	if v.LastResponse, err = v.SearchClient.Query(*v.LastQuery); err != nil {
+		return err
+	}
+
+	// in some scenarios (logging of page views), we don't want to send the search event to the analytics
+	if !se.ignoreEvent {
+		return se.send(v)
+	}
+
+	Info.Println("Ignoring the search event because of configuration.")
+	return nil
+}
+
+func (se *SearchEvent) send(v *Visit) error {
+	if v.LastResponse == nil {
+		return errors.New("LastResponse was nil. Cannot send search event")
+	}
+	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
+	event := ua.NewSearchEvent()
+
+	v.DecorateEvent(event.ActionEvent)
+
+	event.SearchQueryUID = v.LastResponse.SearchUID
+	event.QueryText = se.query
+	event.AdvancedQuery = v.LastQuery.AQ
+	event.ActionCause = se.actionCause
+	event.NumberOfResults = v.LastResponse.TotalCount
+	event.ResponseTime = v.LastResponse.Duration
+
+	v.DecorateCustomMetadata(event.ActionEvent, se.customData)
+
+	if v.LastResponse.TotalCount > 0 {
+		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
+			event.Results = []ua.ResultHash{
+				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
-			se.query, err = v.Config.RandomQuery(se.goodQuery)
-			se.keyword = se.query
-			if err != nil {
-				return err
-			}
+			return errors.New("Cannot convert sysurihash to string in search event")
 		}
 	}
 
-	Info.Printf("Searching for : %s", se.query)
+	// Send a UA search event
+	return v.SendSearchEvent(event)
+}
 
-	v.LastQuery.Q = se.query
-
-	// Execute a search and save the response
-	resp, err := v.SearchClient.Query(*v.LastQuery)
-	if err != nil {
-		return err
+// getQueriesToRandomize Return an array of queries to randomize from.
+func (se *SearchEvent) getQueriesToRandomize(v *Visit) (queriesToRandom []string, err error) {
+	if se.goodQuery { // if we want a good query
+		queriesToRandom = v.Config.GoodQueries
+		if se.matchLanguage { // if the query must match the language
+			if _, ok := v.Config.GoodQueriesInLang[v.Language]; !ok {
+				err = errors.New("No good query detected in " + v.Language)
+				return
+			}
+			queriesToRandom = v.Config.GoodQueriesInLang[v.Language]
+		}
+	} else { // if we want a bad query
+		queriesToRandom = v.Config.BadQueries
+		if se.matchLanguage { // if the query must match the language
+			if _, ok := v.Config.BadQueriesInLang[v.Language]; !ok {
+				err = errors.New("No bad query detected in " + v.Language)
+				return
+			}
+			queriesToRandom = v.Config.BadQueriesInLang[v.Language]
+		}
 	}
-	v.LastResponse = resp
+	return
+}
 
-	// in some scenarios (logging of page views), we don't want to send the search event to the analytics
-	if se.ignoreEvent {
-		return nil
+// randomQuery Returns a random query good or bad from the list of possible queries.
+// returns an error if there are no queries to select from
+func randomQuery(queries []string) (query string, err error) {
+	if len(queries) < 1 {
+		err = errors.New("Queries are empty")
+		return
 	}
 
-	err = v.sendSearchEvent(se.keyword, se.actionCause, se.actionType, se.customData)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	query = queries[rand.Intn(len(queries))]
+	return
 }

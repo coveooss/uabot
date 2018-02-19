@@ -84,7 +84,7 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 		v.Language = language
 	} else {
 		if len(v.Config.RandomData.Languages) > 0 {
-			v.Language = v.Config.RandomData.Languages[rand.Intn(len(v.Config.RandomData.Languages))]
+			v.Language = randomStringArray(v.Config.RandomData.Languages)
 		} else {
 			v.Language = "en"
 		}
@@ -100,9 +100,8 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 	v.SearchClient = searchClient
 
 	// Create the http UAClient
-	ip := c.RandomData.RandomIPs[rand.Intn(len(c.RandomData.RandomIPs))]
-	v.IP = ip
-	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: ip, Endpoint: c.AnalyticsEndpoint}
+	v.IP = randomStringArray(c.RandomData.RandomIPs)
+	uaConfig := ua.Config{Token: _uatoken, UserAgent: _useragent, IP: v.IP, Endpoint: c.AnalyticsEndpoint}
 	uaClient := ua.NewClient(uaConfig)
 	v.UAClient = uaClient
 
@@ -110,7 +109,16 @@ func NewVisit(_searchtoken string, _uatoken string, _useragent string, language 
 }
 
 func buildUserEmail(c *Config) string {
-	return fmt.Sprint(c.RandomData.FirstNames[rand.Intn(len(c.RandomData.FirstNames))], ".", c.RandomData.LastNames[rand.Intn(len(c.RandomData.LastNames))], c.RandomData.Emails[rand.Intn(len(c.RandomData.Emails))])
+	firstName := randomStringArray(c.RandomData.FirstNames)
+	lastName := randomStringArray(c.RandomData.LastNames)
+	email := randomStringArray(c.RandomData.Emails)
+	return fmt.Sprint(firstName, ".", lastName, email)
+}
+
+// randomStringArray Returns a random string value from a []string
+func randomStringArray(array []string) (value string) {
+	value = array[rand.Intn(len(array))]
+	return
 }
 
 // ExecuteScenario Execute a specific scenario, send the config for all the
@@ -139,86 +147,28 @@ func (v *Visit) ExecuteScenario(scenario Scenario, c *Config) error {
 	return nil
 }
 
-func (v *Visit) sendSearchEvent(q, actionCause, actionType string, customData map[string]interface{}) error {
-	if v.LastResponse == nil {
-		return errors.New("LastResponse was nil. Cannot send search event")
-	}
-	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
-	event := ua.NewSearchEvent()
-
-	v.decorateEvent(event.ActionEvent)
-
-	event.SearchQueryUID = v.LastResponse.SearchUID
-	event.QueryText = q
-	event.AdvancedQuery = v.LastQuery.AQ
-	event.ActionCause = actionCause
-	event.NumberOfResults = v.LastResponse.TotalCount
-	event.ResponseTime = v.LastResponse.Duration
-
-	v.decorateCustomMetadata(event.ActionEvent, customData)
-
-	if v.Config.AllowEntitlements {
-		// Custom shit for besttech, I don't like it
-		event.CustomData["entitlement"] = generateEntitlementBesttech(v.Anonymous)
-	}
-
-	if v.LastResponse.TotalCount > 0 {
-		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
-			event.Results = []ua.ResultHash{
-				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
-			}
-		} else {
-			return errors.New("Cannot convert sysurihash to string in search event")
-		}
-	}
-
-	// Send a UA search event
-	error := v.UAClient.SendSearchEvent(event)
-	if error != nil {
-		return error
-	}
-	return nil
+// SendSearchEvent to the UAClient.
+func (v *Visit) SendSearchEvent(event *ua.SearchEvent) (err error) {
+	err = v.UAClient.SendSearchEvent(event)
+	return
 }
 
-func (v *Visit) sendViewEvent(rank int, contentType string, pageViewField string, customData map[string]interface{}) error {
-	Info.Printf("Sending ViewEvent rank=%d ", rank+1)
-
-	event := ua.NewViewEvent()
-
-	v.decorateEvent(event.ActionEvent)
-
-	event.PageURI = v.LastResponse.Results[rank].ClickURI
-	event.PageTitle = v.LastResponse.Results[rank].Title
-	event.ContentType = contentType
-	event.ContentIDKey = "@" + pageViewField
-	event.PageReferrer = v.Referrer
-
-	v.decorateCustomMetadata(event.ActionEvent, customData)
-
-	if contentIDValue, ok := v.LastResponse.Results[rank].Raw[pageViewField].(string); ok {
-		event.ContentIDValue = contentIDValue
-	} else {
-		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[rank].Raw[pageViewField], pageViewField)
-	}
-
-	// Send a UA view event
-	err := v.UAClient.SendViewEvent(event)
-	if err != nil {
-		return err
-	}
-	return nil
+// SendViewEvent to the UAClient
+func (v *Visit) SendViewEvent(event *ua.ViewEvent) (err error) {
+	err = v.UAClient.SendViewEvent(event)
+	return
 }
 
 func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
 	Info.Printf("Sending CustomEvent cause: %s ||| type: %s", actionCause, actionType)
 	event := ua.NewCustomEvent()
 
-	v.decorateEvent(event.ActionEvent)
+	v.DecorateEvent(event.ActionEvent)
 
 	event.EventType = actionType
 	event.EventValue = actionCause
 
-	v.decorateCustomMetadata(event.ActionEvent, customData)
+	v.DecorateCustomMetadata(event.ActionEvent, customData)
 
 	if v.Config.AllowEntitlements {
 		// Custom shit for besttech, I don't like it
@@ -237,7 +187,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	Info.Printf("Sending ClickEvent rank=%d (quickview %v)", rank+1, quickview)
 	event := ua.NewClickEvent()
 
-	v.decorateEvent(event.ActionEvent)
+	v.DecorateEvent(event.ActionEvent)
 
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.DocumentURI = v.LastResponse.Results[rank].URI
@@ -274,7 +224,7 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		// return errors.New("Cannot convert syssource to string")
 	}
 
-	v.decorateCustomMetadata(event.ActionEvent, customData)
+	v.DecorateCustomMetadata(event.ActionEvent, customData)
 
 	if v.Config.AllowEntitlements {
 		// Custom shit for besttech, I don't like it
@@ -297,7 +247,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event := ua.NewSearchEvent()
 
 	// Add all the metadata on the event that is common across all events.
-	v.decorateEvent(event.ActionEvent)
+	v.DecorateEvent(event.ActionEvent)
 
 	event.SearchQueryUID = v.LastResponse.SearchUID
 	event.QueryText = v.LastQuery.Q
@@ -316,7 +266,7 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 		}
 	}
 
-	v.decorateCustomMetadata(event.ActionEvent, customData)
+	v.DecorateCustomMetadata(event.ActionEvent, customData)
 
 	if v.Config.AllowEntitlements {
 		// Custom shit for besttech, I don't like it
@@ -330,8 +280,8 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	return nil
 }
 
-// decorateEvent is used to assign all the common data to send with all analytics events
-func (v *Visit) decorateEvent(evt *ua.ActionEvent) {
+// DecorateEvent is used to assign all the common data to send with all analytics events
+func (v *Visit) DecorateEvent(evt *ua.ActionEvent) {
 	evt.Username = v.Username
 	evt.Anonymous = v.Anonymous
 	evt.Language = v.Language
@@ -346,8 +296,8 @@ func (v *Visit) decorateEvent(evt *ua.ActionEvent) {
 	}
 }
 
-// decorateCustomMetadata is used to handle all the customMetadata for the events that allow it.
-func (v *Visit) decorateCustomMetadata(evt *ua.ActionEvent, customData map[string]interface{}) {
+// DecorateCustomMetadata is used to handle all the customMetadata for the events that allow it.
+func (v *Visit) DecorateCustomMetadata(evt *ua.ActionEvent, customData map[string]interface{}) {
 
 	evt.CustomData = map[string]interface{}{
 		"JSUIVersion": JSUIVERSION,
@@ -357,7 +307,7 @@ func (v *Visit) decorateCustomMetadata(evt *ua.ActionEvent, customData map[strin
 	// Send all the possible random custom data that can be added from the config
 	// scenario file.
 	for _, elem := range v.Config.RandomCustomData {
-		evt.CustomData[elem.APIName] = elem.Values[rand.Intn(len(elem.Values))]
+		evt.CustomData[elem.APIName] = randomStringArray(elem.Values)
 	}
 
 	// Override possible values of customData with the specific customData sent

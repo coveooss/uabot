@@ -2,8 +2,11 @@ package scenariolib
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"math/rand"
+
+	ua "github.com/coveo/go-coveo/analytics"
 )
 
 // ============== VIEW EVENT ======================
@@ -78,33 +81,50 @@ func (ve *ViewEvent) Execute(v *Visit) error {
 	}
 
 	if rand.Float64() <= ve.probability { // test if the event will exectute according to probability
-		ve.computeClickRank(v)
+		ve.clickRank = computeClickRank(v, ve.clickRank, ve.offset)
 
 		if ve.clickRank > v.LastResponse.TotalCount {
 			Warning.Printf("PageView index out of bounds, not sending event")
 			return nil
 		}
 
-		err := v.sendViewEvent(ve.clickRank, ve.contentType, ve.pageViewField, ve.customData)
-		if err != nil {
-			return err
-		}
-		return nil
+		return ve.send(v)
 	}
 	Info.Printf("User chose not to view (probability %v%%)", int(ve.probability*100))
 	return nil
 }
 
+func (ve *ViewEvent) send(v *Visit) error {
+	Info.Printf("Sending ViewEvent rank=%d ", ve.clickRank+1)
+
+	event := ua.NewViewEvent()
+	event.PageURI = v.LastResponse.Results[ve.clickRank].ClickURI
+	event.PageTitle = v.LastResponse.Results[ve.clickRank].Title
+	event.ContentType = ve.contentType
+	event.ContentIDKey = "@" + ve.pageViewField
+	event.PageReferrer = v.Referrer
+	v.DecorateEvent(event.ActionEvent)
+	v.DecorateCustomMetadata(event.ActionEvent, ve.customData)
+
+	if contentIDValue, ok := v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField].(string); ok {
+		event.ContentIDValue = contentIDValue
+	} else {
+		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField], ve.pageViewField)
+	}
+
+	// Send a UA view event
+	return v.SendViewEvent(event)
+}
+
 // Randomize a click rank if the clickRank is -1
-func (ve *ViewEvent) computeClickRank(v *Visit) *ViewEvent {
-	if ve.clickRank == -1 { // if rank == -1 we need to randomize a rank
-		ve.clickRank = 0
+func computeClickRank(v *Visit, setRank, offset int) (clickRank int) {
+	if setRank == -1 { // if rank == -1 we need to randomize a rank
 		// Find a random rank within the possible click values accounting for the offset
 		if v.LastResponse.TotalCount > 1 {
 			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
-			rndRank := int(math.Abs(rand.NormFloat64()*2)) + ve.offset
-			ve.clickRank = Min(rndRank, topL-1)
+			rndRank := int(math.Abs(rand.NormFloat64()*2)) + offset
+			clickRank = Min(rndRank, topL-1)
 		}
 	}
-	return ve
+	return
 }

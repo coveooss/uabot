@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 
 	"github.com/coveo/uabot/defaults"
@@ -106,75 +105,17 @@ type RandomData struct {
 	// UserAgents Override the defaults fake UserAgents.
 	UserAgents []string `json:"useragents,omitempty"`
 
-	// Languages Override the defaults fake Languages.
-	Languages []string `json:"languages,omitempty"`
-
 	// MobileUserAgents Override the defaults fake MobileUserAgents.
 	MobileUserAgents []string `json:"mobileuseragents, omitempty"`
+
+	// Languages Override the defaults fake Languages.
+	Languages []string `json:"languages,omitempty"`
 }
 
 // RandomCustomData Structure of random values for a specific API name.
 type RandomCustomData struct {
 	APIName string   `json:"apiname"`
 	Values  []string `json:"values"`
-}
-
-// RandomScenario Returns a random scenario from the list of possible scenarios.
-// returns an error if there are no scenarios
-func (c *Config) RandomScenario() (*Scenario, error) {
-	if len(c.ScenarioMap) < 1 {
-		return nil, errors.New("No scenarios detected")
-	}
-	return c.ScenarioMap[rand.Intn(len(c.ScenarioMap))], nil
-}
-
-// RandomQuery Returns a random query good or bad from the list of possible queries.
-// returns an error if there are no queries to select from
-func (c *Config) RandomQuery(good bool) (string, error) {
-	if good {
-		if len(c.GoodQueries) < 1 {
-			return "", errors.New("No good queries detected")
-		}
-		return c.GoodQueries[rand.Intn(len(c.GoodQueries))], nil
-	}
-	if len(c.BadQueries) < 1 {
-		return "", errors.New("No bad queries detected")
-	}
-	return c.BadQueries[rand.Intn(len(c.BadQueries))], nil
-}
-
-// RandomQueryInLanguage Returns a random query in a specified language
-func (c *Config) RandomQueryInLanguage(good bool, language string) (string, error) {
-	if good {
-		if len(c.GoodQueriesInLang[language]) < 1 {
-			return "", errors.New("No good queries detected in lang : " + language)
-		}
-		return c.GoodQueriesInLang[language][rand.Intn(len(c.GoodQueriesInLang[language]))], nil
-	}
-	if len(c.BadQueriesInLang[language]) < 1 {
-		return "", errors.New("No bad queries detected in lang : " + language)
-	}
-	return c.BadQueriesInLang[language][rand.Intn(len(c.BadQueriesInLang[language]))], nil
-}
-
-// RandomUserAgent returns a random user agent string to send with an event
-func (c *Config) RandomUserAgent(mobile bool) (string, error) {
-	if mobile && (len(c.RandomData.MobileUserAgents) > 0) {
-		return c.RandomData.MobileUserAgents[rand.Intn(len(c.RandomData.MobileUserAgents))], nil
-	} else if len(c.RandomData.UserAgents) > 0 || len(c.RandomData.MobileUserAgents) > 0 {
-		agents := append(c.RandomData.UserAgents, c.RandomData.MobileUserAgents...)
-		return agents[rand.Intn(len(agents))], nil
-	}
-	return "", errors.New("Cannot find any user agents")
-}
-
-// RandomIP returns a random IP to send with an event
-func (c *Config) RandomIP() (string, error) {
-	if len(c.RandomData.RandomIPs) < 1 {
-		return "", errors.New("Cannot find any random IP")
-	}
-
-	return c.RandomData.RandomIPs[rand.Intn(len(c.RandomData.RandomIPs))], nil
 }
 
 // NewConfigFromPath Create a new config from a JSON config file path
@@ -244,7 +185,30 @@ func (c *Config) makeScenarioMap() error {
 	return nil
 }
 
+// Fill all the default values that have not been overwritten: Endpoints, origin, etc.
 func fillDefaults(c *Config) {
+
+	fillRandomData(c)
+
+	if c.SearchEndpoint == "" {
+		c.SearchEndpoint = defaults.SEARCHENDPOINT_PROD
+	}
+
+	if c.AnalyticsEndpoint == "" {
+		c.AnalyticsEndpoint = defaults.ANALYTICSENDPOINT_PROD
+	}
+
+	if c.RandomData.DefaultPageViewField == "" {
+		c.RandomData.DefaultPageViewField = defaults.DEFAULTPAGEVIEWFIELD
+	}
+
+	if c.RandomData.DefaultOriginLevel1 == "" {
+		c.RandomData.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
+	}
+}
+
+// Fill all the randomData that has not been overwritten: Names, Emails, IPs, etc.
+func fillRandomData(c *Config) {
 	if len(c.RandomData.FirstNames) == 0 {
 		c.RandomData.FirstNames = defaults.FIRSTNAMES
 	}
@@ -267,21 +231,5 @@ func fillDefaults(c *Config) {
 
 	if len(c.RandomData.MobileUserAgents) == 0 {
 		c.RandomData.MobileUserAgents = defaults.MOBILEUSERAGENTS
-	}
-
-	if c.SearchEndpoint == "" {
-		c.SearchEndpoint = defaults.SEARCHENDPOINT_PROD
-	}
-
-	if c.AnalyticsEndpoint == "" {
-		c.AnalyticsEndpoint = defaults.ANALYTICSENDPOINT_PROD
-	}
-
-	if c.RandomData.DefaultPageViewField == "" {
-		c.RandomData.DefaultPageViewField = defaults.DEFAULTPAGEVIEWFIELD
-	}
-
-	if c.RandomData.DefaultOriginLevel1 == "" {
-		c.RandomData.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
 	}
 }
