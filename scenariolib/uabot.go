@@ -1,6 +1,7 @@
 package scenariolib
 
 import (
+	"errors"
 	"math/rand"
 	"time"
 )
@@ -14,6 +15,7 @@ const DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS int = 150
 // WEEKEND_MODIFIER The modifier to multiply DEFAULTTIMEBETWEENVISITS during weekends
 const WEEKEND_MODIFIER = 10
 
+// Uabot is the interface that allows you to run a bot.
 type Uabot interface {
 	Run(quitChannel chan bool) error
 }
@@ -27,6 +29,8 @@ type uabot struct {
 	WaitBetweenVisits bool
 }
 
+// NewUabot will start a bot to run some scenarios. It needs the url/path where to find the scenarions {scenarioURL},
+// the searchToken, the analyticsToken and a randomizer.
 func NewUabot(local bool, scenarioURL string, searchToken string, analyticsToken string, random *rand.Rand) Uabot {
 	return &uabot{
 		local,
@@ -60,6 +64,7 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 	// Refresh the scenario files every 5 hours automatically.
 	// This way, no need to stop the bot to update the possible scenarios.
 	bot.continuallyRefreshScenariosEvery(5*time.Hour, conf)
+
 	if conf.TimeBetweenVisits > 0 {
 		timeVisits = conf.TimeBetweenVisits
 	} else {
@@ -72,13 +77,17 @@ func (bot *uabot) Run(quitChannel chan bool) error {
 		select { // select on the quitChannel
 		default: // default means there is no quit signal
 
-			scenario, err := conf.RandomScenario()
+			scenario, err := randomScenario(conf.ScenarioMap)
 			if err != nil {
 				return err
 			}
 
 			if scenario.UserAgent == "" {
-				scenario.UserAgent, err = conf.RandomUserAgent(false)
+				if scenario.Mobile {
+					scenario.UserAgent, err = randomUserAgent(conf.RandomData.MobileUserAgents)
+				} else {
+					scenario.UserAgent, err = randomUserAgent(append(conf.RandomData.UserAgents, conf.RandomData.MobileUserAgents...))
+				}
 				if err != nil {
 					return err
 				}
@@ -138,7 +147,7 @@ func (bot *uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, c
 	ticker := time.NewTicker(timeDuration)
 	go func() {
 		for _ = range ticker.C {
-			conf2 := refreshScenarios(bot.scenarioURL, bot.local)
+			conf2 := refreshConfig(bot.scenarioURL, bot.local)
 			if conf2 != nil {
 				Info.Println("Refreshing scenario")
 				conf = conf2
@@ -147,7 +156,7 @@ func (bot *uabot) continuallyRefreshScenariosEvery(timeDuration time.Duration, c
 	}()
 }
 
-func refreshScenarios(url string, isLocal bool) *Config {
+func refreshConfig(url string, isLocal bool) *Config {
 	Info.Println("Updating Scenario file")
 
 	var err error
@@ -166,4 +175,24 @@ func refreshScenarios(url string, isLocal bool) *Config {
 		return nil
 	}
 	return conf
+}
+
+func randomUserAgent(userAgents []string) (userAgent string, err error) {
+	if !(len(userAgents) > 0) {
+		err = errors.New("Cannot find any user agents")
+	} else {
+		userAgent = userAgents[rand.Intn(len(userAgents))]
+	}
+	return
+}
+
+// RandomScenario Returns a random scenario from the list of possible scenarios.
+// returns an error if there are no scenarios
+func randomScenario(scenarioMap []*Scenario) (scenario *Scenario, err error) {
+	if len(scenarioMap) < 1 {
+		err = errors.New("No scenarios detected")
+		return
+	}
+	scenario = scenarioMap[rand.Intn(len(scenarioMap))]
+	return
 }

@@ -60,7 +60,7 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 
 	if e.Arguments["customData"] != nil {
 		if customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
-			return nil, errors.New("Parameter custom must be a json object (map[string]interface{}) in a custom event.")
+			return nil, errors.New("Parameter customData must be a json object (map[string]interface{}) in a custom event")
 		}
 	}
 

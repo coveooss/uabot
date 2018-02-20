@@ -2,39 +2,37 @@
   "searchendpoint": "https://cloudplatform.coveo.com/rest/search/",
   "analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
   "defaultOriginLevel1": "BotSearch",
-  "timeBetweenVisits": 3,
-  "timeBetweenActions": 2,
+  "timeBetweenVisits": 1,
+  "timeBetweenActions": 1,
   "anonymousThreshold": 1,
   "orgName": "Test",
   "pipeline": "besttechCommunity",
-  "randomCustomData": [
-    {
-      "apiname": "customData1",
-      "values": [
-        "customValue 1"
-      ]
-    }
-  ],
-  "languages": [
-    "en"
-  ],
-  "globalfilter": "",
+  "randomCustomData": [{
+    "apiname": "customData1",
+    "values": [
+      "customValue 1"
+    ]
+  }],
   "randomGoodQueries": [
     "@uri"
   ],
   "randomBadQueries": [
     "aaaaaaaaaaa"
   ],
-  "scenarios": [
-    {
+  "randomData": {
+    "languages": [
+      "en"
+    ]
+  },
+  "scenarios": [{
       "name": "PageView",
-      "weight": 20,
-      "events": [
-        {
+      "weight": 1,
+      "events": [{
           "type": "Search",
           "arguments": {
             "queryText": "",
-            "goodQuery": true
+            "goodQuery": true,
+            "ignoreEvent": true
           }
         },
         {
@@ -43,9 +41,50 @@
             "offset": 0,
             "docNo": -1,
             "probability": 1,
-            "pageuri": "https://example.com",
-            "pagereferrer": "https://www.google.com",
-            "pagetitle": "Page Example"
+            "pageViewField": "sysdocumenttype",
+            "contentType": "document"
+          }
+        }
+      ]
+    },
+    {
+      "name": "testSearchGood",
+      "weight": 1,
+      "events": [{
+        "type": "Search",
+        "arguments": {
+          "queryText": "",
+          "goodQuery": true
+        }
+      }]
+    },
+    {
+      "name": "testSearchBad",
+      "weight": 1,
+      "events": [{
+        "type": "Search",
+        "arguments": {
+          "queryText": "",
+          "goodQuery": false
+        }
+      }]
+    },
+    {
+      "name": "testSearchClick",
+      "weight": 1,
+      "events": [{
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 1
           }
         }
       ]

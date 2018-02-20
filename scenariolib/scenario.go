@@ -1,15 +1,24 @@
 package scenariolib
 
 // Scenario Represents one visit to the search
-// Name A name given to the scenario for easier logging
-// Weight A Weight for randomizing scenarios
-// Events An array of actions the user will take
 type Scenario struct {
-	Name      string      `json:"name"`
-	Weight    int         `json:"weight"`
-	UserAgent string      `json:"useragent,omitempty"`
-	Events    []JSONEvent `json:"events"`
-	Language  string      `json:"language,omitempty"`
+	// A Name given to the scenario for easier logging.
+	Name string `json:"name"`
+
+	// A Weight for randomizing scenarios.
+	Weight int `json:"weight"`
+
+	// A UserAgent string representing the visit
+	UserAgent string `json:"useragent,omitempty"`
+
+	// An Events array of actions the user will take
+	Events []JSONEvent `json:"events"`
+
+	// A Language for this scenario
+	Language string `json:"language,omitempty"`
+
+	// Mobile A boolean value if this visit is forced on mobile
+	Mobile bool `json:"mobile,omitempty"`
 }
 
 // JSONEvent An action taken by the user such as a search, a click, a SearchAndClick, etc.
