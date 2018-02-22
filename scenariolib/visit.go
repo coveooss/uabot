@@ -202,26 +202,26 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		event.ActionCause = "documentOpen"
 	}
 
-	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
+	if urihash, ok := v.LastResponse.Results[rank].Raw["urihash"].(string); ok {
 		event.DocumentURIHash = urihash
 	} else {
-		return errors.New("Cannot convert sysurihash to string")
+		return errors.New("Cannot convert urihash to string")
 	}
-	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
+	if collection, ok := v.LastResponse.Results[rank].Raw["collection"].(string); ok {
 		event.CollectionName = collection
 	} else {
 		// TODO: handle indexless option here
 		event.CollectionName = "default"
-		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
-		//return errors.New("Cannot convert syscollection to string")
+		Warning.Println("Cannot convert collection to string, sending \"default\"")
+		//return errors.New("Cannot convert collection to string")
 	}
-	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
+	if source, ok := v.LastResponse.Results[rank].Raw["source"].(string); ok {
 		event.SourceName = source
 	} else {
 		// TODO: handle indexless option here
 		event.SourceName = "default"
-		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
-		// return errors.New("Cannot convert syssource to string")
+		Warning.Println("Cannot convert source to string, sending \"default\"")
+		// return errors.New("Cannot convert source to string")
 	}
 
 	v.DecorateCustomMetadata(event.ActionEvent, customData)
@@ -257,12 +257,12 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.ResponseTime = v.LastResponse.Duration
 
 	if v.LastResponse.TotalCount > 0 {
-		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
+		if urihash, ok := v.LastResponse.Results[0].Raw["urihash"].(string); ok {
 			event.Results = []ua.ResultHash{
 				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
-			return errors.New("Cannot convert sysurihash to string in interfaceChange event")
+			return errors.New("Cannot convert urihash to string in interfaceChange event")
 		}
 	}
 
@@ -384,7 +384,7 @@ func (v *Visit) SetupNTO() {
 	q := &search.Query{
 		Q:               "",
 		CQ:              "",
-		AQ:              "NOT @objecttype==(User,Case,CollaborationGroup) AND NOT @sysfiletype==(Folder, YouTubePlaylist, YouTubePlaylistItem)",
+		AQ:              "NOT @objecttype==(User,Case,CollaborationGroup) AND NOT @filetype==(Folder, YouTubePlaylist, YouTubePlaylistItem)",
 		NumberOfResults: 20,
 		FirstResult:     0,
 		Tab:             "All",
