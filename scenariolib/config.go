@@ -43,7 +43,7 @@ type Config struct {
 	AnalyticsEndpoint string `json:"analyticsendpoint,omitempty"`
 
 	// RandomData Override the bot default fake data.
-	RandomData *RandomData `json:"randomData,omitempty"`
+	RandomData RandomData `json:"randomData,omitempty"`
 
 	// PartialMatch PartialMath param to send with queries.
 	PartialMatch bool `json:"partialMatch,omitempty"`
@@ -122,7 +122,6 @@ type RandomCustomData struct {
 //
 // jsonPath The path to the JSON file.
 func NewConfigFromPath(jsonPath string) (*Config, error) {
-
 	file, err := ioutil.ReadFile(jsonPath)
 	if err != nil {
 		return nil, fmt.Errorf("Error reading JSON file : %v", err)
@@ -187,7 +186,6 @@ func (c *Config) makeScenarioMap() error {
 
 // Fill all the default values that have not been overwritten: Endpoints, origin, etc.
 func fillDefaults(c *Config) {
-
 	fillRandomData(c)
 
 	if c.SearchEndpoint == "" {
