@@ -285,6 +285,7 @@ func (v *Visit) DecorateEvent(evt *ua.ActionEvent) {
 	evt.Username = v.Username
 	evt.Anonymous = v.Anonymous
 	evt.Language = v.Language
+
 	evt.OriginLevel1 = v.OriginLevel1
 	evt.OriginLevel2 = v.OriginLevel2
 	evt.OriginLevel3 = v.OriginLevel3
@@ -432,11 +433,11 @@ func (v *Visit) SetupGeneral() {
 
 	v.LastQuery = q
 
-	v.OriginLevel1 = v.Config.RandomData.DefaultOriginLevel1
-	if v.Config.RandomData.DefaultOriginLevel2 != "" {
-		v.OriginLevel2 = v.Config.RandomData.DefaultOriginLevel2
+	v.OriginLevel1 = v.Config.DefaultOriginLevel1
+	if v.Config.DefaultOriginLevel2 != "" {
+		v.OriginLevel2 = v.Config.DefaultOriginLevel2
 	}
-	if v.Config.RandomData.DefaultOriginLevel3 != "" {
-		v.OriginLevel3 = v.Config.RandomData.DefaultOriginLevel3
+	if v.Config.DefaultOriginLevel3 != "" {
+		v.OriginLevel3 = v.Config.DefaultOriginLevel3
 	}
 }

@@ -80,10 +80,7 @@ type Config struct {
 
 	// IsWaitConstant Do you want the wait time to be constant.
 	IsWaitConstant bool `json:"isWaitConstant,omitempty"`
-}
 
-// RandomData An override of the bot default random/fake data.
-type RandomData struct {
 	// DefaultOriginLevel1 Override of the default OriginLevel1.
 	DefaultOriginLevel1 string `json:"defaultOriginLevel1,omitempty"`
 
@@ -92,7 +89,10 @@ type RandomData struct {
 
 	// DefaultOriginLevel3 Override of the default OriginLevel3.
 	DefaultOriginLevel3 string `json:"defaultOriginLevel3,omitempty"`
+}
 
+// RandomData An override of the bot default random/fake data.
+type RandomData struct {
 	// DefaultPageViewField Override of the DefaultPageViewField for ALL pageView Events.
 	DefaultPageViewField string `json:"defaultPageViewField,omitempty"`
 
@@ -206,17 +206,10 @@ func fillDefaults(c *Config) {
 		c.RandomData.DefaultPageViewField = defaults.DEFAULTPAGEVIEWFIELD
 	}
 
-	if c.RandomData.DefaultOriginLevel1 == "" {
-		c.RandomData.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
+	if c.DefaultOriginLevel1 == "" {
+		c.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
 	}
 
-	if c.RandomData.DefaultOriginLevel2 == "" {
-		c.RandomData.DefaultOriginLevel2 = defaults.DEFAULTORIGIN2
-	}
-
-	if c.RandomData.DefaultOriginLevel3 == "" {
-		c.RandomData.DefaultOriginLevel3 = defaults.DEFAULTORIGIN3
-	}
 }
 
 // Fill all the randomData that has not been overwritten: Names, Emails, IPs, etc.
