@@ -130,7 +130,15 @@ var MOBILEUSERAGENTS = []string{
 }
 
 var DEFAULTPAGEVIEWFIELD = "urihash"
+
+// DEFAULTORIGIN1 defaults to "All"
 var DEFAULTORIGIN1 = "All"
+
+// DEFAULTORIGIN2 defaults to "" (empty, won't be included)
+var DEFAULTORIGIN2 = ""
+
+// DEFAULTORIGIN3 defaults to "" (empty, won't be included)
+var DEFAULTORIGIN3 = ""
 
 var SEARCHENDPOINT_PROD = "https://cloudplatform.coveo.com/rest/search/"
 var SEARCHENDPOINT_STAGING = "https://cloudplatformstaging.coveo.com/rest/search/"

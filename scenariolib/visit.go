@@ -433,5 +433,10 @@ func (v *Visit) SetupGeneral() {
 	v.LastQuery = q
 
 	v.OriginLevel1 = v.Config.RandomData.DefaultOriginLevel1
-	v.OriginLevel2 = ""
+	if v.Config.RandomData.DefaultOriginLevel2 != "" {
+		v.OriginLevel2 = v.Config.RandomData.DefaultOriginLevel2
+	}
+	if v.Config.RandomData.DefaultOriginLevel3 != "" {
+		v.OriginLevel3 = v.Config.RandomData.DefaultOriginLevel3
+	}
 }

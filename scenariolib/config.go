@@ -87,6 +87,12 @@ type RandomData struct {
 	// DefaultOriginLevel1 Override of the default OriginLevel1.
 	DefaultOriginLevel1 string `json:"defaultOriginLevel1,omitempty"`
 
+	// DefaultOriginLevel2 Override of the default OriginLevel2.
+	DefaultOriginLevel2 string `json:"defaultOriginLevel2,omitempty"`
+
+	// DefaultOriginLevel3 Override of the default OriginLevel3.
+	DefaultOriginLevel3 string `json:"defaultOriginLevel3,omitempty"`
+
 	// DefaultPageViewField Override of the DefaultPageViewField for ALL pageView Events.
 	DefaultPageViewField string `json:"defaultPageViewField,omitempty"`
 
@@ -202,6 +208,14 @@ func fillDefaults(c *Config) {
 
 	if c.RandomData.DefaultOriginLevel1 == "" {
 		c.RandomData.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
+	}
+
+	if c.RandomData.DefaultOriginLevel2 == "" {
+		c.RandomData.DefaultOriginLevel2 = defaults.DEFAULTORIGIN2
+	}
+
+	if c.RandomData.DefaultOriginLevel3 == "" {
+		c.RandomData.DefaultOriginLevel3 = defaults.DEFAULTORIGIN3
 	}
 }
 
