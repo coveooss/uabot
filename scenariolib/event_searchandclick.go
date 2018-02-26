@@ -14,6 +14,8 @@ import (
 type SearchAndClickEvent struct {
 	query      string
 	docTitle   string
+	matchField string
+	matchValue string
 	prob       float64
 	quickview  bool
 	caseSearch bool
@@ -22,7 +24,7 @@ type SearchAndClickEvent struct {
 }
 
 func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
-	var query, docClickTitle, inputTitle string
+	var query, docClickTitle, inputTitle, matchField, matchValue string
 	var prob float64
 	var quickview, caseSearch, validCast bool
 	var customData map[string]interface{}
@@ -31,8 +33,30 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 		return nil, errors.New("Parameter queryText must be of type string in SearchAndClickEvent")
 	}
 
-	if docClickTitle, validCast = e.Arguments["docClickTitle"].(string); !validCast {
-		return nil, errors.New("Parameter docClickTitle must be of type string in SearchAndClickEvent")
+	if e.Arguments["docClickTitle"] != nil {
+		if docClickTitle, validCast = e.Arguments["docClickTitle"].(string); !validCast {
+			docClickTitle = ""
+		}
+	}
+	if e.Arguments["matchField"] != nil {
+		if matchField, validCast = e.Arguments["matchField"].(string); !validCast {
+			matchField = ""
+		}
+	}
+	if e.Arguments["matchValue"] != nil {
+		if matchValue, validCast = e.Arguments["matchValue"].(string); !validCast {
+			matchValue = ""
+		}
+	}
+
+	if matchField != "" && matchValue == "" {
+		return nil, errors.New("[SearchAndClickEvent] matchValue is missing with matchField set")
+	}
+	if matchField == "" && matchValue != "" {
+		return nil, errors.New("[SearchAndClickEvent] matchField is missing with matchValue set")
+	}
+	if docClickTitle == "" && matchField == "" {
+		return nil, errors.New("[SearchAndClickEvent] Need matchField or docClickTitle")
 	}
 
 	if prob, validCast = e.Arguments["probability"].(float64); !validCast {
@@ -67,6 +91,8 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 	return &SearchAndClickEvent{
 		query:      query,
 		docTitle:   docClickTitle,
+		matchField: matchField,
+		matchValue: matchValue,
 		prob:       prob,
 		quickview:  quickview,
 		caseSearch: caseSearch,
@@ -114,7 +140,12 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	WaitBetweenActions(timeToWait, v.Config.IsWaitConstant)
 
 	if rand.Float64() <= sc.prob {
-		rank := v.FindDocumentRankByTitle(sc.docTitle)
+		var rank int
+		if sc.matchField != "" {
+			rank = v.FindDocumentRankByMatchingField(sc.matchField, sc.matchValue)
+		} else {
+			rank = v.FindDocumentRankByTitle(sc.docTitle)
+		}
 		if rank >= 0 {
 			Info.Printf("Sending ClickEvent => Found document at rank : %d", rank+1)
 

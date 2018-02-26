@@ -8,6 +8,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -315,6 +316,23 @@ func (v *Visit) DecorateCustomMetadata(evt *ua.ActionEvent, customData map[strin
 	for k, v := range customData {
 		evt.CustomData[k] = v
 	}
+}
+
+// FindDocumentRankByMatchingField Looks through the last response to a query to find a document rank
+// by matching a field and its value (described as a regex pattern)
+func (v *Visit) FindDocumentRankByMatchingField(field string, pattern string) int {
+	if v.LastResponse == nil {
+		return -1
+	}
+	var regexpValue = regexp.MustCompile(pattern)
+	for i := 0; i < len(v.LastResponse.Results); i++ {
+		if rawValue, ok := v.LastResponse.Results[i].Raw[field].(string); ok {
+			if regexpValue.MatchString(rawValue) {
+				return i
+			}
+		}
+	}
+	return -1
 }
 
 // FindDocumentRankByTitle Looks through the last response to a query to find a document

@@ -1,0 +1,32 @@
+{
+  "searchendpoint": "https://platform.cloud.coveo.com/rest/search/",
+  "analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
+  "orgName": "platformdemoelastic3zlf3f2p",
+  "pipeline": "ML",
+  "searchHub": "Movie",
+  "defaultOriginLevel1": "Movie",
+  "defaultOriginLevel2": "default",
+  "allowAnonymousVisits": true,
+  "anonymousThreshold": 0.3,
+  "timeBetweenVisits": 2,
+  "timeBetweenActions": 1,
+  "randomGoodQueries": [],
+  "randomBadQueries": [],
+  "randomCustomData": [
+  ],
+  "globalFilter": "NOT @mytype=Wikipedia",
+  "scenarios": [{
+    "name": "(G) red willis",
+    "weight": 3,
+    "events": [{
+      "type": "SearchAndClick",
+      "arguments": {
+        "queryText": "red willis",
+        "matchField": "title",
+        "matchValue": "^RED( [0-9])?$",
+        "probability": 0.95
+      }
+    }]
+  }]
+
+}
