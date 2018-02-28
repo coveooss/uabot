@@ -214,7 +214,6 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		// TODO: handle indexless option here
 		event.CollectionName = "default"
 		Warning.Println("Cannot convert collection to string, sending \"default\"")
-		//return errors.New("Cannot convert collection to string")
 	}
 	if source, ok := v.LastResponse.Results[rank].Raw["source"].(string); ok {
 		event.SourceName = source
@@ -222,7 +221,6 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		// TODO: handle indexless option here
 		event.SourceName = "default"
 		Warning.Println("Cannot convert source to string, sending \"default\"")
-		// return errors.New("Cannot convert source to string")
 	}
 
 	v.DecorateCustomMetadata(event.ActionEvent, customData)
