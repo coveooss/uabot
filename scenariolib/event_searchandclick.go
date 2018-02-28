@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"regexp"
 )
 
 // ============== SEARCH AND CLICK EVENT ======================
@@ -15,7 +16,7 @@ type SearchAndClickEvent struct {
 	query        string
 	docTitle     string
 	matchField   string
-	matchPattern string
+	matchPattern *regexp.Regexp
 	prob         float64
 	quickview    bool
 	caseSearch   bool
@@ -25,6 +26,7 @@ type SearchAndClickEvent struct {
 
 func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 	var query, docClickTitle, inputTitle, matchField, matchRegex string
+	var matchPattern *regexp.Regexp
 	var prob float64
 	var quickview, caseSearch, validCast bool
 	var customData map[string]interface{}
@@ -44,13 +46,18 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 		}
 	}
 	if e.Arguments["matchRegex"] != nil {
-		if matchRegex, validCast = e.Arguments["matchRegex"].(string); !validCast {
-			matchRegex = ""
+		if matchRegex, validCast = e.Arguments["matchRegex"].(string); validCast {
+			var err error
+			if matchPattern, err = regexp.Compile(matchRegex); err != nil {
+				return nil, errors.New("[SearchAndClickEvent] matchRegex - pattern is invalid")
+			}
+		} else {
+			matchPattern = nil
 		}
 	}
 
-	if matchField != "" && e.Arguments["matchRegex"] == nil {
-		return nil, errors.New("[SearchAndClickEvent] matchRegex is missing with matchField set")
+	if matchField != "" && matchPattern == nil {
+		return nil, errors.New("[SearchAndClickEvent] matchRegex is missing or invalid with matchField set")
 	}
 	if matchField == "" && e.Arguments["matchRegex"] != nil {
 		return nil, errors.New("[SearchAndClickEvent] matchField is missing with matchRegex set")
@@ -92,7 +99,7 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 		query:        query,
 		docTitle:     docClickTitle,
 		matchField:   matchField,
-		matchPattern: matchRegex,
+		matchPattern: matchPattern,
 		prob:         prob,
 		quickview:    quickview,
 		caseSearch:   caseSearch,
