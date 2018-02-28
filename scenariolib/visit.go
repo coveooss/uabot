@@ -318,11 +318,11 @@ func (v *Visit) DecorateCustomMetadata(evt *ua.ActionEvent, customData map[strin
 
 // FindDocumentRankByMatchingField Looks through the last response to a query to find a document rank
 // by matching a field and its value (described as a regex pattern)
-func (v *Visit) FindDocumentRankByMatchingField(field string, pattern string) int {
+func (v *Visit) FindDocumentRankByMatchingField(field string, regexPattern string) int {
 	if v.LastResponse == nil {
 		return -1
 	}
-	var regexpValue = regexp.MustCompile(pattern)
+	var regexpValue = regexp.MustCompile(regexPattern)
 	for i := 0; i < len(v.LastResponse.Results); i++ {
 		if rawValue, ok := v.LastResponse.Results[i].Raw[field].(string); ok {
 			if regexpValue.MatchString(rawValue) {

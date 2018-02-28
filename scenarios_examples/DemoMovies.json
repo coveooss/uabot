@@ -23,7 +23,7 @@
       "arguments": {
         "queryText": "red willis",
         "matchField": "title",
-        "matchValue": "^RED( [0-9])?$",
+        "matchRegex": "^RED( [0-9])?$",
         "probability": 0.95
       }
     }]
