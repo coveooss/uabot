@@ -93,7 +93,9 @@ Use when you want to click on a specific document after a specific search. Ties 
 Arguments | Type | Usage
 ------------ | ------------- | ----------------
 **queryText** | string | The query to send. Not recommended to use with random query.
-**docClickTitle** | string | The title of the document you want to click on.
+**docClickTitle** | string | The title of the document you want to click on.  (checks if string is _contained_ in title.) You can use either **docClickTitle** or the **matchField**/**matchRegex** pair.
+**matchField** | string | The name of the field you want to use to find the document you want to click on. (*matchRegex* is required when using this argument)
+**matchRegex** | string | The pattern you want to match to find the document you want to click on. (*matchField* is required when using this argument)
 **probability** | number | Between 0 and 1, the probability the user will click
 quickview | boolean | If the click is a quickview instead of a document open (default false)
 caseSearch | boolean | If the event is on a Case Creation interface (default false)
@@ -110,6 +112,19 @@ customData | object | Any custom data to send with the event
         "inputTitle": "Subject",
         "probability" : 0.85,
         "docClickTitle" : "specific title"
+    }
+}
+```
+```json
+{
+    "type" : "SearchAndClick",
+    "arguments" : {
+        "queryText" : "specific query",
+        "caseSearch": true,
+        "inputTitle": "Subject",
+        "probability" : 0.85,
+        "matchField" : "title",
+        "matchRegexp" : "^Rocky(\\s+[IV]+)*$"
     }
 }
 ```
