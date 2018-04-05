@@ -8,6 +8,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -202,26 +203,24 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		event.ActionCause = "documentOpen"
 	}
 
-	if urihash, ok := v.LastResponse.Results[rank].Raw["sysurihash"].(string); ok {
+	if urihash, ok := v.LastResponse.Results[rank].Raw["urihash"].(string); ok {
 		event.DocumentURIHash = urihash
 	} else {
-		return errors.New("Cannot convert sysurihash to string")
+		return errors.New("Cannot convert urihash to string")
 	}
-	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
+	if collection, ok := v.LastResponse.Results[rank].Raw["collection"].(string); ok {
 		event.CollectionName = collection
 	} else {
 		// TODO: handle indexless option here
 		event.CollectionName = "default"
-		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
-		//return errors.New("Cannot convert syscollection to string")
+		Warning.Println("Cannot convert collection to string, sending \"default\"")
 	}
-	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
+	if source, ok := v.LastResponse.Results[rank].Raw["source"].(string); ok {
 		event.SourceName = source
 	} else {
 		// TODO: handle indexless option here
 		event.SourceName = "default"
-		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
-		// return errors.New("Cannot convert syssource to string")
+		Warning.Println("Cannot convert source to string, sending \"default\"")
 	}
 
 	v.DecorateCustomMetadata(event.ActionEvent, customData)
@@ -257,12 +256,12 @@ func (v *Visit) sendInterfaceChangeEvent(actionCause, actionType string, customD
 	event.ResponseTime = v.LastResponse.Duration
 
 	if v.LastResponse.TotalCount > 0 {
-		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
+		if urihash, ok := v.LastResponse.Results[0].Raw["urihash"].(string); ok {
 			event.Results = []ua.ResultHash{
 				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
-			return errors.New("Cannot convert sysurihash to string in interfaceChange event")
+			return errors.New("Cannot convert urihash to string in interfaceChange event")
 		}
 	}
 
@@ -285,6 +284,7 @@ func (v *Visit) DecorateEvent(evt *ua.ActionEvent) {
 	evt.Username = v.Username
 	evt.Anonymous = v.Anonymous
 	evt.Language = v.Language
+
 	evt.OriginLevel1 = v.OriginLevel1
 	evt.OriginLevel2 = v.OriginLevel2
 	evt.OriginLevel3 = v.OriginLevel3
@@ -314,6 +314,22 @@ func (v *Visit) DecorateCustomMetadata(evt *ua.ActionEvent, customData map[strin
 	for k, v := range customData {
 		evt.CustomData[k] = v
 	}
+}
+
+// FindDocumentRankByMatchingField Looks through the last response to a query to find a document rank
+// by matching a field and its value (described as a regex pattern)
+func (v *Visit) FindDocumentRankByMatchingField(field string, regexPattern *regexp.Regexp) int {
+	if v.LastResponse == nil {
+		return -1
+	}
+	for i := 0; i < len(v.LastResponse.Results); i++ {
+		if rawValue, ok := v.LastResponse.Results[i].Raw[field].(string); ok {
+			if regexPattern.MatchString(rawValue) {
+				return i
+			}
+		}
+	}
+	return -1
 }
 
 // FindDocumentRankByTitle Looks through the last response to a query to find a document
@@ -384,7 +400,7 @@ func (v *Visit) SetupNTO() {
 	q := &search.Query{
 		Q:               "",
 		CQ:              "",
-		AQ:              "NOT @objecttype==(User,Case,CollaborationGroup) AND NOT @sysfiletype==(Folder, YouTubePlaylist, YouTubePlaylistItem)",
+		AQ:              "NOT @objecttype==(User,Case,CollaborationGroup) AND NOT @filetype==(Folder, YouTubePlaylist, YouTubePlaylistItem)",
 		NumberOfResults: 20,
 		FirstResult:     0,
 		Tab:             "All",
@@ -432,6 +448,11 @@ func (v *Visit) SetupGeneral() {
 
 	v.LastQuery = q
 
-	v.OriginLevel1 = v.Config.RandomData.DefaultOriginLevel1
-	v.OriginLevel2 = ""
+	v.OriginLevel1 = v.Config.DefaultOriginLevel1
+	if v.Config.DefaultOriginLevel2 != "" {
+		v.OriginLevel2 = v.Config.DefaultOriginLevel2
+	}
+	if v.Config.DefaultOriginLevel3 != "" {
+		v.OriginLevel3 = v.Config.DefaultOriginLevel3
+	}
 }

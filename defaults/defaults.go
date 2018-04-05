@@ -129,7 +129,9 @@ var MOBILEUSERAGENTS = []string{
 	"Mozilla/5.0 (iPhone; CPU iPhone OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4",
 }
 
-var DEFAULTPAGEVIEWFIELD = "sysurihash"
+var DEFAULTPAGEVIEWFIELD = "urihash"
+
+// DEFAULTORIGIN1 defaults to "All"
 var DEFAULTORIGIN1 = "All"
 
 var SEARCHENDPOINT_PROD = "https://cloudplatform.coveo.com/rest/search/"

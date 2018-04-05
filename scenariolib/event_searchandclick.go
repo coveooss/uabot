@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"regexp"
 )
 
 // ============== SEARCH AND CLICK EVENT ======================
@@ -12,17 +13,20 @@ import (
 // SearchAndClickEvent represents a search event followed by a click on a specific
 // document found by the title
 type SearchAndClickEvent struct {
-	query      string
-	docTitle   string
-	prob       float64
-	quickview  bool
-	caseSearch bool
-	inputTitle string
-	customData map[string]interface{}
+	query        string
+	docTitle     string
+	matchField   string
+	matchPattern *regexp.Regexp
+	prob         float64
+	quickview    bool
+	caseSearch   bool
+	inputTitle   string
+	customData   map[string]interface{}
 }
 
 func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
-	var query, docClickTitle, inputTitle string
+	var query, docClickTitle, inputTitle, matchField, matchRegex string
+	var matchPattern *regexp.Regexp
 	var prob float64
 	var quickview, caseSearch, validCast bool
 	var customData map[string]interface{}
@@ -31,8 +35,35 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 		return nil, errors.New("Parameter queryText must be of type string in SearchAndClickEvent")
 	}
 
-	if docClickTitle, validCast = e.Arguments["docClickTitle"].(string); !validCast {
-		return nil, errors.New("Parameter docClickTitle must be of type string in SearchAndClickEvent")
+	if e.Arguments["docClickTitle"] != nil {
+		if docClickTitle, validCast = e.Arguments["docClickTitle"].(string); !validCast {
+			docClickTitle = ""
+		}
+	}
+	if e.Arguments["matchField"] != nil {
+		if matchField, validCast = e.Arguments["matchField"].(string); !validCast {
+			matchField = ""
+		}
+	}
+	if e.Arguments["matchRegex"] != nil {
+		if matchRegex, validCast = e.Arguments["matchRegex"].(string); validCast {
+			var err error
+			if matchPattern, err = regexp.Compile(matchRegex); err != nil {
+				return nil, errors.New("[SearchAndClickEvent] matchRegex - pattern is invalid")
+			}
+		} else {
+			matchPattern = nil
+		}
+	}
+
+	if matchField != "" && matchPattern == nil {
+		return nil, errors.New("[SearchAndClickEvent] matchRegex is missing or invalid with matchField set")
+	}
+	if matchField == "" && e.Arguments["matchRegex"] != nil {
+		return nil, errors.New("[SearchAndClickEvent] matchField is missing with matchRegex set")
+	}
+	if docClickTitle == "" && matchField == "" {
+		return nil, errors.New("[SearchAndClickEvent] Need matchField or docClickTitle")
 	}
 
 	if prob, validCast = e.Arguments["probability"].(float64); !validCast {
@@ -65,13 +96,15 @@ func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
 	}
 
 	return &SearchAndClickEvent{
-		query:      query,
-		docTitle:   docClickTitle,
-		prob:       prob,
-		quickview:  quickview,
-		caseSearch: caseSearch,
-		inputTitle: inputTitle,
-		customData: customData,
+		query:        query,
+		docTitle:     docClickTitle,
+		matchField:   matchField,
+		matchPattern: matchPattern,
+		prob:         prob,
+		quickview:    quickview,
+		caseSearch:   caseSearch,
+		inputTitle:   inputTitle,
+		customData:   customData,
 	}, nil
 }
 
@@ -114,7 +147,12 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	WaitBetweenActions(timeToWait, v.Config.IsWaitConstant)
 
 	if rand.Float64() <= sc.prob {
-		rank := v.FindDocumentRankByTitle(sc.docTitle)
+		var rank int
+		if sc.matchField != "" {
+			rank = v.FindDocumentRankByMatchingField(sc.matchField, sc.matchPattern)
+		} else {
+			rank = v.FindDocumentRankByTitle(sc.docTitle)
+		}
 		if rank >= 0 {
 			Info.Printf("Sending ClickEvent => Found document at rank : %d", rank+1)
 
