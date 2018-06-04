@@ -209,7 +209,6 @@ func fillDefaults(c *Config) {
 	if c.DefaultOriginLevel1 == "" {
 		c.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
 	}
-
 }
 
 // Fill all the randomData that has not been overwritten: Names, Emails, IPs, etc.
