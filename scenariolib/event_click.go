@@ -97,13 +97,14 @@ func (ce *ClickEvent) Execute(v *Visit) error {
 	}
 
 	if ce.clickRank == -1 { // if rank == -1 we need to randomize a rank
-		ce.clickRank = 0
 		// Find a random rank within the possible click values accounting for the offset
-		if v.LastResponse.TotalCount > 1 {
-			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
-			rndRank := int(math.Abs(rand.NormFloat64()*2)) + ce.offset
-			ce.clickRank = Min(rndRank, topL-1)
-		}
+		ce.clickRank = int(math.Abs(rand.NormFloat64()*2)) + ce.offset
+	}
+
+	// Make sure the click rank is not > the number of results.
+	if v.LastResponse.TotalCount > 1 {
+		topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
+		ce.clickRank = Min(ce.clickRank, topL-1)
 	}
 
 	if rand.Float64() <= ce.probability { // Probability to click
