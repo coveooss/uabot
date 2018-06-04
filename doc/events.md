@@ -18,7 +18,7 @@ Parameter | Type | Usage
 type | string | The type of the event
 arguments | Object | The arguments of the event, they are different for each type of events
 
-### <a name="Search"></a> 1. Search event 
+### <a name="Search"></a> 1. Search event
 Represents one query sent to the index. Typically the submit of the search bar, search as you type, etc.
 
 `"type" : "Search"`
@@ -51,7 +51,7 @@ matchLanguage | boolean | If the query expression will be in the visit language.
 }
 ```
 
-###<a name="Click"></a> 2. Click Event 
+###<a name="Click"></a> 2. Click Event
 
 Represents a click on a document that was returned by a query. Can represent either a document open or a quickview.
 
@@ -74,7 +74,7 @@ fakeResponse | search.Response | A fake response from the search
     "type" : "Click",
     "arguments" : {
         "docNo" :-1,
-        "offset" : 0,  
+        "offset" : 0,
         "probability" : 0.45,
         "quickview" : true,
         "customData" : {
@@ -84,7 +84,7 @@ fakeResponse | search.Response | A fake response from the search
 }
 ```
 
-###<a name="SearchAndClick"></a> 3. SearchAndClick event 
+###<a name="SearchAndClick"></a> 3. SearchAndClick event
 
 Use when you want to click on a specific document after a specific search. Ties a search and a click event together.
 
@@ -93,7 +93,9 @@ Use when you want to click on a specific document after a specific search. Ties 
 Arguments | Type | Usage
 ------------ | ------------- | ----------------
 **queryText** | string | The query to send. Not recommended to use with random query.
-**docClickTitle** | string | The title of the document you want to click on.
+**docClickTitle** | string | The title of the document you want to click on.  (checks if string is _contained_ in title.) You can use either **docClickTitle** or the **matchField**/**matchRegex** pair.
+**matchField** | string | The name of the field you want to use to find the document you want to click on. (*matchRegex* is required when using this argument)
+**matchRegex** | string | The pattern you want to match to find the document you want to click on. (*matchField* is required when using this argument)
 **probability** | number | Between 0 and 1, the probability the user will click
 quickview | boolean | If the click is a quickview instead of a document open (default false)
 caseSearch | boolean | If the event is on a Case Creation interface (default false)
@@ -113,8 +115,21 @@ customData | object | Any custom data to send with the event
     }
 }
 ```
+```json
+{
+    "type" : "SearchAndClick",
+    "arguments" : {
+        "queryText" : "specific query",
+        "caseSearch": true,
+        "inputTitle": "Subject",
+        "probability" : 0.85,
+        "matchField" : "title",
+        "matchRegexp" : "^Rocky(\\s+[IV]+)*$"
+    }
+}
+```
 
-###<a name="Custom"></a> 4. Custom event 
+###<a name="Custom"></a> 4. Custom event
 
 A custom event sent to the analytics, contains custom data.
 
@@ -141,7 +156,7 @@ customData | object | Any custom data to send with the event
 }
 ```
 
-###<a name="Tab"></a> 5. TabChange event 
+###<a name="Tab"></a> 5. TabChange event
 
 Represents when the user changes the tabs on top of the result list in a search page.
 
@@ -158,12 +173,12 @@ Arguments | Type | Usage
     "type" : "TabChange",
     "arguments" : {
         "tabName" : "YOUTUBE",
-        "tabCQ" : "@sysfiletype==\"youtubevideo\""
+        "tabCQ" : "@filetype==\"youtubevideo\""
     }
 }
 ```
 
-###<a name="Facet"></a> 6. FacetChange event 
+###<a name="Facet"></a> 6. FacetChange event
 
 Represents an event sent when the user chooses a value in a facet.
 
@@ -187,7 +202,7 @@ Arguments | Type | Usage
 }
 ```
 
-###<a name="Origin"></a> 7. SetOrigin event 
+###<a name="Origin"></a> 7. SetOrigin event
 
 An event to tell the bot to change the origin of the events (use this when the user moved between search pages for example)
 
@@ -211,7 +226,7 @@ originLevel3 | string | The new originLevel3
 }
 ```
 
-###<a name="Page"></a> 8. PageView event 
+###<a name="Page"></a> 8. PageView event
 
 An event when a user visits a page.
 

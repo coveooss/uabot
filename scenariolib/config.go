@@ -43,7 +43,7 @@ type Config struct {
 	AnalyticsEndpoint string `json:"analyticsendpoint,omitempty"`
 
 	// RandomData Override the bot default fake data.
-	RandomData *RandomData `json:"randomData,omitempty"`
+	RandomData RandomData `json:"randomData,omitempty"`
 
 	// PartialMatch PartialMath param to send with queries.
 	PartialMatch bool `json:"partialMatch,omitempty"`
@@ -80,13 +80,19 @@ type Config struct {
 
 	// IsWaitConstant Do you want the wait time to be constant.
 	IsWaitConstant bool `json:"isWaitConstant,omitempty"`
+
+	// DefaultOriginLevel1 Override of the default OriginLevel1.
+	DefaultOriginLevel1 string `json:"defaultOriginLevel1,omitempty"`
+
+	// DefaultOriginLevel2 Override of the default OriginLevel2.
+	DefaultOriginLevel2 string `json:"defaultOriginLevel2,omitempty"`
+
+	// DefaultOriginLevel3 Override of the default OriginLevel3.
+	DefaultOriginLevel3 string `json:"defaultOriginLevel3,omitempty"`
 }
 
 // RandomData An override of the bot default random/fake data.
 type RandomData struct {
-	// DefaultOriginLevel1 Override of the default OriginLevel1.
-	DefaultOriginLevel1 string `json:"defaultOriginLevel1,omitempty"`
-
 	// DefaultPageViewField Override of the DefaultPageViewField for ALL pageView Events.
 	DefaultPageViewField string `json:"defaultPageViewField,omitempty"`
 
@@ -122,7 +128,6 @@ type RandomCustomData struct {
 //
 // jsonPath The path to the JSON file.
 func NewConfigFromPath(jsonPath string) (*Config, error) {
-
 	file, err := ioutil.ReadFile(jsonPath)
 	if err != nil {
 		return nil, fmt.Errorf("Error reading JSON file : %v", err)
@@ -187,7 +192,6 @@ func (c *Config) makeScenarioMap() error {
 
 // Fill all the default values that have not been overwritten: Endpoints, origin, etc.
 func fillDefaults(c *Config) {
-
 	fillRandomData(c)
 
 	if c.SearchEndpoint == "" {
@@ -202,8 +206,8 @@ func fillDefaults(c *Config) {
 		c.RandomData.DefaultPageViewField = defaults.DEFAULTPAGEVIEWFIELD
 	}
 
-	if c.RandomData.DefaultOriginLevel1 == "" {
-		c.RandomData.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
+	if c.DefaultOriginLevel1 == "" {
+		c.DefaultOriginLevel1 = defaults.DEFAULTORIGIN1
 	}
 }
 

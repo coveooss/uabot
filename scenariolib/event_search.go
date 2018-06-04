@@ -129,12 +129,12 @@ func (se *SearchEvent) send(v *Visit) error {
 	v.DecorateCustomMetadata(event.ActionEvent, se.customData)
 
 	if v.LastResponse.TotalCount > 0 {
-		if urihash, ok := v.LastResponse.Results[0].Raw["sysurihash"].(string); ok {
+		if urihash, ok := v.LastResponse.Results[0].Raw["urihash"].(string); ok {
 			event.Results = []ua.ResultHash{
 				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
-			return errors.New("Cannot convert sysurihash to string in search event")
+			return errors.New("Cannot convert urihash to string in search event")
 		}
 	}
 
