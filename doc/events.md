@@ -27,11 +27,11 @@ Arguments | Type | Usage
 ------------ | ------------- | ----------------
 queryText | string | The query to send. Leave "blank" for a random query
 goodQuery | boolean | If the random query should be a good or a bad query
-logEvent | boolean | If the event should be logged in the analytics (optional, default = true)
-caseSearch | boolean | If the query comes from a Case Creation interface
-inputTitle | string | The title of the input that triggered the search if it was a case search
-customData | object | Custom data to be sent alongside the event.
+ignoreEvent | boolean | Do not send the event to analytics (optional, default is false)
 matchLanguage | boolean | If the query expression will be in the visit language.
+customData | object | Custom data to be sent alongside the event.
+caseSearch | boolean | If the query comes from a Case Creation interface
+inputTitle | string | (Only used if caseSearch is true) Name of the input field on the case form that triggered the search.
 
 #### Example
 
@@ -228,15 +228,17 @@ originLevel3 | string | The new originLevel3
 
 ###<a name="Page"></a> 8. PageView event
 
-An event when a user visits a page.
+An event when a user visits a page. (This event is similar to a Click event, do a Search, then instead of a click, send a view event).
 
 `"type" : "View"`
 
 Arguments | Type | Usage
 ------------ | ------------- | ----------------
-pageuri | string | The uri of the page currently visited
-pagereferrer | string | The uri of the page referrer if available
-pagetitle | string | The title of the page
+offset | number | And offset to send a view event after a search.
+**probability** | number | Between 0 and 1, the probability the user will click
+**docNo** | number | The rank of the document to click (0 base, put -1 for random)
+**pageViewField** | string | The field to use on the result as contentIdKey and contentIdValue
+contentType | string | The type of the content that was viewed
 
 #### Example
 ```json
