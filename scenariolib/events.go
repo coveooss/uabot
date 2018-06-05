@@ -2,12 +2,45 @@
 // information to the usage analytics endpoint
 package scenariolib
 
-import "errors"
+import (
+	"encoding/json"
+	"errors"
+)
 
 // ParseEvent A factory to create the correct event type coming from the JSON parse
 // of the scenario definition.
 func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 	switch e.Type {
+
+	case "Click":
+		clickEvent := &ClickEvent{}
+		if err := json.Unmarshal(e.Arguments, clickEvent); err != nil {
+			return nil, err
+		}
+		if valid, message := clickEvent.IsValid(); !valid {
+			return nil, errors.New(message)
+		}
+		return clickEvent, nil
+
+	case "Custom":
+		customEvent := &CustomEvent{}
+		if err := json.Unmarshal(e.Arguments, customEvent); err != nil {
+			return nil, err
+		}
+		if valid, message := customEvent.IsValid(); !valid {
+			return nil, errors.New(message)
+		}
+		return customEvent, nil
+
+	case "FacetChange":
+		facetEvent := &FacetEvent{}
+		if err := json.Unmarshal(e.Arguments, facetEvent); err != nil {
+			return nil, err
+		}
+		if valid, message := facetEvent.IsValid(); !valid {
+			return nil, errors.New(message)
+		}
+		return facetEvent, nil
 
 	case "Search":
 		event, err := newSearchEvent(e, c)
@@ -18,13 +51,6 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 
 	case "FakeSearch":
 		event, err := newFakeSearchEvent(e, c)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
-
-	case "Click":
-		event, err := newClickEvent(e)
 		if err != nil {
 			return nil, err
 		}
@@ -43,20 +69,6 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 			return nil, err
 		}
 		return event, nil
-
-	case "FacetChange":
-		event, err := newFacetEvent(e)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
-	case "Custom":
-		event, err := newCustomEvent(e)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
-
 	case "View":
 		event, err := newViewEvent(e, c)
 		if err != nil {
@@ -85,4 +97,5 @@ func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
 // define the Execute function
 type Event interface {
 	Execute(v *Visit) error
+	IsValid() (bool, string)
 }
