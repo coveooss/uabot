@@ -8,7 +8,7 @@ package scenariolib
 // TabChangeEvent represents a tab change event
 type TabChangeEvent struct {
 	Name               string `json:"name"`
-	ConstantExpression string `json:"ConstantExpression,omitempty"`
+	ConstantExpression string `json:"cq,omitempty"`
 }
 
 // IsValid Additional validation after the json unmarshal.

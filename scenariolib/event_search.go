@@ -18,11 +18,11 @@ type SearchEvent struct {
 	Query         string                 `json:"queryText,omitempty"`
 	IgnoreEvent   bool                   `json:"ignoreEvent,omitempty"`
 	GoodQuery     bool                   `json:"goodQuery,omitempty"`
-	CustomData    map[string]interface{} `json:"customData,omitempty"`
-	MatchLanguage bool                   `json:"matchLanguage,omitempty"`
+	ActionCause   string                 `json:"actionCause,omitempty"`
 	CaseSearch    bool                   `json:"caseSearch,omitempty"`
 	InputTitle    string                 `json:"inputTitle,omitempty"`
-	ActionCause   string                 `json:"actionCause,omitempty"`
+	MatchLanguage bool                   `json:"matchLanguage,omitempty"`
+	CustomData    map[string]interface{} `json:"customData,omitempty"`
 	Keyword       string
 	ActionType    string
 }
