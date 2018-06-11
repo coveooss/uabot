@@ -54,19 +54,18 @@ func (click *ClickEvent) Execute(v *Visit) error {
 		return errors.New("LastResponse is nil, execute a search first")
 	}
 
-	if v.LastResponse.TotalCount < 1 {
-		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
-		return nil
+	if click.ClickRank == -1 { // if rank == -1 we need to randomize a rank
+		// Find a random rank within the possible click values accounting for the offset
+		click.ClickRank = int(math.Abs(rand.NormFloat64()*2)) + click.Offset
 	}
 
-	if click.ClickRank == -1 { // if rank == -1 we need to randomize a rank
-		click.ClickRank = 0
-		// Find a random rank within the possible click values accounting for the offset
-		if v.LastResponse.TotalCount > 1 {
-			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
-			rndRank := int(math.Abs(rand.NormFloat64()*2)) + click.Offset
-			click.ClickRank = Min(rndRank, topL-1)
-		}
+	// Make sure the click rank is not > the number of results.
+	if v.LastResponse.TotalCount > 1 {
+		topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
+		click.ClickRank = Min(click.ClickRank, topL-1)
+	} else {
+		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
+		return nil
 	}
 
 	if rand.Float64() <= click.Probability { // Probability to click
