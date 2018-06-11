@@ -3,10 +3,9 @@ go:
   - 1.6
   - tip
 before_script:
-  - go get github.com/coveo/uabot/scenariolib
+  - go get
 script:
-  - cd scenariolib_test
-  - go test
+  - go test -cover
 before_deploy:
   - mkdir -p release
   - "GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux-amd64"
