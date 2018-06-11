@@ -17,61 +17,24 @@ import (
 // that the user visited a page that was returned as a result from a search.
 // The view event sent will contain {contentIdKey: "@pageViewField", contentIdValue: result['pageViewField']}
 type ViewEvent struct {
-	clickRank     int
-	offset        int
-	probability   float64
-	contentType   string
-	pageViewField string
-	customData    map[string]interface{}
+	ClickRank     int                    `json:"clickRank"`
+	Probability   float64                `json:"probability"`
+	PageViewField string                 `json:"pageViewField"`
+	Offset        int                    `json:"offset,omitempty"`
+	ContentType   string                 `json:"contentType,omitempty"`
+	CustomData    map[string]interface{} `json:"customData,omitempty"`
 }
 
-func newViewEvent(e *JSONEvent, c *Config) (*ViewEvent, error) {
-	var validcast bool
-	var offset, docNo float64
-
-	event := new(ViewEvent)
-
-	if offset, validcast = e.Arguments["offset"].(float64); !validcast {
-		return nil, errors.New("Parameter offset must be a positive number in a ViewEvent")
+// IsValid Additional validation after the json unmarshal.
+func (view *ViewEvent) IsValid() (bool, string) {
+	if view.Probability < 0 || view.Probability > 1 {
+		return false, "A view event probability must be between 0 and 1."
 	}
-	event.offset = int(offset)
-
-	if event.probability, validcast = e.Arguments["probability"].(float64); !validcast || event.probability > 1 || event.probability < 0 {
-		return nil, errors.New("Parameter probability must be a number between 0 and 1 in a ViewEvent")
-	}
-
-	if e.Arguments["contentType"] != nil {
-		if event.contentType, validcast = e.Arguments["contentType"].(string); !validcast {
-			return nil, errors.New("Parameter contentType must be of type string in ViewEvent")
-		}
-	} else {
-		event.contentType = "Default ContentType"
-	}
-
-	if docNo, validcast = e.Arguments["docNo"].(float64); !validcast {
-		return nil, errors.New("Parameter docNo must be a number in a ViewEvent")
-	}
-	event.clickRank = int(docNo)
-
-	if e.Arguments["pageViewField"] != nil {
-		if event.pageViewField, validcast = e.Arguments["pageViewField"].(string); !validcast {
-			return nil, errors.New("Parameter pageViewField must be of type string in ViewEvent")
-		}
-	} else {
-		event.pageViewField = c.RandomData.DefaultPageViewField
-	}
-
-	if e.Arguments["customData"] != nil {
-		if event.customData, validcast = e.Arguments["customData"].(map[string]interface{}); !validcast {
-			return nil, errors.New("Parameter customData must be a json object (map[string]interface{}) in a view event")
-		}
-	}
-
-	return event, nil
+	return true, ""
 }
 
 // Execute the view event, sending a view event to the usage analytics
-func (ve *ViewEvent) Execute(v *Visit) error {
+func (view *ViewEvent) Execute(v *Visit) error {
 	if v.LastResponse == nil {
 		return errors.New("No query before pageView event, use a search event first")
 	}
@@ -80,40 +43,40 @@ func (ve *ViewEvent) Execute(v *Visit) error {
 		return nil
 	}
 
-	if rand.Float64() <= ve.probability { // test if the event will exectute according to probability
-		ve.clickRank = computeClickRank(v, ve.clickRank, ve.offset)
+	if rand.Float64() <= view.Probability { // test if the event will exectute according to probability
+		view.ClickRank = computeClickRank(v, view.ClickRank, view.Offset)
 
-		if ve.clickRank > v.LastResponse.TotalCount {
+		if view.ClickRank > v.LastResponse.TotalCount {
 			Warning.Printf("PageView index out of bounds, not sending event")
 			return nil
 		}
 
-		return ve.send(v)
+		return view.send(v)
 	}
-	Info.Printf("User chose not to view (probability %v%%)", int(ve.probability*100))
+	Info.Printf("User chose not to view (probability %v%%)", int(view.Probability*100))
 	return nil
 }
 
-func (ve *ViewEvent) send(v *Visit) error {
-	Info.Printf("Sending ViewEvent rank=%d ", ve.clickRank+1)
+func (view *ViewEvent) send(v *Visit) error {
+	Info.Printf("Sending ViewEvent rank=%d ", view.ClickRank+1)
 
 	event := ua.NewViewEvent()
-	event.PageURI = v.LastResponse.Results[ve.clickRank].ClickURI
-	event.PageTitle = v.LastResponse.Results[ve.clickRank].Title
-	event.ContentType = ve.contentType
-	event.ContentIDKey = "@" + ve.pageViewField
-	event.PageReferrer = v.Referrer
+	event.Location = v.LastResponse.Results[view.ClickRank].ClickURI
+	event.Title = v.LastResponse.Results[view.ClickRank].Title
+	event.ContentType = view.ContentType
+	event.ContentIDKey = "@" + view.PageViewField
+	event.Referrer = v.Referrer
 	v.DecorateEvent(event.ActionEvent)
-	v.DecorateCustomMetadata(event.ActionEvent, ve.customData)
+	v.DecorateCustomMetadata(event.ActionEvent, view.CustomData)
 
-	if _, ok := v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField]; !ok { // If the field does not exist on the "clicked" result
-		Warning.Printf("Fields %s does not exist on result ranked %d. Not sending view event.", ve.pageViewField, ve.clickRank)
+	if _, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField]; !ok { // If the field does not exist on the "clicked" result
+		Warning.Printf("Fields %s does not exist on result ranked %d. Not sending view event.", view.PageViewField, view.ClickRank)
 		return nil
 	}
-	if contentIDValue, ok := v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField].(string); ok { // If we can convert the fieldValue to a string
+	if contentIDValue, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField].(string); ok { // If we can convert the fieldValue to a string
 		event.ContentIDValue = contentIDValue
 	} else {
-		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[ve.clickRank].Raw[ve.pageViewField], ve.pageViewField)
+		return fmt.Errorf("Cannot convert %s field %s value to string", v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField], view.PageViewField)
 	}
 
 	// Send a UA view event

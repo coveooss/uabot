@@ -1,53 +1,31 @@
 package scenariolib
 
-import "errors"
-
 // ============== SET ORIGIN ======================
 // ==================================================
 
-// SetOriginEvent The action of changing the originLevel
+// SetOriginEvent The action of changing the originLevel1-2-3 of the current visit.
 type SetOriginEvent struct {
-	originLevel1 string
-	originLevel2 string
-	originLevel3 string
+	OriginLevel1 string `json:"originLevel1"`
+	OriginLevel2 string `json:"originLevel2,omitempty"`
+	OriginLevel3 string `json:"originLevel3,omitempty"`
 }
 
-func newSetOriginEvent(e *JSONEvent) (*SetOriginEvent, error) {
-	var originLevel1, originLevel2, originLevel3 string
-	var validCast bool
-	if e.Arguments["originLevel1"] != nil {
-		if originLevel1, validCast = e.Arguments["originLevel1"].(string); !validCast {
-			return nil, errors.New("Parameter originLevel1 must be a string")
-		}
-	}
-	if e.Arguments["originLevel2"] != nil {
-		if originLevel2, validCast = e.Arguments["originLevel2"].(string); !validCast {
-			return nil, errors.New("Parameter originLevel2 must be a string")
-		}
-	}
-	if e.Arguments["originLevel3"] != nil {
-		if originLevel3, validCast = e.Arguments["originLevel3"].(string); !validCast {
-			return nil, errors.New("Parameter originLevel3 must be a string")
-		}
-	}
-
-	return &SetOriginEvent{
-		originLevel1: originLevel1,
-		originLevel2: originLevel2,
-		originLevel3: originLevel3,
-	}, nil
+// IsValid Additional validation after the json unmarshal.
+func (origin *SetOriginEvent) IsValid() (bool, string) {
+	return true, ""
 }
 
-// Execute Execute the event
-func (oe *SetOriginEvent) Execute(v *Visit) error {
-	if oe.originLevel1 != "" {
-		v.OriginLevel1 = oe.originLevel1
+// Execute the set origin event. Replaces the originLevel1-2-3 in the current visit.
+func (origin *SetOriginEvent) Execute(v *Visit) error {
+	Info.Printf("Executing SetOrigin {originLevel1: %s, originLevel2: %s, OriginLevel3: %s}", origin.OriginLevel1, origin.OriginLevel2, origin.OriginLevel3)
+	if origin.OriginLevel1 != "" {
+		v.OriginLevel1 = origin.OriginLevel1
 	}
-	if oe.originLevel2 != "" {
-		v.OriginLevel2 = oe.originLevel2
+	if origin.OriginLevel2 != "" {
+		v.OriginLevel2 = origin.OriginLevel2
 	}
-	if oe.originLevel3 != "" {
-		v.OriginLevel3 = oe.originLevel3
+	if origin.OriginLevel3 != "" {
+		v.OriginLevel3 = origin.OriginLevel3
 	}
 	return nil
 }

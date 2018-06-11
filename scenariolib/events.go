@@ -10,87 +10,52 @@ import (
 // ParseEvent A factory to create the correct event type coming from the JSON parse
 // of the scenario definition.
 func ParseEvent(e *JSONEvent, c *Config) (Event, error) {
+
+	var event Event
 	switch e.Type {
 
 	case "Click":
-		clickEvent := &ClickEvent{}
-		if err := json.Unmarshal(e.Arguments, clickEvent); err != nil {
-			return nil, err
-		}
-		if valid, message := clickEvent.IsValid(); !valid {
-			return nil, errors.New(message)
-		}
-		return clickEvent, nil
+		event = &ClickEvent{}
 
 	case "Custom":
-		customEvent := &CustomEvent{}
-		if err := json.Unmarshal(e.Arguments, customEvent); err != nil {
-			return nil, err
-		}
-		if valid, message := customEvent.IsValid(); !valid {
-			return nil, errors.New(message)
-		}
-		return customEvent, nil
+		event = &CustomEvent{}
 
 	case "FacetChange":
-		facetEvent := &FacetEvent{}
-		if err := json.Unmarshal(e.Arguments, facetEvent); err != nil {
-			return nil, err
-		}
-		if valid, message := facetEvent.IsValid(); !valid {
-			return nil, errors.New(message)
-		}
-		return facetEvent, nil
-
-	case "Search":
-		event, err := newSearchEvent(e, c)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
+		event = &FacetEvent{}
 
 	case "FakeSearch":
-		event, err := newFakeSearchEvent(e, c)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
+		event = &FakeSearchEvent{}
+
+	case "View":
+		event = &ViewEvent{}
+
+	case "Search":
+		event = &SearchEvent{}
 
 	case "SearchAndClick":
-		event, err := newSearchAndClickEvent(e)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
-
-	case "TabChange":
-		event, err := newTabChangeEvent(e)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
-	case "View":
-		event, err := newViewEvent(e, c)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
+		event = &SearchAndClickEvent{}
 
 	case "SetOrigin":
-		event, err := newSetOriginEvent(e)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
+		event = &SetOriginEvent{}
 
 	case "SetReferrer":
-		event, err := newSetReferrerEvent(e)
-		if err != nil {
-			return nil, err
-		}
-		return event, nil
+		event = &SetReferrerEvent{}
+
+	case "TabChange":
+		event = &TabChangeEvent{}
+
+	default:
+		return nil, errors.New("Event type not supported")
+
 	}
-	return nil, errors.New("Event type not supported")
+
+	if err := json.Unmarshal(e.Arguments, event); err != nil {
+		return nil, err
+	}
+	if valid, message := event.IsValid(); !valid {
+		return nil, errors.New(message)
+	}
+	return event, nil
 }
 
 // Event Generic interface for abstract type Event. All specific event types must

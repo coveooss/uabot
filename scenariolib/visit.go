@@ -160,14 +160,14 @@ func (v *Visit) SendViewEvent(event *ua.ViewEvent) (err error) {
 	return
 }
 
-func (v *Visit) sendCustomEvent(actionCause, actionType string, customData map[string]interface{}) error {
-	Info.Printf("Sending CustomEvent cause: %s ||| type: %s", actionCause, actionType)
+func (v *Visit) sendCustomEvent(eventValue, eventType string, customData map[string]interface{}) error {
+	Info.Printf("Sending CustomEvent {cause: %s, type: %s}", eventValue, eventType)
 	event := ua.NewCustomEvent()
 
 	v.DecorateEvent(event.ActionEvent)
 
-	event.EventType = actionType
-	event.EventValue = actionCause
+	event.EventType = eventType
+	event.EventValue = eventValue
 
 	v.DecorateCustomMetadata(event.ActionEvent, customData)
 
@@ -208,19 +208,19 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 	} else {
 		return errors.New("Cannot convert urihash to string")
 	}
-	if collection, ok := v.LastResponse.Results[rank].Raw["collection"].(string); ok {
+	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
 		event.CollectionName = collection
 	} else {
 		// TODO: handle indexless option here
 		event.CollectionName = "default"
-		Warning.Println("Cannot convert collection to string, sending \"default\"")
+		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
 	}
-	if source, ok := v.LastResponse.Results[rank].Raw["source"].(string); ok {
+	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
 		event.SourceName = source
 	} else {
 		// TODO: handle indexless option here
 		event.SourceName = "default"
-		Warning.Println("Cannot convert source to string, sending \"default\"")
+		Warning.Println("Cannot convert syssource to string, sending \"default\"")
 	}
 
 	v.DecorateCustomMetadata(event.ActionEvent, customData)

@@ -1,33 +1,20 @@
 package scenariolib
 
-import "errors"
-
 // ============== SET REFERRER ======================
 // ==================================================
 
 // SetReferrerEvent The action of changing the referrer
 type SetReferrerEvent struct {
-	referrer string
+	Referrer string `json:"referrer"`
 }
 
-func newSetReferrerEvent(e *JSONEvent) (*SetReferrerEvent, error) {
-	var referrer string
-	var validCast bool
-	if e.Arguments["referrer"] != nil {
-		if referrer, validCast = e.Arguments["referrer"].(string); !validCast {
-			return nil, errors.New("Parameter referrer must be a string")
-		}
-	}
-
-	return &SetReferrerEvent{
-		referrer: referrer,
-	}, nil
+// IsValid Additional validation after the json unmarshal.
+func (referrer *SetReferrerEvent) IsValid() (bool, string) {
+	return true, ""
 }
 
 //Execute Execute the event
-func (oe *SetReferrerEvent) Execute(v *Visit) error {
-	if oe.referrer != "" {
-		v.Referrer = oe.referrer
-	}
+func (referrer *SetReferrerEvent) Execute(v *Visit) error {
+	v.Referrer = referrer.Referrer
 	return nil
 }
