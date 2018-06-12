@@ -12,27 +12,19 @@ func TestCustomEventValid(t *testing.T) {
 	event := &scenariolib.CustomEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling CustomEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected CustomEvent.IsValid() to be true, got false (%s)", message)
-	}
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected CustomEvent.IsValid() to be true, was false with error: %s", message)
 
-	if event.EventType != "eventTypeTest" {
-		t.Errorf("Expected CustomEvent.EventType to be 'eventTypeTest', got %s instead.", event.EventType)
-	}
+	equals(t, "eventTypeTest", event.EventType)
 
-	if event.EventValue != "eventValueTest" {
-		t.Errorf("Expected CustomEvent.EventValue to be 'eventValueTest', got %s instead.", event.EventValue)
-	}
+	equals(t, "eventValueTest", event.EventValue)
 
-	if event.CustomData == nil {
-		t.Errorf("Expected CustomEvent.CustomData to not be nil, was nil instead.")
-	}
+	// Expect CustomData to be not nil
+	assert(t, event.CustomData != nil, "Expected CustomData to not be nil.")
 
-	if event.CustomData["data1"] != "one" {
-		t.Errorf("Expected CustomEvent.CustomData['data1'] to be 'one', was %s instead.", event.CustomData["data1"])
-	}
+	// Expect CustomData["data1"] to be "one"
+	equals(t, "one", event.CustomData["data1"])
 }

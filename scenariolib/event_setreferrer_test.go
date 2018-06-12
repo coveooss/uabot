@@ -12,15 +12,11 @@ func TestSetReferrerEvent(t *testing.T) {
 	event := &scenariolib.SetReferrerEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling SetReferrerEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected SetReferrerEvent.IsValid() to be true, got false (%s)", message)
-	}
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected event to be valid, was false with error: %s", message)
 
-	if event.Referrer != "testReferrer" {
-		t.Errorf("Expected setReferrerEvent.Referrer to be 'testReferrer', got %s instead.", event.Referrer)
-	}
+	equals(t, "testReferrer", event.Referrer)
 }

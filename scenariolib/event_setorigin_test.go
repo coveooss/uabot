@@ -12,23 +12,15 @@ func TestSetOriginEvent(t *testing.T) {
 	event := &scenariolib.SetOriginEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling SetOriginEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected SetOriginEvent.IsValid() to be true, got false (%s)", message)
-	}
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected event to be valid, was false with error: %s", message)
 
-	if event.OriginLevel1 != "testOriginLevel1" {
-		t.Errorf("Expected setOriginEvent.OriginLevel1 to be 'testOriginLevel1', got %s instead.", event.OriginLevel1)
-	}
+	equals(t, "testOriginLevel1", event.OriginLevel1)
 
-	if event.OriginLevel2 != "testOriginLevel2" {
-		t.Errorf("Expected setOriginEvent.OriginLevel2 to be 'testOriginLevel2', got %s instead.", event.OriginLevel2)
-	}
+	equals(t, "testOriginLevel2", event.OriginLevel2)
 
-	if event.OriginLevel3 != "testOriginLevel3" {
-		t.Errorf("Expected setOriginEvent.OriginLevel3 to be 'testOriginLevel3', got %s instead.", event.OriginLevel3)
-	}
+	equals(t, "testOriginLevel3", event.OriginLevel3)
 }

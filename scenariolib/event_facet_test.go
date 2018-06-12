@@ -12,31 +12,21 @@ func TestFacetEventValid(t *testing.T) {
 	event := &scenariolib.FacetEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling FacetEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected FacetEvent.IsValid() to be true, got false (%s)", message)
-	}
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected event to be valid, was false with error: %s", message)
 
-	if event.FacetTitle != "facetTitleTest" {
-		t.Errorf("Expected FacetEvent.FacetTitle to be 'facetTitleTest', got %s instead.", event.FacetTitle)
-	}
+	equals(t, "facetTitleTest", event.FacetTitle)
 
-	if event.FacetValue != "facetValueTest" {
-		t.Errorf("Expected FacetEvent.FacetValue to be 'facetValueTest', got %s instead.", event.FacetValue)
-	}
+	equals(t, "facetValueTest", event.FacetValue)
 
-	if event.FacetField != "facetFieldTest" {
-		t.Errorf("Expected FacetEvent.FacetField to be 'facetFieldTest', got %s instead.", event.FacetField)
-	}
+	equals(t, "facetFieldTest", event.FacetField)
 
-	if event.CustomData == nil {
-		t.Errorf("Expected FacetEvent.CustomData to not be nil, was nil instead.")
-	}
+	// Expect CustomData to be not nil
+	assert(t, event.CustomData != nil, "Expected CustomData to not be nil.")
 
-	if event.CustomData["data1"] != "one" {
-		t.Errorf("Expected FacetEvent.CustomData['data1'] to be 'one', was %s instead.", event.CustomData["data1"])
-	}
+	// Expect CustomData["data1"] to be "one"
+	equals(t, "one", event.CustomData["data1"])
 }

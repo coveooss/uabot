@@ -12,35 +12,28 @@ func TestClickEventValid(t *testing.T) {
 	event := &scenariolib.ClickEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling ClickEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected ClickEvent.IsValid() to be true, got false (%s)", message)
-	}
+	// Test if the event is valid.
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected ClickEvent.IsValid() to be true, was false with error: %s", message)
 
-	if event.Probability != 1 {
-		t.Errorf("Expected clickEvent.Probability to be 1, got %f instead.", event.Probability)
-	}
+	// Expect Probability to be 1.0
+	equals(t, 1.0, event.Probability)
 
-	if event.ClickRank != -1 {
-		t.Errorf("Expected clickEvent.ClickRank to be -1, got %d instead.", event.ClickRank)
-	}
+	// Expect ClickRank to be -1
+	equals(t, -1, event.ClickRank)
 
-	if event.Offset != 2 {
-		t.Errorf("Expected clickEvent.Offset to be 2, got %d instead.", event.Offset)
-	}
+	// Expect Offset to be 2
+	equals(t, 2, event.Offset)
 
-	if event.Quickview != false {
-		t.Errorf("Expected clickEvent.Quickview to be false, got %t instead.", event.Quickview)
-	}
+	// Expect Quickview to be false
+	assert(t, !event.Quickview, "Expected Quickview to be false")
 
-	if event.CustomData == nil {
-		t.Errorf("Expected clickEvent.CustomData to be a map[string]interface{}, was nil instead.")
-	}
+	// Expect CustomData to be not nil
+	assert(t, event.CustomData != nil, "Expected CustomData to not be nil.")
 
-	if event.CustomData["data1"] != "one" {
-		t.Errorf("Expected clickEvent.CustomData[data1] to be 'one', got %v instead.", event.CustomData["data1"])
-	}
+	// Expect CustomData["data1"] to be "one"
+	equals(t, "one", event.CustomData["data1"])
 }

@@ -12,19 +12,13 @@ func TestTabChangeEvent(t *testing.T) {
 	event := &scenariolib.TabChangeEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling SetReferrerEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected SetReferrerEvent.IsValid() to be true, got false (%s)", message)
-	}
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected event to be valid, was false with error: %s", message)
 
-	if event.Name != "nameTest" {
-		t.Errorf("Expected TabChangeEvent.Name to be 'nameTest', got %s instead.", event.Name)
-	}
+	equals(t, "nameTest", event.Name)
 
-	if event.ConstantExpression != "@uri" {
-		t.Errorf("Expected TabChangeEvent.ConstantExpression to be '@uri', got %s instead.", event.ConstantExpression)
-	}
+	equals(t, "@uri", event.ConstantExpression)
 }

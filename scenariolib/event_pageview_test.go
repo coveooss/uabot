@@ -12,35 +12,23 @@ func TestPageViewEventValid(t *testing.T) {
 	event := &scenariolib.ViewEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling ViewEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected ViewEvent.IsValid() to be true, got false (%s)", message)
-	}
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected event to be valid, was false with error: %s", message)
 
-	if event.ClickRank != 1 {
-		t.Errorf("Expected ViewEvent.ClickRank to be 1, got %d instead.", event.ClickRank)
-	}
+	equals(t, 1, event.ClickRank)
 
-	if event.Probability != 0.5 {
-		t.Errorf("Expected ViewEvent.Probability to be 2, got %f instead.", event.Probability)
-	}
+	equals(t, 0.5, event.Probability)
 
-	if event.PageViewField != "pageViewFieldTest" {
-		t.Errorf("Expected ViewEvent.PageViewField to be 'pageViewFieldTest', got %s instead.", event.PageViewField)
-	}
+	equals(t, "pageViewFieldTest", event.PageViewField)
 
-	if event.ContentType != "contentTypeTest" {
-		t.Errorf("Expected ViewEvent.ContentType to be 'contentTypeTest', got %s instead.", event.ContentType)
-	}
+	equals(t, "contentTypeTest", event.ContentType)
 
-	if event.CustomData == nil {
-		t.Errorf("Expected ViewEvent.CustomData to not be nil, was nil instead.")
-	}
+	// Expect CustomData to be not nil
+	assert(t, event.CustomData != nil, "Expected CustomData to not be nil.")
 
-	if event.CustomData["data1"] != "one" {
-		t.Errorf("Expected ViewEvent.CustomData['data1'] to be 'one', was %s instead.", event.CustomData["data1"])
-	}
+	// Expect CustomData["data1"] to be "one"
+	equals(t, "one", event.CustomData["data1"])
 }

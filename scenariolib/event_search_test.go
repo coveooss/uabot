@@ -12,47 +12,29 @@ func TestSearchEventValid(t *testing.T) {
 	event := &scenariolib.SearchEvent{}
 
 	// Test unmarshal json.
-	if err := json.Unmarshal(testEventJson, event); err != nil {
-		t.Errorf("Error Unmarshaling SearchEvent: %s", err)
-	}
+	err := json.Unmarshal(testEventJson, event)
+	ok(t, err)
 
-	if valid, message := event.IsValid(); !valid {
-		t.Errorf("Expected SearchEvent.IsValid() to be true, got false (%s)", message)
-	}
+	valid, message := event.IsValid()
+	assert(t, valid, "Expected event to be valid, was false with error: %s", message)
 
-	if event.Query != "queryTextTest" {
-		t.Errorf("Expected SearchEvent.Query to be 'queryTextTest', got %s instead.", event.Query)
-	}
+	equals(t, "queryTextTest", event.Query)
 
-	if event.IgnoreEvent != false {
-		t.Errorf("Expected SearchEvent.IgnoreEvent to be false, got %t instead.", event.IgnoreEvent)
-	}
+	assert(t, !event.IgnoreEvent, "Expected IgnoreEvent to be false.")
 
-	if event.GoodQuery != true {
-		t.Errorf("Expected SearchEvent.GoodQuery to be true, got %t instead.", event.GoodQuery)
-	}
+	assert(t, event.GoodQuery, "Expected GoodQuery to be true.")
 
-	if event.ActionCause != "actionCauseTest" {
-		t.Errorf("Expected SearchEvent.ActionCause to be 'actionCauseTest', got %s instead.", event.ActionCause)
-	}
+	equals(t, "actionCauseTest", event.ActionCause)
 
-	if event.CaseSearch != false {
-		t.Errorf("Expected SearchEvent.CaseSearch to be false, got %t instead.", event.CaseSearch)
-	}
+	assert(t, !event.CaseSearch, "Expected CaseSearch to be false.")
 
-	if event.InputTitle != "inputTitleTest" {
-		t.Errorf("Expected SearchEvent.InputTitle to be 'inputTitleTest', got %s instead.", event.InputTitle)
-	}
+	equals(t, "inputTitleTest", event.InputTitle)
 
-	if event.MatchLanguage != false {
-		t.Errorf("Expected SearchEvent.MatchLanguage to be false, got %t instead.", event.MatchLanguage)
-	}
+	assert(t, !event.MatchLanguage, "Expected MatchLanguage to be false.")
 
-	if event.CustomData == nil {
-		t.Errorf("Expected SearchEvent.CustomData to not be nil, was nil instead.")
-	}
+	// Expect CustomData to be not nil
+	assert(t, event.CustomData != nil, "Expected CustomData to not be nil.")
 
-	if event.CustomData["data1"] != "one" {
-		t.Errorf("Expected SearchEvent.CustomData['data1'] to be 'one', was %s instead.", event.CustomData["data1"])
-	}
+	// Expect CustomData["data1"] to be "one"
+	equals(t, "one", event.CustomData["data1"])
 }
