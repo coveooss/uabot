@@ -15,7 +15,7 @@ import (
 type SearchAndClickEvent struct {
 	Query        string                 `json:"query"`
 	Probability  float64                `json:"probability"`
-	DocTitle     string                 `json:"docTitle,omitempty"`
+	DocTitle     string                 `json:"docClickTitle,omitempty"`
 	MatchField   string                 `json:"matchField,,omitempty"`
 	MatchPattern string                 `json:"matchPattern,omitempty"`
 	Quickview    bool                   `json:"quickview,omitempty"`
