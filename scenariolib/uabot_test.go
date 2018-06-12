@@ -26,6 +26,15 @@ func ok(tb testing.TB, err error) {
 	}
 }
 
+// notok fails the test if an err is nil.
+func notok(tb testing.TB, err error) {
+	if err == nil {
+		_, file, line, _ := runtime.Caller(1)
+		fmt.Printf("%s:%d: was expecting error but was nil\n\n", filepath.Base(file), line)
+		tb.FailNow()
+	}
+}
+
 // equals fails the test if exp is not equal to act.
 func equals(tb testing.TB, exp, act interface{}) {
 	if !reflect.DeepEqual(exp, act) {
