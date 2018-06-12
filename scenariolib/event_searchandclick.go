@@ -29,11 +29,11 @@ type SearchAndClickEvent struct {
 func (searchClick *SearchAndClickEvent) IsValid() (bool, string) {
 	if searchClick.DocTitle == "" {
 		if searchClick.MatchField == "" || searchClick.MatchPattern == "" {
-			return false, "If you are not using a [docTitle] you must provide both [matchField and matchPattern]"
+			return false, "If you are not using a [docClickTitle] you must provide both [matchField and matchPattern]"
 		}
 	} else {
 		if searchClick.MatchField != "" || searchClick.MatchPattern != "" {
-			return false, "If you provide a [docTitle] you cannot also use [matchField and/or matchPattern]"
+			return false, "If you provide a [docClickTitle] you cannot also use [matchField and/or matchPattern]"
 		}
 	}
 	var err error
