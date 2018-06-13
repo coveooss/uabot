@@ -13,124 +13,59 @@ import (
 // SearchAndClickEvent represents a search event followed by a click on a specific
 // document found by the title
 type SearchAndClickEvent struct {
-	query        string
-	docTitle     string
-	matchField   string
-	matchPattern *regexp.Regexp
-	prob         float64
-	quickview    bool
-	caseSearch   bool
-	inputTitle   string
-	customData   map[string]interface{}
+	Query        string                 `json:"query"`
+	Probability  float64                `json:"probability"`
+	DocTitle     string                 `json:"docClickTitle,omitempty"`
+	MatchField   string                 `json:"matchField,,omitempty"`
+	MatchPattern string                 `json:"matchPattern,omitempty"`
+	Quickview    bool                   `json:"quickview,omitempty"`
+	CaseSearch   bool                   `json:"caseSearch,omitempty"`
+	InputTitle   string                 `json:"inputTitle,omitempty"`
+	CustomData   map[string]interface{} `json:"customData,omitempty"`
+	RegexMatch   *regexp.Regexp
 }
 
-func newSearchAndClickEvent(e *JSONEvent) (*SearchAndClickEvent, error) {
-	var query, docClickTitle, inputTitle, matchField, matchRegex string
-	var matchPattern *regexp.Regexp
-	var prob float64
-	var quickview, caseSearch, validCast bool
-	var customData map[string]interface{}
-
-	if query, validCast = e.Arguments["queryText"].(string); !validCast {
-		return nil, errors.New("Parameter queryText must be of type string in SearchAndClickEvent")
-	}
-
-	if e.Arguments["docClickTitle"] != nil {
-		if docClickTitle, validCast = e.Arguments["docClickTitle"].(string); !validCast {
-			docClickTitle = ""
+// IsValid Additional validation after the json unmarshal. And compilation of the regex if available.
+func (searchClick *SearchAndClickEvent) IsValid() (bool, string) {
+	if searchClick.DocTitle == "" {
+		if searchClick.MatchField == "" || searchClick.MatchPattern == "" {
+			return false, "If you are not using a [docClickTitle] you must provide both [matchField and matchPattern]"
 		}
-	}
-	if e.Arguments["matchField"] != nil {
-		if matchField, validCast = e.Arguments["matchField"].(string); !validCast {
-			matchField = ""
-		}
-	}
-	if e.Arguments["matchRegex"] != nil {
-		if matchRegex, validCast = e.Arguments["matchRegex"].(string); validCast {
-			var err error
-			if matchPattern, err = regexp.Compile(matchRegex); err != nil {
-				return nil, errors.New("[SearchAndClickEvent] matchRegex - pattern is invalid")
-			}
-		} else {
-			matchPattern = nil
-		}
-	}
-
-	if matchField != "" && matchPattern == nil {
-		return nil, errors.New("[SearchAndClickEvent] matchRegex is missing or invalid with matchField set")
-	}
-	if matchField == "" && e.Arguments["matchRegex"] != nil {
-		return nil, errors.New("[SearchAndClickEvent] matchField is missing with matchRegex set")
-	}
-	if docClickTitle == "" && matchField == "" {
-		return nil, errors.New("[SearchAndClickEvent] Need matchField or docClickTitle")
-	}
-
-	if prob, validCast = e.Arguments["probability"].(float64); !validCast {
-		return nil, errors.New("Parameter probability must be of type float64 in SearchAndClickEvent")
-	}
-
-	if e.Arguments["quickview"] == nil {
-		quickview = false
 	} else {
-		if quickview, validCast = e.Arguments["quickview"].(bool); !validCast {
-			return nil, errors.New("Parameter quickview must be of type boolean in SearchAndClickEvent")
+		if searchClick.MatchField != "" || searchClick.MatchPattern != "" {
+			return false, "If you provide a [docClickTitle] you cannot also use [matchField and/or matchPattern]"
 		}
 	}
-
-	if e.Arguments["caseSearch"] != nil {
-		if caseSearch, validCast = e.Arguments["caseSearch"].(bool); !validCast {
-			return nil, errors.New("Parameter caseSearch must be of type boolean in SearchAndClickEvent")
-		}
-		if caseSearch {
-			if inputTitle, validCast = e.Arguments["inputTitle"].(string); !validCast {
-				return nil, errors.New("Parameter inputTitle is mandatory on a caseSearch and must be of type string in SearchAndClickEvent")
-			}
-		}
+	var err error
+	if searchClick.RegexMatch, err = regexp.Compile(searchClick.MatchPattern); err != nil {
+		return false, "Failed to compile regex pattern : " + err.Error()
 	}
 
-	if e.Arguments["customData"] != nil {
-		if customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
-			return nil, errors.New("Parameter customData must be a json object (map[string]interface{}) in a custom event")
-		}
-	}
-
-	return &SearchAndClickEvent{
-		query:        query,
-		docTitle:     docClickTitle,
-		matchField:   matchField,
-		matchPattern: matchPattern,
-		prob:         prob,
-		quickview:    quickview,
-		caseSearch:   caseSearch,
-		inputTitle:   inputTitle,
-		customData:   customData,
-	}, nil
+	return true, ""
 }
 
-// Execute Execute the search and click event sending both events to the analytics
-func (sc *SearchAndClickEvent) Execute(v *Visit) error {
-	Info.Printf("Executing SearchAndClickEvent : Searching for %s, clicking on %s (quickview %v)", sc.query, sc.docTitle, sc.quickview)
+// Execute the search and click event sending both events to the analytics
+func (searchClick *SearchAndClickEvent) Execute(v *Visit) error {
+	Info.Printf("Executing SearchAndClickEvent : Searching for %s, clicking on %s (quickview %v)", searchClick.Query, searchClick.DocTitle, searchClick.Quickview)
 	// Execute the search event
-	se := new(SearchEvent)
-	se.query = sc.query
-	se.keyword = sc.query
-	se.customData = make(map[string]interface{})
-	if sc.caseSearch {
-		se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", se.query)
-		se.actionCause = "inputChange"
-		se.actionType = "caseCreation"
-		se.customData["inputTitle"] = sc.inputTitle
+	search := new(SearchEvent)
+	search.Query = searchClick.Query
+	search.Keyword = searchClick.Query
+	search.CustomData = make(map[string]interface{})
+	if searchClick.CaseSearch {
+		search.Query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", search.Query)
+		search.ActionCause = "inputChange"
+		search.ActionType = "caseCreation"
+		search.CustomData["inputTitle"] = searchClick.InputTitle
 	} else {
-		se.actionCause = "searchboxSubmit"
-		se.actionType = "search box"
+		search.ActionCause = "searchboxSubmit"
+		search.ActionType = "search box"
 	}
 	// Override possible values of customData with the specific customData sent
-	for k, v := range sc.customData {
-		se.customData[k] = v
+	for k, v := range searchClick.CustomData {
+		search.CustomData[k] = v
 	}
-	err := se.Execute(v)
-	if err != nil {
+	if err := search.Execute(v); err != nil {
 		return err
 	}
 
@@ -146,36 +81,35 @@ func (sc *SearchAndClickEvent) Execute(v *Visit) error {
 	}
 	WaitBetweenActions(timeToWait, v.Config.IsWaitConstant)
 
-	if rand.Float64() <= sc.prob {
+	if rand.Float64() <= searchClick.Probability {
 		var rank int
-		if sc.matchField != "" {
-			rank = v.FindDocumentRankByMatchingField(sc.matchField, sc.matchPattern)
+		if searchClick.MatchField != "" {
+			rank = v.FindDocumentRankByMatchingField(searchClick.MatchField, searchClick.RegexMatch)
 		} else {
-			rank = v.FindDocumentRankByTitle(sc.docTitle)
+			rank = v.FindDocumentRankByTitle(searchClick.DocTitle)
 		}
 		if rank >= 0 {
 			Info.Printf("Sending ClickEvent => Found document at rank : %d", rank+1)
 
-			ce := new(ClickEvent)
-			ce.clickRank = rank
-			ce.offset = 0
-			ce.probability = 1
-			ce.quickview = sc.quickview
+			click := new(ClickEvent)
+			click.ClickRank = rank
+			click.Offset = 0
+			click.Probability = 1
+			click.Quickview = searchClick.Quickview
 
-			ce.customData = make(map[string]interface{})
+			click.CustomData = make(map[string]interface{})
 			// Override possible values of customData with the specific customData sent
-			for k, v := range sc.customData {
-				ce.customData[k] = v
+			for k, v := range searchClick.CustomData {
+				click.CustomData[k] = v
 			}
-			ce.Execute(v)
-			if err != nil {
+			if err := click.Execute(v); err != nil {
 				return err
 			}
 		} else {
 			return errors.New("Could not find the specific document you are looking for")
 		}
 	} else {
-		Info.Printf("User chose not to click (probability %v%%)", int(sc.prob*100))
+		Info.Printf("User chose not to click (probability %v%%)", int(searchClick.Probability*100))
 	}
 
 	return nil

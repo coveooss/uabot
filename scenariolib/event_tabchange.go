@@ -2,38 +2,28 @@
 // information to the usage analytics endpoint
 package scenariolib
 
-import "errors"
-
 // ============== TAB CHANGE EVENT ======================
 // ======================================================
 
 // TabChangeEvent represents a tab change event
 type TabChangeEvent struct {
-	name string
-	cq   string
+	Name               string `json:"name"`
+	ConstantExpression string `json:"cq,omitempty"`
 }
 
-func newTabChangeEvent(e *JSONEvent) (*TabChangeEvent, error) {
-	name, ok1 := e.Arguments["tabName"].(string)
-	cq, ok2 := e.Arguments["tabCQ"].(string)
-	if !ok1 || !ok2 {
-		return nil, errors.New("Invalid parse of arguments on TabChange Event")
-	}
-
-	return &TabChangeEvent{
-		name: name,
-		cq:   cq,
-	}, nil
+// IsValid Additional validation after the json unmarshal.
+func (tab *TabChangeEvent) IsValid() (bool, string) {
+	return true, ""
 }
 
 // Execute Sends the tabchange event to the analytics and modify the CQ for the
 // following queries in the visit
-func (tc *TabChangeEvent) Execute(v *Visit) error {
-	Info.Printf("Changing tab to %s with CQ : %s", tc.name, tc.cq)
+func (tab *TabChangeEvent) Execute(v *Visit) error {
+	Info.Printf("Changing tab to %s with CQ : %s", tab.Name, tab.ConstantExpression)
 
-	v.LastQuery.CQ = v.LastQuery.CQ + " " + tc.cq
-	v.OriginLevel2 = tc.name
-	v.LastQuery.Tab = tc.name
+	v.LastQuery.CQ = v.LastQuery.CQ + " " + tab.ConstantExpression
+	v.OriginLevel2 = tab.Name
+	v.LastQuery.Tab = tab.Name
 
 	resp, err := v.SearchClient.Query(*v.LastQuery)
 	if err != nil {
@@ -41,7 +31,7 @@ func (tc *TabChangeEvent) Execute(v *Visit) error {
 	}
 	v.LastResponse = resp
 
-	Info.Printf("Sending TabChange Event : %s", tc.name)
+	Info.Printf("Sending TabChange Event : %s", tab.Name)
 	err = v.sendInterfaceChangeEvent("interfaceChange", "", map[string]interface{}{"interfaceChangeTo": v.OriginLevel2})
 	if err != nil {
 		return err

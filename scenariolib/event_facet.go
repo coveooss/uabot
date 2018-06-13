@@ -1,7 +1,6 @@
 package scenariolib
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -10,32 +9,23 @@ import (
 
 // FacetEvent represents a tab change event
 type FacetEvent struct {
-	Title string
-	Value string
-	Field string
+	FacetTitle string                 `json:"facetTitle"`
+	FacetValue string                 `json:"facetValue"`
+	FacetField string                 `json:"facetField"`
+	CustomData map[string]interface{} `json:"customData,omitempty"`
 }
 
-func newFacetEvent(e *JSONEvent) (*FacetEvent, error) {
-	Title, ok1 := e.Arguments["facetTitle"].(string)
-	Value, ok2 := e.Arguments["facetValue"].(string)
-	Field, ok3 := e.Arguments["facetField"].(string)
-	if !ok1 || !ok2 || !ok3 {
-		return nil, errors.New("Invalid parse of arguments on Facet Event")
-	}
-
-	return &FacetEvent{
-		Title: Title,
-		Value: Value,
-		Field: Field,
-	}, nil
+// IsValid Additional validation after the json unmarshal.
+func (facet *FacetEvent) IsValid() (bool, string) {
+	return true, ""
 }
 
 // Execute Sends the tabchange event to the analytics and modify the CQ for the
 // following queries in the visit
-func (e *FacetEvent) Execute(v *Visit) error {
-	Info.Printf("Clicking on facet title=%s value=%s", e.Title, e.Value)
+func (facet *FacetEvent) Execute(v *Visit) error {
+	Info.Printf("Clicking on facet title=%s value=%s", facet.FacetTitle, facet.FacetValue)
 
-	v.LastQuery.AQ = fmt.Sprintf("%s==\"%s\"", e.Field, e.Value)
+	v.LastQuery.AQ = fmt.Sprintf("%s==\"%s\"", facet.FacetField, facet.FacetValue)
 
 	resp, err := v.SearchClient.Query(*v.LastQuery)
 	if err != nil {
@@ -43,12 +33,14 @@ func (e *FacetEvent) Execute(v *Visit) error {
 	}
 	v.LastResponse = resp
 
-	Info.Printf("Sending FacetChange Event title=%s value=%s", e.Title, e.Value)
-	customData := make(map[string]interface{})
-	customData["facetValue"] = e.Value
-	customData["facetTitle"] = e.Title
-	customData["facetField"] = e.Field
-	err = v.sendInterfaceChangeEvent("facetSelect", "facet", customData)
+	Info.Printf("Sending FacetChange Event title=%s value=%s", facet.FacetTitle, facet.FacetValue)
+	if facet.CustomData == nil {
+		facet.CustomData = make(map[string]interface{})
+	}
+	facet.CustomData["facetValue"] = facet.FacetValue
+	facet.CustomData["facetTitle"] = facet.FacetTitle
+	facet.CustomData["facetId"] = facet.FacetField
+	err = v.sendInterfaceChangeEvent("facetSelect", "facet", facet.CustomData)
 	if err != nil {
 		return err
 	}

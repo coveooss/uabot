@@ -1,5 +1,9 @@
 package scenariolib
 
+import (
+	"encoding/json"
+)
+
 // Scenario Represents one visit to the search
 type Scenario struct {
 	// A Name given to the scenario for easier logging.
@@ -25,6 +29,6 @@ type Scenario struct {
 // Type A string describing the type of event
 // Arguments An array of the arguments to the event, specific to the type of event.
 type JSONEvent struct {
-	Type      string                 `json:"type"`
-	Arguments map[string]interface{} `json:"arguments"`
+	Type      string          `json:"type"`
+	Arguments json.RawMessage `json:"arguments"`
 }

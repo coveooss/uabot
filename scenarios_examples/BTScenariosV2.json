@@ -966,8 +966,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "cancelButton",
-            "actionType": "caseCreation",
+            "eventValue": "cancelButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -999,8 +999,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "cancelButton",
-            "actionType": "caseCreation",
+            "eventValue": "cancelButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -1032,8 +1032,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "cancelButton",
-            "actionType": "caseCreation",
+            "eventValue": "cancelButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -1063,8 +1063,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "unloadPage",
-            "actionType": "caseCreation",
+            "eventValue": "unloadPage",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false
             }
@@ -1103,8 +1103,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "unloadPage",
-            "actionType": "caseCreation",
+            "eventValue": "unloadPage",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -1143,8 +1143,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "unloadPage",
-            "actionType": "caseCreation",
+            "eventValue": "unloadPage",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -1174,8 +1174,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "unloadPage",
-            "actionType": "caseCreation",
+            "eventValue": "unloadPage",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -1205,8 +1205,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -1239,8 +1239,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "Beattech VR"
@@ -1296,8 +1296,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "unloadPage",
-            "actionType": "caseCreation",
+            "eventValue": "unloadPage",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }
@@ -1330,8 +1330,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "XBR6 TV"
@@ -1381,8 +1381,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true,
               "product": "XBR6 TV"
@@ -1416,8 +1416,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "Beattech Headphone"
@@ -1453,8 +1453,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true,
               "product": "XBR6 TV"
@@ -1506,8 +1506,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true,
               "product": "XBR6 TV"
@@ -1543,8 +1543,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true,
               "product": "XBR6 TV"
@@ -1580,8 +1580,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "XBR6 TV"
@@ -1627,8 +1627,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "XBR6 TV"
@@ -1674,8 +1674,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true,
               "product": "Beattech Headphone"
@@ -1721,8 +1721,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "Beattech Beatbox"
@@ -1768,8 +1768,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "Beattech Beatbox"
@@ -1815,8 +1815,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true,
               "product": "Beattech VR"
@@ -1862,8 +1862,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": false,
               "product": "Beattech VR"
@@ -1873,7 +1873,7 @@
       ]
     },
     {
-      "name": "Scenarios not deflected (Beattech Headphone)",
+      "name": "Scenarios not deflected (Beattech Headphone, Battery is dead)",
       "weight": 1,
       "events": [
         {
@@ -1909,8 +1909,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "submitButton",
-            "actionType": "caseCreation",
+            "eventValue": "submitButton",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true,
               "product": "Beattech Headphone"
@@ -1966,8 +1966,8 @@
         {
           "type": "Custom",
           "arguments": {
-            "actionCause": "unloadPage",
-            "actionType": "caseCreation",
+            "eventValue": "unloadPage",
+            "eventType": "caseCreation",
             "customData": {
               "hasclicks": true
             }

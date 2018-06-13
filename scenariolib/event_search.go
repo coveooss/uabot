@@ -15,123 +15,95 @@ import (
 
 // SearchEvent a struct representing a search, is defined by a query to execute
 type SearchEvent struct {
-	query string
-	// keyword exists because the query sent to the index may be different than the keyword(s) used to search
-	keyword       string
-	actionCause   string
-	actionType    string
-	ignoreEvent   bool
-	customData    map[string]interface{}
-	matchLanguage bool
-	goodQuery     bool
+	Query         string                 `json:"queryText,omitempty"`
+	IgnoreEvent   bool                   `json:"ignoreEvent,omitempty"`
+	GoodQuery     bool                   `json:"goodQuery,omitempty"`
+	ActionCause   string                 `json:"actionCause,omitempty"`
+	CaseSearch    bool                   `json:"caseSearch,omitempty"`
+	InputTitle    string                 `json:"inputTitle,omitempty"`
+	MatchLanguage bool                   `json:"matchLanguage,omitempty"`
+	CustomData    map[string]interface{} `json:"customData,omitempty"`
+	Keyword       string
+	ActionType    string
 }
 
-func newSearchEvent(e *JSONEvent, c *Config) (*SearchEvent, error) {
-	var inputTitle string
-	var validCast bool
-	se := new(SearchEvent)
+const caseQuerySomeTemplate = "($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))"
 
-	if se.query, validCast = e.Arguments["queryText"].(string); !validCast {
-		return nil, errors.New("Parameter query must be of type string in SearchEvent")
+// IsValid Additional validation after the json unmarshal.
+func (search *SearchEvent) IsValid() (bool, string) {
+	if search.CaseSearch && search.InputTitle == "" {
+		return false, "If caseSearch is true, you need to provide an inputTitle."
 	}
-
-	if se.ignoreEvent, validCast = e.Arguments["ignoreEvent"].(bool); !validCast {
-		se.ignoreEvent = false
-	}
-
-	if se.goodQuery, validCast = e.Arguments["goodQuery"].(bool); !validCast {
-		return nil, errors.New("Parameter goodQuery must be of type bool in SearchEvent")
-	}
-	if e.Arguments["customData"] != nil {
-		if se.customData, validCast = e.Arguments["customData"].(map[string]interface{}); !validCast {
-			return nil, errors.New("Parameter customData must be a json object (map[string]interface{}) in a search event")
-		}
-	}
-
-	if e.Arguments["matchLanguage"] != nil {
-		if se.matchLanguage, validCast = e.Arguments["matchLanguage"].(bool); !validCast {
-			return nil, errors.New("Parameter matchLanguage must be a type bool in SearchEvent")
-		}
-	}
-
-	se.keyword = se.query
-	se.actionCause = "searchboxSubmit"
-	se.actionType = "search box"
-
-	if e.Arguments["caseSearch"] != nil {
-		caseSearch, validCast := e.Arguments["caseSearch"].(bool)
-		if !validCast {
-			return nil, errors.New("Parameter caseSearch must be a boolean")
-		}
-		if caseSearch {
-			se.actionCause = "inputChange"
-			se.actionType = "caseCreation"
-			se.query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", se.keyword)
-			if inputTitle, validCast = e.Arguments["inputTitle"].(string); !validCast {
-				return nil, errors.New("Parameter inputTitle is required in a caseSearch and must be a string")
-			}
-			se.customData = map[string]interface{}{
-				"inputTitle": inputTitle,
-			}
-		}
-	}
-
-	return se, nil
+	return true, ""
 }
 
-// Execute Execute the search event, runs the query and sends a search event to
+func (search *SearchEvent) handleCaseSearch() {
+	Info.Println("Executing a Case Search.")
+	search.ActionCause = "inputChange"
+	search.ActionType = "caseCreation"
+	search.Query = fmt.Sprintf(caseQuerySomeTemplate, search.Keyword)
+	if search.CustomData == nil {
+		search.CustomData = make(map[string]interface{})
+	}
+	search.CustomData["inputTitle"] = search.InputTitle
+}
+
+// Execute the search event, runs the query and sends a search event to
 // the analytics. Returns an error if something went wrong.
-func (se *SearchEvent) Execute(v *Visit) (err error) {
+func (search *SearchEvent) Execute(visit *Visit) (err error) {
 
-	if se.query == "" { // if the query is empty, randomize one
+	if search.Query == "" { // if the query is empty, randomize one
 		var queriesToRandom []string
-		if queriesToRandom, err = se.getQueriesToRandomize(v); err != nil { // Figure out from which queries to randomize
+		if queriesToRandom, err = search.getQueriesToRandomize(visit); err != nil { // Figure out from which queries to randomize
 			return
 		}
-		if se.query, err = randomQuery(queriesToRandom); err != nil { // Randomize the query from the selected array
+		if search.Query, err = randomQuery(queriesToRandom); err != nil { // Randomize the query from the selected array
 			return
 		}
 	}
-	se.keyword = se.query
-	v.LastQuery.Q = se.query
-	Info.Printf("Searching for : %s", se.query)
+	search.Keyword = search.Query
+	if search.CaseSearch {
+		search.handleCaseSearch()
+	}
+	visit.LastQuery.Q = search.Query
+	Info.Printf("Searching for : %s", search.Query)
 
 	// Execute a search and save the response
-	if v.LastResponse, err = v.SearchClient.Query(*v.LastQuery); err != nil {
-		return err
+	if visit.LastResponse, err = visit.SearchClient.Query(*visit.LastQuery); err != nil {
+		return
 	}
 
 	// in some scenarios (logging of page views), we don't want to send the search event to the analytics
-	if !se.ignoreEvent {
-		return se.send(v)
+	if !search.IgnoreEvent {
+		return search.send(visit)
 	}
 
 	Info.Println("Ignoring the search event because of configuration.")
-	return nil
+	return
 }
 
-func (se *SearchEvent) send(v *Visit) error {
-	if v.LastResponse == nil {
+func (search *SearchEvent) send(visit *Visit) error {
+	if visit.LastResponse == nil {
 		return errors.New("LastResponse was nil. Cannot send search event")
 	}
-	Info.Printf("Sending Search Event with %v results", v.LastResponse.TotalCount)
+	Info.Printf("Sending Search Event with %v results", visit.LastResponse.TotalCount)
 	event := ua.NewSearchEvent()
 
-	v.DecorateEvent(event.ActionEvent)
+	visit.DecorateEvent(event.ActionEvent)
 
-	event.SearchQueryUID = v.LastResponse.SearchUID
-	event.QueryText = se.query
-	event.AdvancedQuery = v.LastQuery.AQ
-	event.ActionCause = se.actionCause
-	event.NumberOfResults = v.LastResponse.TotalCount
-	event.ResponseTime = v.LastResponse.Duration
+	event.SearchQueryUID = visit.LastResponse.SearchUID
+	event.QueryText = search.Query
+	event.AdvancedQuery = visit.LastQuery.AQ
+	event.ActionCause = search.ActionCause
+	event.NumberOfResults = visit.LastResponse.TotalCount
+	event.ResponseTime = visit.LastResponse.Duration
 
-	v.DecorateCustomMetadata(event.ActionEvent, se.customData)
+	visit.DecorateCustomMetadata(event.ActionEvent, search.CustomData)
 
-	if v.LastResponse.TotalCount > 0 {
-		if urihash, ok := v.LastResponse.Results[0].Raw["urihash"].(string); ok {
+	if visit.LastResponse.TotalCount > 0 {
+		if urihash, ok := visit.LastResponse.Results[0].Raw["urihash"].(string); ok {
 			event.Results = []ua.ResultHash{
-				ua.ResultHash{DocumentURI: v.LastResponse.Results[0].URI, DocumentURIHash: urihash},
+				ua.ResultHash{DocumentURI: visit.LastResponse.Results[0].URI, DocumentURIHash: urihash},
 			}
 		} else {
 			return errors.New("Cannot convert urihash to string in search event")
@@ -139,28 +111,28 @@ func (se *SearchEvent) send(v *Visit) error {
 	}
 
 	// Send a UA search event
-	return v.SendSearchEvent(event)
+	return visit.SendSearchEvent(event)
 }
 
 // getQueriesToRandomize Return an array of queries to randomize from.
-func (se *SearchEvent) getQueriesToRandomize(v *Visit) (queriesToRandom []string, err error) {
-	if se.goodQuery { // if we want a good query
-		queriesToRandom = v.Config.GoodQueries
-		if se.matchLanguage { // if the query must match the language
-			if _, ok := v.Config.GoodQueriesInLang[v.Language]; !ok {
-				err = errors.New("No good query detected in " + v.Language)
+func (search *SearchEvent) getQueriesToRandomize(visit *Visit) (queriesToRandom []string, err error) {
+	if search.GoodQuery { // if we want a good query
+		queriesToRandom = visit.Config.GoodQueries
+		if search.MatchLanguage { // if the query must match the language
+			if _, ok := visit.Config.GoodQueriesInLang[visit.Language]; !ok {
+				err = errors.New("No good query detected in " + visit.Language)
 				return
 			}
-			queriesToRandom = v.Config.GoodQueriesInLang[v.Language]
+			queriesToRandom = visit.Config.GoodQueriesInLang[visit.Language]
 		}
 	} else { // if we want a bad query
-		queriesToRandom = v.Config.BadQueries
-		if se.matchLanguage { // if the query must match the language
-			if _, ok := v.Config.BadQueriesInLang[v.Language]; !ok {
-				err = errors.New("No bad query detected in " + v.Language)
+		queriesToRandom = visit.Config.BadQueries
+		if search.MatchLanguage { // if the query must match the language
+			if _, ok := visit.Config.BadQueriesInLang[visit.Language]; !ok {
+				err = errors.New("No bad query detected in " + visit.Language)
 				return
 			}
-			queriesToRandom = v.Config.BadQueriesInLang[v.Language]
+			queriesToRandom = visit.Config.BadQueriesInLang[visit.Language]
 		}
 	}
 	return
