@@ -35,6 +35,10 @@ func (click *ClickEvent) IsValid() (bool, string) {
 		return false, "Offset must be a positive integer."
 	}
 
+	if click.ClickRank < -1 {
+		return false, "Click rank must be -1 or >= 0."
+	}
+
 	if click.FakeClick && click.FakeResponse == nil {
 		return false, "If you set parameter fakeClick to true, you must also send a fakeResponse."
 	}

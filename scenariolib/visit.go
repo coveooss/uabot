@@ -203,24 +203,22 @@ func (v *Visit) sendClickEvent(rank int, quickview bool, customData map[string]i
 		event.ActionCause = "documentOpen"
 	}
 
-	if urihash, ok := v.LastResponse.Results[rank].Raw["urihash"].(string); ok {
+	if urihash, ok := getFieldValueFromRaw(v.LastResponse.Results[rank].Raw, "urihash").(string); ok {
 		event.DocumentURIHash = urihash
 	} else {
 		return errors.New("Cannot convert urihash to string")
 	}
-	if collection, ok := v.LastResponse.Results[rank].Raw["syscollection"].(string); ok {
+	if collection, ok := getFieldValueFromRaw(v.LastResponse.Results[rank].Raw, "collection").(string); ok {
 		event.CollectionName = collection
 	} else {
-		// TODO: handle indexless option here
 		event.CollectionName = "default"
-		Warning.Println("Cannot convert syscollection to string, sending \"default\"")
+		Warning.Println("Cannot convert (sys)collection to string, sending \"default\"")
 	}
-	if source, ok := v.LastResponse.Results[rank].Raw["syssource"].(string); ok {
+	if source, ok := getFieldValueFromRaw(v.LastResponse.Results[rank].Raw, "source").(string); ok {
 		event.SourceName = source
 	} else {
-		// TODO: handle indexless option here
 		event.SourceName = "default"
-		Warning.Println("Cannot convert syssource to string, sending \"default\"")
+		Warning.Println("Cannot convert (sys)source to string, sending \"default\"")
 	}
 
 	v.DecorateCustomMetadata(event.ActionEvent, customData)
@@ -455,4 +453,18 @@ func (v *Visit) SetupGeneral() {
 	if v.Config.DefaultOriginLevel3 != "" {
 		v.OriginLevel3 = v.Config.DefaultOriginLevel3
 	}
+}
+
+func getFieldValueFromRaw(raw map[string]interface{}, key string) interface{} {
+	value := raw[key]
+	if value != nil {
+		return value
+	}
+
+	value = raw["sys"+key]
+	if value != nil {
+		return value
+	}
+
+	return nil
 }
