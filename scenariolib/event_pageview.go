@@ -61,11 +61,11 @@ func (view *ViewEvent) send(v *Visit) error {
 	Info.Printf("Sending ViewEvent rank=%d ", view.ClickRank+1)
 
 	event := ua.NewViewEvent()
-	event.PageURI = v.LastResponse.Results[view.ClickRank].ClickURI
-	event.PageTitle = v.LastResponse.Results[view.ClickRank].Title
+	event.Location = v.LastResponse.Results[view.ClickRank].ClickURI
+	event.Title = v.LastResponse.Results[view.ClickRank].Title
 	event.ContentType = view.ContentType
 	event.ContentIDKey = "@" + view.PageViewField
-	event.PageReferrer = v.Referrer
+	event.Referrer = v.Referrer
 	v.DecorateEvent(event.ActionEvent)
 	v.DecorateCustomMetadata(event.ActionEvent, view.CustomData)
 
