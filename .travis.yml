@@ -1,6 +1,6 @@
 language: go
 go:
-  - "1.6"
+  - "1.9"
   - tip
 before_script:
   - go get
@@ -21,3 +21,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+    condition: "$TRAVIS_GO_VERSION = 1.9"
