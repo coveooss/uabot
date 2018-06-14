@@ -1,6 +1,6 @@
 language: go
 go:
-  - 1.6
+  - "1.6"
   - tip
 before_script:
   - go get
@@ -8,9 +8,9 @@ script:
   - go test -cover github.com/coveo/uabot/scenariolib
 before_deploy:
   - mkdir -p release
-  - "GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux-amd64"
-  - "GOOS=darwin GOARCH=amd64 go build -buildmode=exe -o release/uabot-$TRAVIS_TAG-mac-amd64"
-  - "GOOS=windows GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-windows-amd64.exe"
+  - "GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux-go$TRAVIS_GO_VERSION"
+  - "GOOS=darwin GOARCH=amd64 go build -buildmode=exe -o release/uabot-$TRAVIS_TAG-mac-go$TRAVIS_GO_VERSION"
+  - "GOOS=windows GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-windows-go$TRAVIS_GO_VERSION.exe"
 deploy:
   provider: releases
   api_key:
