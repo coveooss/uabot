@@ -64,6 +64,11 @@ export LOCAL=true #if scenariosurl is a local path
 3. Run the executable
 ```
 
+### To run tests
+```sh
+go test ./scenariolib
+```
+
 ### To trigger a Docker rebuild, push with `latest` tag
 ```sh
 1. Commit your changes

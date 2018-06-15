@@ -89,13 +89,13 @@ type Config struct {
 
 	// DefaultOriginLevel3 Override of the default OriginLevel3.
 	DefaultOriginLevel3 string `json:"defaultOriginLevel3,omitempty"`
+
+	// DefaultPageViewField Override of the DefaultPageViewField for ALL pageView Events.
+	DefaultPageViewField string `json:"defaultPageViewField,omitempty"`
 }
 
 // RandomData An override of the bot default random/fake data.
 type RandomData struct {
-	// DefaultPageViewField Override of the DefaultPageViewField for ALL pageView Events.
-	DefaultPageViewField string `json:"defaultPageViewField,omitempty"`
-
 	// Emails Override the defaults fake emails.
 	Emails []string `json:"emailSuffixes,omitempty"`
 
@@ -202,8 +202,8 @@ func fillDefaults(c *Config) {
 		c.AnalyticsEndpoint = defaults.ANALYTICSENDPOINT_PROD
 	}
 
-	if c.RandomData.DefaultPageViewField == "" {
-		c.RandomData.DefaultPageViewField = defaults.DEFAULTPAGEVIEWFIELD
+	if c.DefaultPageViewField == "" {
+		c.DefaultPageViewField = defaults.DEFAULTPAGEVIEWFIELD
 	}
 
 	if c.DefaultOriginLevel1 == "" {
