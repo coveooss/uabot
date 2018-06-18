@@ -17,6 +17,7 @@ import (
 // that the user visited a page that was returned as a result from a search.
 // The view event sent will contain {contentIdKey: "@pageViewField", contentIdValue: result['pageViewField']}
 type ViewEvent struct {
+	DocNo     	  int                    `json:"docNo,omitempty"`
 	ClickRank     int                    `json:"clickRank"`
 	Probability   float64                `json:"probability"`
 	PageViewField string                 `json:"pageViewField"`
@@ -29,6 +30,9 @@ type ViewEvent struct {
 func (view *ViewEvent) IsValid() (bool, string) {
 	if view.Probability < 0 || view.Probability > 1 {
 		return false, "A view event probability must be between 0 and 1."
+	}
+	if view.DocNo != 0 {
+		return false, "docNo has been deprecated, use clickRank instead."
 	}
 	return true, ""
 }
@@ -50,6 +54,12 @@ func (view *ViewEvent) Execute(v *Visit) error {
 			Warning.Printf("PageView index out of bounds, not sending event")
 			return nil
 		}
+
+		pageViewField := computePageViewField(view, v)
+		if pageViewField == "" {
+			return errors.New("PageViewField is not defined. Either add DefaultPageViewField in your configuration or PageViewField on your event")
+		}
+		view.PageViewField = pageViewField
 
 		return view.send(v)
 	}
@@ -81,6 +91,13 @@ func (view *ViewEvent) send(v *Visit) error {
 
 	// Send a UA view event
 	return v.SendViewEvent(event)
+}
+
+func computePageViewField(view *ViewEvent, v *Visit) string {
+	if view.PageViewField != "" {
+		return view.PageViewField
+	}
+	return v.Config.DefaultPageViewField
 }
 
 // Randomize a click rank if the clickRank is -1

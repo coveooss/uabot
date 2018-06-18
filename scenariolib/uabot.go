@@ -32,6 +32,7 @@ type uabot struct {
 // NewUabot will start a bot to run some scenarios. It needs the url/path where to find the scenarions {scenarioURL},
 // the searchToken, the analyticsToken and a randomizer.
 func NewUabot(local bool, scenarioURL string, searchToken string, analyticsToken string, random *rand.Rand) Uabot {
+	rand.Seed(time.Now().UTC().UnixNano())
 	return &uabot{
 		local,
 		scenarioURL,
