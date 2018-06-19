@@ -17,7 +17,7 @@ import (
 // that the user visited a page that was returned as a result from a search.
 // The view event sent will contain {contentIdKey: "@pageViewField", contentIdValue: result['pageViewField']}
 type ViewEvent struct {
-	ClickRank     int                    `json:"clickRank"`
+	ClickRank     int                    `json:"docNo"`
 	Probability   float64                `json:"probability"`
 	PageViewField string                 `json:"pageViewField"`
 	Offset        int                    `json:"offset,omitempty"`
@@ -44,7 +44,7 @@ func (view *ViewEvent) Execute(v *Visit) error {
 	}
 
 	if rand.Float64() <= view.Probability { // test if the event will exectute according to probability
-		view.ClickRank = computeClickRank(v, view.ClickRank, view.Offset)
+		view.ClickRank = computePageViewRank(v, view.ClickRank, view.Offset)
 
 		if view.ClickRank > v.LastResponse.TotalCount {
 			Warning.Printf("PageView index out of bounds, not sending event")
@@ -84,13 +84,14 @@ func (view *ViewEvent) send(v *Visit) error {
 }
 
 // Randomize a click rank if the clickRank is -1
-func computeClickRank(v *Visit, setRank, offset int) (clickRank int) {
-	if setRank == -1 { // if rank == -1 we need to randomize a rank
+func computePageViewRank(v *Visit, clickRank, offset int) (computedRank int) {
+	computedRank = clickRank
+	if computedRank == -1 { // if rank == -1 we need to randomize a rank
 		// Find a random rank within the possible click values accounting for the offset
 		if v.LastResponse.TotalCount > 1 {
 			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
 			rndRank := int(math.Abs(rand.NormFloat64()*2)) + offset
-			clickRank = Min(rndRank, topL-1)
+			computedRank = Min(rndRank, topL-1)
 		}
 	}
 	return
