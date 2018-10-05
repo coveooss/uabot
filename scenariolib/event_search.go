@@ -28,8 +28,8 @@ type SearchEvent struct {
 }
 
 const caseQuerySomeTemplate = "($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))"
-const searchCause = "searchboxSubmit"
-const caseSearchCause = "inputChange"
+const defaultSearchCause = "searchboxSubmit"
+const defaultCaseSearchCause = "inputChange"
 
 // IsValid Additional validation after the json unmarshal.
 func (search *SearchEvent) IsValid() (bool, string) {
@@ -41,7 +41,7 @@ func (search *SearchEvent) IsValid() (bool, string) {
 
 func (search *SearchEvent) handleCaseSearch() {
 	Info.Println("Executing a Case Search.")
-	search.ActionCause = caseSearchCause
+	search.ActionCause = defaultCaseSearchCause
 	search.ActionType = "caseCreation"
 	search.Query = fmt.Sprintf(caseQuerySomeTemplate, search.Keyword)
 	if search.CustomData == nil {
@@ -64,7 +64,9 @@ func (search *SearchEvent) Execute(visit *Visit) (err error) {
 		}
 	}
 	search.Keyword = search.Query
-	search.ActionCause = searchCause
+	if search.ActionCause == "" {
+		search.ActionCause = defaultSearchCause
+	}
 	if search.CaseSearch {
 		search.handleCaseSearch()
 	}
