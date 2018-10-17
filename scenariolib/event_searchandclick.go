@@ -13,7 +13,7 @@ import (
 // SearchAndClickEvent represents a search event followed by a click on a specific
 // document found by the title
 type SearchAndClickEvent struct {
-	Query        string                 `json:"query"`
+	Query        string                 `json:"queryText"`
 	Probability  float64                `json:"probability"`
 	DocTitle     string                 `json:"docClickTitle,omitempty"`
 	MatchField   string                 `json:"matchField,,omitempty"`
