@@ -8,7 +8,7 @@ import (
 )
 
 func TestSearchAndClickEventValid(t *testing.T) {
-	var testEventJson = []byte(`{"query": "queryTextTest", "probability": 0.5, "docClickTitle": "docTitleTest", "quickview": false, "caseSearch": false, "inputTitle": "inputTitleTest", "customData": {"data1": "one"}}`)
+	var testEventJson = []byte(`{"queryText": "queryTextTest", "probability": 0.5, "docClickTitle": "docTitleTest", "quickview": false, "caseSearch": false, "inputTitle": "inputTitleTest", "customData": {"data1": "one"}}`)
 	event := &scenariolib.SearchAndClickEvent{}
 
 	// Test unmarshal json.
