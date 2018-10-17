@@ -11,6 +11,10 @@ Check the [/scenarios_examples](https://github.com/coveo/uabot/tree/master/scena
 3. Build your scenarios ([How to build scenarios](http://coveo.github.io/uabot/scenario.html)).
 4. Execute the bot.
 
+### Tracing
+
+You can use the argument `-trace` to get more logs when debugging your scenarios.
+
 [Examples of scenarios](https://github.com/coveo/uabot/tree/master/scenarios_examples)
 
 <hr/>
