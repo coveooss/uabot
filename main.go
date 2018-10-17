@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -12,7 +13,17 @@ import (
 
 func main() {
 	// Init loggers
-	scenariolib.InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
+
+	tracePtr := flag.Bool("trace", false, "enable TRACE")
+	flag.Parse()
+
+	traceOut := ioutil.Discard
+	if *tracePtr {
+		pp.Println("TRACE enabled")
+		traceOut = os.Stdout
+	}
+
+	scenariolib.InitLogger(traceOut, os.Stdout, os.Stdout, os.Stderr)
 
 	// Seed Random based on current time
 	source := rand.NewSource(int64(time.Now().Unix()))

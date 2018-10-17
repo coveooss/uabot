@@ -4,10 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
-	"io/ioutil"
 	"math"
 	"math/rand"
-	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -60,8 +58,6 @@ const (
 // _uatoken     The token used to send usage analytics events
 // _useragent   The user agent the analytics events will see
 func NewVisit(_searchtoken string, _uatoken string, _useragent string, language string, c *Config) (*Visit, error) {
-
-	InitLogger(ioutil.Discard, os.Stdout, os.Stdout, os.Stderr)
 
 	v := Visit{}
 	v.Config = c
@@ -322,6 +318,7 @@ func (v *Visit) FindDocumentRankByMatchingField(field string, regexPattern *rege
 	}
 	for i := 0; i < len(v.LastResponse.Results); i++ {
 		if rawValue, ok := v.LastResponse.Results[i].Raw[field].(string); ok {
+			Trace.Printf("Checking raw value (field=%s) \"%s\" with pattern \"%s\"", field, rawValue, regexPattern.String())
 			if regexPattern.MatchString(rawValue) {
 				return i
 			}
