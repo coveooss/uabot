@@ -25,19 +25,17 @@ type uabot struct {
 	scenarioURL       string
 	searchToken       string
 	analyticsToken    string
-	random            *rand.Rand
 	WaitBetweenVisits bool
 }
 
 // NewUabot will start a bot to run some scenarios. It needs the url/path where to find the scenarions {scenarioURL},
 // the searchToken, the analyticsToken and a randomizer.
-func NewUabot(local bool, scenarioURL string, searchToken string, analyticsToken string, random *rand.Rand) Uabot {
+func NewUabot(local bool, scenarioURL string, searchToken string, analyticsToken string) Uabot {
 	return &uabot{
 		local,
 		scenarioURL,
 		searchToken,
 		analyticsToken,
-		random,
 		true,
 	}
 }
@@ -135,7 +133,7 @@ func (bot *uabot) continuallyUpdateTimeVisitsEvery(timeDuration time.Duration, t
 				effectiveMeanTimeBetweenVisits = DEFAULTTIMEBETWEENVISITS * WEEKEND_MODIFIER
 			}
 			var randomPositiveTime int
-			for randomPositiveTime = 0; randomPositiveTime <= 0; randomPositiveTime = int(float64(DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS)*bot.random.NormFloat64()+0.5) + effectiveMeanTimeBetweenVisits {
+			for randomPositiveTime = 0; randomPositiveTime <= 0; randomPositiveTime = int(float64(DEFAULT_STANDARD_DEVIATION_BETWEEN_VISITS)*rand.NormFloat64()+0.5) + effectiveMeanTimeBetweenVisits {
 			}
 			*timeVisits = randomPositiveTime
 			Info.Println("Updating Time Visits to", *timeVisits)

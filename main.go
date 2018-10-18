@@ -15,6 +15,8 @@ func main() {
 	// Init loggers
 
 	tracePtr := flag.Bool("trace", false, "enable TRACE")
+	seedPtr := flag.Int64("seed", -1, "set the Randomizer seed")
+
 	flag.Parse()
 
 	traceOut := ioutil.Discard
@@ -25,9 +27,14 @@ func main() {
 
 	scenariolib.InitLogger(traceOut, os.Stdout, os.Stdout, os.Stderr)
 
-	// Seed Random based on current time
-	source := rand.NewSource(int64(time.Now().Unix()))
-	random := rand.New(source)
+	seed := *seedPtr
+	if seed == -1 {
+		// Seed Random based on current time
+		seed = int64(time.Now().Unix())
+	}
+	scenariolib.Trace.Printf("Ramdom seed: %d", seed)
+
+	rand.Seed(seed)
 
 	searchToken := os.Getenv("SEARCHTOKEN")
 	analyticsToken := os.Getenv("UATOKEN")
@@ -45,7 +52,7 @@ func main() {
 		scenariolib.Info.Println("STARTING IN LOCAL MODE, MAKE SURE THE SCENARIOSURL IS A LOCAL PATH")
 	}
 
-	bot := scenariolib.NewUabot(local, scenarioURL, searchToken, analyticsToken, random)
+	bot := scenariolib.NewUabot(local, scenarioURL, searchToken, analyticsToken)
 
 	quit := make(chan bool)
 	err := bot.Run(quit)
