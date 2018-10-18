@@ -12,21 +12,46 @@
   "timeBetweenActions": 1,
   "randomGoodQueries": [],
   "randomBadQueries": [],
-  "randomCustomData": [
-  ],
-  "globalFilter": "NOT @mytype=Wikipedia",
+  "randomCustomData": [],
+  "globalFilter": "@mytype=Movie",
   "scenarios": [{
-    "name": "(G) red willis",
-    "weight": 3,
-    "events": [{
-      "type": "SearchAndClick",
-      "arguments": {
-        "queryText": "red willis",
-        "matchField": "title",
-        "matchRegex": "^RED( [0-9])?$",
-        "probability": 0.95
-      }
-    }]
-  }]
+      "name": "(G) red willis",
+      "weight": 3,
+      "events": [{
+        "type": "SearchAndClick",
+        "arguments": {
+          "queryText": "red willis",
+          "matchField": "title",
+          "matchPattern": "^RED( [0-9])?$",
+          "probability": 0.95
+        }
+      }]
+    },
+    {
+      "name": "(G) jason bourne",
+      "weight": 3,
+      "events": [{
+        "type": "SearchAndClick",
+        "arguments": {
+          "queryText": "jason bourne",
+          "matchField": "title",
+          "matchPattern": " Identity$",
+          "probability": 1
+        }
+      }]
+    },
+    {
+      "name": "(G) balboa",
+      "weight": 3,
+      "events": [{
+        "type": "SearchAndClick",
+        "arguments": {
+          "queryText": "balboa",
+          "docClickTitle": "Rocky",
+          "probability": 1
+        }
+      }]
+    }
+  ]
 
 }
