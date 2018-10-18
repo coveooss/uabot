@@ -12,7 +12,7 @@
   "timeBetweenActions": 1,
   "randomGoodQueries": [],
   "randomBadQueries": [],
-  "randomCustomData": [],
+  "randomCustomData": [{"apiname": "c_isbot", "values": ["true"]}],
   "globalFilter": "@mytype=Movie",
   "scenarios": [{
       "name": "(G) red willis",
