@@ -2,11 +2,7 @@ package scenariolib_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
-	"net/http"
-	"net/http/httptest"
 	"os"
-	"reflect"
 	"testing"
 
 	"github.com/coveo/uabot/scenariolib"
@@ -24,15 +20,10 @@ func TestSearchAndClickEventValid(t *testing.T) {
 	assert(t, valid, "Expected event to be valid, was false with error: %s", message)
 
 	equals(t, "queryTextTest", event.Query)
-
 	equals(t, 0.5, event.Probability)
-
 	equals(t, "docTitleTest", event.DocTitle)
-
 	assert(t, !event.Quickview, "Expected Quickview to be false.")
-
 	assert(t, !event.CaseSearch, "Expected CaseSearch to be false.")
-
 	equals(t, "inputTitleTest", event.InputTitle)
 
 	// Expect CustomData to be not nil
@@ -42,35 +33,17 @@ func TestSearchAndClickEventValid(t *testing.T) {
 	equals(t, "one", event.CustomData["data1"])
 }
 
-type ExpectedRequest struct {
-	Method  string
-	Headers map[string]string
-	Body    []byte
-}
-
-// JSONBytesEqual compares the JSON in two byte slices.
-func JSONBytesEqual(a, b []byte) (bool, error) {
-	var j, j2 interface{}
-	if err := json.Unmarshal(a, &j); err != nil {
-		return false, err
-	}
-	if err := json.Unmarshal(b, &j2); err != nil {
-		return false, err
-	}
-	return reflect.DeepEqual(j2, j), nil
-}
-
 func TestDecorateSearchAndClickEvent(t *testing.T) {
 	scenariolib.InitLogger(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
 
 	expected := map[string]ExpectedRequest{
 		"/rest/search/": {
-			"POST",
-			map[string]string{
+			Method: "POST",
+			Headers: map[string]string{
 				"Authorization": "Bearer bot.searchToken",
 				"Content-Type":  "application/json",
 			},
-			[]byte(`{
+			Body: []byte(`{
 				"q": "aaaaaaaaaaa",
 				"numberOfResults": 20,
 				"tab": "All",
@@ -78,12 +51,12 @@ func TestDecorateSearchAndClickEvent(t *testing.T) {
 			}`),
 		},
 		"/rest/v15/analytics/search/": {
-			"POST",
-			map[string]string{
+			Method: "POST",
+			Headers: map[string]string{
 				"Authorization": "Bearer bot.analyticsToken",
 				"Content-Type":  "application/json",
 			},
-			[]byte(`{
+			Body: []byte(`{
 					"language": "en",
 					"device": "Bot",
 					"customData": {
@@ -102,35 +75,8 @@ func TestDecorateSearchAndClickEvent(t *testing.T) {
 		},
 	}
 
-	// Start a local HTTP server to intercept requests
-	// Using url to match the expected responses above.
-	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		url := req.URL.String()
-
-		expReq, exists := expected[url]
-		assert(t, exists, "MISSING expected request for %s", url)
-
-		// Test request parameters
-		equals(t, req.Method, expReq.Method)
-
-		for k, v := range expReq.Headers {
-			equals(t, v, req.Header.Get(k))
-		}
-
-		// body is JSON
-		body, err := ioutil.ReadAll(req.Body)
-		if err != nil {
-			panic(err)
-		}
-
-		eq, err := JSONBytesEqual(expReq.Body, body)
-		assert(t, eq, "JSON from body is not what we expected\nGot: %s\nExp: %s", body, req.Body)
-
-		// Send back a static response
-		rw.Write([]byte(`{"status":"OK"}`))
-	}))
-	// Close the server when test finishes
-	defer server.Close()
+	server := createMockServer(t, expected)
+	defer server.Close() // Close the server when test finishes
 
 	event := &scenariolib.SearchAndClickEvent{}
 	conf, err := scenariolib.NewConfigFromPath("../scenarios_examples/TESTScenarios.json")
