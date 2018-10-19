@@ -91,3 +91,57 @@ func TestDecorateSearchAndClickEvent(t *testing.T) {
 	v.SetupGeneral()
 	event.Execute(v)
 }
+
+func TestDecorateSearchAndClickEvent2(t *testing.T) {
+	scenariolib.InitLogger(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
+
+	expected := map[string]ExpectedRequest{
+		"/rest/search/": {
+			Method: "POST",
+			Headers: map[string]string{
+				"Authorization": "Bearer bot.searchToken",
+				"Content-Type":  "application/json",
+			},
+			Body: []byte(`{"q":"Gostbuster","numberOfResults":20,"tab":"All","pipeline":"ML"}`),
+		},
+		"/rest/v15/analytics/search/": {
+			Method: "POST",
+			Headers: map[string]string{
+				"Authorization": "Bearer bot.analyticsToken",
+				"Content-Type":  "application/json",
+			},
+			Body: []byte(`{
+				"language": "en",
+				"device": "Bot",
+				"customData": {
+					"JSUIVersion": "0.0.0.0;0.0.0.0",
+					"c_isbot": "true",
+					"ipaddress": "198.199.154.209"
+				},
+				"username": "avery.caldwell@hexzone.com",
+				"originLevel1": "Movie",
+				"originLevel2": "default",
+				"searchQueryUid": "",
+				"queryText": "Gostbuster",
+				"actionCause": "searchboxSubmit",
+				"contextual": false
+			}`),
+		},
+	}
+
+	server := createMockServer(t, expected)
+	defer server.Close() // Close the server when test finishes
+
+	event := &scenariolib.SearchAndClickEvent{}
+	conf, err := scenariolib.NewConfigFromPath("../scenarios_examples/DemoMovies.json")
+	ok(t, err)
+
+	// Use the server url to define the endpoints
+	conf.SearchEndpoint = server.URL + "/rest/search/"
+	conf.AnalyticsEndpoint = server.URL + "/rest/v15/analytics/"
+
+	v, err := scenariolib.NewVisit("bot.searchToken", "bot.analyticsToken", "scenario.UserAgent", "en", conf)
+
+	v.SetupGeneral()
+	event.Execute(v)
+}
