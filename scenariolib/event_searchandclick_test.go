@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/coveo/uabot/defaults"
 	"github.com/coveo/uabot/scenariolib"
 )
 
@@ -83,8 +84,8 @@ func TestDecorateSearchAndClickEvent(t *testing.T) {
 	ok(t, err)
 
 	// Use the server url to define the endpoints
-	conf.SearchEndpoint = server.URL + "/rest/search/"
-	conf.AnalyticsEndpoint = server.URL + "/rest/v15/analytics/"
+	conf.SearchEndpoint = server.URL + defaults.SEARCH_REST_PATH
+	conf.AnalyticsEndpoint = server.URL + defaults.ANALYTICS_REST_PATH
 
 	v, err := scenariolib.NewVisit("bot.searchToken", "bot.analyticsToken", "scenario.UserAgent", "en", conf)
 
@@ -137,8 +138,8 @@ func TestDecorateSearchAndClickEvent2(t *testing.T) {
 	ok(t, err)
 
 	// Use the server url to define the endpoints
-	conf.SearchEndpoint = server.URL + "/rest/search/"
-	conf.AnalyticsEndpoint = server.URL + "/rest/v15/analytics/"
+	conf.SearchEndpoint = server.URL + defaults.SEARCH_REST_PATH
+	conf.AnalyticsEndpoint = server.URL + defaults.ANALYTICS_REST_PATH
 
 	v, err := scenariolib.NewVisit("bot.searchToken", "bot.analyticsToken", "scenario.UserAgent", "en", conf)
 

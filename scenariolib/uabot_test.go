@@ -82,14 +82,13 @@ func createMockServer(t testing.TB, expected map[string]ExpectedRequest) *httpte
 			equals(t, v, req.Header.Get(k))
 		}
 
-		// body is JSON
 		body, err := ioutil.ReadAll(req.Body)
 		if err != nil {
 			panic(err)
 		}
 
 		eq, err := JSONBytesEqual(expReq.Body, body)
-		assert(t, eq, "JSON from body is not what we expected\nGot: %s\nExp: %s", body, req.Body)
+		assert(t, eq, "The Request's body is not what we expected\nGot: %s\nExp: %s", body, req.Body)
 
 		// Send back a static response
 		rw.Write([]byte(`{"status":"OK"}`))
