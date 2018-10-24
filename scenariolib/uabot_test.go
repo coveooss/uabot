@@ -48,7 +48,7 @@ func equals(tb testing.TB, exp, act interface{}) {
 	}
 }
 
-type ExpectedRequest struct {
+type RestRequest struct {
 	Method  string
 	Headers map[string]string
 	Body    []byte
@@ -66,29 +66,28 @@ func JSONBytesEqual(a, b []byte) (bool, error) {
 	return reflect.DeepEqual(j2, j), nil
 }
 
-func createMockServer(t testing.TB, expected map[string]ExpectedRequest) *httptest.Server {
+// This a proxy to intercept requests sent to platform endpoints and add them into a map (receivedRequests).
+// receivedRequests will then be used for validation in unit tests.
+func createTestServer(t testing.TB, receivedRequests map[string]RestRequest) *httptest.Server {
 	// Start a local HTTP server to intercept requests
-	// Using url to match the expected responses above.
+	// Using url as key for the map of received requests.
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		url := req.URL.String()
 
-		expReq, exists := expected[url]
-		assert(t, exists, "MISSING expected request for %s", url)
+		headers := make(map[string]string)
 
-		// Test request parameters
-		equals(t, req.Method, expReq.Method)
-
-		for k, v := range expReq.Headers {
-			equals(t, v, req.Header.Get(k))
+		for k := range req.Header {
+			headers[k] = req.Header.Get(k)
 		}
-
 		body, err := ioutil.ReadAll(req.Body)
 		if err != nil {
 			panic(err)
 		}
-
-		eq, err := JSONBytesEqual(expReq.Body, body)
-		assert(t, eq, "The Request's body is not what we expected\nGot: %s\nExp: %s", body, req.Body)
+		receivedRequests[url] = RestRequest{
+			Method:  req.Method,
+			Headers: headers,
+			Body:    body,
+		}
 
 		// Send back a static response
 		rw.Write([]byte(`{"status":"OK"}`))

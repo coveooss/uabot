@@ -37,46 +37,10 @@ func TestSearchAndClickEventValid(t *testing.T) {
 func TestDecorateSearchAndClickEvent(t *testing.T) {
 	scenariolib.InitLogger(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
 
-	expected := map[string]ExpectedRequest{
-		"/rest/search/": {
-			Method: "POST",
-			Headers: map[string]string{
-				"Authorization": "Bearer bot.searchToken",
-				"Content-Type":  "application/json",
-			},
-			Body: []byte(`{
-				"q": "aaaaaaaaaaa",
-				"numberOfResults": 20,
-				"tab": "All",
-				"pipeline": "besttechCommunity"
-			}`),
-		},
-		"/rest/v15/analytics/search/": {
-			Method: "POST",
-			Headers: map[string]string{
-				"Authorization": "Bearer bot.analyticsToken",
-				"Content-Type":  "application/json",
-			},
-			Body: []byte(`{
-					"language": "en",
-					"device": "Bot",
-					"customData": {
-						"JSUIVersion": "0.0.0.0;0.0.0.0",
-						"customData1": "customValue 1",
-						"ipaddress": "216.249.112.8"
-					},
-					"anonymous": true,
-					"originLevel1": "BotSearch",
-					"originLevel2": "",
-					"searchQueryUid": "",
-					"queryText": "aaaaaaaaaaa",
-					"actionCause": "searchboxSubmit",
-					"contextual": false
-				}`),
-		},
-	}
+	// All requests caught by the Test server will be added to 'requests'
+	requests := make(map[string]RestRequest)
 
-	server := createMockServer(t, expected)
+	server := createTestServer(t, requests)
 	defer server.Close() // Close the server when test finishes
 
 	event := &scenariolib.SearchAndClickEvent{}
@@ -91,46 +55,55 @@ func TestDecorateSearchAndClickEvent(t *testing.T) {
 
 	v.SetupGeneral()
 	event.Execute(v)
+
+	// Validate the search request we expect Execute() to send.
+	req, exists := requests["/rest/search/"]
+	assert(t, exists, "Missing request for /rest/search/")
+	equals(t, "POST", req.Method)
+	equals(t, "Bearer bot.searchToken", req.Headers["Authorization"])
+	equals(t, "application/json", req.Headers["Content-Type"])
+	expectedBody := []byte(`{
+		"q": "aaaaaaaaaaa",
+		"numberOfResults": 20,
+		"tab": "All",
+		"pipeline": "besttechCommunity"
+	}`)
+	eq, err := JSONBytesEqual(expectedBody, req.Body)
+	assert(t, eq, "The Request's body for Search is not what we expected\nGot: %s\nExp: %s", expectedBody, req.Body)
+
+	// Validate analytics request we expect Execute() to send.
+	req, exists = requests["/rest/v15/analytics/search/"]
+	assert(t, exists, "Missing request for /rest/v15/analytics/search/")
+	equals(t, "POST", req.Method)
+	equals(t, "Bearer bot.analyticsToken", req.Headers["Authorization"])
+	equals(t, "application/json", req.Headers["Content-Type"])
+	expectedBody = []byte(`{
+		"language": "en",
+		"device": "Bot",
+		"customData": {
+			"JSUIVersion": "0.0.0.0;0.0.0.0",
+			"customData1": "customValue 1",
+			"ipaddress": "216.249.112.8"
+		},
+		"anonymous": true,
+		"originLevel1": "BotSearch",
+		"originLevel2": "",
+		"searchQueryUid": "",
+		"queryText": "aaaaaaaaaaa",
+		"actionCause": "searchboxSubmit",
+		"contextual": false
+	}`)
+	eq, err = JSONBytesEqual(expectedBody, req.Body)
+	assert(t, eq, "The Request's body for Analytics is not what we expected\nGot: %s\nExp: %s", expectedBody, req.Body)
 }
 
 func TestDecorateSearchAndClickEvent2(t *testing.T) {
 	scenariolib.InitLogger(os.Stdout, os.Stdout, os.Stdout, os.Stderr)
 
-	expected := map[string]ExpectedRequest{
-		"/rest/search/": {
-			Method: "POST",
-			Headers: map[string]string{
-				"Authorization": "Bearer bot.searchToken",
-				"Content-Type":  "application/json",
-			},
-			Body: []byte(`{"q":"Gostbuster","numberOfResults":20,"tab":"All","pipeline":"ML"}`),
-		},
-		"/rest/v15/analytics/search/": {
-			Method: "POST",
-			Headers: map[string]string{
-				"Authorization": "Bearer bot.analyticsToken",
-				"Content-Type":  "application/json",
-			},
-			Body: []byte(`{
-				"language": "en",
-				"device": "Bot",
-				"customData": {
-					"JSUIVersion": "0.0.0.0;0.0.0.0",
-					"c_isbot": "true",
-					"ipaddress": "198.199.154.209"
-				},
-				"username": "avery.caldwell@hexzone.com",
-				"originLevel1": "Movie",
-				"originLevel2": "default",
-				"searchQueryUid": "",
-				"queryText": "Gostbuster",
-				"actionCause": "searchboxSubmit",
-				"contextual": false
-			}`),
-		},
-	}
+	// All requests caught by the Test server will be added to 'requests'
+	requests := make(map[string]RestRequest)
 
-	server := createMockServer(t, expected)
+	server := createTestServer(t, requests)
 	defer server.Close() // Close the server when test finishes
 
 	event := &scenariolib.SearchAndClickEvent{}
@@ -145,4 +118,44 @@ func TestDecorateSearchAndClickEvent2(t *testing.T) {
 
 	v.SetupGeneral()
 	event.Execute(v)
+
+	// Validate the search request we expect Execute() to send.
+	req, exists := requests["/rest/search/"]
+	assert(t, exists, "Missing request for /rest/search/")
+	equals(t, "POST", req.Method)
+	equals(t, "Bearer bot.searchToken", req.Headers["Authorization"])
+	equals(t, "application/json", req.Headers["Content-Type"])
+	expectedBody := []byte(`{
+		"q": "Gostbuster",
+		"numberOfResults": 20,
+		"tab": "All",
+		"pipeline": "ML"
+	}`)
+	eq, err := JSONBytesEqual(expectedBody, req.Body)
+	assert(t, eq, "The Request's body for Search is not what we expected\nGot: %s\nExp: %s", expectedBody, req.Body)
+
+	// Validate analytics request we expect Execute() to send.
+	req, exists = requests["/rest/v15/analytics/search/"]
+	assert(t, exists, "Missing request for /rest/v15/analytics/search/")
+	equals(t, "POST", req.Method)
+	equals(t, "Bearer bot.analyticsToken", req.Headers["Authorization"])
+	equals(t, "application/json", req.Headers["Content-Type"])
+	expectedBody = []byte(`{
+		"language": "en",
+		"device": "Bot",
+		"customData": {
+			"JSUIVersion": "0.0.0.0;0.0.0.0",
+			"c_isbot": "true",
+			"ipaddress": "198.199.154.209"
+		},
+		"username": "avery.caldwell@hexzone.com",
+		"originLevel1": "Movie",
+		"originLevel2": "default",
+		"searchQueryUid": "",
+		"queryText": "Gostbuster",
+		"actionCause": "searchboxSubmit",
+		"contextual": false
+	}`)
+	eq, err = JSONBytesEqual(expectedBody, req.Body)
+	assert(t, eq, "The Request's body for Analytics is not what we expected\nGot: %s\nExp: %s", expectedBody, req.Body)
 }
