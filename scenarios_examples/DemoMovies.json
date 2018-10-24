@@ -10,8 +10,8 @@
   "anonymousThreshold": 0.3,
   "timeBetweenVisits": 2,
   "timeBetweenActions": 1,
-  "randomGoodQueries": [],
-  "randomBadQueries": [],
+  "randomGoodQueries": ["Ghostbusters"],
+  "randomBadQueries": ["Gostbuster"],
   "randomCustomData": [{"apiname": "c_isbot", "values": ["true"]}],
   "globalFilter": "@mytype=Movie",
   "scenarios": [{

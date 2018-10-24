@@ -134,10 +134,12 @@ var DEFAULTPAGEVIEWFIELD = "urihash"
 // DEFAULTORIGIN1 defaults to "All"
 var DEFAULTORIGIN1 = "All"
 
-var SEARCHENDPOINT_PROD = "https://cloudplatform.coveo.com/rest/search/"
-var SEARCHENDPOINT_STAGING = "https://cloudplatformstaging.coveo.com/rest/search/"
-var SEARCHENDPOINT_DEV = "https://cloudplatformdev.coveo.com/rest/search/"
+var SEARCH_REST_PATH = "/rest/search/"
+var SEARCHENDPOINT_PROD = "https://cloudplatform.coveo.com" + SEARCH_REST_PATH
+var SEARCHENDPOINT_STAGING = "https://cloudplatformstaging.coveo.com" + SEARCH_REST_PATH
+var SEARCHENDPOINT_DEV = "https://cloudplatformdev.coveo.com" + SEARCH_REST_PATH
 
-var ANALYTICSENDPOINT_PROD = "https://usageanalytics.coveo.com/rest/v15/analytics/"
-var ANALYTICSENDPOINT_STAGING = "https://usageanalyticsstaging.coveo.com/rest/v15/analytics/"
-var ANALYTICSENDPOINT_DEV = "https://usageanalyticsdev.coveo.com/rest/v15/analytics/"
+var ANALYTICS_REST_PATH = "/rest/v15/analytics/"
+var ANALYTICSENDPOINT_PROD = "https://usageanalytics.coveo.com" + ANALYTICS_REST_PATH
+var ANALYTICSENDPOINT_STAGING = "https://usageanalyticsstaging.coveo.com" + ANALYTICS_REST_PATH
+var ANALYTICSENDPOINT_DEV = "https://usageanalyticsdev.coveo.com" + ANALYTICS_REST_PATH
