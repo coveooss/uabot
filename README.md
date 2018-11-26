@@ -69,7 +69,7 @@ export LOCAL=true #if scenariosurl is a local path
 
 ### Visual Studio Code Snippets
 
-The [uabot.code-snippets](/blob/master/uabot.code-snippets) file is a snippets library for the Visual Studio Code editor. It contains snippets for configurations, scenarios, all supported events, and custom events for e-commerce websites.
+The [uabot.code-snippets](/uabot.code-snippets) file is a snippets library for the Visual Studio Code editor. It contains snippets for configurations, scenarios, all supported events, and custom events for e-commerce websites.
 
 #### Configuration Snippets
 
@@ -123,7 +123,7 @@ uaboteventcustomcommerceremovecompare | Coveo UABot Custom Commerce removeCompar
 
 #### How to Install
 
-1. Download the [uabot.code-snippets](/blob/master/uabot.code-snippets) file.
+1. Download the [uabot.code-snippets](/uabot.code-snippets) file.
 2. Place the file in your Visual Studio Code snippets folder
     1. Windows: `%APPDATA%\Code\User\snippets`
     2. Mac: `$HOME/Library/Application Support/Code/User/snippets`
