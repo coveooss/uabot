@@ -2,7 +2,6 @@ package scenariolib
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
 	"regexp"
 )
@@ -50,21 +49,17 @@ func (searchClick *SearchAndClickEvent) Execute(v *Visit) error {
 	// Execute the search event
 	search := new(SearchEvent)
 	search.Query = searchClick.Query
-	search.Keyword = searchClick.Query
+	search.Keywords = searchClick.Query
 	search.CustomData = make(map[string]interface{})
 	if searchClick.CaseSearch {
-		search.Query = fmt.Sprintf("($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))", search.Query)
-		search.ActionCause = "inputChange"
-		search.ActionType = "caseCreation"
-		search.CustomData["inputTitle"] = searchClick.InputTitle
-	} else {
-		search.ActionCause = "searchboxSubmit"
-		search.ActionType = "search box"
+		search.CaseSearch = searchClick.CaseSearch
+		search.InputTitle = searchClick.InputTitle
 	}
 	// Override possible values of customData with the specific customData sent
 	for k, v := range searchClick.CustomData {
 		search.CustomData[k] = v
 	}
+
 	if err := search.Execute(v); err != nil {
 		return err
 	}
