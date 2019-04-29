@@ -69,8 +69,13 @@ func (view *ViewEvent) send(v *Visit) error {
 	v.DecorateEvent(event.ActionEvent)
 	v.DecorateCustomMetadata(event.ActionEvent, view.CustomData)
 
+	if view.PageViewField == "" {
+		Warning.Printf("Missing 'PageViewField' in the View event. Not sending view event.")
+		return nil
+	}
+
 	if _, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField]; !ok { // If the field does not exist on the "clicked" result
-		Warning.Printf("Fields %s does not exist on result ranked %d. Not sending view event.", view.PageViewField, view.ClickRank)
+		Warning.Printf("Fields '%s' does not exist on result ranked %d. Not sending view event.", view.PageViewField, view.ClickRank)
 		return nil
 	}
 	if contentIDValue, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField].(string); ok { // If we can convert the fieldValue to a string
