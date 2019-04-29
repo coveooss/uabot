@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"../scenariolib"
+	"github.com/coveo/uabot/scenariolib"
 )
 
 func TestSearchEventValid(t *testing.T) {

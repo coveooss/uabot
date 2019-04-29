@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"../defaults"
-	"../scenariolib"
+	"github.com/coveo/uabot/defaults"
+	"github.com/coveo/uabot/scenariolib"
 )
 
 func TestSearchAndClickEventValid(t *testing.T) {
