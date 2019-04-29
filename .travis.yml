@@ -12,22 +12,25 @@ jobs:
       script:
         - go get
         - go test -cover github.com/coveo/uabot/scenariolib
-    - stage: build docker image
+    - if: tag IS present
+      stage: build docker image
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - echo $TRAVIS_TAG
-      - docker build -t coveo/uabot:$TRAVIS_TAG .
+      - docker build -t uabot .
       - docker images
-      - docker tag coveo/uabot:$TRAVIS_TAG coveo/uabot:latest
-      - docker push coveo/uabot
+      - docker tag uabot coveo/uabot:$TRAVIS_TAG
+      - docker tag uabot coveo/uabot:latest
+      - docker push coveo/uabot:latest
+      - docker push coveo/uabot:$TRAVIS_TAG
     - if: branch = master
       stage: release GitHub
       script:
         - go get
         - mkdir -p release
-        - "GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux"
-        - "GOOS=darwin GOARCH=amd64 go build -buildmode=exe -o release/uabot-$TRAVIS_TAG-mac"
-        - "GOOS=windows GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-windows.exe"
+        - GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux
+        - GOOS=darwin GOARCH=amd64 go build -buildmode=exe -o release/uabot-$TRAVIS_TAG-mac
+        - GOOS=windows GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-windows.exe
       deploy:
         provider: releases
         api_key:
