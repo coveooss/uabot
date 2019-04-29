@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"./scenariolib"
+	"github.com/coveo/uabot/scenariolib"
 	"github.com/k0kubun/pp"
 )
 
