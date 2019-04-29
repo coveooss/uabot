@@ -12,7 +12,7 @@ import (
 
 	ua "github.com/coveo/go-coveo/analytics"
 	"github.com/coveo/go-coveo/search"
-	"github.com/coveo/uabot/defaults"
+	"../defaults"
 )
 
 // Visit        The struct visit is used to store one visit to the site.
