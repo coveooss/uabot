@@ -23,7 +23,7 @@ type SearchEvent struct {
 	InputTitle    string                 `json:"inputTitle,omitempty"`
 	MatchLanguage bool                   `json:"matchLanguage,omitempty"`
 	CustomData    map[string]interface{} `json:"customData,omitempty"`
-	Keyword       string
+	Keywords      string
 	ActionType    string
 }
 
@@ -43,7 +43,7 @@ func (search *SearchEvent) handleCaseSearch() {
 	Info.Println("Executing a Case Search.")
 	search.ActionCause = defaultCaseSearchCause
 	search.ActionType = "caseCreation"
-	search.Query = fmt.Sprintf(caseQuerySomeTemplate, search.Keyword)
+	search.Query = fmt.Sprintf(caseQuerySomeTemplate, search.Keywords)
 	if search.CustomData == nil {
 		search.CustomData = make(map[string]interface{})
 	}
@@ -63,14 +63,16 @@ func (search *SearchEvent) Execute(visit *Visit) (err error) {
 			return
 		}
 	}
-	search.Keyword = search.Query
+	search.Keywords = search.Query
 	if search.ActionCause == "" {
 		search.ActionCause = defaultSearchCause
 	}
 	if search.CaseSearch {
 		search.handleCaseSearch()
+		visit.LastQuery.AQ = search.Query
+	} else {
+		visit.LastQuery.Q = search.Query
 	}
-	visit.LastQuery.Q = search.Query
 	Info.Printf("Searching for : %s", search.Query)
 
 	// Execute a search and save the response
@@ -97,7 +99,7 @@ func (search *SearchEvent) send(visit *Visit) error {
 	visit.DecorateEvent(event.ActionEvent)
 
 	event.SearchQueryUID = visit.LastResponse.SearchUID
-	event.QueryText = search.Query
+	event.QueryText = search.Keywords
 	event.AdvancedQuery = visit.LastQuery.AQ
 	event.ActionCause = search.ActionCause
 	event.NumberOfResults = visit.LastResponse.TotalCount
