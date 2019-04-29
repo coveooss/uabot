@@ -1,0 +1,221 @@
+{
+  "searchendpoint": "https://platform.cloud.coveo.com/rest/search/",
+  "analyticsendpoint": "https://usageanalytics.coveo.com/rest/v15/analytics/",
+  "partialMatch": true,
+  "partialMatchKeywords": 4,
+  "partialMatchThreshold": "50%",
+  "defaultOriginLevel1": "CommunitySearch",
+  "timeBetweenVisits": 20,
+  "timeBetweenActions": 3,
+  "allowAnonymousVisits": true,
+  "anonymousThreshold": 0.5,
+  "orgName": "SpeedBit",
+  "pipeline": "default",
+  "allowEntitlements": true,
+  "randomCustomData": [{
+      "apiname": "product",
+      "values": [
+        "Speedbit Blaze Smart",
+        "Speedbit Flex 2 Fitness",
+        "Speedbit Charge 2 Fitness",
+        "Fitbit Flex 2 Bangle",
+        "Speedbit Zip Fitness Tracker",
+        "Fitbit Flex 2 Lariat Necklace Silver",
+        "Speedbit Charge HR",
+        "Fitbit Alta Fitness",
+        "Fitbit Blaze Smart Fitness Watch - Large - Black",
+        "Speed Flex 2 Fitness Tracker"
+      ]
+    },
+    {
+      "apiname": "partners",
+      "values": [
+        "Arizona Fitness Specialists",
+        "J&J Fitness Inc",
+        "Mortens Fitness Consultants",
+        "Pro Fitness Consulting",
+        "Jackson & Larry",
+        "Inty",
+        "IPartner FIT FIT",
+        "Algofit.com",
+        "ProFitYourSELF",
+        "FitnessPlus"
+      ]
+    },
+    {
+      "apiname": "PartnersType",
+      "values": [
+        "ISV",
+        "Reseller",
+        "SI's",
+        "Distributors",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "ISV",
+        "ISV",
+        "ISV",
+        "ISV",
+        "ISV",
+        "SI's",
+        "SI's"
+      ]
+    },
+    {
+      "apiname": "Recommendation",
+      "values": [
+        "Training Courses",
+        "Training Courses",
+        "Training Courses",
+        "Training Courses",
+        "Training Courses",
+        "Certifications",
+        "Certifications",
+        "Certifications",
+        "Certifications",
+        "Certifications",
+        "Certifications",
+        "Certifications",
+        "Certifications",
+        "Certifications",
+        "Status Upgrades",
+        "Service Contracts",
+        "",
+        ""
+      ]
+    },
+    {
+      "apiname": "CustomValue",
+      "values": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Value1",
+        "Value1",
+        "Value2",
+        "Value2",
+        "Value2",
+        "Value2",
+        "Value2",
+        "Value3",
+        "Value3",
+        "Value3"
+      ]
+    }
+  ],
+  "languages": [
+    "en",
+    "en",
+    "en",
+    "en",
+    "en",
+    "fr"
+  ],
+  "randomGoodQueries": [
+    "Fitness Watch",
+    "Speedbit Blaze broken",
+    "Blaze heart rate monitor not working",
+    "Tracking Watch",
+    "How do Fitbit trackers sync their data?",
+    "Can I turn off the LED lights?",
+    "Can I improve my tracker's battery life?",
+    "¢",
+    "How do I track my health and fitness goals with Fitbit?",
+    "What is PurePulse?",
+    "How does my tracker detect my heart rate?",
+    "Map Watch",
+    "Smart watch",
+    "Training Watch",
+    "Training Device",
+    "memory issue",
+    "no picture on my watch",
+    "how to setup bluetooth with my cell phone",
+    "connect cellphone",
+    "broken screen",
+    "connect laptop to smart watch",
+    "update watch",
+    "how to add maps",
+    "how to see map on cell phone",
+    "how to enable the intelligent assistant",
+    "how to charge the watch",
+    "Where could I find",
+    "no more colors on my",
+    "Connect smart watch",
+    "smart watch is not working",
+    "Speedbit vs fitbit",
+    "tracking system",
+    "how can I see my run",
+    "Mortens Fitness",
+    "Arizona Specialists",
+    "Certification of speedbit",
+    "How to become a reseller",
+    "Blaze User guide"
+  ],
+  "randomBadQueries": [
+    "no picture seedbit",
+    "betooth not functionnal",
+    "can't connect to my",
+    "no pickture",
+    "Speedbit blase",
+    "Update flex 1",
+    "piks",
+    "connektion"
+  ],
+  "scenarios": [
+    {
+    "name": "Scenarios not deflected (random)",
+    "weight": 4,
+    "events": [{
+        "type": "Search",
+        "arguments": {
+          "queryText": "",
+          "goodQuery": true,
+          "caseSearch": true,
+          "inputTitle": "Subject"
+        }
+      },
+      {
+        "type": "Click",
+        "arguments": {
+          "docNo": -1,
+          "offset": 0,
+          "probability": 0.4
+        }
+      },
+      {
+        "type": "Custom",
+        "arguments": {
+          "eventValue": "submitButton",
+          "eventType": "caseCreation",
+          "customData": {
+            "hasclicks": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "searchandclicktest",
+    "weight": 10,
+    "events": [
+      {
+        "type": "SearchAndClick",
+        "arguments": {
+          "queryText": "",
+          "caseSearch": true,
+          "inputTitle": "Subject",
+          "probability": 0.85,
+          "docClickTitle": "a"
+        }
+      }
+    ]
+  }
+]
+}
