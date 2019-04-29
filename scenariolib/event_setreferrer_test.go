@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/coveo/uabot/scenariolib"
+	"../scenariolib"
 )
 
 func TestSetReferrerEventValid(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/coveo/uabot/defaults"
+	"../defaults"
 )
 
 // Config This is the struct that holds all the info on the current bot session.
@@ -112,7 +112,7 @@ type RandomData struct {
 	UserAgents []string `json:"useragents,omitempty"`
 
 	// MobileUserAgents Override the defaults fake MobileUserAgents.
-	MobileUserAgents []string `json:"mobileuseragents, omitempty"`
+	MobileUserAgents []string `json:"mobileuseragents,omitempty"`
 
 	// Languages Override the defaults fake Languages.
 	Languages []string `json:"languages,omitempty"`
