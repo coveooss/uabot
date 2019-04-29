@@ -15,9 +15,9 @@ jobs:
     - stage: build docker image
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t coveo/uabot:$TRAVIS_TAG .
+      - docker build -t coveo/uabot:"$TRAVIS_TAG" .
       - docker images
-      - docker tag coveo/uabot:$TRAVIS_TAG coveo/uabot:latest
+      - docker tag coveo/uabot:"$TRAVIS_TAG" coveo/uabot:latest
       - docker push coveo/uabot
     - if: branch = master
       stage: release GitHub
