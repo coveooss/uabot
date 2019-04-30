@@ -8,7 +8,7 @@ import (
 )
 
 func TestPageViewEventValid(t *testing.T) {
-	var testEventJson = []byte(`{"clickRank": 1, "probability": 0.5, "pageViewField": "pageViewFieldTest", "offset": 0, "contentType": "contentTypeTest", "customData": {"data1": "one"}}`)
+	var testEventJson = []byte(`{"docNo": 1, "probability": 0.5, "pageViewField": "pageViewFieldTest", "offset": 0, "contentType": "contentTypeTest", "customData": {"data1": "one"}}`)
 	event := &scenariolib.ViewEvent{}
 
 	// Test unmarshal json.

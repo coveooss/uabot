@@ -17,7 +17,7 @@ import (
 // that the user visited a page that was returned as a result from a search.
 // The view event sent will contain {contentIdKey: "@pageViewField", contentIdValue: result['pageViewField']}
 type ViewEvent struct {
-	ClickRank     int                    `json:"clickRank"`
+	ClickRank     int                    `json:"docNo"`
 	Probability   float64                `json:"probability"`
 	PageViewField string                 `json:"pageViewField"`
 	Offset        int                    `json:"offset,omitempty"`
@@ -30,6 +30,11 @@ func (view *ViewEvent) IsValid() (bool, string) {
 	if view.Probability < 0 || view.Probability > 1 {
 		return false, "A view event probability must be between 0 and 1."
 	}
+
+	if view.PageViewField == "" {
+		return false, "Missing 'PageViewField' in the View event. Not sending view event."
+	}
+
 	return true, ""
 }
 
@@ -44,7 +49,7 @@ func (view *ViewEvent) Execute(v *Visit) error {
 	}
 
 	if rand.Float64() <= view.Probability { // test if the event will exectute according to probability
-		view.ClickRank = computeClickRank(v, view.ClickRank, view.Offset)
+		view.ClickRank = computePageViewRank(v, view.ClickRank, view.Offset)
 
 		if view.ClickRank > v.LastResponse.TotalCount {
 			Warning.Printf("PageView index out of bounds, not sending event")
@@ -70,7 +75,7 @@ func (view *ViewEvent) send(v *Visit) error {
 	v.DecorateCustomMetadata(event.ActionEvent, view.CustomData)
 
 	if _, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField]; !ok { // If the field does not exist on the "clicked" result
-		Warning.Printf("Fields %s does not exist on result ranked %d. Not sending view event.", view.PageViewField, view.ClickRank)
+		Warning.Printf("Field '%s' does not exist on result ranked %d. Not sending view event.", view.PageViewField, view.ClickRank)
 		return nil
 	}
 	if contentIDValue, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField].(string); ok { // If we can convert the fieldValue to a string
@@ -84,13 +89,14 @@ func (view *ViewEvent) send(v *Visit) error {
 }
 
 // Randomize a click rank if the clickRank is -1
-func computeClickRank(v *Visit, setRank, offset int) (clickRank int) {
-	if setRank == -1 { // if rank == -1 we need to randomize a rank
+func computePageViewRank(v *Visit, clickRank, offset int) (computedRank int) {
+	computedRank = clickRank
+	if computedRank == -1 { // if rank == -1 we need to randomize a rank
 		// Find a random rank within the possible click values accounting for the offset
 		if v.LastResponse.TotalCount > 1 {
 			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
 			rndRank := int(math.Abs(rand.NormFloat64()*2)) + offset
-			clickRank = Min(rndRank, topL-1)
+			computedRank = Min(rndRank, topL-1)
 		}
 	}
 	return

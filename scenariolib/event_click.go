@@ -61,24 +61,18 @@ func (click *ClickEvent) Execute(v *Visit) error {
 	if v.LastResponse == nil {
 		return errors.New("LastResponse is nil, execute a search first")
 	}
-
-	if click.ClickRank == -1 { // if rank == -1 we need to randomize a rank
-		// Find a random rank within the possible click values accounting for the offset
-		click.ClickRank = int(math.Abs(rand.NormFloat64()*2)) + click.Offset
-	}
-
-	// Make sure the click rank is not > the number of results.
-	if v.LastResponse.TotalCount > 1 {
-		topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
-		click.ClickRank = Min(click.ClickRank, topL-1)
-	} else {
-		Warning.Printf("Last query %s returned no results cannot click", v.LastQuery.Q)
+	if v.LastResponse.TotalCount < 1 {
+		Warning.Printf("Last query %s returned no results cannot send view event", v.LastQuery.Q)
 		return nil
 	}
 
 	if rand.Float64() <= click.Probability { // Probability to click
+		click.ClickRank = computeClickRank(v, click.ClickRank, click.Offset)
+
+		// We leave this option because it means voluntarily someone set a clickRank > number of results for his query.
 		if click.ClickRank > v.LastResponse.TotalCount {
-			return errors.New("Click index out of bounds")
+			Warning.Printf("PageView index out of bounds, not sending event")
+			return nil
 		}
 
 		err := v.sendClickEvent(click.ClickRank, click.Quickview, click.CustomData)
@@ -89,4 +83,18 @@ func (click *ClickEvent) Execute(v *Visit) error {
 	}
 	Info.Printf("User chose not to click (probability %v%%)", int(click.Probability*100))
 	return nil
+}
+
+// Randomize a click rank if the clickRank is -1
+func computeClickRank(v *Visit, clickRank, offset int) (computedRank int) {
+	computedRank = clickRank
+	if computedRank == -1 { // if rank == -1 we need to randomize a rank
+		// Find a random rank within the possible click values accounting for the offset
+		if v.LastResponse.TotalCount > 1 {
+			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
+			rndRank := int(math.Abs(rand.NormFloat64()*2)) + offset
+			computedRank = Min(rndRank, topL-1)
+		}
+	}
+	return
 }
