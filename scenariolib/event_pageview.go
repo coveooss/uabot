@@ -30,6 +30,11 @@ func (view *ViewEvent) IsValid() (bool, string) {
 	if view.Probability < 0 || view.Probability > 1 {
 		return false, "A view event probability must be between 0 and 1."
 	}
+
+	if view.PageViewField == "" {
+		return false, "Missing 'PageViewField' in the View event. Not sending view event."
+	}
+
 	return true, ""
 }
 
@@ -70,7 +75,7 @@ func (view *ViewEvent) send(v *Visit) error {
 	v.DecorateCustomMetadata(event.ActionEvent, view.CustomData)
 
 	if _, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField]; !ok { // If the field does not exist on the "clicked" result
-		Warning.Printf("Fields %s does not exist on result ranked %d. Not sending view event.", view.PageViewField, view.ClickRank)
+		Warning.Printf("Field '%s' does not exist on result ranked %d. Not sending view event.", view.PageViewField, view.ClickRank)
 		return nil
 	}
 	if contentIDValue, ok := v.LastResponse.Results[view.ClickRank].Raw[view.PageViewField].(string); ok { // If we can convert the fieldValue to a string

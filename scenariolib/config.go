@@ -113,7 +113,7 @@ type RandomData struct {
 	UserAgents []string `json:"useragents,omitempty"`
 
 	// MobileUserAgents Override the defaults fake MobileUserAgents.
-	MobileUserAgents []string `json:"mobileuseragents, omitempty"`
+	MobileUserAgents []string `json:"mobileuseragents,omitempty"`
 
 	// Languages Override the defaults fake Languages.
 	Languages []string `json:"languages,omitempty"`
