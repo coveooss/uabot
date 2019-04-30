@@ -12,8 +12,7 @@ jobs:
       script:
         - go get
         - go test -cover github.com/coveo/uabot/scenariolib
-    - if: tag IS present
-      stage: build docker image
+    - stage: build docker image
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker build -t uabot .
