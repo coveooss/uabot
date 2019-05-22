@@ -23,7 +23,7 @@ jobs:
       - docker tag uabot coveo/uabot:latest
       - docker push coveo/uabot:latest
       - docker push coveo/uabot:$TRAVIS_TAG
-    - if: tag IS present
+    - if: tag IS present AND branch = master
       stage: release GitHub
       script:
         - go get
