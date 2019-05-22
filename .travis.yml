@@ -1,24 +1,44 @@
 language: go
+
+services:
+  - docker
+
 go:
-  - "1.9.x"
-  - tip
-before_script:
-  - go get
-script:
-  - go test -cover github.com/coveo/uabot/scenariolib
-before_deploy:
-  - mkdir -p release
-  - "GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux"
-  - "GOOS=darwin GOARCH=amd64 go build -buildmode=exe -o release/uabot-$TRAVIS_TAG-mac"
-  - "GOOS=windows GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-windows.exe"
-deploy:
-  provider: releases
-  api_key:
-    secure: C1KHbTxSLzYod8Nv84FtEYLK7xaYlAlFh9OBvCdBUYykQqc9zNZuyjYMLGDtq78Vb5nqrySudIMyQp5x0SU0mNWs5UUvrDRrxcO+FMyY/b3P0StDJU7t2FRm/rD3coBWzUDsZ1TYcAbwZLoklhsZJZI0higZ0/wjQW/+BZZRGNz5s/CEd7sfbSdD2waiH0luc1waydCoXJJvpXLMTYIaNB2m0YOlxcFGlwAP3OmaLcGLnxW3WMNuNhv456LN3Nv1FBzNDGtA8DvKMuq5XQt9OgXC5Lbl+x5s7dUWQnsWOYuko3UV8oN9HWSl5kp92EwVN70kWOx4yUk2XmDX8x1p40U/W1RJhynmPw0vdG/kr7PF0QPYEAtwXl3EUT0WQ36bJzXTbVmt7ZL+uqO9EsCnOq+Yk83z6UGuyzrS1rFWU+0dOfJ6rRyC4AQjIvSyc2X1ti78GRMgf8Km2CFDLGPl5uzEkrkFlQ8o6fCbMQO/muWjb3tT14IaRUTjHc90z4OW5BVE8as5hyyFvdGfDRQZ04VwH1SJpjRJ2MfVxu+BzyVH+kE6lVLGRy2iDXyWgOpslfsoNWw0KaLH1r1+pqNGh6p++IE5W1ebnaAIudWsJhJ324vkTEX9yaFwhyk5o5lQC4CZPGwu8dLBrkQpDW5pq08Z/Luap8jHqJTgdIUqry4=
-  file_glob: true
-  file:
-    release/*
-  skip_cleanup: true
-  on:
-    tags: true
-    condition: $TRAVIS_GO_VERSION =~ ^1\.9
+  - "1.10.x"
+
+jobs:
+  include:
+    - stage: test
+      script:
+        - go get
+        - go test -cover github.com/coveo/uabot/scenariolib
+    - if: tag IS present AND branch = master
+      stage: build docker image
+      script:
+      - go get
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t uabot .
+      - docker images
+      - docker tag uabot coveo/uabot:$TRAVIS_TAG
+      - docker tag uabot coveo/uabot:latest
+      - docker push coveo/uabot:latest
+      - docker push coveo/uabot:$TRAVIS_TAG
+    - if: tag IS present
+      stage: release GitHub
+      script:
+        - go get
+        - mkdir -p release
+        - GOOS=linux GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-linux
+        - GOOS=darwin GOARCH=amd64 go build -buildmode=exe -o release/uabot-$TRAVIS_TAG-mac
+        - GOOS=windows GOARCH=amd64 go build -o release/uabot-$TRAVIS_TAG-windows.exe
+      deploy:
+        provider: releases
+        api_key:
+          secure: C1KHbTxSLzYod8Nv84FtEYLK7xaYlAlFh9OBvCdBUYykQqc9zNZuyjYMLGDtq78Vb5nqrySudIMyQp5x0SU0mNWs5UUvrDRrxcO+FMyY/b3P0StDJU7t2FRm/rD3coBWzUDsZ1TYcAbwZLoklhsZJZI0higZ0/wjQW/+BZZRGNz5s/CEd7sfbSdD2waiH0luc1waydCoXJJvpXLMTYIaNB2m0YOlxcFGlwAP3OmaLcGLnxW3WMNuNhv456LN3Nv1FBzNDGtA8DvKMuq5XQt9OgXC5Lbl+x5s7dUWQnsWOYuko3UV8oN9HWSl5kp92EwVN70kWOx4yUk2XmDX8x1p40U/W1RJhynmPw0vdG/kr7PF0QPYEAtwXl3EUT0WQ36bJzXTbVmt7ZL+uqO9EsCnOq+Yk83z6UGuyzrS1rFWU+0dOfJ6rRyC4AQjIvSyc2X1ti78GRMgf8Km2CFDLGPl5uzEkrkFlQ8o6fCbMQO/muWjb3tT14IaRUTjHc90z4OW5BVE8as5hyyFvdGfDRQZ04VwH1SJpjRJ2MfVxu+BzyVH+kE6lVLGRy2iDXyWgOpslfsoNWw0KaLH1r1+pqNGh6p++IE5W1ebnaAIudWsJhJ324vkTEX9yaFwhyk5o5lQC4CZPGwu8dLBrkQpDW5pq08Z/Luap8jHqJTgdIUqry4=
+        file_glob: true
+        file:
+          release/*
+        skip_cleanup: true
+        on:
+          tags: true
+          condition: $TRAVIS_GO_VERSION =~ ^1\.10

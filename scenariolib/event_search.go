@@ -73,7 +73,7 @@ func (search *SearchEvent) Execute(visit *Visit) (err error) {
 	} else {
 		visit.LastQuery.Q = search.Query
 	}
-	Info.Printf("Searching for : %s", search.Query)
+	Info.Printf("Searching for : %s", search.Keywords)
 
 	// Execute a search and save the response
 	if visit.LastResponse, err = visit.SearchClient.Query(*visit.LastQuery); err != nil {
@@ -93,7 +93,7 @@ func (search *SearchEvent) send(visit *Visit) error {
 	if visit.LastResponse == nil {
 		return errors.New("LastResponse was nil. Cannot send search event")
 	}
-	Info.Printf("Sending Search Event with %v results", visit.LastResponse.TotalCount)
+	Info.Printf("Sending Search Event for %v with %v results", search.Keywords, visit.LastResponse.TotalCount)
 	event := ua.NewSearchEvent()
 
 	visit.DecorateEvent(event.ActionEvent)
