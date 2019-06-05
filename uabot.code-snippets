@@ -1,0 +1,741 @@
+{
+  "UABot Complete Configuration": {
+    "prefix": "uabotconfig",
+    "scope": "plaintext,json",
+    "body": [
+      "{\r",
+      "\t\"searchEndpoint\": \"https://platform.cloud.coveo.com/rest/search/\",\r",
+      "\t\"analyticsEndpoint\": \"https://usageanalytics.coveo.com/rest/v15/analytics/\",\r",
+      "\t\"orgName\": \"$1\",\r",
+      "\t\"anonymousThreshold\": ${2:Percentage of visits that are anonymous [0..1]},\r",
+      "\t\"dontWaitBetweenVisits\": false,\r",
+      "\t\"timeBetweenVisits\": ${3:Time to wait between the visits in seconds},\r",
+      "\t\"dontWaitBetweenActions\": false,\r",
+      "\t\"timeBetweenActions\": ${4:The time to wait between actions in seconds},\r",
+      "\t\"isWaitConstant\": false,\r",
+      "\t\"partialMatch\": false,\r",
+      "\t\"partialMatchKeywords\": 0,\r",
+      "\t\"partialMatchThreshold\": \"\",\r",
+      "\t\"pipeline\": \"$5\",\r",
+      "\t\"defaultOriginLevel1\": \"$6\",\r",
+      "\t\"defaultOriginLevel2\": \"$7\",\r",
+      "\t\"defaultOriginLevel3\": \"$8\",\r",
+      "\t\"globalfilter\": \"$9\",\r",
+      "\t\"randomGoodQueries\": [\r",
+      "\t],\r",
+      "\t\"randomBadQueries\": [\r",
+      "\t],\r",
+      "\t\"goodQueriesInLanguage\": {\r",
+      "\t},\r",
+      "\t\"badQueriesInLanguage\": {\r",
+      "\t},\r",
+      "\t\"randomData\": {\r",
+      "\t\t\"defaultPageViewField\": \"$10\",\r",
+      "\t\t\"emailSuffixes\": [\r",
+      "\t\t],\r",
+      "\t\t\"firstNames\": [\r",
+      "\t\t],\r",
+      "\t\t\"lastNames\": [\r",
+      "\t\t],\r",
+      "\t\t\"randomIPs\": [\r",
+      "\t\t],\r",
+      "\t\t\"useragents\": [\r",
+      "\t\t],\r",
+      "\t\t\"mobileuseragents\": [\r",
+      "\t\t],\r",
+      "\t\t\"languages\": [\r",
+      "\t\t]\r",
+      "\t},\r",
+      "\t\"randomCustomData\": [\r",
+			"\t\t{\r",
+			"\t\t\t\"apiname\": \"c_isbot\",\r",
+			"\t\t\t\"values\": [\r",
+			"\t\t\t\t\"true\"\r",
+			"\t\t\t]\r",
+			"\t\t},\r",
+      "\t],\r",
+      "\t\"scenarios\": [\r",
+			"\t\t$0\r",
+      "\t]\r",
+      "}"
+    ],
+    "description": "Coveo UABot Complete Configuration"
+	},
+
+  "UABot Simple Configuration": {
+    "prefix": "uabotconfig",
+    "scope": "plaintext,json",
+    "body": [
+      "{\r",
+      "\t\"searchEndpoint\": \"https://platform.cloud.coveo.com/rest/search/\",\r",
+      "\t\"analyticsEndpoint\": \"https://usageanalytics.coveo.com/rest/v15/analytics/\",\r",
+      "\t\"orgName\": \"$1\",\r",
+      "\t\"anonymousThreshold\": ${2:Percentage of visits that are anonymous [0..1]},\r",
+      "\t\"dontWaitBetweenVisits\": false,\r",
+      "\t\"dontWaitBetweenActions\": false,\r",
+      "\t\"randomGoodQueries\": [\r",
+      "\t],\r",
+      "\t\"randomBadQueries\": [\r",
+      "\t],\r",
+      "\t\"goodQueriesInLanguage\": {\r",
+      "\t},\r",
+      "\t\"badQueriesInLanguage\": {\r",
+      "\t},\r",
+      "\t\"randomCustomData\": [\r",
+			"\t\t{\r",
+			"\t\t\t\"apiname\": \"c_isbot\",\r",
+			"\t\t\t\"values\": [\r",
+			"\t\t\t\t\"true\"\r",
+			"\t\t\t]\r",
+			"\t\t},\r",
+      "\t],\r",
+      "\t\"scenarios\": [\r",
+			"\t\t$0\r",
+      "\t]\r",
+      "}"
+    ],
+    "description": "Coveo UABot Simple Configuration"
+	},
+
+	"UABot Random Custom Data": {
+    "prefix": "uabotrandomcustomdata",
+    "scope": "plaintext,json",
+    "body": [
+      "{\r",
+      "\t\"apiname\": \"$1\",\r",
+      "\t\"values\": [\r",
+      "\t\t\"$2\"\r",
+      "\t]\r",
+      "},$0"
+    ],
+    "description": "Coveo UABot Random Custom Data"
+	},
+
+  "UABot Complete Scenario": {
+    "prefix": "uabotscenario",
+    "scope": "plaintext,json",
+    "body": [
+      "{\r",
+      "\t\"name\": \"$1\",\r",
+      "\t\"weight\": ${2:Weight for randomizing scenarios (integer)},\r",
+      "\t\"useragent\": \"$3\",\r",
+      "\t\"mobile\", false,\r",
+      "\t\"language\": \"$4\"\r",
+			"\t\"events\": [\r",
+			"\t\t$0\r",
+      "\t]\r",
+      "},"
+    ],
+    "description": "Coveo UABot Complete Scenario"
+	},
+
+  "UABot Simple Scenario": {
+    "prefix": "uabotscenario",
+    "scope": "plaintext,json",
+    "body": [
+      "{\r",
+      "\t\"name\": \"$1\",\r",
+      "\t\"weight\": ${2:Weight for randomizing scenarios (integer)},\r",
+      "\t\"events\": [\r",
+			"\t\t$0\r",
+      "\t]\r",
+      "},"
+    ],
+    "description": "Coveo UABot Simple Scenario"
+	},
+
+	"UABot Complete Search Event": {
+		"prefix": "uaboteventsearch",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Search\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"queryText\": \"${1:Optional. The query to send. Leave \"blank\" for a random query}\",\r",
+			"\t\t\"goodQuery\": ${2:Optional. true/false},\r",
+			"\t\t\"matchLanguage\": ${3:Optional. true/false},\r",
+			"\t\t\"caseSearch\": ${4:Optional. If the query comes from a Case Creation interface. true/false},\r",
+			"\t\t\"inputTitle\": \"${5:Optional. The title of the input that triggered the search if it was a case search}\",\r",
+			"\t\t\"actionCause\": \"${6:Optional}\",\r",
+			"\t\t\"ignoreEvent\": ${7:Optional. true/false},\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t$0\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Complete Search Event"
+	},
+
+	"UABot Event Custom Data": {
+		"prefix": "uaboteventcustomdata",
+		"scope": "plaintext,json",
+		"body": [
+			"\"customData\": {\r",
+			"\t$0\r",
+			"}"
+		],
+		"description": "Coveo UABot Event Custom Data"
+	},
+
+	"UABot GoodQuery Search Event": {
+		"prefix": "uaboteventsearch",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Search\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"goodQuery\": true,\r",
+			"\t\t\"matchLanguage\": ${1:Optional. true/false}\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot GoodQuery Search Event"
+	},
+
+	"UABot BadQuery Search Event": {
+		"prefix": "uaboteventsearch",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Search\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"goodQuery\": false,\r",
+			"\t\t\"matchLanguage\": ${1:Optional. true/false}\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot BadQuery Search Event"
+	},
+
+	"UABot Custom Query Search Event": {
+		"prefix": "uaboteventsearch",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Search\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"queryText\": \"${1:The query to send}\"\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot Custom Query Search Event"
+	},
+
+	"UABot Complete Click Event": {
+		"prefix": "uaboteventclick",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Click\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"docNo\": ${1:The rank of the document to click (base: 0, random: -1)},\r",
+			"\t\t\"probability\": ${2:The probability that the user will click (between 0 and 1)},\r",
+			"\t\t\"offset\": ${3:Optional. Offset used in random document clicking (integer)},\r",
+			"\t\t\"quickview\": ${4:Optional. If the click is a quickview or not. true/false (default, false)},\r",
+			"\t\t\"fakeClick\": ${5:Optional. true/false},\r",
+			"\t\t\"fakeResponse\": ${6:Optional},\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t$0\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Complete Click Event"
+	},
+
+	"UABot Precise Click Event": {
+		"prefix": "uaboteventclick",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Click\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"docNo\": ${1:The rank of the document to click (base: 0)},\r",
+			"\t\t\"probability\": ${2:The probability that the user will click (between 0 and 1)},\r",
+			"\t\t\"quickview\": ${4:Optional. If the click is a quickview or not. true/false (default, false)}\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot Precise Click Event"
+	},
+
+	"UABot Random Click Event": {
+		"prefix": "uaboteventclick",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Click\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"docNo\": -1,\r",
+			"\t\t\"probability\": ${2:The probability that the user will click (between 0 and 1)},\r",
+			"\t\t\"offset\": ${3:Offset used in random document clicking (integer)},\r",
+			"\t\t\"quickview\": ${4:Optional. If the click is a quickview or not. true/false (default, false)}\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot Random Click Event"
+	},
+
+	"UABot Complete SearchAndClick Event": {
+		"prefix": "uaboteventsearchandclick",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"SearchAndClick\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"queryText\": \"${1:The query to send}\",\r",
+			"\t\t\"caseSearch\": ${2:Optional. If the query comes from a Case Creation interface. true/false},\r",
+			"\t\t\"inputTitle\": \"${3:Optional. The title of the input that triggered the search if it was a case search}\",\r",
+			"\t\t\"docClickTitle\": \"${4:Optional. The title of the document you want to click on.}\",\r",
+			"\t\t\"matchField\": \"${5:Optional. When omitting docClickTitle. The name of the field for the match expression (Without @).}\",\r",
+			"\t\t\"matchPattern\": \"${6:Optional. When omitting docClickTitle. The value for the match expression.}\",\r",
+			"\t\t\"probability\": ${7:The probability that the user will click (between 0 and 1)},\r",
+			"\t\t\"quickview\": ${8:Optional. If the click is a quickview or not. true/false (default, false)},\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t$0\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Complete SearchAndClick Event"
+	},
+
+	"UABot Simple SearchAndClick Event": {
+		"prefix": "uaboteventsearchandclick",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"SearchAndClick\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"queryText\": \"${1:The query to send}\",\r",
+			"\t\t\"docClickTitle\": \"${4:Optional. The title of the document you want to click on.}\",\r",
+			"\t\t\"probability\": ${7:The probability that the user will click (between 0 and 1)},\r",
+			"\t\t\"quickview\": ${8:Optional. If the click is a quickview or not. true/false (default, false)}\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot Simple SearchAndClick Event"
+	},
+
+	"UABot TabChange Event": {
+		"prefix": "uaboteventtabchange",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"TabChange\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"name\": \"${1:The name of the tab that the user switched to. This will also change originLevel2.}\",\r",
+			"\t\t\"cq\": \"${2:Optional. The constant query applied by this tab to the queries}\"\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot TabChange Event"
+	},
+
+	"UABot Complete FacetChange Event": {
+		"prefix": "uaboteventfacetchange",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"FacetChange\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"facetTitle\": \"${1:The title of the facet that was selected}\",\r",
+			"\t\t\"facetField\": \"${2:The field bound to the facet}\",\r",
+			"\t\t\"facetValue\": \"${3:The value that was selected in the facet}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t$0\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Complete FacetChange Event"
+	},
+
+	"UABot Simple FacetChange Event": {
+		"prefix": "uaboteventfacetchange",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"FacetChange\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"facetTitle\": \"${1:The title of the facet that was selected}\",\r",
+			"\t\t\"facetField\": \"${2:The field bound to the facet}\",\r",
+			"\t\t\"facetValue\": \"${3:The value that was selected in the facet}\"\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot Simple FacetChange Event"
+	},
+
+	"UABot SetOrigin Event": {
+		"prefix": "uaboteventsetorigin",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"SetOrigin\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"originLevel1\": \"${1:The new originLevel1}\",\r",
+			"\t\t\"originLevel2\": \"${2:Optional. The new originLevel2}\",\r",
+			"\t\t\"originLevel3\": \"${3:Optional. The new originLevel3}\"\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot SetOrigin Event"
+	},
+
+	"UABot Complete View Event": {
+		"prefix": "uaboteventview",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"View\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"clickRank\": ${1:The rank of the document to view (base: 0, random: -1)},\r",
+			"\t\t\"probability\": ${2:The probability that the user will view (between 0 and 1)},\r",
+			"\t\t\"pageViewField\": \"${3:The name of the field containing the page view unique identifier. Without @. Recommended: permanentid}\",\r",
+			"\t\t\"offset\": ${4:Optional. Offset used in random document viewing (integer)},\r",
+			"\t\t\"contentType\": \"${5:Optional. The type of content in the page.}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t$0\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Complete View Event"
+	},
+
+	"UABot Precise View Event": {
+		"prefix": "uaboteventview",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"View\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"clickRank\": ${1:The rank of the document to view (base: 0)},\r",
+			"\t\t\"probability\": ${2:The probability that the user will view (between 0 and 1)},\r",
+			"\t\t\"pageViewField\": \"permanentid\"\r",
+			"\t}\r",
+			"},$0"
+		],
+		"description": "Coveo UABot Precise View Event"
+	},
+
+	"UABot Random View Event": {
+		"prefix": "uaboteventview",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"View\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"clickRank\": -1,\r",
+			"\t\t\"probability\": ${1:The probability that the user will view (between 0 and 1)},\r",
+			"\t\t\"pageViewField\": \"permanentid\",\r",
+			"\t\t\"offset\": ${2:Offset used in random document viewing (integer)}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Random View Event"
+	},
+
+	"UABot SetReferrer Event": {
+		"prefix": "uaboteventsetreferrer",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"SetReferrer\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"referrer\": \"${1:The referrer URL}\"\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot SetReferrer Event"
+	},
+
+	"UABot Custom Event": {
+		"prefix": "uaboteventcustom",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"${1:The event type of this custom event}\",\r",
+			"\t\t\"eventValue\": \"${2:The cause of this event, also the event value}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t$0\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Event"
+	},
+
+	// Commerce events
+
+	"UABot Custom Commerce detailView Event": {
+		"prefix": "uaboteventcustomcommercedetailview",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"detailView\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"actionCause\": \"${3:An additional information on what was viewed: \"view\", \"quickview\", \"screenshot\", \"video\", etc.}\",\r",
+			"\t\t\t\"name\": \"${4:The name of the item.}\",\r",
+			"\t\t\t\"price\": ${5:The price of the item (float).},\r",
+			"\t\t\t\"discountedPrice\": ${6:Optional: If the item has a discount, the discounted price (float).},\r",
+			"\t\t\t\"viewDuration\": ${7:Optional. The amount of time in seconds passed viewing the item, if available (float).},\r",
+			"\t\t\t\"categories\": \"${8:Optional: A list of categories related to the item, if available. If the categories have a structure, for instance of some categories are sub-categories of a shared main category, use a taxonomy instead.}\",\r",
+			"\t\t\t\"brands\": \"${9:Optional. The brand(s) of the item.}\",\r",
+			"\t\t\t\"taxonomy\": \"${10:Optional. The taxonomy tree of the item, encoded as a list of paths, where each path is a list of strings. For instance, a gaming computer mouse could have the following taxonomy: [[\\\"products\\\", \\\"computer accessories\\\", \\\"mice and keyboards\\\", \\\"mouse\\\"], [\\\"products\\\", \\\"gaming\\\", \\\"mouse\\\"]].}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce detailView Event"
+	},
+
+	"UABot Custom Commerce addToCart Event": {
+		"prefix": "uaboteventcustomcommerceaddtocart",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"addToCart\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"cartId\": \"${3:A unique ID for each cart.}\",\r",
+			"\t\t\t\"quantity\": ${4:The quantity of items (float).},\r",
+			"\t\t\t\"name\": \"${5:The name of the item.}\",\r",
+			"\t\t\t\"price\": ${6:The price of the item (float).},\r",
+			"\t\t\t\"discountedPrice\": ${7:Optional: If the item has a discount, the discounted price (float).},\r",
+			"\t\t\t\"categories\": \"${8:Optional: A list of categories related to the item, if available. If the categories have a structure, for instance of some categories are sub-categories of a shared main category, use a taxonomy instead.}\",\r",
+			"\t\t\t\"brands\": \"${9:Optional. The brand(s) of the item.}\",\r",
+			"\t\t\t\"taxonomy\": \"${10:Optional. The taxonomy tree of the item, encoded as a list of paths, where each path is a list of strings. For instance, a gaming computer mouse could have the following taxonomy: [[\\\"products\\\", \\\"computer accessories\\\", \\\"mice and keyboards\\\", \\\"mouse\\\"], [\\\"products\\\", \\\"gaming\\\", \\\"mouse\\\"]].}\",\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce addToCart Event"
+	},
+
+	"UABot Custom Commerce removeFromCart Event": {
+		"prefix": "uaboteventcustomcommerceremovefromcart",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"removeFromCart\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"cartId\": \"${3:A unique ID for each cart.}\",\r",
+			"\t\t\t\"quantity\": ${4:The quantity of items (float).},\r",
+			"\t\t\t\"name\": \"${5:The name of the item.}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce removeFromCart Event"
+	},
+
+	"UABot Custom Commerce addPurchase Event": {
+		"prefix": "uaboteventcustomcommerceaddpurchase",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"addPurchase\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"cartId\": \"${3:A unique ID for each cart.}\",\r",
+			"\t\t\t\"quantity\": ${4:The quantity of items (float).},\r",
+			"\t\t\t\"name\": \"${5:The name of the item.}\",\r",
+			"\t\t\t\"price\": ${6:The price of the item (float).},\r",
+			"\t\t\t\"discountedPrice\": ${7:Optional: If the item has a discount, the discounted price (float).},\r",
+			"\t\t\t\"categories\": \"${8:Optional: A list of categories related to the item, if available. If the categories have a structure, for instance of some categories are sub-categories of a shared main category, use a taxonomy instead.}\",\r",
+			"\t\t\t\"brands\": \"${9:Optional. The brand(s) of the item.}\",\r",
+			"\t\t\t\"taxonomy\": \"${10:Optional. The taxonomy tree of the item, encoded as a list of paths, where each path is a list of strings. For instance, a gaming computer mouse could have the following taxonomy: [[\\\"products\\\", \\\"computer accessories\\\", \\\"mice and keyboards\\\", \\\"mouse\\\"], [\\\"products\\\", \\\"gaming\\\", \\\"mouse\\\"]].}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce addPurchase Event"
+	},
+
+	"UABot Custom Commerce removePurchase Event": {
+		"prefix": "uaboteventcustomcommerceremovepurchase",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"removePurchase\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"cartId\": \"${3:A unique ID for each cart.}\",\r",
+			"\t\t\t\"quantity\": ${4:The quantity of items (float).},\r",
+			"\t\t\t\"name\": \"${5:The name of the item.}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce removePurchase Event"
+	},
+
+	"UABot Custom Commerce addRating Event": {
+		"prefix": "uaboteventcustomcommerceaddrating",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"addRating\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"ratingValue\": ${3:The value of the rating, e.g. the number of stars (float).},\r",
+			"\t\t\t\"ratingComment\": \"${4:Optional. The comment on the rating.}\",\r",
+			"\t\t\t\"name\": \"${5:The name of the item.}\",\r",
+			"\t\t\t\"price\": ${6:The price of the item (float).},\r",
+			"\t\t\t\"discountedPrice\": ${7:Optional: If the item has a discount, the discounted price (float).},\r",
+			"\t\t\t\"categories\": \"${8:Optional: A list of categories related to the item, if available. If the categories have a structure, for instance of some categories are sub-categories of a shared main category, use a taxonomy instead.}\",\r",
+			"\t\t\t\"brands\": \"${9:Optional. The brand(s) of the item.}\",\r",
+			"\t\t\t\"taxonomy\": \"${10:Optional. The taxonomy tree of the item, encoded as a list of paths, where each path is a list of strings. For instance, a gaming computer mouse could have the following taxonomy: [[\\\"products\\\", \\\"computer accessories\\\", \\\"mice and keyboards\\\", \\\"mouse\\\"], [\\\"products\\\", \\\"gaming\\\", \\\"mouse\\\"]].}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce addRating Event"
+	},
+
+	"UABot Custom Commerce removeRating Event": {
+		"prefix": "uaboteventcustomcommerceremoverating",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"removeRating\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"name\": \"${3:The name of the item.}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce removeRating Event"
+	},
+
+	"UABot Custom Commerce addBookmark Event": {
+		"prefix": "uaboteventcustomcommerceaddbookmark",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"addBookmark\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"actionCause\": \"${3:The nature of the bookmark such as wishlist.}\",\r",
+			"\t\t\t\"name\": \"${4:The name of the item.}\",\r",
+			"\t\t\t\"quantity\": ${5:The quantity of items (float).},\r",
+			"\t\t\t\"price\": ${6:The price of the item (float).},\r",
+			"\t\t\t\"discountedPrice\": ${7:Optional: If the item has a discount, the discounted price (float).},\r",
+			"\t\t\t\"categories\": \"${8:Optional: A list of categories related to the item, if available. If the categories have a structure, for instance of some categories are sub-categories of a shared main category, use a taxonomy instead.}\",\r",
+			"\t\t\t\"brands\": \"${9:Optional. The brand(s) of the item.}\",\r",
+			"\t\t\t\"taxonomy\": \"${10:Optional. The taxonomy tree of the item, encoded as a list of paths, where each path is a list of strings. For instance, a gaming computer mouse could have the following taxonomy: [[\\\"products\\\", \\\"computer accessories\\\", \\\"mice and keyboards\\\", \\\"mouse\\\"], [\\\"products\\\", \\\"gaming\\\", \\\"mouse\\\"]].}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce addBookmark Event"
+	},
+
+	"UABot Custom Commerce removeBookmark Event": {
+		"prefix": "uaboteventcustomcommerceremovebookmark",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"removeBookmark\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"actionCause\": \"${3:The nature of the bookmark such as wishlist.}\",\r",
+			"\t\t\t\"name\": \"${4:The name of the item.}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce removeBookmark Event"
+	},
+
+	"UABot Custom Commerce addCompare Event": {
+		"prefix": "uaboteventcustomcommerceaddcompare",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"addCompare\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"compareId\": \"${3:A unique ID to group compared items together.}\",\r",
+			"\t\t\t\"name\": \"${4:The name of the item.}\",\r",
+			"\t\t\t\"price\": ${5:The price of the item (float).},\r",
+			"\t\t\t\"discountedPrice\": ${6:Optional: If the item has a discount, the discounted price (float).},\r",
+			"\t\t\t\"categories\": \"${7:Optional: A list of categories related to the item, if available. If the categories have a structure, for instance of some categories are sub-categories of a shared main category, use a taxonomy instead.}\",\r",
+			"\t\t\t\"brands\": \"${8:Optional. The brand(s) of the item.}\",\r",
+			"\t\t\t\"taxonomy\": \"${9:Optional. The taxonomy tree of the item, encoded as a list of paths, where each path is a list of strings. For instance, a gaming computer mouse could have the following taxonomy: [[\\\"products\\\", \\\"computer accessories\\\", \\\"mice and keyboards\\\", \\\"mouse\\\"], [\\\"products\\\", \\\"gaming\\\", \\\"mouse\\\"]].}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce addCompare Event"
+	},
+
+	"UABot Custom Commerce removeCompare Event": {
+		"prefix": "uaboteventcustomcommerceremovecompare",
+		"scope": "plaintext,json",
+		"body": [
+			"{\r",
+			"\t\"type\": \"Custom\",\r",
+			"\t\"arguments\": {\r",
+			"\t\t\"eventType\": \"removeCompare\",\r",
+			"\t\t\"eventValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\"customData\": {\r",
+			"\t\t\t\"contentIDKey\": \"${2:The index field associated to the event value. @permanentid is a good candidate if there is no field that contains the unique product ID.}\",\r",
+			"\t\t\t\"contentIDValue\": \"${1:A unique ID corresponding to the product. This ID should match an index field's value, that is passed in the custom data (contentIDKey).}\",\r",
+			"\t\t\t\"compareId\": \"${3:A unique ID to group compared items together.}\",\r",
+			"\t\t\t\"name\": \"${4:The name of the item.}\"\r",
+			"\t\t}\r",
+			"\t}\r",
+			"},"
+		],
+		"description": "Coveo UABot Custom Commerce removeCompare Event"
+	}
+}
