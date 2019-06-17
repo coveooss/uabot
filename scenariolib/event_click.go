@@ -89,6 +89,8 @@ func (click *ClickEvent) Execute(v *Visit) error {
 func computeClickRank(v *Visit, clickRank, offset int) (computedRank int) {
 	computedRank = clickRank
 	if computedRank == -1 { // if rank == -1 we need to randomize a rank
+		// Default to the first result to click on
+		computedRank = 0
 		// Find a random rank within the possible click values accounting for the offset
 		if v.LastResponse.TotalCount > 1 {
 			topL := Min(v.LastQuery.NumberOfResults, v.LastResponse.TotalCount)
