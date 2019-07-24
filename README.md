@@ -1,26 +1,26 @@
-# uabot [![Build Status](https://travis-ci.org/coveo/uabot.svg?branch=master)](https://travis-ci.org/coveo/uabot) [![Go Report Card](https://goreportcard.com/badge/github.com/coveo/uabot)](https://goreportcard.com/report/github.com/coveo/uabot) [![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/coveo/uabot/blob/master/LICENSE)
+# uabot [![Build Status](https://travis-ci.org/coveo/uabot.svg?branch=master)](https://travis-ci.org/coveo/uabot) [![Go Report Card](https://goreportcard.com/badge/github.com/coveooss/uabot)](https://goreportcard.com/report/github.com/coveooss/uabot) [![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/coveooss/uabot/blob/master/LICENSE)
 
 Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
 Works with a configuration file using json format.
-Check the [/scenarios_examples](https://github.com/coveo/uabot/tree/master/scenarios_examples) folder for examples.
+Check the [/scenarios_examples](https://github.com/coveooss/uabot/tree/master/scenarios_examples) folder for examples.
 
 ## How to use:
 
-1. [Download executable](https://github.com/coveo/uabot/releases/latest).
+1. [Download executable](https://github.com/coveooss/uabot/releases/latest).
 2. Set Environment variables (refer to the section below).
-3. Build your scenarios ([How to build scenarios](http://coveo.github.io/uabot/scenario.html)).
+3. Build your scenarios ([How to build scenarios](http://coveooss.github.io/uabot/scenario.html)).
 4. Execute the bot.
 
 ### Tracing
 
 You can use the argument `-trace` to get more logs when debugging your scenarios.
 
-[Examples of scenarios](https://github.com/coveo/uabot/tree/master/scenarios_examples)
+[Examples of scenarios](https://github.com/coveooss/uabot/tree/master/scenarios_examples)
 
 <hr/>
 
-## [Usage documentation](http://coveo.github.io/uabot/)
-## [Code documentation](http://godoc.org/github.com/coveo/uabot/scenariolib)
+## [Usage documentation](http://coveooss.github.io/uabot/)
+## [Code documentation](http://godoc.org/github.com/coveooss/uabot/scenariolib)
 
 ## Supports
 - [x] Search events
@@ -84,7 +84,7 @@ export LOCAL=true #if scenariosurl is a local path
 # Push tag.
 2. git push --tags origin master
 # It takes a little bit of time for Travis to generate the artefacts
-3. Visit https://github.com/coveo/uabot/releases to view the releases to ensure your new release is visible.
+3. Visit https://github.com/coveooss/uabot/releases to view the releases to ensure your new release is visible.
 ```
 
 [![forthebadge](http://forthebadge.com/images/badges/made-with-crayons.svg)](http://forthebadge.com)
