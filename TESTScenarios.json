@@ -1,0 +1,142 @@
+{
+  "searchendpoint": "https://platform.cloud.coveo.com/rest/search/v2",
+  "analyticsendpoint": "https://platform.cloud.coveo.com/rest/ua/v15/analytics/",
+  "defaultOriginLevel1": "BotSearch",
+  "timeBetweenVisits": 1,
+  "timeBetweenActions": 1,
+  "anonymousThreshold": 1,
+  "orgName": "SpeedBit",
+  "pipeline": "default",
+  "randomCustomData": [
+    {
+      "apiname": "customData1",
+      "values": [
+        "Speedbit Blaze"
+      ]
+    }
+  ],
+  "randomGoodQueries": [
+    "@uri"
+  ],
+  "randomBadQueries": [
+    "aaaaaaaaaaa"
+  ],
+  "randomData": {
+    "languages": [
+      "en"
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Scenarios deflected (Problem with activity goals)",
+      "weight": 1,
+      "events": [
+        {
+          "type": "SetOrigin",
+          "arguments": {
+            "originLevel1": "CommunityCaseCreation"
+          }
+        },
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "Problem with activity goals",
+            "goodQuery": true,
+            "caseSearch": true,
+            "inputTitle": "Subject"
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 0.8,
+            "quickview": true
+          }
+        },
+        {
+          "type": "Custom",
+          "arguments": {
+            "eventValue": "unloadPage",
+            "eventType": "caseCreation",
+            "customData": {
+              "hasclicks": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PageView",
+      "weight": 1,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true,
+            "ignoreEvent": true
+          }
+        },
+        {
+          "type": "View",
+          "arguments": {
+            "offset": 0,
+            "docNo": -1,
+            "probability": 1,
+            "pageViewField": "sysdocumenttype",
+            "contentType": "document"
+          }
+        }
+      ]
+    },
+    {
+      "name": "testSearchGood",
+      "weight": 1,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "testSearchBad",
+      "weight": 1,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "testSearchClick",
+      "weight": 1,
+      "events": [
+        {
+          "type": "Search",
+          "arguments": {
+            "queryText": "",
+            "goodQuery": true
+          }
+        },
+        {
+          "type": "Click",
+          "arguments": {
+            "docNo": -1,
+            "offset": 0,
+            "probability": 1
+          }
+        }
+      ]
+    }
+  ]
+}

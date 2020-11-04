@@ -5,7 +5,7 @@ import (
 	"math"
 	"math/rand"
 
-	"github.com/coveo/go-coveo/search"
+	"github.com/coveooss/go-coveo/search"
 
 	"encoding/json"
 )

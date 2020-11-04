@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	ua "github.com/coveo/go-coveo/analytics"
-	"github.com/coveo/go-coveo/search"
+	ua "github.com/coveooss/go-coveo/analytics"
+	"github.com/coveooss/go-coveo/search"
 	"github.com/coveo/uabot/defaults"
 )
 
