@@ -8,6 +8,7 @@ import (
 	"math/rand"
 
 	ua "github.com/coveooss/go-coveo/analytics"
+	"github.com/k0kubun/pp"
 )
 
 // ============== SEARCH EVENT ======================
@@ -27,7 +28,7 @@ type SearchEvent struct {
 	ActionType    string
 }
 
-const caseQuerySomeTemplate = "($some(keywords: %s, match: 1, maximum: 300)) ($sort(criteria: relevancy))"
+const caseQuerySomeTemplate = "($some(keywords: '%s', match: 1, maximum: 300))"
 const defaultSearchCause = "searchboxSubmit"
 const defaultCaseSearchCause = "inputChange"
 
@@ -75,10 +76,12 @@ func (search *SearchEvent) Execute(visit *Visit) (err error) {
 	}
 	Info.Printf("Searching for : %s", search.Keywords)
 
+	pp.Print(visit.LastQuery)
 	// Execute a search and save the response
 	if visit.LastResponse, err = visit.SearchClient.Query(*visit.LastQuery); err != nil {
 		return
 	}
+	pp.Print(visit.LastResponse.SearchUID)
 
 	// in some scenarios (logging of page views), we don't want to send the search event to the analytics
 	if !search.IgnoreEvent {
