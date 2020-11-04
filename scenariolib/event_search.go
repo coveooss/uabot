@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	ua "github.com/coveo/go-coveo/analytics"
+	ua "github.com/coveooss/go-coveo/analytics"
 )
 
 // ============== SEARCH EVENT ======================
@@ -27,7 +27,7 @@ type SearchEvent struct {
 	ActionType    string
 }
 
-const caseQuerySomeTemplate = "($some(keywords: %s, match: 1, removeStopWords: true, maximum: 300)) ($sort(criteria: relevancy))"
+const caseQuerySomeTemplate = "($some(keywords: '%s', match: 1, maximum: 300))"
 const defaultSearchCause = "searchboxSubmit"
 const defaultCaseSearchCause = "inputChange"
 

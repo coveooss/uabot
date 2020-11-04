@@ -3,7 +3,7 @@
 package scenariolib
 
 import (
-	"github.com/coveo/go-coveo/search"
+	"github.com/coveooss/go-coveo/search"
 )
 
 // ============== FAKE SEARCH EVENT ======================

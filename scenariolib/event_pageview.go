@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/rand"
 
-	ua "github.com/coveo/go-coveo/analytics"
+	ua "github.com/coveooss/go-coveo/analytics"
 )
 
 // ============== VIEW EVENT ======================
