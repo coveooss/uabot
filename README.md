@@ -1,4 +1,4 @@
-# uabot [![Build Status](https://travis-ci.org/coveo/uabot.svg?branch=master)](https://travis-ci.org/coveo/uabot) [![Go Report Card](https://goreportcard.com/badge/github.com/coveooss/uabot)](https://goreportcard.com/report/github.com/coveooss/uabot) [![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/coveooss/uabot/blob/master/LICENSE)
+# uabot [![Build Status](https://travis-ci.org/coveooss/uabot.svg?branch=master)](https://travis-ci.org/coveooss/uabot) [![Go Report Card](https://goreportcard.com/badge/github.com/coveooss/uabot)](https://goreportcard.com/report/github.com/coveooss/uabot) [![license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/coveooss/uabot/blob/master/LICENSE)
 
 Bot to send "intelligent" random usage analytics to simulate visits, queries and clicks on a site.
 Works with a configuration file using json format.
